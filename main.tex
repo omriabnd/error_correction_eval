@@ -42,7 +42,7 @@
 
 \section{Main ideas(abstract base)}
 
-We propose two notiong of conservatism:semantic conservatism and formal
+We propose two notions of conservatism:semantic conservatism and formal
 conservatism and state the former one is mostly the one we strive
 for when correcting.
 
@@ -55,12 +55,12 @@ we show UCCA can be used for annotating ungrammatical texts
 
 we show UCCA is stable over grammar correction
 
-we show state of the art error correction methods are highly firmally
+we show state of the art error correction methods are highly formally
 conservative (why formal and not structural or another name?)
 
 We show current correction methods are too formally conservative,
 they don't change enough sentence boundaries, enough words and enough
-charachters.
+characters.
 
 We suggest one of the factors contributing to over formal conservatism
 is having only a small number of references covering low percentage
@@ -291,7 +291,7 @@ for the small UCCA DAGs. Thus, a new measure is called upon.
 
 \subsection{Similarity measures\label{subsec:Similarity-measures}}
 
-We propose several new methods to compare UCCA annotation of a learner
+We propose several new methods to compare UCCA annotation of a learner\\
 language with UCCA annotation of corrected texts, giving a more accurate
 measure than the upper bound suggested by \cite{sulem2015conceptual}for
 comparing two parallel texts in different languages, while keeping
@@ -301,7 +301,7 @@ translation from learner language to Proper English, and a good translation
 would be a translation which keeps the meaning but has the syntax
 of English. Considering that, just like in translation we can align
 words from the learner language to the corresponding words in English
-and keep record of how many of those nodes kept their labels. 
+and keep record of how many of those nodes kept their labels.
 
 As comparing labels is trivial between a pair,{*}{*}should mention
 somewhere weak labeling?{*}{*} we should focus on how we propose to
@@ -480,7 +480,7 @@ and are over conservative. {*}{*}say a word on how do we see that
 in each graph and conclude{*}{*}
 
 \begin{figure}
-\caption{\protect\includegraphics[width=8cm]{\string"graphs/formal conservatism/differences2_some_competitors\string".pdf}}
+%\caption{\protect\includegraphics[width=8cm]{\string"graphs/formal conservatism/differences2_some_competitors\string".pdf}}
 text
 \end{figure}
 
@@ -491,19 +491,17 @@ text
 
 Some corrections might really be too hard for current correctors to
 correct, leading to cautious corrections. Another cause for over conservatism
-might hide in the assessment methods.before we show it, lets assume
+might hide in the assessment methods. before we show it, lets assume
 that each ungrammatical sentence has some possible corrections. From
 the corrections only 2 are in the gold standard. That would lead to
 problems in both assessment and development process. In the assessment,
-results will not be reliable, the assessment will only assess whether
-we predict the gold standard annotation and not how many of the sentences
-where corrected. Perhaps less obvious will be how it affects the development
-process. Sentences, even if corrected well, which have more possible
-corrections will get lower scores on precision for correcting, while
-not getting scores for recall anyway. This will lead either through
-machine learning or algorithm development cycles to learn not to correct
+results will not be reliable, having correct sentences regarded as mistakes. This leads to more fluctuations and low scores even for a perfect output.
+Perhaps less obvious will be how it affects the development
+process. Even if corrected well, sentences which have more possible
+corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead either through
+machine learning or algorithm development cycles to learn \textbf{not} to correct
 those sentences at all. In the rest of this section we will show that
-the assumptions we made are more than just assumptions.
+the assumptions we made are the current reality.
 
 \subsection{Formalism}
 
