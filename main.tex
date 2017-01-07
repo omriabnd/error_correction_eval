@@ -505,16 +505,19 @@ the assumptions we made are the current reality.
 
 \subsection{Corrections as a distribution}
 
-Lets denote $X=x_{1}\ldots x_{n}\sim World\,Sentences$ as the considered
-sentences for evaluation. For each $x_{i}$ there exists $\left\{ y_{1}^{i},\ldots,y_{M}^{i}\right\} \sim x_{i}\,corrections$
-the set of gold standard annotations and we consider the output of
+Lets denote $X=x_{1}\ldots x_{n}\sim L$ as the considered
+sentences for evaluation where $L$ is a distribution over all learner sentences from the domain . For $D_x_i$ the distribution of corrections over a sentence $x_i$ there exists for each $x_{i}$, the set of gold standard annotations $\left\{ y_{1}^{i},\ldots,y_{M}^{i}\right\} \sim D_x_i$ . We consider the  output of
 the corrector to be a function $f\left(x_{i}\right)$. A certain assessment
 statistic is a function $\hat{S}=Eval\left(f\left(x_{1}\right),\left\{ y_{1}^{1},\ldots,y_{M}^{1}\right\} \ldots,f\left(x_{N}\right),\left\{ y_{1}^{N},\ldots,y_{M}^{N}\right\} \right)$.
 
-We think of a correction for a sentence $x$ as coming from an unknown distribution $D_x$ of different corrections, all right. We found no work that describes or assesses the way those distributions are. 
+We found no work that describes or assesses the way $D_x$ distributions are, and this would be the aim of the rest of this article. 
 
 \subsection{Our data}
-To be able to answer interesting statistical questions about assessment we first need to estimate the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences from the Nus \cite{dahlmeier2013building} test data and asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall. For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that predicts discrete distributions.{*}should say something more{*} We also note that it might be reasonable to look at the distribution as taken from {*}power law? zipf? dirichlet process? we don't have anything to say here?{*} but this approximation through a popular distribution family seemed less accurate, and we kept the approximated distribution.
+To be able to answer interesting statistical questions about assessment we first need to estimate the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with max length 15 from the Nus \cite{dahlmeier2013building} test data. The length condition was made to make sure we will not capture many interleaving errors. Also as manual analyzing suggested very short sentences were discarded as sentence tokenization error. Histogram of sentence lengths showed a lot of the mass is below this threshold.
+
+Albeit, too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation{*}cites -translation{*} and even more so in error correction\cite{madnani2011they}{*}are there more cites?{*} as error correction is a more intuitive task than correction. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence.
+
+For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies.{*}should say something more{*} We also note that it might be reasonable to look at the distribution as taken from {*}power law? zipf? dirichlet process? we don't have anything to say here?{*} but this approximation through a popular distribution family seemed less accurate, and we kept the approximated distribution.
 
 {*}{*}{*}put it somewhere in context{*}{*}{*}This way of measuring
 assumes the sentences do not need context, and while surely untrue
@@ -533,17 +536,38 @@ The values an assessment process produces are the base foundation of
  every improvement in Computer Sciences. This gives the value an
   almost sacred place. We think this role should be earned and measured.
  
- We shall first consider accuracy. While this is not the assessment for publishing it is the de facto choice for training machine learning algorithms. We suggest its use for another important reason which is interpretabillity.
-
-Given a system with a probability $c$ to correct an ungrammatical sentence, and we assume for simplicity this holds for every such sentence. The probability to get a specific accuracy assessment over $n$ sentences will be $$p\left(value\right)=\frac{\sum_{i=1}^{n}c\cdot p_i}{n} $$ 
+ We shall first consider accuracy. While this is not the assessment for publishing it is the de facto choice for training machine learning algorithms. We suggest its use for another important reason which is interpretability.
+{*} make sure I have consistent variables{*}
+Given a system with a probability $c$ to correct an ungrammatical sentence, for simplicity we assume this holds for every such sentence. The probability to get a specific accuracy assessment over $n$ sentences will be $$p\left(value\right)=\frac{\sum_{i=1}^{n}c\cdot p_i}{n} $$ 
 where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. This is equivalent to the mean of Bernoulli variables with different probabilities $p_1,\ldots,p_n$ which is a Poisson Binomial random variable divided by n. 
 
 First, we are to look at some general properties.
  One interesting property is that the number of sentences considered does not change the expected accuracy value.
- Another property to consider is that the ratio between scores of different systems stays the same no matter what are $p_1,\ldots,p_n$. So in this assessment we get a reliable way of comparing to systems, but we underestimate performance depending on our coverage. The only way to get more coverage will be to get more annotations.
-Based on the sentences corrections we gathered and the probability estimation we numerically compute the average coverage of a given sentence given that we randomly sample $m$ corrections for our gold standard. For every $m$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. In {*}{*}add figure{*}{*} we show the expected accuracy of a randomly selected perfect system for different values of m. As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ is kept. This measures need no change when we enlarge the test data as the variance of the assessment is all that changes. 
+ Another property to consider is that the ratio between scores of different systems stays the same no matter what are $p_1,\ldots,p_n$. So in this assessment we get a reliable way of comparing two systems, but we underestimate performance depending on our coverage. The only way to get more coverage will be to get more annotations.
+ 
+Based on the sentences corrections we gathered and the probability estimation we numerically compute the average coverage of a given sentence given that we randomly sample $m$ corrections for our gold standard. For every $m$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. In {*}{*}add figure{*}{*} we show the expected accuracy of a randomly selected perfect system for different values of m. As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ is kept. This measures need no change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations we need and when we consider how well is our system doing, it would be advisable to take these numbers into account.
 
-The
+While accuracy is very popular for machine learning tasks, F score is currently the only measure to be published in articles. As F score is much more complicated, no  analytical way to predict its value was proposed \cite{yeh2000more}.
+
+We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different systems with the current NUS test data ($m=2$). We also assess different expected results for perfect outputs with different m values. It is a challenge do that without generating a whole dataset with enough annotations plus a large test set to account for the variability of different annotators. We sample for each ungrammatical sentence in the gold standard a sentence from our data set and m corrections uniformly sampled from the empirical distribution we have collected. We also sample a perfect output in the same way (with $m=1$). With that we use the many corrections for each sentence to account for annotation variability and hold the ratios of different corrections stable. At last, we transform each of the corrections into a set of edits as requested by the $M^2$ scorer\cite{dahlmeier2012better}.
+
+This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier.
+
+When combining the results on both measures we see a large improvement in coverage when enlarging m at the beginning suggesting that a more reasonable m to choose would be somewhere around 8 where the high probability corrections are probably covered and the graph turns semi-linear.
+ Another conclusion can be made even without full coverage. Now, when we have a value from the assessment process we may estimate what how low is it in respect to the perfect assessment. Some may wish to correct for this under assessment.
+
+\section{On significance and variation}
+
+So far we have discussed the mean values of the assessment and how they are lower bounds of the real values of the same assessment with a full gold standard. For some uses the value itself does not matter, what really matters is whether one value is significantly higher than another value. The current view about the topic was that with enough sentences this problem can be overcome.
+
+We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. Choosing how to balance is dependent on the goals of the one collecting data. Thus, we will not discuss this issue here and just note that such questions have been studied in various fields such as genetics\cite{ionita2010optimal}.
+
+So, why is significance more complicated? Basically, because variance is more complex than mean. While $\mathbb{E}_{x\sim L, }\left(\hat{S}\right)$ vary only as we change $M$
+the number of annotations, but not $N$ the number of corrections,
+$Var(\hat{S})$ depends on both. We try to assess and give an upper
+bound on how much it varies for different $M$ and $N$, allowing
+for both a smart allocation of resources when building a corpus and
+for assessing on given corpora whether two systems are actually different.
 
 \subsection{Significance}
 
@@ -559,15 +583,6 @@ a lot too.
 
 \subsection{Lack of corrections also leads to under estimation of the statistic
 and hence over conservatism}
-
-\section{On significance and variation}
-
-While $\mathbb{E}\left(\hat{S}\right)$ vary only as we change $M$
-the number of annotations, but not $N$ the number of corrections,
-$Var(\hat{S})$ depends on both. We try to assess and give an upper
-bound on how much it varies for different $M$ and $N$, allowing
-for both a smart allocation of resources when building a corpus and
-for assessing on given corpora whether two systems are actually different.
 
 \section{Other things(conclusions? discussion further work?)}
 
