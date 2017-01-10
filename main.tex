@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 %\usepackage[round]{natbib}
-\usepackage{emnlp2016}
+
+\usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{paralist}
 \usepackage{subfig}
@@ -37,10 +38,10 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\abstract{
+\begin{abstract}
 xxx
 
-}
+\end{abstract}
 
 
 \section{Main ideas(abstract base)}
@@ -91,8 +92,8 @@ language can be seen as one case.
 \section{Opening}
 
 In the history of error correction, conservatism was considered an
-important trait of an error correcting system\cite{brockett2006correcting}.
-This was also the reason why $F_{0.5}$ became since conll2014\cite{ng2014conll}
+important trait of an error correcting system \cite{brockett2006correcting}.
+This was also the reason why $F_{0.5}$ became since conll2014 \cite{ng2014conll}
 the measure of choice for error correction evaluation, emphasizing
 precision over recall. This emphasis can be understood as encouraging
 avoidance of wrong corrections at the cost of correcting less errors
@@ -106,7 +107,7 @@ in this intuition.
 There are two different conservatism
 types, semantic conservatism and formal one, of which the semantic
 is the one we strongly need to adopt and the formal is merely a technicality
-for the user. in part 1{*}{*}make sure it is right where all is written,
+for the user. in part 1{*}{*} make sure it is right where all is written,
 cross references{*}{*}we address the two conservatism types in part
 2 we show semantics can be a consistent and measurable allowing use
 of it for ensuring semantic conservatism in part 3 we show current
@@ -600,5 +601,6 @@ and hence over conservatism}
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
+
 
 \end{document}
