@@ -4,7 +4,7 @@
 \usepackage{amssymb}
 \usepackage{svg}
 \usepackage{graphicx}
-\graphicspath{./plots/}
+\graphicspath{{./plots/}}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
@@ -366,7 +366,7 @@ the trees to be ordered, we did that in a top down fashion. An interesting
 future work would be to use unordered tree edit distance methods\cite{zhang1992editing}.
 
 All of the code to implement UCCA structures, align them and evaluate
-them is also given as a free \href{https://github.com/borgr/assess_learner_language}{contribution}.
+them is also given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
 So is code used to create the rest of the paper.
 \begin{table}[h!]
 	\centering
@@ -467,7 +467,7 @@ we used spearman's rho for the indexes of the aligned words in each sentence.
 
 \subsection{discussion}
 \begin{figure}
-%	\includesvg{alignedtest.svg}
+	\includegraphics{figure_1}
 	\caption{Sentences split and concatenated by different systems.}
 	\label{fig:split}
 \end{figure}
@@ -479,7 +479,7 @@ we used spearman's rho for the indexes of the aligned words in each sentence.
 \end{figure}
 
 \begin{figure}
-%	\includesvg{alignedtest.svg}
+	\includesvg{alignedtest}
 	\caption{Number of sentences with different number of words changed by different systems.}
 	\label{fig:words_changed}
 \end{figure}
