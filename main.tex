@@ -1,46 +1,43 @@
-\documentclass[english]{article}
-\usepackage[T1]{fontenc}
-\usepackage[latin9]{inputenc}
-\usepackage{amssymb}
-\usepackage{svg}
+\documentclass[11pt]{article}
+%\usepackage[round]{natbib}
+\graphicspath{./plots/}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{paralist}
+\usepackage{subfig}
+\usepackage{times}
+\usepackage{latexsym}
 \usepackage{graphicx}
-\graphicspath{{./plots/}}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage{pgfplotstable}
+\usepackage{titlesec}
+\usepackage{color}
+\usepackage{lipsum,adjustbox}
+\usepackage[font={small}]{caption}
+\usetikzlibrary{positioning}
 
-\makeatletter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
-\newcommand{\lyxaddress}[1]{
-\par {\raggedright #1
-\vspace{1.4em}
-\noindent\par}
-}
-\newcommand{\lyxrightaddress}[1]{
-\par {\raggedleft \begin{tabular}{l}\ignorespaces
-#1
-\end{tabular}
-\vspace{1.4em}
-\par}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{acl2017}
 
-\usepackage{babel}
+
 \begin{document}
-
-\title{Improved Statistical Evaluation for Grammatical Error Correction}
-
-\author{
-  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
-  \textsuperscript{1}School of Computer Science and Engineering, \textsuperscript{2} Department of Cognitive Sciences \\
-  The Hebrew University of Jerusalem \\
-  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
-}
-
-
-%%% It's double-blind, so no need for authors for the time being
-
-\maketitle
-
+	
+	\title{Improved Statistical Evaluation for Grammatical Error Correction}
+	
+	\author{
+		Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
+		\textsuperscript{1}School of Computer Science and Engineering, \textsuperscript{2} Department of Cognitive Sciences \\
+		The Hebrew University of Jerusalem \\
+		\texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
+	}
+	
+	
+	\maketitle
+\begin{abstract}
+	xxx
+	
+\end{abstract}
 
 \section{Main ideas(abstract base)}
 
@@ -617,5 +614,7 @@ We see that considering the changed indexes, looking for example at different sy
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
+
+\section{Appendix}
 
 \end{document}
