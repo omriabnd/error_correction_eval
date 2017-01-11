@@ -1,6 +1,5 @@
-ss[11pt]{article}
+\documentclass[english]{article}
 %\usepackage[round]{natbib}
-\graphicspath{./plots/}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{paralist}
@@ -19,7 +18,7 @@ ss[11pt]{article}
 \usetikzlibrary{positioning}
 
 \usepackage{acl2017}
-
+\graphicspath{{./plots/}}
 
 \begin{document}
 	
@@ -48,7 +47,7 @@ for when correcting.
 We state semantic annotation is valuable for error correction and
 error assessment.
 
-We present a new methods to compare UCCA annotation
+We present new methods to compare UCCA annotation
 
 we show UCCA can be used for annotating ungrammatical texts
 
@@ -79,7 +78,7 @@ We emphasize that lowering confidence interval length is a balancing problem,
 because variance is dependent on the number of sentences and the number of corrections per sentence.
 
 
-\section{Opening}
+\section{Introduction}
 
 In the history of error correction, conservatism was considered an
 important trait of an error correcting system\cite{brockett2006correcting}.
@@ -464,19 +463,19 @@ we used spearman's rho for the indexes of the aligned words in each sentence.
 
 \subsection{discussion}
 \begin{figure}
-	\includegraphics{figure_1}
+	\includegraphics[width = 8cm]{aligned}
 	\caption{Sentences split and concatenated by different systems.}
 	\label{fig:split}
 \end{figure}
 
 \begin{figure}
-%	\includesvg{\detokenize{spearman_ecdftest.svg}}
+	\includegraphics[width = 8cm]{spearman_ecdf}
 	\caption{Spearman rho values by different systems.}
 	\label{fig:rho}
 \end{figure}
 
 \begin{figure}
-	%\includesvg{alignedtest}
+	\includegraphics[width = 8cm]{words_differences}
 	\caption{Number of sentences with different number of words changed by different systems.}
 	\label{fig:words_changed}
 \end{figure}
@@ -616,3 +615,5 @@ We see that considering the changed indexes, looking for example at different sy
 \bibliography{propose}
 
 \section{Appendix}
+
+\end{document}
