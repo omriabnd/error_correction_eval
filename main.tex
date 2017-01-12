@@ -123,11 +123,11 @@ In recent years there is a growing interest in grammatical error correction (GEC
 
 In this task faithfulness to the meaning of the source is crucial, this idea was embraced by preceding work ( \cite{brockett2006correcting}) and by the used evaluation $F_{0.5}$ score (\cite{ng2014conll}). The pursue of being conservative in that manner might bring a daunting outcome, being too formally conservative. In simpler words, not correcting errors.
 
-We evaluated outputs of about 15 different systems, including state-of-the-art in the criteria of number of words changes, indexes change and reconstruction of sentence boundaries. We found the systems to be over formally conservative in all aspects(\ref{sec:formal_conservatism}).
+We evaluated outputs of state-of-the-art and about 15 other different GEC correction systems, from now correctors. We considered number of words changed, indexes changed and reconstruction of sentence boundaries. We found the correctors to be over formally conservative in all aspects(\ref{sec:formal_conservatism}).
 
 We pursue two approaches to overcome this problem, increasing the amount of references(\ref{sec:increase-reference}) (hereby $M$) and assessing semantic conservatism(\ref{sec:Semantics}) rather than formal one. 
 Increasing the amount of references was proposed before and pursued with $M=2$, but no assessment of its sufficiency or its added value over $M=1$ has been made. In order to address this gap we first characterize the distribution of possible corrections for a sentence. We leverage this characterization to characterize the distribution of the scores as a function of $M$, and consequently assess the biases introduced by taking $M=1,2$ as with previous approaches. 
-We find that assessment based on these values of $M$ dramatically under-estimate the system scores. 
+We find that assessment based on these values of $M$ dramatically under-estimate the corrector scores. 
 We back our analysis of these biases with an analysis of the variance of these estimators.
 Throughout this statistical investigation we check both the $F$ score often used for evaluation, and the accuracy score commonly used for training.
 
@@ -178,19 +178,19 @@ calculates Spearman's rho for the indexes of the aligned words in each text unit
 \subsection{discussion}
 \begin{figure}
 	\includegraphics[width = 8cm]{aligned}
-	\caption{Sentences split and concatenated by different systems.}
+	\caption{Sentences split and concatenated by different correctors.}
 	\label{fig:split}
 \end{figure}
 
 \begin{figure}
 	\includegraphics[width = 8cm]{spearman_ecdf}
-	\caption{Spearman rho values by different systems.}
+	\caption{Spearman rho values by different correctors.}
 	\label{fig:rho}
 \end{figure}
 
 \begin{figure}
 	\includegraphics[width = 8cm]{words_differences}
-	\caption{Number of sentences with different number of words changed by different systems.}
+	\caption{Number of sentences with different number of words changed by different correctors.}
 	\label{fig:words_changed}
 \end{figure}
 
@@ -209,16 +209,15 @@ When we broaden our view and consider the results of the different
 correctors, the picture is clear. All correctors are over conservative.
 It is not only that correctors don't tend to overcorrect, they all,
 to the last one, by all the measures we checked, undercorrect a lot
-and are over conservative. A special case would be the cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction. {*}do the plots need textual analyzing? e.g. explain why do we see under correction in fig 1 2 3?{*}
+and are over conservative. {*}is this remark interesting at all, we show the graph for 2 corrections per sentence anyway{*}A special case would be the Cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction, when removing one word changes, or counting the number of changes the differences are still great . {*}do the plots need textual analyzing? e.g. explain why do we see under correction in fig 1 2 3?{*}
 
 
 \section{May lack of corrections lead to over formal conservatism?\label{sec:increase-reference}}
 
-Some corrections might really be too hard for current correctors to
-correct, leading to cautious corrections. Another cause for over conservatism
-might hide in the assessment methods. Before we show it, lets assume
+As noted before, assessment might push towards being too conservative. One cause for that
+might hide in the number of references, denoted $M$. Before we show it, lets assume
 that each ungrammatical sentence has some possible corrections. From
-the corrections only 2 are in the gold standard. That would lead to
+the corrections only 2 are in the gold standard. This leads to low coverage, a high probability that a valid correction is not in the gold standard. That would lead to
 problems in both assessment and development process. 
 
 In the assessment,
@@ -241,7 +240,7 @@ We found no work that describes or assesses the way $D_x$ distributions are, and
 \subsection{Our data}
 To be able to answer interesting statistical questions about assessment we first need to understand the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with max length 15 from the Nus \cite{dahlmeier2013building} test data. The length condition was made to make crowdsourcing more reliable. It also made sure we will not capture many interleaving errors from text units that could have been separated. Also as manual analyzing suggested, very short sentences were regarded as sentence tokenization errors and discarded. Histogram of sentence lengths showed a lot of the mass is below this threshold.
 
-Albeit too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation{*}cites -translation{*} and even more so in error correction\cite{madnani2011they}{*}are there more cites?{*} as error correction is a more intuitive task than translation. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded.
+Albeit too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation{*}cites -translation{*} and even more so in GEC \cite{madnani2011they}{*}are there more cites?{*} as GEC is a more intuitive task than translation. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded.
 
 For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies. Manual tests with different inputs were done with satisfying result. The distributions as quantified by UnseenEst have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from {*}power law? zipf? overall from a dirichlet process? we don't have anything more to say here?{*}, to account for the different hyperparameters and what determines them.
 
@@ -252,21 +251,21 @@ The values an assessment process produces are the base foundation of
   almost sacred place. We think this role should be earned and measured.
  
  We shall begin by analyzing accuracy. While this is not published it is the choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
-For simplicity we assume a system has a constant probability $c$ to correct an ungrammatical sentence. The probability to get a specific accuracy assessment over $N$ sentences will be distributed as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
+For simplicity we assume a corrector has a constant probability $c$ to correct an ungrammatical sentence. The probability to get a specific accuracy assessment over $N$ sentences will be distributed as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
 where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
 $Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by n. 
 
 First, we are to look at some general properties.
  One interesting property is that the number of sentences considered does not change the expected accuracy value.
- Another property to consider is that the ratio between scores of different systems stays the same no matter what are $p_1,\ldots,p_n$. So in this assessment we get a reliable way of comparing two systems, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.
+ Another property to consider is that the ratio between scores of different correctors stays the same no matter what are $p_1,\ldots,p_n$. So in this assessment we get a reliable way of comparing two correctors, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.
  
  \begin{figure}
  	%	\includesvg{exact__repeat_1000_accuracy.svg}
- 	\caption{Mean accuracy values for perfect systems with different gold standard size.}
+ 	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
  	\label{fig:accuracy_vals}
  \end{figure}
  
-Based on the corrections we gathered and the distribution estimation we numerically compute the average coverage of a given sentence given that we randomly sample $M$ corrections for our gold standard. For every $M$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. In \ref{fig:accuracy_vals} we show the expected accuracy of a randomly selected perfect system for different values of $M$. As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ values is the accuracy ratio between corresponding systems. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a system performance, it would be advisable to take these numbers into account.
+Based on the corrections we gathered and the distribution estimation we numerically compute the average coverage of a given sentence given that we randomly sample $M$ corrections for our gold standard. For every $M$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. In \ref{fig:accuracy_vals} we show the expected accuracy of a randomly selected perfect corrector for different values of $M$. As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ values is the accuracy ratio between corresponding correctors. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a corrector performance, it would be advisable to take these numbers into account.
 
 While accuracy is very popular for machine learning tasks, F score is currently the only measure to be published in articles. As F score is much more complicated, no analytical way to predict its value was proposed \cite{yeh2000more}. 
 
@@ -290,7 +289,7 @@ the number of annotations, but not $N$ the number of corrections,
 $Var_{y\sim d_x, x\sim L}(\hat{S})$ depends on both. We try to assess and give an upper
 bound on how much it varies for different $M$ and $N$, allowing
 for both a smart allocation of resources when building a corpus and
-for assessing on given corpora whether two systems are actually different.
+for assessing on given corpora whether two correctors are actually different.
 
 \subsection{Significance}
 
@@ -301,15 +300,15 @@ for assessing on given corpora whether two systems are actually different.
 \end{figure}
 \begin{figure}
 	%	\includesvg{exact__repeat_1000_accuracy.svg}
-	\caption{F Score results for different systems including confidence interval.}
-	\label{fig:F_systems}
+	\caption{F Score results for different correctors including confidence interval.}
+	\label{fig:F_correctors}
 \end{figure}
 
 
 As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different systems with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_systems}.
+We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}.
 
 \subsection{discussion}
 
@@ -321,10 +320,10 @@ We see that considering the changed indexes, looking for example at different sy
 \section{Second approach: Semantic Similarity\label{sec:Semantics}}
 
 
-In the history of error correction, conservatism was considered an
-important trait of an error correcting system\cite{brockett2006correcting}.
+In the history of GEC, conservatism was considered an
+important trait of a corrector\cite{brockett2006correcting}.
 This was also the reason why $F_{0.5}$ became since conll2014\cite{ng2014conll}
-the measure of choice for error correction evaluation, emphasizing
+the measure of choice for GEC evaluation, emphasizing
 precision over recall. This emphasis can be understood as encouraging
 avoidance of wrong corrections at the cost of correcting less errors
 overall. The thought that stands behind such emphasis is that a user
@@ -334,7 +333,7 @@ when he sees a correction changes what he knows to be correct. We want to refine
 this idea and suggest that there are subtleties we better address
 in this intuition.
 
-In the task of grammatical error correction it is important to be
+In the task of GEC it is important to be
 conservative, not to overcorrect. The user expects the minimum corrections
 necessary and wants no intervention in what he wishes to say. More
 specifically, he expects that what he has said would not be changed
@@ -360,21 +359,18 @@ only as long as it is semantically conservative.
 
 Moreover, as corrections are based on statistics, they might even
 just correct to a more common way of saying the same thing. Such unnecessary
-correction is not formally conservative, and at grammatical error
-correction maybe be unwanted, but not strictly unwanted as overall
+correction is not formally conservative, and at GEC maybe be unwanted, but not strictly unwanted as overall
 it is semantically conservative still. Additionally, some may even
 say this correction is a needed one because it has a better grammar considering
 Fuzzy Grammar\cite{lakoff1973fuzzy,madnani2011they} or a more fluent
 way to say the exact same thing. The latter was suggested as a necessary
-shift in the goals of error correction\cite{sakaguchi2016reassessing}.
-Considering all this, we propose that next generation grammatical
-error correctors and evaluation will be focused on semantic conservatism
+shift in the goals of GEC\cite{sakaguchi2016reassessing}.
+Considering all this, we propose that next generation correctors and evaluation will be focused on semantic conservatism
 when possible rather than on formal conservatism.
 
 \subsection{Uses of semantic annotation}
 
-As semantic annotation was not used before to aid grammatical error
-correction, it is worth mentioning the a-priori reasons for developing
+As semantic annotation was not used before to aid GEC, it is worth mentioning the a-priori reasons for developing
 it. The first and perhaps the most obvious use of semantic annotation
 would be to use it as a feature for correctors. The annotation may
 capture the gist that is supposed to stay the same when correcting,
@@ -407,7 +403,7 @@ This assessment was partially inspired by the WAS evaluation scheme\cite{chodoro
 in short it states we should account in the assessment for 5 types,
 not only the True\textbackslash{}False Positive\textbackslash{}Negative
 but also for the case where the annotation calls for a correction,
-and the system did a correction, but one that is unlike the annotation's
+and the corrector did a correction, but one that is unlike the annotation's
 one. With the proposed assessment we can measure how many of the corrections
 were corrected correctly (First + Second), and how many errors do
 we have eventually (Third) and combine them to get something similar
@@ -421,7 +417,7 @@ This system would be even more informative than the current one. Allowing assess
 what exactly is the part in which a corrector failed. Answering questions
 like: was it over formally conservative and did not make enough corrections?
 Was it making changes in the right places but not correcting grammar
-successfully? Was the system correcting grammar but changing things
+successfully? Was the corrector correcting grammar but changing things
 it was not supposed to? etc.
 
 \subsection{grammar can be annotated but is ill defined}
@@ -511,7 +507,7 @@ language with UCCA annotation of corrected texts, giving a more accurate
 measure than the upper bound suggested by \cite{sulem2015conceptual}for
 comparing two parallel texts in different languages, while keeping
 the essence of comparing how many of the aligned nodes conserve meaning
-and tag. For that we may think for a moment on error correction as
+and tag. For that we may think for a moment on GEC as
 translation from learner language to Proper English, and a good translation
 would be a translation which keeps the meaning but has the syntax
 of English. Considering that, just like in translation we can align
@@ -614,8 +610,7 @@ So is code used to create the rest of the paper.
 	\subsection{Discussion}
 	
 	From the result we learn a number of things, we show that the upper
-	bounds in table \ref{tab:Token_analysis} suggest high stability of UCCA over grammatical
-	error correction, and the results are similar to those shown over
+	bounds in table \ref{tab:Token_analysis} suggest high stability of UCCA over GEC, and the results are similar to those shown over
 	translation. This upper bound seem not to be very strict if the other
 	measures are to be considered true values. 
 	However, due to aligning errors those measures are actually a close lower bound more than they are an exact value.
