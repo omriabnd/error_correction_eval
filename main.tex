@@ -38,46 +38,6 @@
 	
 \end{abstract}
 
-\section{Main ideas(abstract base)}
-
-We propose two notions of conservatism:semantic conservatism and formal
-conservatism and state the former one is mostly the one we strive
-for when correcting.
-
-We state semantic annotation is valuable for error correction and
-error assessment.
-
-We present new methods to compare UCCA annotation
-
-we show UCCA can be used for annotating ungrammatical texts
-
-we show UCCA is stable over grammar correction,
- and hence the semantics it captures is surely stable too.
-
-we show state of the art error correction methods are highly formally
-conservative (why formal and not structural or another name?)
-
-We show current correction methods are too formally conservative,
-they don't change enough sentence boundaries, enough words and enough
-characters.
-
-We suggest one of the factors contributing to over formal conservatism
-is having only a small number of references covering low percentage
-of the possible correction. It affects both assessment and development.
-In the development process we would expect good learning to understand
-not to try to correct complicated sentences as those will be very
-likely to be judged a mistake. Even when they are not.
-
-Current correctors undercorrect, maybe due to lack of gold references.
-
-Current assessment is a an under assessment giving a much lower score
-than ought to be. What affects it is mainly the number of annotations for each sentence in the gold standard.
-
-We give confidence intervals for current state of the art and predict how their length will change. 
-We emphasize that lowering confidence interval length is a balancing problem, 
-because variance is dependent on the number of sentences and the number of corrections per sentence.
-
-
 \section{Introduction}
 
 % Error correction 
@@ -134,7 +94,7 @@ Throughout this statistical investigation we check both the $F$ score often used
 For assessing semantic conservatism we discuss two questions. Can it induce a well-defined structure on learner language? Are corrections in fact semantically conservative? For the latter, we need to verify that the corrections make few (if any) semantic changes. our results indicate that this is the case: the corrections are similar in structure to the source. Motivated by the recent MT semantic evaluation HUME(\cite{birch2016hume}) we use UCCA(\cite{abend2013universal}) for semantic representation as a test case.
 
 
-\subsection{Assessing formal conservatism\label{sec:formal_conservatism}
+\subsection{Assessing formal conservatism\label{sec:formal_conservatism}}
 
 The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using $F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that arises from pursuing this conservatism as done today.
 
@@ -214,10 +174,10 @@ and are over conservative. {*}is this remark interesting at all, we show the gra
 
 \section{May lack of corrections lead to over formal conservatism?\label{sec:increase-reference}}
 
-As noted before, assessment might push towards being too conservative. One cause for that
+As noted before, assessment might push towards being too conservative. The cause for that
 might hide in the number of references, denoted $M$. Before we show it, lets assume
 that each ungrammatical sentence has some possible corrections. From
-the corrections only 2 are in the gold standard. This leads to low coverage, a high probability that a valid correction is not in the gold standard. That would lead to
+the corrections only 2 are in the gold standard. This leads to low coverage, a high probability that a valid correction is not in the gold standard. In turn, that would lead to
 problems in both assessment and development process. 
 
 In the assessment,
@@ -225,24 +185,23 @@ results will not be reliable, having correct sentences regarded as mistakes. Thi
 
 Perhaps less obvious will be how low coverage affects the development
 process. Even if corrected well, sentences which have more possible
-corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead, either through
-machine learning or implicitly in algorithm development cycles, to learn \textbf{not} to correct
-those sentences at all. Not correcting would actually grant higher $F$ scores. In the rest of this section we will show that the assumptions we made are the current reality. 
+corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead implicitly in algorithm development cycles, to learn \textbf{not} to correct those sentences at all. Also, consider any machine learning algorithm which somehow represents the notion that not correcting is more important than false correction. An example for such algorithm would be one that uses a loss function with a special case for the output equals the input. Such algorithms would also learn to avoid correcting, as corrections would most likely results in high loss, even when their correction is actually valid.
+In the rest of this section we will show that the assumptions we made are the current reality. 
 
 \subsection{A distribution of corrections}
 
 Lets denote $X=x_{1}\ldots x_n\sim L$ as the considered
 sentences for evaluation where $L$ is a distribution over all learner sentences from the domain. 
-For each $D_{x_i}$ the distribution of corrections over a sentence $x_i$ there exists the set of gold standard annotations $\left\{ y_{1}^{i},\ldots,y_{M}^{i}\right\} \sim D_{x_i}$. Currently, in all the common corpora $M$ is constant, we will treat it as such, but generalizing from $M$ in general to specific $m_i$ is trivial. The corrector's output is a function $f\left(x_{i}\right)$. A certain assessment statistic is a function $\hat{S}=Eval\left(f\left(x_{1}\right),\left\{ y_{1}^{1},\ldots,y_{M}^{1}\right\} \ldots,f\left(x_{N}\right),\left\{ y_{1}^{N},\ldots,y_{M}^{N}\right\} \right)$.
+For each $D_{x_i}$ the distribution of corrections over a sentence $x_i$ there exists the set of gold standard annotations $\left\{ y_{1}^{i},\ldots,y_{M}^{i}\right\} \sim D_{x_i}$. Currently, in all the common corpora $M$ is constant, we will treat it as such, but generalizing from $M$ in general to specific $m_i$ is trivial. The corrector's output is a function $f\left(x_{i}\right)$. An assessment statistic, a score, is a function $\hat{S}=Eval\left(f\left(x_{1}\right),\left\{ y_{1}^{1},\ldots,y_{M}^{1}\right\} \ldots,f\left(x_{N}\right),\left\{ y_{1}^{N},\ldots,y_{M}^{N}\right\} \right)$.
 
-We found no work that describes or assesses the way $D_x$ distributions are, and we aim to do so now. 
+We found no work that describes or assesses the way $D_x$ distributions are, and we aim to do so for the purpose of assessing, but also as a very important contribution by itself. 
 
-\subsection{Our data}
-To be able to answer interesting statistical questions about assessment we first need to understand the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with max length 15 from the Nus \cite{dahlmeier2013building} test data. The length condition was made to make crowdsourcing more reliable. It also made sure we will not capture many interleaving errors from text units that could have been separated. Also as manual analyzing suggested, very short sentences were regarded as sentence tokenization errors and discarded. Histogram of sentence lengths showed a lot of the mass is below this threshold.
+\subsection{Data}
+To be able to answer interesting statistical questions about assessment we first need to understand the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with max length 15 from the Nus \cite{dahlmeier2013building} test data. The length condition was made to make crowdsourcing annotation more reliable. It also made sure we will not capture many interleaving errors from text units that could have been separated. Also, as manual analyzing suggested, very short sentences were regarded as sentence tokenization errors and discarded. Histogram of sentence lengths showed a lot of the mass is below this threshold.
 
-Albeit too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation{*}cites -translation{*} and even more so in GEC \cite{madnani2011they}{*}are there more cites?{*} as GEC is a more intuitive task than translation. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded.
+Albeit too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation{*}cites -translation{*} and even more so in GEC \cite{madnani2011they} as GEC is a more intuitive task than translation. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded.
 
-For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies. Manual tests with different inputs were done with satisfying result. The distributions as quantified by UnseenEst have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from {*}power law? zipf? overall from a dirichlet process? we don't have anything more to say here?{*}, to account for the different hyperparameters and what determines them.
+For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies. Manual tests with different inputs were done with satisfying result. Surprisingly, the distributions have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution. The distributions gathered, together with the rest of the gathered data are given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
 
 \subsection{Assessment values\label{sec:Assessment-values}}
 
@@ -250,33 +209,44 @@ The values an assessment process produces are the base foundation of
  every improvement in Computer Sciences. This gives the value an
   almost sacred place. We think this role should be earned and measured.
  
- We shall begin by analyzing accuracy. While this is not published it is the choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
+ \paragraph{Accuracy}We shall begin by analyzing accuracy. While this score is not published it is the usual choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
 For simplicity we assume a corrector has a constant probability $c$ to correct an ungrammatical sentence. The probability to get a specific accuracy assessment over $N$ sentences will be distributed as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
 where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
-$Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by n. 
+$Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by $N$. 
 
 First, we are to look at some general properties.
  One interesting property is that the number of sentences considered does not change the expected accuracy value.
  Another property to consider is that the ratio between scores of different correctors stays the same no matter what are $p_1,\ldots,p_n$. So in this assessment we get a reliable way of comparing two correctors, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.
+ 
+ In the
  
  \begin{figure}
  	%	\includesvg{exact__repeat_1000_accuracy.svg}
  	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
  	\label{fig:accuracy_vals}
  \end{figure}
+  \begin{figure}
+  	%	\includesvg{exact__repeat_1000_accuracy.svg}
+  	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
+  	\label{fig:accuracy_vals_ind}
+  \end{figure}
  
-Based on the corrections we gathered and the distribution estimation we numerically compute the average coverage of a given sentence given that we randomly sample $M$ corrections for our gold standard. For every $M$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. In \ref{fig:accuracy_vals} we show the expected accuracy of a randomly selected perfect corrector for different values of $M$. As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ values is the accuracy ratio between corresponding correctors. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a corrector performance, it would be advisable to take these numbers into account.
+ Based on the corrections we gathered and the distribution estimation we numerically compute the average coverage of a given sentence given that we randomly sample $M$ corrections for our gold standard. For every $M$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. We also relax the results when using accuracy for indexes changes in sentence, considering only which words were deleted, changed, and how many words were added. In \ref{fig:accuracy_vals} and \ref{fig:accuracy_vals_ind} we show the expected accuracy of a randomly selected perfect corrector for different values of $M$. The data suggests there is still a lot to be gained by choosing bigger $M$ values, even in the relaxed case.
+ 
+  As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ values is the accuracy ratio between corresponding correctors. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a corrector performance, it would be advisable to take these numbers into account.
 
-While accuracy is very popular for machine learning tasks, F score is currently the only measure to be published in articles. As F score is much more complicated, no analytical way to predict its value was proposed \cite{yeh2000more}. 
+\paragraph{$F$} While accuracy is very popular for machine learning tasks, $F$ score is currently the only measure to be published in articles. As $F$ score is much more complicated, no analytical way to predict its value was proposed \cite{yeh2000more}. 
 
-We assess different expected results for perfect outputs with different $M$ values (see \ref{fig:F_Ms}). It is a challenge to do that without generating a whole dataset with enough annotations plus a large test set to account for the variability of different annotators. We sample for each ungrammatical sentence in the gold standard a sentence from our data set and $M$ corrections uniformly sampled from the empirical distribution we have collected. We also sample a perfect output in the same way (with $M=1$). With that we use the many corrections for each sentence to account for annotation variability and hold the ratios of different corrections stable. At last, we transform each of the corrections into a set of edits as requested by the $M^2$ scorer\cite{dahlmeier2012better}.  
+We assess different expected results for perfect outputs with different $M$ values (see \ref{tab:F_Ms}). It is a challenge to do that without generating a whole dataset with enough annotations plus a large test set to account for the variability of different annotators. We sample for each ungrammatical sentence in the gold standard a sentence from our data set and $M$ corrections uniformly sampled from the empirical distribution we have collected. We also sample a perfect output in the same way (with $M=1$). With that we use the many corrections for each sentence to account for annotation variability and hold the ratios of different corrections stable. At last, we transform each of the corrections into a set of edits as requested by the $M^2$ scorer\cite{dahlmeier2012better}.  
 
-This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier. Another assumption which puts the way assessment is done under the spotlight is that our machine based edits are good enough for assessment. Edits do not only add variability that it is hard to account for, they are also much harder to get agreement on. 
+This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not making a big change in respect to the human edits.
+
+In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect. This may result by the mechanical creation of edits. The different edits might give bias to the results. Edit borders are not part of what correctors need to extract, in other words, they are information that is not inherent in the task. Those edits are another problem in the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.
 
 To conclude, on both measures we see a large improvement in coverage when enlarging $M$ suggesting that a more reasonable $M$ to choose would be somewhere around 8 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
  Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
 
-\section{On significance and variation}
+\subsection{On significance and variation}
 
 So far we have discussed the mean values of the assessment and showed they are lower bounds of the real values of the same assessment with a full gold standard. For some uses the value itself does not matter, what really matters is whether one value is significantly higher than another value. The assumption about significance was that with enough sentences this problem can be overcome.
 
@@ -288,15 +258,12 @@ So, why is significance more complicated? Basically, because variance is more co
 the number of annotations, but not $N$ the number of corrections,
 $Var_{y\sim d_x, x\sim L}(\hat{S})$ depends on both. We try to assess and give an upper
 bound on how much it varies for different $M$ and $N$, allowing
-for both a smart allocation of resources when building a corpus and
-for assessing on given corpora whether two correctors are actually different.
-
-\subsection{Significance}
+for both a smart allocation of resources when building a corpus and for assessing on given corpora whether two correctors are actually different.
 
 \begin{figure}
 	%	\includesvg{exact__repeat_1000_accuracy.svg}
 	\caption{F Score results with different sizes of gold standard.}
-	\label{fig:F_Ms}
+	\label{tab:F_Ms}
 \end{figure}
 \begin{figure}
 	%	\includesvg{exact__repeat_1000_accuracy.svg}
@@ -305,20 +272,21 @@ for assessing on given corpora whether two correctors are actually different.
 \end{figure}
 
 
-As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
+\paragraph{Accuracy}As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}.
+\paragraph{$F$}We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}.
+
+{*} this is redundant, all said in values, need to combine and use the better one{*}
+To account for different $M$ values we randomly choose a sentence for each sentence in the NUS test data that needed correction by the current gold standard. For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector output. Then we transform each correction to a set of edits as this is a requirement of the $M^2$ scorer(\cite{dahlmeier2012better}). The results suggesting no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$ can be seen in \ref{tab:F_Ms} 
 
 \subsection{discussion}
 
 If the NLP community has agreed one correction is not enough\cite{tetreault2008native}
-we can now say 2 is no magic number either. We can also see the effect of different references amounts on significance and actual value of both accuracy and precision, recall and F score.
+we can now say 2 is no magic number either. The gain from each annotation in respect to mean value is still high and only at about 8 becomes semi-linear. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
 We see that considering the changed indexes, looking for example at different synonyms as the same correction, still holds a very large number of different corrections for every sentence.
 
-
 \section{Second approach: Semantic Similarity\label{sec:Semantics}}
-
 
 In the history of GEC, conservatism was considered an
 important trait of a corrector\cite{brockett2006correcting}.
@@ -440,6 +408,13 @@ tag, but that requires having a corrected form of the sentences. Later\ref{sec:i
 we show that for many sentences different corrections are possible.
 And where as sentences differ so does their grammar. later in this
 section, we propose semantic annotation as a well defined structure.
+
+\subsection{UCCA}
+A UCCA annotation for a sentence $s$ is a labeled DAG $G$, whose
+leaves are the words of $s$. For every node in $G$,
+we define its yield to be its leaf descendants. The
+semantic units for $s$ according to $G$ are the yields
+of nodes in $G$.
 
 \subsection{Learner language can be annotated by UCCA}
 
