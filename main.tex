@@ -91,7 +91,7 @@ We find that assessment based on these values of $M$ dramatically under-estimate
 We back our analysis of these biases with an analysis of the variance of these estimators.
 Throughout this statistical investigation we check both the $F$ score often used for evaluation, and the accuracy score commonly used for training.
 
-For assessing semantic conservatism we discuss two questions. Can it induce a well-defined structure on learner language? Are corrections in fact semantically conservative? For the latter, we need to verify that the corrections make few (if any) semantic changes. our results indicate that this is the case: the corrections are similar in structure to the source. Motivated by the recent MT semantic evaluation HUME(\cite{birch2016hume}) we use UCCA(\cite{abend2013universal}) for semantic representation as a test case.
+For assessing semantic conservatism we discuss two questions. Can it induce a well-defined structure on learner language(LL)? Are corrections in fact semantically conservative? For the latter, we need to verify that the corrections make few (if any) semantic changes. our results indicate that this is the case: the corrections are similar in structure to the source. Motivated by the recent MT semantic evaluation HUME(\cite{birch2016hume}) we use UCCA(\cite{abend2013universal}) for semantic representation as a test case.
 
 
 \subsection{Assessing formal conservatism\label{sec:formal_conservatism}}
@@ -104,13 +104,13 @@ Our goal was to analyze the output of the participants in Conll
 2014 shared task\cite{ng2014conll} and of the current state of the
 art \cite{rozovskaya2014building}. 
 Manual analysis showed excessive formal conservatism and under correction. Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
-For that we first aligned each learner language text unit
+For that we first aligned each LL text unit
 to a corresponding corrected text unit. We used an exact match for last words in a sentence as a boundary symbol, thus allowing a text unit to be more than one sentence when a sentence was split or concatenated. 
 This alignment is needed because we only know the final corrections, a main obstacle that was considered
 in the assessment methods as well\cite{dahlmeier2012better}.
 Our first result to present in \ref{fig:split} will be how many sentences are concatenated and
 how many split using the different methods. Moreover, we present the same measures for the corrections done in  NUS\cite{dahlmeier2013building} gold standard. NUS is a parallel
-corpus of learner language paragraphs and corrected versions which is the de
+corpus of LL paragraphs and corrected versions which is the de
 facto standard since CoNLL 2013\textbackslash{}14 shared tasks \cite{kao2013conll,ng2014conll}.
 The NUS corpus consists of paragraphs about
 various topics containing about 400 words each.
@@ -241,7 +241,7 @@ We assess different expected results for perfect outputs with different $M$ valu
 
 This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not making a big change in respect to the human edits.
 
-In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect. This may result by the mechanical creation of edits. The different edits might give bias to the results. Edit borders are not part of what correctors need to extract, in other words, they are information that is not inherent in the task. Those edits are another problem in the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.
+In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect. This may result by the mechanical creation of edits. The different edits might give bias to the results. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.
 
 To conclude, on both measures we see a large improvement in coverage when enlarging $M$ suggesting that a more reasonable $M$ to choose would be somewhere around 8 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
  Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
@@ -296,7 +296,7 @@ avoidance of wrong corrections at the cost of correcting less errors
 overall. The thought that stands behind such emphasis is that a user
 would be understanding towards errors he did, of which he is probably
 not even aware, not being corrected, but would not be so understanding
-when he sees a correction changes what he knows to be correct. We want to refine
+of corrections altering what he meant to say, in a way he perceives as wrong. We want to refine
 this idea and suggest that there are subtleties we better address
 in this intuition.
 
@@ -310,7 +310,7 @@ the original string would not be considered formal conservative, only
 changes in meaning are accounted for invalidating semantic conservatism. 
 
 In many of the uses for correction,
-the user does understand his grammar is not perfect and would accept
+the user does knows his grammar is not perfect and would accept
 a change in grammar when needed. Because of this approval we also
 hypothesis, and it may call for a user study to prove or disprove
 this hypothesis, that users might accept a correct text unit of theirs
@@ -324,21 +324,21 @@ also surely detectable by the user. In other words, the users do expect
 the corrector to be active and not too formally conservative, but
 only as long as it is semantically conservative. 
 
-Moreover, as corrections are based on statistics, they might even
+Moreover, as correctors are based on statistics, they might even
 just correct to a more common way of saying the same thing. Such unnecessary
 correction is not formally conservative, and at GEC maybe be unwanted, but not strictly unwanted as overall
 it is semantically conservative still. Additionally, some may even
-say this correction is a needed one because it has a better grammar considering
+consider such correction a needed one because it has a better grammar considering
 Fuzzy Grammar\cite{lakoff1973fuzzy,madnani2011they} or a more fluent
-way to say the exact same thing. The latter was suggested as a necessary
+way to say the exact same thing. The latter was recently suggested as a necessary
 shift in the goals of GEC\cite{sakaguchi2016reassessing}.
 Considering all this, we propose that next generation correctors and evaluation will be focused on semantic conservatism
 when possible rather than on formal conservatism.
 
 \subsection{Uses of semantic annotation}
 
-As semantic annotation was not used before to aid GEC, it is worth mentioning the a-priori reasons for developing
-it. The first and perhaps the most obvious use of semantic annotation
+Semantic structures were used for LL tasks(\cite{king2013shallow}), but so far to GEC. It is worth mentioning the a-priori reasons for developing
+it in that context. The first and perhaps the most obvious use of semantic annotation
 would be to use it as a feature for correctors. The annotation may
 capture the gist that is supposed to stay the same when correcting,
 allowing the corrector to filter results or re-rank them based on
@@ -353,15 +353,15 @@ Reliable assessment by a gold standard might be hard to obtain (see
 \ref{sec:increase-reference}), and human annotation for each output is great\cite{madnani2011they}
 but costly, especially considering development process. In these conditions,
 given a reliable semantic annotation we can enhance the reliability
-of our assessment. One way to do that might be to decouple the meaning
+of our assessment. A simple way to do it is to somehow account in the score for semantic changes. Another, more ambitious way to do that might be to decouple the meaning
 from the structure. We propose a broad idea for a reduction from grammatical
 error detection and a comparable semantics annotation to grammatical
 error correction assessment. Lets assume we have both a reliable error
 detection tool and a good way to measure semantic changes. Then, we
 can transform assessment to a 3 steps assessment. First, detect errors
 in the original text. Assess the percentage of needed corrections
-that were actually corrected. Second, assess how much of was the semantics
-changed. Give a negative score for changing semantics. Third, use
+that were actually corrected. Second, assess how much did the semantics change.
+ Give a negative score for changing semantics. Third, use
 the error detection again to assess how many errors exist in the correction
 output, whether uncorrected by the corrector or new errors presented
 by the correction process itself. \\
@@ -389,9 +389,9 @@ it was not supposed to? etc.
 
 \subsection{grammar can be annotated but is ill defined}
 
-Syntactic representation is very popular and useful in many NLP tasks{*}{*}cites{*}{*}.
+Syntactic representation is very popular and useful in many NLP tasks(\cite{mesfar2007named,ng2002improving,zollmann2006syntax}).
 Thus, one thought that rises to mind is to use grammar annotation
-to evaluate corrections. While not useless, this approach is not well
+for LL. Indeed linguistic theories suggest each learner, by himself, might hold a consistent language\cite{huebner1985system,tarone1983variability}. While not useless, grammatical approach is not well
 defined, and unclear bot practically and theoretically. One might
 say that the grammar would be the one induced by the actual words
 that appear in the sentence. This would lead to annotation that calls
@@ -399,7 +399,7 @@ for applying the syntax of Proper English to the different learner
 languages that just don't correspond to it. Thus, the structures may
 differ between different learners and they will tell us little about
 how to understand the sentence. This approach was being pursued in
-\cite{berzak2016universal}. 
+\cite{berzak2016universal,ragheb2012defining}. 
 
 Others may suggest, and indeed they have\cite{nagataphrase}, an opposite
 approach, saying the grammar meant by the learner is the one we should
@@ -429,13 +429,13 @@ But as in the syntactic representation, before we can claim anything
 about semantics using UCCA it is needed to show that UCCA is even
 consistent when applied to ungrammatical language such as learner
 language. To do that we used NUS\cite{dahlmeier2013building}. We employed two cognition graduate students, both
-with background of working for a couple of years as translators. Each
+with background of working as translators. Each
 one had received the guidelines to read and annotated a couple of
-proper English paragraphs and then learner language paragraphs as
+proper English paragraphs and then LL paragraphs as
 an exercise. These paragraphs were compared between the annotators
 and each disagreement discussed in the hope of finding common annotation
 mistakes and choosing a methodological approach to borderline cases.
-After that each annotator has annotated 2 learner language paragraphs
+After that each annotator has annotated 2 LL paragraphs
 consisting of almost 800 UCCA nodes each. Over the uncoordinated paragraphs
 we computed the strict inter annotator agreement mentioned by \cite{abend2013universal}
 considering each Node in the directed acyclic graph (DAG) of UCCA
@@ -445,12 +445,12 @@ from that we derive an F1 score.
 
 We got an F1 score for the inter annotator agreement of 0.845 with
 Precision 0.834 and Recall 0.857 we see that as enough to be a proof
-that UCCA can be applied to, especially considering those numbers
+that UCCA can be applied to LL, especially considering those numbers
 are a bit higher than the inter annotator agreement reported in the
 reported originally for formal English\cite{abend2013universal}.
 We explain the rise in agreement by the fact that the guidelines and
 procedures were refined since UCCA was first introduced and not to
-superiority of UCCA for annotating learner language. A similar F1
+superiority of UCCA for annotating LL. A similar F1
 score for inter annotator agreement (0.849) over 2 corrected paragraphs
 suggests the same.
 
@@ -460,10 +460,10 @@ suggests the same.
 As a next step we needed to check our hypothesis that indeed when correcting we expect semantic conservatism. With UCCA as our case study we asked each annotator to annotate corrected paragraphs corresponding
 to ones he already annotated, 7 different paragraphs were annotated
 in this way. To avoid misleading high score due to the fact that each
-annotator annotated both the learner language paragraph and the corrected
+annotator annotated both the LL paragraph and the corrected
 paragraph 3 different tuples of paragraphs were annotated by both
 annotators allowing a cross comparison. It means that for each paragraph
-we compared the annotation of the learner language done by one annotator
+we compared the annotation of the LL done by one annotator
 with the annotation of the other annotator done for the corrected
 paragraph and vice versa. 
 
@@ -477,16 +477,15 @@ for the small UCCA DAGs. Thus, a new measure is called upon.
 
 \subsection{Similarity measures\label{subsec:Similarity-measures}}
 
-We propose several new methods to compare UCCA annotation of a learner\\
-language with UCCA annotation of corrected texts, giving a more accurate
+We propose several new methods to compare UCCA annotation of a LL with UCCA annotation of corrected texts, giving a more accurate
 measure than the upper bound suggested by \cite{sulem2015conceptual}for
 comparing two parallel texts in different languages, while keeping
 the essence of comparing how many of the aligned nodes conserve meaning
 and tag. For that we may think for a moment on GEC as
-translation from learner language to Proper English, and a good translation
+translation from LL to Proper English, and a good translation
 would be a translation which keeps the meaning but has the syntax
 of English. Considering that, just like in translation we can align
-words from the learner language to the corresponding words in English
+words from the LL to the corresponding words in English
 and keep record of how many of those nodes kept their labels.
 
 As comparing labels is trivial, and done before us. We should focus on how we propose to
@@ -504,13 +503,12 @@ A first and most straightforward approach would be to compare all
 pairs of nodes in parallel paragraphs and to each node from one paragraph
 assign the one most similar node, span wise from the other. That approach
 is quite similar to the inter annotator agreement aligning, but it
-has three drawbacks; it is assymetric; it may be over optimistic aligning
-nodes without considering the DAG structure; and second it might be
-slow for many nodes. Being assymetric is not much of a problem as
+has three drawbacks; it is asymmetric; it may be over optimistic aligning
+nodes without considering the DAG structure; and it might be
+slow for many nodes. Being asymmetric is not much of a problem. If we thrive for symmetry
 we can compute the measure twice and use the mean of the results,
-that would also be the case for other assymetric methods we suggest.
-In order to address the other drawbacks we propose different aligning
-methods.
+that would also be the case for other asymmetric methods we suggest.
+In order to address the other drawbacks we propose different aligning methods.
 
 A second method driven by the assumption that nodes higher in the
 hierarchy are more important to the semantic representation is measuring
@@ -568,7 +566,7 @@ So is code used to create the rest of the paper.
 	
 	In \ref{tab:Token_analysis} we present the results of the token analysis, the
 	upper bound suggested by \cite{sulem2015conceptual}, showing similar
-	results for learner language - corrected tuples as those seen in English
+	results for LL - corrected tuples as those seen in English
 	- French comparison.
 		
 		\begin{table}[h!]
