@@ -26,15 +26,16 @@
 	
 	\author{
 		Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
-		\textsuperscript{1}School of Computer Science and Engineering, \textsuperscript{2} Department of Cognitive Sciences \\
+		\textsuperscript{1}School of Computer Science and Engineering,
+                \textsuperscript{2} Department of Cognitive Sciences \\
 		The Hebrew University of Jerusalem \\
 		\texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
 	}
 	
-	
-	\maketitle
+
+\maketitle
+
 \begin{abstract}
-	xxx
 	
 \end{abstract}
 
@@ -58,8 +59,6 @@
 % First question: is it well-defined on learner language. it is.
 % Second question: are corrections in fact semantically conservate? to show that, we need to verify that the corrections make few (if any) semantic changes. our results indicate that this is the case: we show that the corrections are similar in (UCCA) structure to the source.
 
-
-
 % conclusion (not in intro): we tried to use semantic similarity to improve systems. this is difficult due to semantic conservatism. we expect this will be in issue once evaluation is improved. future work.
 % also future work: use multiple references in training (did people do that?)
 
@@ -79,9 +78,18 @@
 % 4.4. Empirical Validation: IAA, semantic conservativism vs. gold std
 % 5. Conclusion
 
-In recent years there is a growing interest in grammatical error correction (GEC). The four competitions devoted to the subject that took place in the last years: HOO-2011,2012(\cite{dale2011helping,dale2012hoo}), CoNLL-2013,2014(\cite{kao2013conll,ng2014conll}) and the rising amount of academic interest gave rise to an increasing interest in evaluation methods of both grammatical error detection and correction(\cite{tetreault2008native,madnani2011they,chodorow2012problems}), including a dedicated scorer(\cite{dahlmeier2012better}). Evaluation is especially difficult due to the fact that an ungrammatical sentence may have various corrections, each equally good.
+Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many other application areas of linguistics. This interest is reflect in the four recent shared tasks that were devoted to the task: HOO-2011 and 2012 \cite{dale2011helping,dale2012hoo}, the CoNLL 2013 and 2014
+shared tasks \cite{kao2013conll,ng2014conll}.
+Within GEC, considerable effort has been placed on the difficult task of
+evaluation \cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.
+Evaluation is especially difficult due to the fact that an ungrammatical sentence may have multiple valid
+corrections, each equally good.
 
-In this task faithfulness to the meaning of the source is crucial, this idea was embraced by preceding work ( \cite{brockett2006correcting}) and by the used evaluation $F_{0.5}$ score (\cite{ng2014conll}). The pursue of being conservative in that manner might bring a daunting outcome, being too formally conservative. In simpler words, not correcting errors.
+An important component in the evaluation of GEC is systems is their ability not only to correct the grammatical
+errors of the source, but to do so in a way that is faithful to meaning of the source.
+Attempts to capture this principle formally have either advocated the use of $F_{0.5}$,
+where Precision is favored over Recall, and \citet{brockett2006correcting}, who suggested evaluating against two reference corrections instead of one\oa{but have they advocated conservativism or simply pointed out that one reference is not enough?}. %%%% UNTIL HERE%%%
+The pursue of being conservative in that manner might bring a daunting outcome, being too formally conservative. In simpler words, not correcting errors.
 
 We evaluated outputs of state-of-the-art and about 15 other different GEC correction systems, from now correctors. We considered number of words changed, indexes changed and reconstruction of sentence boundaries. We found the correctors to be over formally conservative in all aspects(\ref{sec:formal_conservatism}).
 
