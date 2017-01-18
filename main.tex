@@ -256,44 +256,56 @@ to the last one, by all the measures we checked, undercorrect a lot
 and are over conservative. {*}is this remark interesting at all, we show the graph for 2 corrections per sentence anyway{*}A special case would be the Cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction, when removing one word changes, or counting the number of changes the differences are still great . {*}do the plots need textual analyzing? e.g. explain what do we see under correction in fig 1 2 3?{*}
 
 
-\section{May lack of corrections lead to over formal conservatism?\label{sec:increase-reference}}
+\section{Evaluation with Multiple References}\label{sec:increase-reference}
 
-As noted before, assessment might push towards being too conservative. The cause for that
-might hide in the number of references, denoted $M$. Before we show it, lets assume
-that each ungrammatical sentence has some possible corrections. From
-the corrections only 2 are in the gold standard. This leads to low coverage, a high probability that a valid correction is not in the gold standard. In turn, that would lead to
-problems in both assessment and development process. 
+We explore the use of multiple references for evaluating a proposed correction.
+While we still use string similarity measures, the use of multiple corrections attempts
+to capture the multitude of ways to correct a sentence.
 
-In the assessment,
-results will not be reliable, having correct sentences regarded as mistakes. This leads to more fluctuations and low scores even for a perfect output.
+We assume each source sentence $s$ has a distribution of valid corrections $\mathcal{D}$,
+which will explore in this section. We will assume that $s$ is evaluated by
+$M$ independently sampled references from $\mathcal{D}_s$.
+As the quality of a sentence is judged based on its string similarity with the references,
+any finite value of $M$ may yield an under-estimation of the true quality of the sentence, 
+with some probability (finite $M$ bias). We begin by estimating this bias as a function of $M$
+(we are not aware of any previous work that has done so).
 
-Perhaps less obvious will be how low coverage affects the development
-process. Even if corrected well, sentences which have more possible
-corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead implicitly in algorithm development cycles, to learn \textbf{not} to correct those sentences at all. Also, consider any machine learning algorithm which somehow represents the notion that not correcting is more important than false correction. An example for such algorithm would be one that uses a loss function with a special case for the output equals the input. Such algorithms would also learn to avoid correcting, as corrections would most likely results in high loss, even when their correction is actually valid.
-In the rest of this section we will show that the assumptions we made are the current reality. 
+%Our first question 
+%As noted before, assessment might push towards being too conservative. The cause for that
+%might hide in the number of references, denoted $M$. Before we show it, lets assume
+%that each ungrammatical sentence has some possible corrections. From
+%the corrections only 2 are in the gold standard.
+%This leads to low coverage, a high probability that a valid correction is not in the gold standard.
+%In turn, that would lead to
+%problems in both assessment and development process. 
+%In the assessment, results will not be reliable, having correct sentences regarded as mistakes.
+%This leads to more fluctuations and low scores even for a perfect output.
 
-\subsection{A distribution of corrections}
+\subsection{Notation}
 
-Lets denote $X=x_{1}\ldots x_n\sim L$ as the considered
-sentences for evaluation where $L$ is a distribution over all learner sentences from the domain. 
-For each $D_{x_i}$ the distribution of corrections over a sentence $x_i$ there exists the set of gold standard annotations $\left\{ y_{1}^{i},\ldots,y_{M}^{i}\right\} \sim D_{x_i}$. Currently, in all the common corpora $M$ is constant, we will treat it as such, but generalizing from $M$ in general to specific $m_i$ is trivial. The corrector's output is a function $f\left(x_{i}\right)$. An assessment statistic, a score, is a function $\hat{S}=Eval\left(f\left(x_{1}\right),\left\{ y_{1}^{1},\ldots,y_{M}^{1}\right\} \ldots,f\left(x_{N}\right),\left\{ y_{1}^{N},\ldots,y_{M}^{N}\right\} \right)$.
-
-We found no work that describes or assesses the way $D_x$ distributions are, and we aim to do so for the purpose of assessing, but also as a very important contribution by itself. 
+Denote the set of source learner language sentences $X=x_{1}\ldots x_n\sim \mathcal{L}$, where
+$L$ is a distribution over all learner sentences from the domain. For each $x_i$, denote
+with $\mathcal{D}_{x_i}$ its distribution of corrections. Denote with
+$Y_i = \left\{y_{1}^{i},\ldots, y_{M}^{i}\right\} \sim \mathcal{D}_{x_i}$ a sample of
+$M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
+  Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
+An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_n$ to
+a number in $[0,1]$.
 
 \subsection{Data}
-To be able to answer interesting statistical questions about assessment we first need to understand the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with max length 15 from the Nus \cite{dahlmeier2013building} test data. The length condition was made to make crowdsourcing annotation more reliable. It also made sure we will not capture many interleaving errors from text units that could have been separated. Also, as manual analyzing suggested, very short sentences were regarded as sentence tokenization errors and discarded. Histogram of sentence lengths showed a lot of the mass is below this threshold.
+To be able to answer interesting statistical questions about assessment we first need to understand the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with a maximum length of 15 from the NUS test data \cite{dahlmeier2013building}. The length condition was made to make crowdsourcing annotation more reliable. It also made sure we will not capture many interleaving errors from text units that could have been separated. Also, as manual analyzing suggested, very short sentences were regarded as sentence tokenization errors and discarded. Histogram of sentence lengths showed a lot of the mass is below this threshold.
 
 Albeit too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation(\cite{birch2016hume,zaidan2011crowdsourcing,post2012constructing}) and even more so in GEC \cite{madnani2011they} were non-professionals perform well without adjustments. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded.
 
 For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies. Manual tests with different inputs were done with satisfying result. Surprisingly, the distributions have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution. The distributions gathered, together with the rest of the gathered data are given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
 
-\subsection{Assessment values\label{sec:Assessment-values}}
+\subsection{Assessment values}\label{sec:Assessment-values}
 
 The values an assessment process produces are the base foundation of
  every improvement in Computer Sciences. This gives the value an
   almost sacred place. We think this role should be earned and measured.
  
- \paragraph{Accuracy}We shall begin by analyzing accuracy. While this score is not published it is the usual choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
+\paragraph{Accuracy}We shall begin by analyzing accuracy. While this score is not published it is the usual choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
 For simplicity we assume a corrector has a constant probability $c$ to correct an ungrammatical sentence. The probability to get a specific accuracy assessment over $N$ sentences will be distributed as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
 where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
 $Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by $N$. 
@@ -368,6 +380,13 @@ The results(\ref{tab:F_Ms}) suggest no great improvement of significance should 
 If the NLP community has agreed one correction is not enough\cite{tetreault2008native}
 we can now say 2 is no magic number either. The gain from each annotation in respect to mean value is still high and only at about 8 becomes semi-linear. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
 We see that considering the changed indexes, looking for example at different synonyms as the same correction, still holds a very large number of different corrections for every sentence.
+
+
+Perhaps less obvious will be how low coverage affects the development
+process. Even if corrected well, sentences which have more possible
+corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead implicitly in algorithm development cycles, to learn \textbf{not} to correct those sentences at all. Also, consider any machine learning algorithm which somehow represents the notion that not correcting is more important than false correction. An example for such algorithm would be one that uses a loss function with a special case for the output equals the input. Such algorithms would also learn to avoid correcting, as corrections would most likely results in high loss, even when their correction is actually valid.
+In the rest of this section we will show that the assumptions we made are the current reality. 
+
 
 \section{Second approach: Semantic Similarity\label{sec:Semantics}}
 
