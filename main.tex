@@ -86,15 +86,17 @@ evaluation \cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlme
 Much like in machine translation, evaluation in GEC poses considerable difficulties, much
 due to the multiple valid corrections each source sentence may have.
 
-An important criterion in the evaluation of GEC systems is their ability to
+An important criterion in the evaluation of GEC systems (henceforth, {\it correctors}) is their ability to
 generate corrections that are faithful to meaning of the source. In fact, many would prefer
 a somewhat cumbersome or even an occassionally ungrammatical correction over a correction
 that alters that meaning of the source \citet{brockett2006correcting}.
-A recent attempt to capture this precision/recall asymmetry has been the move from the use of $F_1$
+Indeed, when manually compiling corrections to serve as reference corrections in GEC evaluation,
+annotators are often instructed to be conservative in their corrections.\oa{add citation}
+A recent attempt to formally capture this precision/recall asymmetry has been the move from the use of $F_1$
 to $F_{0.5}$, where Precision is emphasized over Recall, as a common evaluation measure
-in GEC.\oa{sorry, I lost the citation}
+in GEC \cite{dahlmeier2012better}.
 
-However, favoring precision over recall may lead to reluctance of GEC systems in making any
+However, favoring precision over recall may lead to reluctance of GEC systems to make any
 changes. Using a single reference correction (as is the common practice in GEC) compounds
 this problem, as systems are not only penalized more for making an incorrect change (over not making
 any change), but are also penalized for any correct change not found in the reference.
@@ -108,18 +110,18 @@ the quality of a correction, which are less biased towards conservatism:
 (1) increasing the amount of references (henceforth, $M$) (\S\ref{sec:increase-reference}),
 and (2) and developing a semantic similarity measure, which measures the semantic relatedness
 between the system's output and the reference, rather than their similarity
-as strings (\S\ref{sec:Semantics}). Such improved measures, that can be used as
+as strings (\S\ref{sec:Semantics}). Such improved measures can be used as
 loss functions in the training regime or as evaluation measures,
-constitute the first step in overcoming the observed conservatism.
+thus addressing the observed conservatism.
 
 Increasing the number of references was previously pursued with $M=2$,
 but no empirical assessment of its sufficiency or its added value over $M=1$ has been made.
 In order to address this gap we first estimate the number of corrections necessary in order
 to cover the bulk of the distribution of possible corrections.
 We then consider two prominent measures for assessing the validity of a proposed correction
-relative to a set of references: the $F$ score often used for evaluation \cite{},
+relative to a set of references: the GEC $F$ score often used for evaluation \cite{M2},
 and the 0-1 measure (accuracy) commonly used as a loss function in training GEC systems.
-Specifically, we characterize the distribution of the measures
+Specifically, we characterize the distribution of the measures' scores
 as a function of $M$, and consequently assess the biases introduced by taking $M=1$ or $M=2$
 as with previous approaches. 
 We find that assessment based on these values of $M$ dramatically under-estimate the
@@ -133,25 +135,49 @@ test case, motivated by the recent use of the scheme for machine translation eva
 In order to assess the feasiblity of this approach, we annotate a section of the ???\oa{fill in}
 parallel corpus. Our results support the feasibility of the proposed approach,
 by showing that semantic structural annotation be consistently applied
-to learner language, as attested by the agreement between the annotators,
+to learner language, as attested by the inter-annotator agreement,
 and that the proposed measure assigns a high similarity score between the source and the reference
-correction.\oa{what about comparing different references of the sentence?}
+correction.
 
-To recap, the contribution of this paper is three-fold. First, ...
+We note that the two approaches we pursue are complementary means for addressing the difficulties
+incurred by the multitude of ways to correct a sentence, and the consequent inadequacy of assessing
+the validity of a proposed correction using its string similarity to a single reference.
+The first approach addresses this by attempting to cover the bulk of the distribution of possible
+corrections for a sentence, while the second uses semantic instead of string similarity that abstracts
+away from some of the formal variation between different corrections.
+
+To recap, the contribution of this paper is three-fold.
+First, ...
 Second, ....
 Third, ...
 
+\oa{note that we didn't define formal and semantic conservativism; I think we might not have to}
 
-\subsection{Assessing formal conservatism\label{sec:formal_conservatism}}
+\section{Excessive Conservativism in GEC Systems}\label{sec:formal_conservatism}
 
-The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using $F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that arises from pursuing this conservatism as done today.
+%The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using
+%$F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that
+%arises from pursuing this conservatism as done today.
+%Then, we wished to be conservative, and we achieved that, why shouldn't we rejoice just yet? Theoretically, we might be progressing towards not correcting at all, instead of progressing towards correcting more accurately. 
 
-Then, we wished to be conservative, and we achieved that, why shouldn't we rejoice just yet? Theoretically, we might be progressing towards not correcting at all, instead of progressing towards correcting more accurately. 
+%Manual analysis showed excessive formal conservatism and under correction.
+%Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 
-Our goal was to analyze the output of the participants in Conll
-2014 shared task\cite{ng2014conll} and of the current state of the
-art \cite{rozovskaya2014building}. 
-Manual analysis showed excessive formal conservatism and under correction. Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
+
+We begin by showing evidence that the bias of current measures towards conservativism
+has resulted in systems that tend to make too few changes in the source. 
+We do so by considering the output of all participanting systems in CoNLL
+2014 shared task on GEC \cite{ng2014conll}, as well as on the
+best performing system on this dataset (developed after the shared task) \cite{rozovskaya2014building}. 
+
+\paragraph{Experimental Setup.}\oa{add the details about which systems we used, what data,
+  any pre-processing if any, how did we assess their conservatism (indices, exact match) -- this can also be a paragraph
+  on its own, which can be called ``measures of conservatism''.}
+
+We define substantially changed sentences (henceforth, changed sentences for brevity)
+as sentences with more than one word corrected. We note that all word order alterations, except the deletion
+of a single word, renders the sentence SCS.
+
 For that we first aligned each LL text unit
 to a corresponding corrected text unit. We used an exact match for last words in a sentence as a boundary symbol, thus allowing a text unit to be more than one sentence when a sentence was split or concatenated. 
 This alignment is needed because we only know the final corrections, a main obstacle that was considered
@@ -183,26 +209,36 @@ With the aligning we calculated the number of words changed per sentence to asse
 To measure how much the word order was preserved
 calculates Spearman's rho for the indexes of the aligned words in each text unit.
 
-\subsection{discussion}
 \begin{figure}
 	\includegraphics[width = 8cm]{aligned}
-	\caption{Sentences split and concatenated by different correctors.}
+	\caption{Number of source sentences (y-axis) splitted (right bars) or concatenated (left bars) in the correction,
+          according to
+          the gold standard (dotted column) and different correctors (colored columns). See \S\ref{} for a legend
+          of the systems. The gold standard makes about an order of magnitude more splits and
+          concatenations than the correctors.}
 	\label{fig:split}
 \end{figure}
 
 \begin{figure}
 	\includegraphics[width = 8cm]{spearman_ecdf}
-	\caption{Spearman rho values by different correctors.}
+	\caption{Spearman rho values by different correctors.
+          The gold standard makes word change alterations to more sentences than the correctors,
+          and within these sentences, it changes order more substantially.}
 	\label{fig:rho}
 \end{figure}
 
 \begin{figure}
 	\includegraphics[width = 8cm]{words_differences}
-	\caption{Number of sentences with different number of words changed by different correctors.}
 	\label{fig:words_changed}
+        \caption{The gold standard has considerably more SCSs relative to other systems,
+          and makes considerably more word changes to each SCS.}
 \end{figure}
 
-Lets discuss the results in \ref{fig:words_changed}\ref{fig:rho} and \ref{fig:split} starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism. We see that it is most common for a sentence to have
+\paragraph{Results.}
+Figures \ref{fig:split}, \ref{fig:rho}, \ref{fig:words_changed} present our results using the XXX, YYY and ZZZ
+measures respectively. Results show that ..., both in terms of ... and of ...
+
+starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism. We see that it is most common for a sentence to have
 no change, not to concatenate two consecutive sentences and not to
 split a sentence into two. We also observe high correlation coefficient
 for most of the sentences. Summing it all together we indeed have
