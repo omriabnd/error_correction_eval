@@ -20,7 +20,7 @@
 \usepackage{acl2017}
 \graphicspath{{./plots/}}
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
-
+\newcommand{\lc}[1]{\footnote{\color{green}OA: #1}}
 \begin{document}
 	
 	\title{Excessive Conservatism in Grammatical Error Correction}
@@ -88,10 +88,10 @@ due to the multiple valid corrections each source sentence may have.
 
 An important criterion in the evaluation of GEC systems (henceforth, {\it correctors}) is their ability to
 generate corrections that are faithful to meaning of the source. In fact, many would prefer
-a somewhat cumbersome or even an occassionally ungrammatical correction over a correction
+a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters that meaning of the source \citet{brockett2006correcting}.
 Indeed, when manually compiling corrections to serve as reference corrections in GEC evaluation,
-annotators are often instructed to be conservative in their corrections.\oa{add citation}
+annotators are often instructed to be conservative in their corrections.\lc{daniel answered this is true in some sense, is there a proper way to write it?}
 A recent attempt to formally capture this precision/recall asymmetry has been the move from the use of $F_1$
 to $F_{0.5}$, where Precision is emphasized over Recall, as a common evaluation measure
 in GEC \cite{dahlmeier2012better}.
@@ -101,7 +101,7 @@ changes. Using a single reference correction (as is the common practice in GEC) 
 this problem, as systems are not only penalized more for making an incorrect change (over not making
 any change), but are also penalized for any correct change not found in the reference.
 We present results that indicate that this is the case. Evaluating the output of 15 state of the art
-GEC systems that participated in the recent CoNLL\oa{which CoNLL?} shared task, we see that all of them
+GEC systems that participated in the recent CoNLL2014 shared task, we see that all of them
 grossly underestimate the number of corrections that need to be made, relative to the human references
 (\S\ref{sec:formal_conservatism}). 
 
@@ -120,20 +120,20 @@ but no empirical assessment of its sufficiency or its added value over $M=1$ has
 In order to address this gap we first estimate the number of corrections necessary in order
 to cover the bulk of the distribution of possible corrections.
 We then consider two prominent measures for assessing the validity of a proposed correction
-relative to a set of references: the GEC $F$ score often used for evaluation \cite{M2},
+relative to a set of references: the GEC $F$ score often used for evaluation \cite{dahlmeier2012better},
 and the 0-1 measure (accuracy) commonly used as a loss function in training GEC systems.
 Specifically, we characterize the distribution of the measures' scores
 as a function of $M$, and consequently assess the biases introduced by taking $M=1$ or $M=2$
 as with previous approaches. 
 We find that assessment based on these values of $M$ dramatically under-estimate the
-true performance of the systems (\S\ref{}). 
+true performance of the systems (\S\ref{sec:increase-reference}). 
 The analysis of this bias is backed with an analysis of the variance of these estimators.
 
 We further pursue an alternative way of determining whether a correction faithfully
 represents the semantics of the source, by developing a semantic measure based on the similarity
 in their semantic structures. We define a measure using the UCCA scheme \cite{abend2013universal} as a
 test case, motivated by the recent use of the scheme for machine translation evaluation \cite{birch2016hume}.
-In order to assess the feasiblity of this approach, we annotate a section of the ???\oa{fill in}
+In order to assess the feasibility of this approach, we annotate a section of the NUS \cite{dahlmeier2013building}
 parallel corpus. Our results support the feasibility of the proposed approach,
 by showing that semantic structural annotation be consistently applied
 to learner language, as attested by the inter-annotator agreement,
@@ -164,42 +164,13 @@ Third, ...
 %Manual analysis showed excessive formal conservatism and under correction.
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 
-We begin by showing evidence that the bias of current measures towards conservativism
+We begin by showing evidence that the bias of current measures towards conservatism
 has resulted in systems that tend to make too few changes in the source. 
 
-\paragraph{Experimental Setup.}\oa{add the details about which systems we used, what data, its size,
-  any pre-processing if any, how many of the sentences are SCS}
+\paragraph{Experimental Setup}
 
-We evaluate conservatism on the standard benchmark in recent years in GEC ---
-the NUS dataset \cite{}, used for CoNLL 2013 and 2014 shared task \cite{kao2013conll,ng2014conll}.
-All participating systems in the CoNLL 2014 are evaluated, in addition to the
-best performing system on this dataset \cite{rozovskaya2014building}.
-
-The corpus consists of ... source sentences. Each sentence is paired with a single reference.
-We define substantially changed sentences (henceforth, {\it SCS})
-as sentences in which more than one word is changed in the reference, deleted or added.
-SCSs constitute ...\% of the source sentences, and ...\% of the sentences
-which has any change.
-
-\paragraph{Measures of Conservatism.} There are several ways in which the source and the reference
-may diverge. First, individual words may be altered, deleted or added. Second, the order of the words
-may be different, and third, source sentences may be splitted or concatenated in the reference.
-We quantify these divergences using three corresponding measures.
-
-In order measure word changes, we compute ... 
-
-In order measure word order differences, we compute ... 
-
-In order to measure sentence splitting/concatenation, we compute ...
-
-
-For that we first aligned each LL text unit
-to a corresponding corrected text unit. We used an exact match for last words in a sentence as a boundary symbol, thus allowing a text unit to be more than one sentence when a sentence was split or concatenated. 
-This alignment is needed because we only know the final corrections, a main obstacle that was considered
-in the assessment methods as well\cite{dahlmeier2012better}.
-Our first result to present in \ref{fig:split} will be how many sentences are concatenated and
-how many split using the different methods. Moreover, we present the same measures for the corrections done in  NUS\cite{dahlmeier2013building} gold standard. NUS is a parallel
-corpus of LL paragraphs and corrected versions which is the de
+We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
+corpus of LL paragraphs and corrected versions of them which is the de
 facto standard since CoNLL 2013\textbackslash{}14 shared tasks \cite{kao2013conll,ng2014conll}.
 The NUS corpus consists of paragraphs about
 various topics containing about 400 words each.
@@ -207,22 +178,34 @@ To have better evaluation of the real goal of corrections we also
 compute all of the measures on the TreeBank of Learner Language \cite{berzak2016universal}based
 on the Cambridge First Certificate in English (FCE) \cite{yannakoudakis2011new},
 a new large parallel corpus containing only ungrammatical sentences of learners native of different languages.
+As a preprocessing step we have removed from tokens all non alpha-numeric characters, mainly dots and commas that were tokenized originally as part of words. Punctuation was not considered as a token in any of the experiments presented.
+All participating systems in the CoNLL 2014 are evaluated, in addition to the
+best performing corrector on this dataset \cite{rozovskaya2014building}.
 
-Next we were interested in how many words are being changed and how much word order was disrupted. 
+This is the list of systems used:Adam Mickiewicz University(AMU ), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing corrector\cite{rozovskaya2016grammatical}.
+
+\paragraph{Measures of Conservatism.} There are several ways in which the source and the reference
+may diverge. First, individual words may be altered, deleted or added. Second, the order of the words
+may be different, and third, source sentences may be split or concatenated in the reference.
+We quantify these divergences using three corresponding measures.
+
+In order to measure sentence splitting/concatenation, we aligned sentences and counted how many sentences were split and how many concatenated. To align we matched sequentially last words in sentences.
+
+In order to measure word changes, we first compute word alignment, and then we count the number of different aligned words, in addition to the deleted or added words.
 
 In order to align tokens we use the fact that, unlike in translation,
 aligning words is a simple task as most of the words are kept unchanged,
 deleted fully, added, or only changed slightly. This allows us to
 align words well using edit distance measure, knowing that words that
-exists in both text units will have low edit distance. We consider
-aligning to sets of words a bipartite graph matching problem, with
+exist in both text units will have low edit distance. We consider
+aligning two sets of words a bipartite graph matching problem, with
 weights according to the edit distance. For tie breaking, we add a
-penalty. The penalty is always smaller than 1, the minimum cost of
+penalty. The penalty is always smaller than the minimum cost of
 one action, favoring a sentence order when a word occurs twice.
- 
-With the aligning we calculated the number of words changed per sentence to assess how many words were edited or removed. 
-To measure how much the word order was preserved
-calculates Spearman's rho for the indexes of the aligned words in each text unit.
+This alignment is needed because we only know the final corrections, a main obstacle that was considered
+in the assessment methods as well\cite{dahlmeier2012better}.
+
+In order measure word order differences, we compute the same alignment and use Spearman's rho, a way to assess how well the relationship between two variables can be described using a monotonic function. 
 
 \begin{figure}
 	\includegraphics[width = 8cm]{aligned}
@@ -250,29 +233,19 @@ calculates Spearman's rho for the indexes of the aligned words in each text unit
 \end{figure}
 
 \paragraph{Results.}
-Figures \ref{fig:split}, \ref{fig:rho}, \ref{fig:words_changed} present our results using the XXX, YYY and ZZZ
+Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row
 measures respectively. Results show that the gold standard
 makes changes to considerably more source sentences than any of the systems, and within the changed
 sentences, changes more words and makes more word order changes relative, often an order of magnitude
-more. For example, ... % one or two clear and perhaps interesting examples would be nice
+more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
-starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism.
-We see that it is most common for a sentence to have
-no change, not to concatenate two consecutive sentences and not to
-split a sentence into two. We also observe high correlation coefficient
-for most of the sentences. Summing it all together we indeed have
-more unchanged than changed in every measure we have. But, with a
-closer look we should also notice that it mostly tells us about the
-dataset. Specifically the level of English found in the dataset.
-These measures should be seen as a gold standard of the amount of
-corrections to be done, and as we might wish to be a bit conservative
-and not exceed it, this is still where we should aim.
+%starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism.
+%We see that it is most common for a sentence to have no change, not to concatenate two consecutive sentences and not to split a sentence into two. We also observe high correlation coefficient for most of the sentences. Summing it all together we indeed have more unchanged than changed in every measure we have. But, with a closer look we should also notice that it mostly tells us about the dataset. Specifically the level of English found in the dataset.
+%These measures should be seen as a gold standard of the amount of corrections to be done, and as we might wish to be a bit conservative and not exceed it, this is still where we should aim.
 
-When we broaden our view and consider the results of the different
-correctors, the picture is clear. All correctors are over conservative.
-It is not only that correctors don't tend to overcorrect, they all,
-to the last one, by all the measures we checked, undercorrect a lot
-and are over conservative. {*}is this remark interesting at all, we show the graph for 2 corrections per sentence anyway{*}A special case would be the Cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction, when removing one word changes, or counting the number of changes the differences are still great . {*}do the plots need textual analyzing? e.g. explain what do we see under correction in fig 1 2 3?{*}
+%When we broaden our view and consider the results of the different correctors, the picture is clear. All correctors are over conservative.
+%It is not only that correctors don't tend to overcorrect, they all,to the last one, by all the measures we checked, undercorrect a lot
+%and are over conservative. {*}is this remark interesting at all, we show the graph for 2 corrections per sentence anyway{*}A special case would be the Cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction, when removing one word changes, or counting the number of changes the differences are still great . {*}do the plots need textual analyzing? e.g. explain what do we see under %correction in fig 1 2 3?{*}
 
 
 \section{Evaluation with Multiple References}\label{sec:increase-reference}
@@ -324,7 +297,7 @@ Albeit too expensive for assessment of each development cycle, human assessment 
 
 For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies. Manual tests with different inputs were done with satisfying result. Surprisingly, the distributions have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution. The distributions gathered, together with the rest of the gathered data are given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
 
-\subsection{Assessment values}\label{sec:Assessment-values}
+\subsection{Assessment values}\label{subsec:Assessment-values}
 
 The values an assessment process produces are the base foundation of
  every improvement in Computer Sciences. This gives the value an
@@ -396,9 +369,9 @@ for both a smart allocation of resources when building a corpus and for assessin
 \paragraph{Accuracy}As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-\paragraph{$F$}We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}.
+\paragraph{$F$}We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
 
-The results(\ref{tab:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$.
+The results(\ref{tab:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
 \subsection{discussion}
 
