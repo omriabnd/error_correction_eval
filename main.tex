@@ -105,7 +105,8 @@ GEC systems that participated in the recent CoNLL\oa{which CoNLL?} shared task, 
 grossly underestimate the number of corrections that need to be made, relative to the human references
 (\S\ref{sec:formal_conservatism}). 
 
-We pursue two approaches to address this gap, by developing improved measures for assessing 
+We pursue two approaches to address this gap, by developing improved reference-based
+similarity measures (or simply {\it measures} for brevity) for assessing 
 the quality of a correction, which are less biased towards conservatism:
 (1) increasing the amount of references (henceforth, $M$) (\S\ref{sec:increase-reference}),
 and (2) and developing a semantic similarity measure, which measures the semantic relatedness
@@ -163,20 +164,34 @@ Third, ...
 %Manual analysis showed excessive formal conservatism and under correction.
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 
-
 We begin by showing evidence that the bias of current measures towards conservativism
 has resulted in systems that tend to make too few changes in the source. 
-We do so by considering the output of all participanting systems in CoNLL
-2014 shared task on GEC \cite{ng2014conll}, as well as on the
-best performing system on this dataset (developed after the shared task) \cite{rozovskaya2014building}. 
 
-\paragraph{Experimental Setup.}\oa{add the details about which systems we used, what data,
-  any pre-processing if any, how did we assess their conservatism (indices, exact match) -- this can also be a paragraph
-  on its own, which can be called ``measures of conservatism''.}
+\paragraph{Experimental Setup.}\oa{add the details about which systems we used, what data, its size,
+  any pre-processing if any, how many of the sentences are SCS}
 
-We define substantially changed sentences (henceforth, changed sentences for brevity)
-as sentences with more than one word corrected. We note that all word order alterations, except the deletion
-of a single word, renders the sentence SCS.
+We evaluate conservatism on the standard benchmark in recent years in GEC ---
+the NUS dataset \cite{}, used for CoNLL 2013 and 2014 shared task \cite{kao2013conll,ng2014conll}.
+All participating systems in the CoNLL 2014 are evaluated, in addition to the
+best performing system on this dataset \cite{rozovskaya2014building}.
+
+The corpus consists of ... source sentences. Each sentence is paired with a single reference.
+We define substantially changed sentences (henceforth, {\it SCS})
+as sentences in which more than one word is changed in the reference, deleted or added.
+SCSs constitute ...\% of the source sentences, and ...\% of the sentences
+which has any change.
+
+\paragraph{Measures of Conservatism.} There are several ways in which the source and the reference
+may diverge. First, individual words may be altered, deleted or added. Second, the order of the words
+may be different, and third, source sentences may be splitted or concatenated in the reference.
+We quantify these divergences using three corresponding measures.
+
+In order measure word changes, we compute ... 
+
+In order measure word order differences, we compute ... 
+
+In order to measure sentence splitting/concatenation, we compute ...
+
 
 For that we first aligned each LL text unit
 to a corresponding corrected text unit. We used an exact match for last words in a sentence as a boundary symbol, thus allowing a text unit to be more than one sentence when a sentence was split or concatenated. 
@@ -213,7 +228,7 @@ calculates Spearman's rho for the indexes of the aligned words in each text unit
 	\includegraphics[width = 8cm]{aligned}
 	\caption{Number of source sentences (y-axis) splitted (right bars) or concatenated (left bars) in the correction,
           according to
-          the gold standard (dotted column) and different correctors (colored columns). See \S\ref{} for a legend
+          the gold standard (striped column) and different correctors (colored columns). See \S\ref{} for a legend
           of the systems. The gold standard makes about an order of magnitude more splits and
           concatenations than the correctors.}
 	\label{fig:split}
@@ -236,9 +251,13 @@ calculates Spearman's rho for the indexes of the aligned words in each text unit
 
 \paragraph{Results.}
 Figures \ref{fig:split}, \ref{fig:rho}, \ref{fig:words_changed} present our results using the XXX, YYY and ZZZ
-measures respectively. Results show that ..., both in terms of ... and of ...
+measures respectively. Results show that the gold standard
+makes changes to considerably more source sentences than any of the systems, and within the changed
+sentences, changes more words and makes more word order changes relative, often an order of magnitude
+more. For example, ... % one or two clear and perhaps interesting examples would be nice
 
-starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism. We see that it is most common for a sentence to have
+starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism.
+We see that it is most common for a sentence to have
 no change, not to concatenate two consecutive sentences and not to
 split a sentence into two. We also observe high correlation coefficient
 for most of the sentences. Summing it all together we indeed have
@@ -258,7 +277,13 @@ and are over conservative. {*}is this remark interesting at all, we show the gra
 
 \section{Evaluation with Multiple References}\label{sec:increase-reference}
 
-We explore the use of multiple references for evaluating a proposed correction.
+In this section we show that the use of few references in reference-based evaluation yields
+under-estimation in the current evaluation, which encourages systems not to correct source
+sentences. Specifically, we show that the common use of $M=1$ or $M=2$ yields an evaluation
+measure which penalizes valid corrections more often than deems them as correct.
+
+We explore the use of multiple references for alleviating the bias towards conservatism.
+
 While we still use string similarity measures, the use of multiple corrections attempts
 to capture the multitude of ways to correct a sentence.
 
