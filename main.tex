@@ -167,7 +167,7 @@ Third, ...
 We begin by showing evidence that the bias of current measures towards conservatism
 has resulted in systems that tend to make too few changes in the source. 
 
-\paragraph{Experimental Setup}
+\paragraph{Experimental Setup \label{par:experimental_setup}}
 
 We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
 corpus of LL paragraphs and corrected versions of them which is the de
@@ -211,7 +211,7 @@ In order measure word order differences, we compute the same alignment and use S
 	\includegraphics[width = 8cm]{aligned}
 	\caption{Number of source sentences (y-axis) splitted (right bars) or concatenated (left bars) in the correction,
           according to
-          the gold standard (striped column) and different correctors (colored columns). See \S\ref{} for a legend
+          the gold standard (striped column) and different correctors (colored columns). See \S\ref{par:experimental_setup} for a legend
           of the systems. The gold standard makes about an order of magnitude more splits and
           concatenations than the correctors.}
 	\label{fig:split}
@@ -219,8 +219,9 @@ In order measure word order differences, we compute the same alignment and use S
 
 \begin{figure}
 	\includegraphics[width = 8cm]{spearman_ecdf}
-	\caption{Spearman rho values by different correctors.
-          The gold standard makes word change alterations to more sentences than the correctors,
+		\caption{Probability(y-axis) of a sentence to get Spearman's rho values(x-axis) of index alignment by different correctors. See \S\ref{par:experimental_setup} for a legend
+		of the systems.
+          The gold standard(dotted line) makes word change alterations to more sentences than the correctors,
           and within these sentences, it changes order more substantially.}
 	\label{fig:rho}
 \end{figure}
@@ -228,8 +229,9 @@ In order measure word order differences, we compute the same alignment and use S
 \begin{figure}
 	\includegraphics[width = 8cm]{words_differences}
 	\label{fig:words_changed}
-        \caption{The gold standard has considerably more SCSs relative to other systems,
-          and makes considerably more word changes to each SCS.}
+        \caption{Amount of sentences(heat) by number of words 
+        	changed(x-axis) per system(y-label). See \S\ref{par:experimental_setup} for a legend
+        	of the systems. The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.}
 \end{figure}
 
 \paragraph{Results.}
