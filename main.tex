@@ -634,16 +634,21 @@ future work would be to use unordered tree edit distance methods\cite{zhang1992e
 All of the code to implement UCCA structures, align them and evaluate
 them is also given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
 So is code used to create the rest of the paper.
+\lc{concerning the distances table: how many digits? should transpose the matrix? there is no reason to put both lines in the paper, seems like we want to compare them while we actually show distance results}
 \begin{table}[h!]
 	\centering
-	\caption{Distances}
 	\label{tab:Distances}
-	\begin{tabular}{l|c||r}
-		enter here & 2 & 3\\
+	\begin{tabular}{c|c|c|c|c}
+		& edit distance & fully aligned distance & top down distance & token analysis
+		\\
 		\hline
-		a & b & c\\
+		Same annotator & 323.1666666667 & 0.7889669263 & 0.7901377635 & 0.8499129514
+		\\
+		Different annotator & 209.5555555556 & 0.8526407718 & 0.8682483277 & 0.8935815907
+		\\
 		\end{tabular}
-		\end{table}
+		\caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the inter annotator agreement, which means distances are indeed low.}
+	\end{table}
 		
 	\subsection{Results}
 	
@@ -666,13 +671,16 @@ So is code used to create the rest of the paper.
 		
 		\begin{table}[h!]
 			\centering
-			\caption{Token analysis}
 			\label{tab:Token_analysis}
-			\begin{tabular}{l|c||r}
-				enter here & 2 & 3\\
+			\begin{tabular}{c|c|c}
+				& As+Ds & Scenes\\
 				\hline
-				a & b & c\\
+				Same annotator & 0.9692193668 & 0.960643483\\
+				Different annotator & 0.9640260024
+				 & 0.931606299
+				 \\
 				\end{tabular}
+				\caption{Token analysis F score for similarity in UCCA labels between structures in LL and corrected parallel paragraphs. The similarity is evidently very high.}
 				\end{table}
 				
 	\subsection{Discussion}
