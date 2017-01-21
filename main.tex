@@ -20,7 +20,7 @@
 \usepackage{acl2017}
 \graphicspath{{./plots/}}
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
-\newcommand{\lc}[1]{\footnote{\color{green}OA: #1}}
+\newcommand{\lc}[1]{\footnote{\color{green}LC: #1}}
 \begin{document}
 	
 	\title{Excessive Conservatism in Grammatical Error Correction}
@@ -79,7 +79,7 @@
 % 4.4. Empirical Validation: IAA, semantic conservativism vs. gold std
 % 5. Conclusion
 
-Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many other application areas of linguistics. This interest is reflect in the four recent shared tasks that were devoted to the task: HOO-2011 and 2012 \cite{dale2011helping,dale2012hoo}, the CoNLL 2013 and 2014
+Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many other application areas of linguistics. This interest is reflected in the four recent shared tasks that were devoted to GEC: HOO-2011 and 2012 \cite{dale2011helping,dale2012hoo}, the CoNLL 2013 and 2014
 shared tasks \cite{kao2013conll,ng2014conll}.
 Within GEC, considerable effort has been placed on the difficult task of
 evaluation \cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.
@@ -92,7 +92,7 @@ a somewhat cumbersome or even an occasionally ungrammatical correction over a co
 that alters that meaning of the source \citet{brockett2006correcting}.
 Indeed, when manually compiling corrections to serve as reference corrections in GEC evaluation,
 annotators are often instructed to be conservative in their corrections.\lc{daniel answered this is true in some sense, is there a proper way to write it?}
-A recent attempt to formally capture this precision/recall asymmetry has been the move from the use of $F_1$
+A recent attempt to formally capture this precision/recall asymmetry consisted of shifting from the use of $F_1$
 to $F_{0.5}$, where Precision is emphasized over Recall, as a common evaluation measure
 in GEC \cite{dahlmeier2012better}.
 
@@ -135,7 +135,7 @@ in their semantic structures. We define a measure using the UCCA scheme \cite{ab
 test case, motivated by the recent use of the scheme for machine translation evaluation \cite{birch2016hume}.
 In order to assess the feasibility of this approach, we annotate a section of the NUS \cite{dahlmeier2013building}
 parallel corpus. Our results support the feasibility of the proposed approach,
-by showing that semantic structural annotation be consistently applied
+by showing that semantic structural annotation can be consistently applied
 to learner language, as attested by the inter-annotator agreement,
 and that the proposed measure assigns a high similarity score between the source and the reference
 correction.
@@ -147,10 +147,10 @@ The first approach addresses this by attempting to cover the bulk of the distrib
 corrections for a sentence, while the second uses semantic instead of string similarity that abstracts
 away from some of the formal variation between different corrections.
 
-To recap, the contribution of this paper is three-fold.
-First, ...
-Second, ....
-Third, ...
+%To recap, the contribution of this paper is three-fold.
+%First, ...
+%Second, ....
+%Third, ...
 
 \oa{note that we didn't define formal and semantic conservativism; I think we might not have to}
 
@@ -238,7 +238,7 @@ In order measure word order differences, we compute the same alignment and use S
 Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row
 measures respectively. Results show that the gold standard
 makes changes to considerably more source sentences than any of the systems, and within the changed
-sentences, changes more words and makes more word order changes relative, often an order of magnitude
+sentences, changes more words and makes more word order changes, often an order of magnitude
 more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
 %starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism.
@@ -381,10 +381,9 @@ If the NLP community has agreed one correction is not enough\cite{tetreault2008n
 we can now say 2 is no magic number either. The gain from each annotation in respect to mean value is still high and only at about 8 becomes semi-linear. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
 We see that considering the changed indexes, looking for example at different synonyms as the same correction, still holds a very large number of different corrections for every sentence.
 
-
 Perhaps less obvious will be how low coverage affects the development
 process. Even if corrected well, sentences which have more possible
-corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead implicitly in algorithm development cycles, to learn \textbf{not} to correct those sentences at all. Also, consider any machine learning algorithm which somehow represents the notion that not correcting is more important than false correction. An example for such algorithm would be one that uses a loss function with a special case for the output equals the input. Such algorithms would also learn to avoid correcting, as corrections would most likely results in high loss, even when their correction is actually valid.
+corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead implicitly in algorithm development cycles, to learn \textbf{not} to correct those sentences at all. Also, consider any machine learning algorithm which somehow represents the notion that not correcting is more important than false correction. An example for such algorithm would be one that uses a loss function with a special case for the output equals the input. Such algorithms would also learn to avoid correcting, as corrections would most likely result in high loss, even when their correction is actually valid.
 In the rest of this section we will show that the assumptions we made are the current reality. 
 
 
@@ -405,42 +404,41 @@ in this intuition.
 
 In the task of GEC it is important to be
 conservative, not to overcorrect. The user expects the minimum corrections
-necessary and wants no intervention in what he wishes to say. More
-specifically, he expects that what he has said would not be changed
-into something he did not. In this we may find two notions of conservatism,
-formal conservatism and semantic conservatism. Where any change in
-the original string would not be considered formal conservative, only
-changes in meaning are accounted for invalidating semantic conservatism. 
+necessary and wants no intervention in what he wishes to say. This statement can be split into two, he expects that what he \emph{meant} would not be changed
+into something he did not, but what he actually \emph{wrote} will be changed when needed. In this we may find two notions of changes,
+formal and semantic which we call \textit{conservatism} and \textit{faithfulness}. While any change in
+the original string would not be considered conservative, only
+changes in meaning are accounted for invalidating faithfulness. 
 
 In many of the uses for correction,
-the user does knows his grammar is not perfect and would accept
+the user does know his grammar is not perfect and would accept
 a change in grammar when needed. Because of this approval we also
 hypothesis, and it may call for a user study to prove or disprove
 this hypothesis, that users might accept a correct text unit of theirs
 being corrected to another correct text unit with the same meaning.
-This would be an example of being semantically conservative but not formally so.
+This would be an example of being faithful but not conservative.
 Maybe even more importantly, we aim to have as many correct sentences
-as possible, but as the grammar isn't fully correct in the first place,
+as possible, but as neither the grammar is fully correct in the first place,
 nor is the user's understanding of it, failing to correct grammar
 is acceptable. Changing meaning will be totally unacceptable, and
 also surely detectable by the user. In other words, the users do expect
-the corrector to be active and not too formally conservative, but
-only as long as it is semantically conservative. 
+the corrector to be active and not too conservative, but
+only as long as it is faithful. 
 
 Moreover, as correctors are based on statistics, they might even
 just correct to a more common way of saying the same thing. Such unnecessary
-correction is not formally conservative, and at GEC maybe be unwanted, but not strictly unwanted as overall
-it is semantically conservative still. Additionally, some may even
+correction is not conservative, and at GEC maybe be unwanted, but not strictly unwanted as overall
+it is still faithful. Additionally, some may even
 consider such correction a needed one because it has a better grammar considering
 Fuzzy Grammar\cite{lakoff1973fuzzy,madnani2011they} or a more fluent
 way to say the exact same thing. The latter was recently suggested as a necessary
 shift in the goals of GEC\cite{sakaguchi2016reassessing}.
-Considering all this, we propose that next generation correctors and evaluation will be focused on semantic conservatism
-when possible rather than on formal conservatism.
+Considering all this, we propose that next generation correctors and evaluation will be focused on faithfulness
+when possible rather than on conservatism.
 
 \subsection{Uses of semantic annotation}
 
-Semantic structures were used for LL tasks(\cite{king2013shallow}), but so far to GEC. It is worth mentioning the a-priori reasons for developing
+Semantic structures were used for LL tasks(\cite{king2013shallow}), but so far not to GEC. It is worth mentioning the a-priori reasons for utilizing
 it in that context. The first and perhaps the most obvious use of semantic annotation
 would be to use it as a feature for correctors. The annotation may
 capture the gist that is supposed to stay the same when correcting,
@@ -467,7 +465,7 @@ that were actually corrected. Second, assess how much did the semantics change.
  Give a negative score for changing semantics. Third, use
 the error detection again to assess how many errors exist in the correction
 output, whether uncorrected by the corrector or new errors presented
-by the correction process itself. \\
+by the correction process itself. 
 
 This assessment was partially inspired by the WAS evaluation scheme\cite{chodorow2012problems},
 in short it states we should account in the assessment for 5 types,
@@ -495,7 +493,7 @@ it was not supposed to? etc.
 Syntactic representation is very popular and useful in many NLP tasks(\cite{mesfar2007named,ng2002improving,zollmann2006syntax}).
 Thus, one thought that rises to mind is to use grammar annotation
 for LL. Indeed linguistic theories suggest each learner, by himself, might hold a consistent language\cite{huebner1985system,tarone1983variability}. While not useless, grammatical approach is not well
-defined, and unclear bot practically and theoretically. One might
+defined, and unclear both practically and theoretically. One might
 say that the grammar would be the one induced by the actual words
 that appear in the sentence. This would lead to annotation that calls
 for applying the syntax of Proper English to the different learner
@@ -506,10 +504,9 @@ how to understand the sentence. This approach was being pursued in
 
 Others may suggest, and indeed they have\cite{nagataphrase}, an opposite
 approach, saying the grammar meant by the learner is the one we should
-tag, but that requires having a corrected form of the sentences. Later\ref{sec:increase-reference}
-we show that for many sentences different corrections are possible.
-And where as sentences differ so does their grammar. later in this
-section, we propose semantic annotation as a well defined structure.
+tag, but that requires having a corrected form of the sentences. In \ref{sec:increase-reference}
+we showed that for many sentences different corrections are possible and so, where the corrections differ so does their grammar, making this approach even harder to define. later in this
+section, we propose semantic annotation as a well defined structure over learner language. We also suggest that as semantics would not change much throughout the corrections, it is less prone to coverage problems due to lack of enough reference in the gold standard.
 
 \subsection{UCCA}
 A UCCA annotation for a sentence $s$ is a labeled DAG $G$, whose
@@ -533,7 +530,7 @@ about semantics using UCCA it is needed to show that UCCA is even
 consistent when applied to ungrammatical language such as learner
 language. To do that we used NUS\cite{dahlmeier2013building}. We employed two cognition graduate students, both
 with background of working as translators. Each
-one had received the guidelines to read and annotated a couple of
+one had received the guidelines to read and annotate a couple of
 proper English paragraphs and then LL paragraphs as
 an exercise. These paragraphs were compared between the annotators
 and each disagreement discussed in the hope of finding common annotation
@@ -549,8 +546,7 @@ from that we derive an F1 score.
 We got an F1 score for the inter annotator agreement of 0.845 with
 Precision 0.834 and Recall 0.857 we see that as enough to be a proof
 that UCCA can be applied to LL, especially considering those numbers
-are a bit higher than the inter annotator agreement reported in the
-reported originally for formal English\cite{abend2013universal}.
+are a bit higher than the inter annotator agreement originally reported for native English\cite{abend2013universal}.
 We explain the rise in agreement by the fact that the guidelines and
 procedures were refined since UCCA was first introduced and not to
 superiority of UCCA for annotating LL. A similar F1
@@ -559,21 +555,18 @@ suggests the same.
 
 \subsection{Semantics are preserved when correcting grammar}
 
-
-As a next step we needed to check our hypothesis that indeed when correcting we expect semantic conservatism. With UCCA as our case study we asked each annotator to annotate corrected paragraphs corresponding
-to ones he already annotated, 7 different paragraphs were annotated
-in this way. To avoid misleading high score due to the fact that each
-annotator annotated both the LL paragraph and the corrected
-paragraph 3 different tuples of paragraphs were annotated by both
-annotators allowing a cross comparison. It means that for each paragraph
-we compared the annotation of the LL done by one annotator
-with the annotation of the other annotator done for the corrected
-paragraph and vice versa. 
+As a next step we needed to check our hypothesis that indeed when correcting we expect faithfulness. With UCCA as our case study each annotator annotated corrected paragraphs corresponding
+to LL ones he already annotated, 7 different paragraphs were annotated
+in this way. 
+%To avoid misleading high score due to the fact that each annotator annotated both the LL paragraph and the correctedp aragraph 3 different tuples of paragraphs were annotated by both annotators allowing a cross comparison. It means that 
+We compared the annotation of the LL done by one annotator
+with the corrected
+paragraph annotation of the other annotator and vice versa, comparing 6 pairs overall. 
 
 As a next step a comparison between the annotations was needed, but
 there exists no measure for how similar two different UCCA annotations
 of different texts are. We considered using suggested semantic measures
-such as SMATCH\cite{cai2013smatch}but it can not work for UCCA or
+such as SMATCH\cite{cai2013smatch} but it can not work for UCCA or
 DAG similarity measures such as graph kernels (e.g.\cite{kashima2003marginalized}),
 but those tend to work on bigger graphs and would be the wrong tool
 for the small UCCA DAGs. Thus, a new measure is called upon.
@@ -587,7 +580,7 @@ the essence of comparing how many of the aligned nodes conserve meaning
 and tag. For that we may think for a moment on GEC as
 translation from LL to Proper English, and a good translation
 would be a translation which keeps the meaning but has the syntax
-of English. Considering that, just like in translation we can align
+of English. Considering that, just like in translation, we can align
 words from the LL to the corresponding words in English
 and keep record of how many of those nodes kept their labels.
 
@@ -621,7 +614,7 @@ score but one of which might be more representative of the semantics
 that are kept and hopefully more informative for tasks that will use it.
 
 A third type of methods were token similarity methods, these methods
-use one kind of aligning (top down, bottom up or all to all) and only
+use one kind of aligning (top down, bottom up or pairwise) and only
 compare the meaningful nodes. This was called upon by \cite{sulem2015conceptual}. 
 This approach makes sense due to the fact that some labels
 are well defined and thought upon while others are still vague and
@@ -655,8 +648,8 @@ So is code used to create the rest of the paper.
 	\subsection{Results}
 	
 	We present in \ref{tab:Distances} the scores of the different presented
-	methods. For each method we present the average results of 9 tuples
-	of paragraphs annotated by the same annotator and 6 tuples where each
+	methods. For each method we present the average results of 9 pairs
+	of paragraphs annotated by the same annotator and 6 pairs where each
 	paragraph was annotated by a different annotator.
 	
 	Finally, we present as a control measure and a bound on the best score
@@ -684,7 +677,7 @@ So is code used to create the rest of the paper.
 				
 	\subsection{Discussion}
 	
-	From the result we learn a number of things, we show that the upper
+	From the result we learn a number of things, the upper
 	bounds in table \ref{tab:Token_analysis} suggest high stability of UCCA over GEC, and the results are similar to those shown over
 	translation. This upper bound seem not to be very strict if the other
 	measures are to be considered true values. 
