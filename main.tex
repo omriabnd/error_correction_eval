@@ -23,7 +23,7 @@
 \newcommand{\lc}[1]{\footnote{\color{green}LC: #1}}
 \begin{document}
 	
-	\title{Excessive Conservatism in Grammatical Error Correction}
+	\title{Improved Reference-based Evaluation for Grammatical Error Correction}
 	
 	\author{
 		Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
@@ -90,11 +90,8 @@ An important criterion in the evaluation of GEC systems (henceforth, {\it correc
 generate corrections that are faithful to meaning of the source. In fact, many would prefer
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters that meaning of the source \citet{brockett2006correcting}.
-Indeed, when manually compiling corrections to serve as reference corrections in GEC evaluation,
-annotators are often instructed to be conservative in their corrections.\lc{daniel answered this is true in some sense, is there a proper way to write it?}
-A recent attempt to formally capture this precision/recall asymmetry consisted of shifting from the use of $F_1$
-to $F_{0.5}$, where Precision is emphasized over Recall, as a common evaluation measure
-in GEC \cite{dahlmeier2012better}.
+Indeed, when manually compiling the gold-standard corrections for the HOO corpus, annotators were instructed to be conservative in their corrections.\lc{daniel answered this is true in some sense, is there a proper way to write it? OA: yes, write ``Daniel Dahlmeier, personal communication'' in a footnote}
+A recent attempt to formally capture this precision/recall asymmetry has been the shift from using $F_1$ to $F_{0.5}$, where Precision is emphasized over Recall, as a common evaluation measure in GEC \cite{dahlmeier2012better}.
 
 However, favoring precision over recall may lead to reluctance of GEC systems to make any
 changes. Using a single reference correction (as is the common practice in GEC) compounds
@@ -154,7 +151,7 @@ away from some of the formal variation between different corrections.
 
 \oa{note that we didn't define formal and semantic conservativism; I think we might not have to}
 
-\section{Excessive Conservativism in GEC Systems}\label{sec:formal_conservatism}
+\section{Conservativism in GEC Systems}\label{sec:formal_conservatism}
 
 %The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using
 %$F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that
@@ -170,42 +167,57 @@ has resulted in systems that tend to make too few changes in the source.
 \paragraph{Experimental Setup \label{par:experimental_setup}}
 
 We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
-corpus of LL paragraphs and corrected versions of them which is the de
-facto standard since CoNLL 2013\textbackslash{}14 shared tasks \cite{kao2013conll,ng2014conll}.
-The NUS corpus consists of paragraphs about
-various topics containing about 400 words each.
-To have better evaluation of the real goal of corrections we also
-compute all of the measures on the TreeBank of Learner Language \cite{berzak2016universal}based
-on the Cambridge First Certificate in English (FCE) \cite{yannakoudakis2011new},
-a new large parallel corpus containing only ungrammatical sentences of learners native of different languages.
-As a preprocessing step we have removed from tokens all non alpha-numeric characters, mainly dots and commas that were tokenized originally as part of words. Punctuation was not considered as a token in any of the experiments presented.
-All participating systems in the CoNLL 2014 are evaluated, in addition to the
-best performing corrector on this dataset \cite{rozovskaya2014building}.
+corpus of LL\oa{define this acronym} paragraphs and their corrected versions which
+has become the de facto standard since its use in the CoNLL 2013 and 2014
+shared tasks \cite{kao2013conll,ng2014conll}.
+The NUS corpus consists of paragraphs on various topics written by language learners,
+each containing about 400 words.
 
-This is the list of systems used:Adam Mickiewicz University(AMU ), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing corrector\cite{rozovskaya2016grammatical}.
+In order to have better evaluation of the real goal of corrections we also
+compute all of the measures on the TreeBank of Learner Language \cite{berzak2016universal},
+based on the Cambridge First Certificate in English (FCE) \cite{yannakoudakis2011new},
+a new large parallel corpus containing only ungrammatical sentences of learners
+native of different languages.
+
+We preprocessed the data by removed from tokens all non alpha-numeric characters,
+mainly dots and commas that were tokenized originally as part of words. Punctuation
+was not considered as a token in any of the experiments presented.\oa{I don't fully understand
+  what you did. You discarded all puncutation whether within a token or a token on its own?}
+
+We conduct our evaluation on all participating systems in the CoNLL 2014,
+in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
+The particiapting systems and their abbreviations are: Adam Mickiewicz University(AMU), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing system \cite{rozovskaya2016grammatical}\oa{abbreviation?}.
 
 \paragraph{Measures of Conservatism.} There are several ways in which the source and the reference
-may diverge. First, individual words may be altered, deleted or added. Second, the order of the words
-may be different, and third, source sentences may be split or concatenated in the reference.
+may diverge. First, individual words may be altered, deleted or added.
+Second, the order of the words may be different,
+and third, source sentences may be split or concatenated in the reference.
 We quantify these divergences using three corresponding measures.
 
-In order to measure sentence splitting/concatenation, we aligned sentences and counted how many sentences were split and how many concatenated. To align we matched sequentially last words in sentences.
+In order to measure sentence splitting/concatenation, we aligned sentences and counted how
+many sentences were split and how many concatenated. To align we matched sequentially last
+words in sentences.
 
-In order to measure word changes, we first compute word alignment, and then we count the number of different aligned words, in addition to the deleted or added words.
-
-In order to align tokens we use the fact that, unlike in translation,
+In order to measure word changes, we first compute word alignment,
+and then we count the number of different aligned words,
+in addition to the deleted or added words.
+For alignment, we note that, unlike in translation,
 aligning words is a simple task as most of the words are kept unchanged,
-deleted fully, added, or only changed slightly. This allows us to
-align words well using edit distance measure, knowing that words that
-exist in both text units will have low edit distance. We consider
-aligning two sets of words a bipartite graph matching problem, with
-weights according to the edit distance. For tie breaking, we add a
-penalty. The penalty is always smaller than the minimum cost of
-one action, favoring a sentence order when a word occurs twice.
-This alignment is needed because we only know the final corrections, a main obstacle that was considered
-in the assessment methods as well\cite{dahlmeier2012better}.
+deleted fully, added, or changed slightly. This allows us to
+produce word alignment by computing the edit distnace between the tokens.
+We formulate the alignment problem as a weighted bipartite graph matching problem,
+where each side of the graph corresponds to the tokens of another part of the text.
+The weight of each edge is the edit distance between the tokens.
+To break ties, we add a penalty term. The penalty is always smaller than the minimum cost of
+one action, favoring a sentence order when a word occurs twice.\oa{could you write this in
+  more exact terms?} This alignment is needed because we only know the final corrections,
+a main obstacle that was considered in the assessment methods as well
+\cite{dahlmeier2012better}.
 
-In order measure word order differences, we compute the same alignment and use Spearman's rho, a way to assess how well the relationship between two variables can be described using a monotonic function. 
+Word order differences between the source and corrected sentences is computed by first
+aligning tokens as above, and computing Spearman's $\rho$ on the resulting alignment.
+$\rho$ is low where the order of tokens is similar on both sides (according to the alignment).
+
 
 \begin{figure}
 	\includegraphics[width = 8cm]{aligned}
@@ -235,11 +247,8 @@ In order measure word order differences, we compute the same alignment and use S
 \end{figure}
 
 \paragraph{Results.}
-Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row
-measures respectively. Results show that the gold standard
-makes changes to considerably more source sentences than any of the systems, and within the changed
-sentences, changes more words and makes more word order changes, often an order of magnitude
-more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
+Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively.\oa{add here explanation on each of the graphs; don't worry about repeating what you said in the caption}
+Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
 %starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism.
 %We see that it is most common for a sentence to have no change, not to concatenate two consecutive sentences and not to split a sentence into two. We also observe high correlation coefficient for most of the sentences. Summing it all together we indeed have more unchanged than changed in every measure we have. But, with a closer look we should also notice that it mostly tells us about the dataset. Specifically the level of English found in the dataset.
@@ -253,22 +262,13 @@ more. For example, in the gold standard there are 44 sentences which have 5 word
 \section{Evaluation with Multiple References}\label{sec:increase-reference}
 
 In this section we show that the use of few references in reference-based evaluation yields
-under-estimation in the current evaluation, which encourages systems not to correct source
-sentences. Specifically, we show that the common use of $M=1$ or $M=2$ yields an evaluation
+under-estimation in the current evaluation, which encourages systems to be overly conservative.
+Specifically, we show that the common use of $M=1$ or $M=2$ yields an evaluation
 measure which penalizes valid corrections more often than deems them as correct.
 
 We explore the use of multiple references for alleviating the bias towards conservatism.
-
-While we still use string similarity measures, the use of multiple corrections attempts
-to capture the multitude of ways to correct a sentence.
-
-We assume each source sentence $s$ has a distribution of valid corrections $\mathcal{D}$,
-which will explore in this section. We will assume that $s$ is evaluated by
-$M$ independently sampled references from $\mathcal{D}_s$.
-As the quality of a sentence is judged based on its string similarity with the references,
-any finite value of $M$ may yield an under-estimation of the true quality of the sentence, 
-with some probability (finite $M$ bias). We begin by estimating this bias as a function of $M$
-(we are not aware of any previous work that has done so).
+While we still use string similarity measures, the use of multiple corrections captures
+some of the variation in the possible corrections of a sentence.
 
 %Our first question 
 %As noted before, assessment might push towards being too conservative. The cause for that
@@ -283,29 +283,67 @@ with some probability (finite $M$ bias). We begin by estimating this bias as a f
 
 \subsection{Notation}
 
+We assume each source sentence $s$ has a distribution of valid corrections $\mathcal{D}$,
+which we will explore in this section. We will assume that $s$ is evaluated by
+$M$ independently sampled references from $\mathcal{D}_s$.
+
 Denote the set of source learner language sentences $X=x_{1}\ldots x_n\sim \mathcal{L}$, where
 $L$ is a distribution over all learner sentences from the domain. For each $x_i$, denote
-with $\mathcal{D}_{x_i}$ its distribution of corrections. Denote with
-$Y_i = \left\{y_{1}^{i},\ldots, y_{M}^{i}\right\} \sim \mathcal{D}_{x_i}$ a sample of
-$M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
+with $\mathcal{D}_{x_i}$ its distribution of corrections (i.e., a discrete
+distribution representing, how many corrections are there and their relative frequency).
+Denote with $Y_i = \left\{y_{1}^{i},\ldots, y_{M}^{i}\right\} \sim \mathcal{D}_{x_i}$
+a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
   Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
 An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_n$ to
 a number in $[0,1]$.
 
 \subsection{Data}
-To be able to answer interesting statistical questions about assessment we first need to understand the behaviour of the distributions $D_x$. For that we randomly picked 52 sentences with a maximum length of 15 from the NUS test data \cite{dahlmeier2013building}. The length condition was made to make crowdsourcing annotation more reliable. It also made sure we will not capture many interleaving errors from text units that could have been separated. Also, as manual analyzing suggested, very short sentences were regarded as sentence tokenization errors and discarded. Histogram of sentence lengths showed a lot of the mass is below this threshold.
 
-Albeit too expensive for assessment of each development cycle, human assessment by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to be helpful in different tasks such as translation(\cite{birch2016hume,zaidan2011crowdsourcing,post2012constructing}) and even more so in GEC \cite{madnani2011they} were non-professionals perform well without adjustments. Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall, 50 for every sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded.
+To be able to answer interesting statistical questions about assessment we first
+need to understand the behaviour of the distributions $D_x$. For that we sample
+52 sentences with a maximum length of 15 from the NUS test data
+\cite{dahlmeier2013building}. The length restriction was made to make crowdsourcing
+annotation more reliable\oa{what do you mean?}.
+It also made sure we will not capture many interleaving
+errors from text units that could have been separated\oa{explain what you mean by
+  interleaving errors}.
+Very short sentences\oa{threshold?} were discarded, as they were
+mostly a result of sentence tokenization error,
+Histogram of sentence lengths showed a lot of the mass is below this threshold.\oa{what percent?}
 
-For each sentence we used UnseenEst \cite{zou2015quantifying}, a statistical algorithm that quantify the distribution of frequencies. Manual tests with different inputs were done with satisfying result. Surprisingly, the distributions have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution. The distributions gathered, together with the rest of the gathered data are given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
+Albeit too expensive for assessment of each development cycle, human assessment
+by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to
+be helpful in different tasks such as translation
+\cite{zaidan2011crowdsourcing,post2012constructing,graham2015improved}
+and even more so in GEC \cite{madnani2011they}\oa{why ``more so''?}.
+Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall,
+50 per sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded\oa{how many?}.
+
+\subsection{Estimating The Distribution of Corrections}
+
+We begin by estimating $\mathcal{D_s}$ for each sentence, using the crowdsourced
+corrections. We estimated its distribution of corrections $\mathcal{D}_s$
+using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantify
+the distribution of frequencies.\oa{add a link in a footnote; also explain in a sentence what this tool is, and what it was developed for} Manual tests with different inputs were done with satisfying result.\oa{I didn't understand the last sentence}\footnote{All data we collected, along with the estimated distributions can be found in <to be disclosed upon publication>}.
+
+{\sc UnseenEst} estimates that most sentences have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution.\oa{we need some more numbers here; maybe show the pdf of the averaged distribution over all sentences? or something else?}
 
 \subsection{Assessment values}\label{subsec:Assessment-values}
 
-The values an assessment process produces are the base foundation of
- every improvement in Computer Sciences. This gives the value an
-  almost sacred place. We think this role should be earned and measured.
+After having collected empirical data as to the distribution of corrections,
+we turn to assessing the bias (under-estimation) using  different values for $M$.
+As the quality of a sentence is judged based on its string similarity with the references,
+any finite value of $M$ may yield an under-estimation of the true quality of the sentence, 
+with some probability. On the other hand, increasing $M$ considerably increases the incurred
+manual labor. We therefore attempt to find a sweetspot value for $M$ which is both practical
+and minimally biased.
+
+
+%The values an assessment process produces are the base foundation of
+%every improvement in Computer Sciences. This gives the value an
+%almost sacred place. We think this role should be earned and measured.
  
-\paragraph{Accuracy}We shall begin by analyzing accuracy. While this score is not published it is the usual choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
+\paragraph{Accuracy} We shall begin by analyzing accuracy. While this score is not published it is the usual choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
 For simplicity we assume a corrector has a constant probability $c$ to correct an ungrammatical sentence. The probability to get a specific accuracy assessment over $N$ sentences will be distributed as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
 where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
 $Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by $N$. 
