@@ -23,16 +23,16 @@
 \newcommand{\lc}[1]{\footnote{\color{green}LC: #1}}
 \begin{document}
 	
-	\title{Improved Reference-based Evaluation for Grammatical Error Correction}
-	
-	\author{
-		Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
-		\textsuperscript{1}School of Computer Science and Engineering,
-                \textsuperscript{2} Department of Cognitive Sciences \\
-		The Hebrew University of Jerusalem \\
-		\texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
-	}
-	
+\title{Understanding Reference-based Evaluation for Grammatical Error Correction}
+
+\author{
+  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
+  \textsuperscript{1}School of Computer Science and Engineering,
+  \textsuperscript{2} Department of Cognitive Sciences \\
+  The Hebrew University of Jerusalem \\
+  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
+}
+
 
 \maketitle
 
@@ -259,7 +259,7 @@ Results show that the gold standard makes changes to considerably more source se
 %and are over conservative. {*}is this remark interesting at all, we show the graph for 2 corrections per sentence anyway{*}A special case would be the Cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction, when removing one word changes, or counting the number of changes the differences are still great . {*}do the plots need textual analyzing? e.g. explain what do we see under %correction in fig 1 2 3?{*}
 
 
-\section{Evaluation with Multiple References}\label{sec:increase-reference}
+\section{Multi-Reference Measures}\label{sec:increase-reference}
 
 In this section we show that the use of few references in reference-based evaluation yields
 under-estimation in the current evaluation, which encourages systems to be overly conservative.
@@ -321,30 +321,44 @@ Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers
 
 \subsection{Estimating The Distribution of Corrections}
 
-We begin by estimating $\mathcal{D_s}$ for each sentence, using the crowdsourced
+We begin by estimating $\mathcal{D}_s$ for each sentence, using the crowdsourced
 corrections. We estimated its distribution of corrections $\mathcal{D}_s$
-using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantify
-the distribution of frequencies.\oa{add a link in a footnote; also explain in a sentence what this tool is, and what it was developed for} Manual tests with different inputs were done with satisfying result.\oa{I didn't understand the last sentence}\footnote{All data we collected, along with the estimated distributions can be found in <to be disclosed upon publication>}.
+using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantifies
+the distribution of frequencies.\oa{add a link in a footnote; also explain in a sentence what
+  this tool is, and what it was developed for} Manual tests with different inputs were done
+with satisfying result.\oa{I didn't understand the last sentence}\footnote{All data
+  we collected, along with the estimated distributions can be found in <to be disclosed
+  upon publication>}
 
-{\sc UnseenEst} estimates that most sentences have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution.\oa{we need some more numbers here; maybe show the pdf of the averaged distribution over all sentences? or something else?}
+{\sc UnseenEst} estimates that most sentences have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution.\oa{we need some more numbers here; maybe show the pdf of the averaged distribution over all sentences? maybe with error bars showing the variance? or maybe you have another idea?}
 
 \subsection{Assessment values}\label{subsec:Assessment-values}
 
-After having collected empirical data as to the distribution of corrections,
-we turn to assessing the bias (under-estimation) using  different values for $M$.
-As the quality of a sentence is judged based on its string similarity with the references,
-any finite value of $M$ may yield an under-estimation of the true quality of the sentence, 
-with some probability. On the other hand, increasing $M$ considerably increases the incurred
-manual labor. We therefore attempt to find a sweetspot value for $M$ which is both practical
-and minimally biased.
-
+In the previous section we presented empirical assessment of the distribution of
+corrections of a sentence. We now turn to the consequent bias (under-estimation) in the
+estimation of a string-based similarity measure, for different values for $M$.
+Our goal is to assess what value of $M$ would be a sweetspot, which is both practical
+(as collecting more references is potentially costly) and reasonably biased.
 
 %The values an assessment process produces are the base foundation of
 %every improvement in Computer Sciences. This gives the value an
 %almost sacred place. We think this role should be earned and measured.
  
-\paragraph{Accuracy} We shall begin by analyzing accuracy. While this score is not published it is the usual choice for training machine learning algorithms. We suggest its more common use for another important reason which is interpretability.
-For simplicity we assume a corrector has a constant probability $c$ to correct an ungrammatical sentence. The probability to get a specific accuracy assessment over $N$ sentences will be distributed as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
+\paragraph{Sentence-level Accuracy.} We begin by analyzing the sentence-level accuracy measure,
+namely the number of sentences which were corrected in a way that exactly matches one of the
+references (also called ``Exact Match'') . While this score is less commonly used as an
+evaluation measure (compared to the F-score discussed below), it is the commonly used loss
+function for training statistical GEC systems\oa{put a few references}. Further motivation
+for exploring it is its interpretability.
+
+Given a corrector $C$, a set of test sentences $X=\{x_1,...,x_n\}$ and their reference
+corrections $Y_1,...,Y_n$, we denote with $p_i$ the probability that $y_i$\oa{this needs to be
+  much more formal; let's discuss}
+%For simplicity, assume a corrector has a constant probability $c$ to correct
+%an ungrammatical sentence. Denote with $p_i$ the probability that the $i-th$
+
+The probability to get a specific accuracy assessment over $N$ sentences will be distributed
+as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
 where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
 $Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by $N$. 
 
@@ -425,27 +439,55 @@ corrections will grant lower scores on precision for correcting, while recall wi
 In the rest of this section we will show that the assumptions we made are the current reality. 
 
 
-\section{Second approach: Semantic Similarity\label{sec:Semantics}}
+\section{Semantic Similarity Measure}\label{sec:Semantics}
 
-In the history of GEC, conservatism was considered an
-important trait of a corrector\cite{brockett2006correcting}.
-This was also the reason why $F_{0.5}$ became since conll2014\cite{ng2014conll}
-the measure of choice for GEC evaluation, emphasizing
-precision over recall. This emphasis can be understood as encouraging
-avoidance of wrong corrections at the cost of correcting less errors
-overall. The thought that stands behind such emphasis is that a user
-would be understanding towards errors he did, of which he is probably
-not even aware, not being corrected, but would not be so understanding
-of corrections altering what he meant to say, in a way he perceives as wrong. We want to refine
-this idea and suggest that there are subtleties we better address
-in this intuition.
+%Conservatism is considered an important trait for a corrector, reflected for example
+%in the selection of $F_{0.5}$, which emphasizes precision over recall, as the
+%standard evaluation measure in GEC.
+%In the previous section we followed the common approach in GEC evaluation and evaluated
+
+
+\oa{it would be nice to see whether we can evaluate the CoNLL systems using
+a UCCA-based measure}
+
+%The thought that stands behind such emphasis is that a user
+%would be understanding towards errors he did, of which he is probably
+%not even aware, not being corrected, but would not be so understanding
+%of corrections altering what he meant to say, in a way he perceives as wrong.
 
 In the task of GEC it is important to be
-conservative, not to overcorrect. The user expects the minimum corrections
-necessary and wants no intervention in what he wishes to say. This statement can be split into two, he expects that what he \emph{meant} would not be changed
-into something he did not, but what he actually \emph{wrote} will be changed when needed. In this we may find two notions of changes,
-formal and semantic which we call \textit{conservatism} and \textit{faithfulness}. While any change in
-the original string would not be considered conservative, only
+conservative, and not to overcorrect. High-quality corrections make the minimal correction
+necessary to form a grammatical sentence (\textit{conservatism}), and not alter the
+meaning of the source (\textit{faithfulness}). Reference-based string similarity measures
+assess the similarity of a proposed correction to a reference,
+and thus indirectly capture both criteria: references
+are both faithful and conservative, as thus similarity to them is an indirect indication
+of the faithfulness and conservatism of the proposed correction. However, we saw that
+the variability of valid corrections may be prohibitively difficult to capture with a handful
+of references.
+
+In this section we explore a second possibility to assess the faithfulness dimension
+
+if
+the sentence matches a gold-standard reference, it is faithful by stipulation
+
+if the
+reference is not very different from the source, string similarity with the reference is
+an indication 
+
+can be thought
+of as a proxy for assessing both criteria
+
+As we saw in the previous sections,
+using string similarity measures measure conservatism
+
+placing too much emphasis 
+
+of the original sentence. We may thus distinguish between two notions
+of changes the source: formal and semantic, where high-quality corrections
+are semantically {\it faithful} the source, 
+which we call \textit{conservatism} and \textit{faithfulness}.
+While any change in the original string would not be considered conservative, only
 changes in meaning are accounted for invalidating faithfulness. 
 
 In many of the uses for correction,
