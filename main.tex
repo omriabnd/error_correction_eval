@@ -90,7 +90,7 @@ An important criterion in the evaluation of GEC systems (henceforth, {\it correc
 generate corrections that are faithful to meaning of the source. In fact, many would prefer
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters that meaning of the source \citet{brockett2006correcting}.
-Indeed, when manually compiling the gold-standard corrections for the HOO corpus, annotators were instructed to be conservative in their corrections.\lc{daniel answered this is true in some sense, is there a proper way to write it? OA: yes, write ``Daniel Dahlmeier, personal communication'' in a footnote}
+Indeed, when manually compiling the gold-standard corrections for the HOO corpus, annotators were instructed to be conservative in their corrections\footnote{Daniel Dahlmeier, personal communication.}.
 A recent attempt to formally capture this precision/recall asymmetry has been the shift from using $F_1$ to $F_{0.5}$, where Precision is emphasized over Recall, as a common evaluation measure in GEC \cite{dahlmeier2012better}.
 
 However, favoring precision over recall may lead to reluctance of GEC systems to make any
@@ -144,13 +144,6 @@ The first approach addresses this by attempting to cover the bulk of the distrib
 corrections for a sentence, while the second uses semantic instead of string similarity that abstracts
 away from some of the formal variation between different corrections.
 
-%To recap, the contribution of this paper is three-fold.
-%First, ...
-%Second, ....
-%Third, ...
-
-\oa{note that we didn't define formal and semantic conservativism; I think we might not have to}
-
 \section{Conservativism in GEC Systems}\label{sec:formal_conservatism}
 
 %The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using
@@ -167,7 +160,7 @@ has resulted in systems that tend to make too few changes in the source.
 \paragraph{Experimental Setup \label{par:experimental_setup}}
 
 We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
-corpus of LL\oa{define this acronym} paragraphs and their corrected versions which
+corpus of learner language(LL) paragraphs and their corrected versions which
 has become the de facto standard since its use in the CoNLL 2013 and 2014
 shared tasks \cite{kao2013conll,ng2014conll}.
 The NUS corpus consists of paragraphs on various topics written by language learners,
@@ -179,14 +172,11 @@ based on the Cambridge First Certificate in English (FCE) \cite{yannakoudakis201
 a new large parallel corpus containing only ungrammatical sentences of learners
 native of different languages.
 
-We preprocessed the data by removed from tokens all non alpha-numeric characters,
-mainly dots and commas that were tokenized originally as part of words. Punctuation
-was not considered as a token in any of the experiments presented.\oa{I don't fully understand
-  what you did. You discarded all puncutation whether within a token or a token on its own?}
+We discarded all non alpha-numerics whether within a token or a token on its own.
 
 We conduct our evaluation on all participating systems in the CoNLL 2014,
 in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
-The particiapting systems and their abbreviations are: Adam Mickiewicz University(AMU), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing system \cite{rozovskaya2016grammatical}\oa{abbreviation?}.
+The particiapting systems and their abbreviations are: Adam Mickiewicz University(AMU), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
 
 \paragraph{Measures of Conservatism.} There are several ways in which the source and the reference
 may diverge. First, individual words may be altered, deleted or added.
@@ -673,6 +663,7 @@ All of the code to implement UCCA structures, align them and evaluate
 them is also given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
 So is code used to create the rest of the paper.
 \lc{concerning the distances table: how many digits? should transpose the matrix? there is no reason to put both lines in the paper, seems like we want to compare them while we actually show distance results}
+
 \begin{table}[h!]
 	\centering
 	\label{tab:Distances}
@@ -680,9 +671,9 @@ So is code used to create the rest of the paper.
 		& edit distance & fully aligned distance & top down distance & token analysis
 		\\
 		\hline
-		Same annotator & 323.1666666667 & 0.7889669263 & 0.7901377635 & 0.8499129514
+		Same annotator & 323.16 & 0.78 & 0.79 & 0.85
 		\\
-		Different annotator & 209.5555555556 & 0.8526407718 & 0.8682483277 & 0.8935815907
+		Different annotator & 209.55 & 0.85 & 0.87 & 0.89
 		\\
 		\end{tabular}
 		\caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the inter annotator agreement, which means distances are indeed low.}
