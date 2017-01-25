@@ -197,15 +197,14 @@ deleted fully, added, or changed slightly. This allows us to
 produce word alignment by computing the edit distnace between the tokens.
 We formulate the alignment problem as a weighted bipartite graph matching problem,
 where each side of the graph corresponds to the tokens of another part of the text.
-Given $x_1\ldots x_n,y_1,\ldots y_m$ e weight of each edge is the edit distance between the tokens.
-To break ties, we add a penalty term. The penalty is always smaller than the minimum cost of
-one action, favoring a sentence order when a word occurs twice.\oa{could you write this in
-  more exact terms?} This alignment is needed because we only know the final corrections,
+Given $x_1\ldots x_n,y_1,\ldots y_m$ e weight of each edge is the edit distance between the tokens.\footnote{When breaking ties, we favor alignments where ...}
+%To break ties, we add a penalty term. The penalty is always smaller than the minimum cost of one action, favoring a sentence order when a word occurs twice.
+This alignment is needed because we only know the final corrections,
 a main obstacle that was considered in the assessment methods as well
 \cite{dahlmeier2012better}.
 
-Word order differences between the source and corrected sentences is computed by first
-aligning tokens as above, and computing Spearman's $\rho$ on the resulting alignment.
+Word order differences between the source and corrected sentences is
+computed by first aligning tokens as above, and computing Spearman's $\rho$ on the resulting alignment.
 $\rho$ is low where the order of tokens is similar on both sides (according to the alignment).
 
 
@@ -273,19 +272,25 @@ some of the variation in the possible corrections of a sentence.
 
 \subsection{Notation}
 
-We assume each source sentence $s$ has a distribution of valid corrections $\mathcal{D}$,
-which we will explore in this section. We will assume that $s$ is evaluated by
+We assume each source sentence $s$ has a set of valid corrections $Correct_s$,
+and a discrete distribution $\mathcal{D}_s$ over $Correct_s$ reflecting their prevalance.
+We will assume that $s$ is evaluated by
 $M$ independently sampled references from $\mathcal{D}_s$.
 
-Denote the set of source learner language sentences $X=x_{1}\ldots x_n\sim \mathcal{L}$, where
+Denote the set of source learner language sentences $X=x_{1}\ldots x_N \sim \mathcal{L}$, where
 $L$ is a distribution over all learner sentences from the domain. For each $x_i$, denote
-with $\mathcal{D}_{x_i}$ its distribution of corrections (i.e., a discrete
+with $\mathcal{D}_{x_i}$ (also $\mathcal{D}_i$) its distribution of corrections (i.e., a discrete
 distribution representing, how many corrections are there and their relative frequency).
-Denote with $Y_i = \left\{y_{1}^{i},\ldots, y_{M}^{i}\right\} \sim \mathcal{D}_{x_i}$
+Denote with $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\} \sim \mathcal{D}_{x_i}$
 a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
   Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
-An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_n$ to
+An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_N$ to
 a number in $[0,1]$.
+
+Define a corector as a function from learner sentences to corrections. While correctors
+in general may be stochastic functions, this does not affect our analysis, and we therefore
+assume it is deterministic for the simplicity of analysis.
+
 
 \subsection{Data}
 
@@ -325,38 +330,72 @@ with satisfying result.\oa{I didn't understand the last sentence}\footnote{All d
 \subsection{Assessment values}\label{subsec:Assessment-values}
 
 In the previous section we presented empirical assessment of the distribution of
-corrections of a sentence. We now turn to the consequent bias (under-estimation) in the
-estimation of a string-based similarity measure, for different values for $M$.
-Our goal is to assess what value of $M$ would be a sweetspot, which is both practical
-(as collecting more references is potentially costly) and reasonably biased.
+corrections of a sentence. We now turn to the consequent bias (under-estimation) in the estimation of a string-based similarity measure, for different values of $M$. Our goal is to assess what value of $M$ would be a sweetspot, which is both practical (as collecting references is costly) and reasonably biased.
+
+We discuss two similarity measures. One is the sentence-level accuracy (also called ``Exact Match'') and the other is the GEC F-score.
 
 %The values an assessment process produces are the base foundation of
 %every improvement in Computer Sciences. This gives the value an
 %almost sacred place. We think this role should be earned and measured.
  
-\paragraph{Sentence-level Accuracy.} We begin by analyzing the sentence-level accuracy measure,
-namely the number of sentences which were corrected in a way that exactly matches one of the
-references (also called ``Exact Match''). While this score is less commonly used as an
-evaluation measure (compared to the F-score discussed below), it is the commonly used loss
-function for training statistical GEC systems\cite{rozovskaya2010training,chodorow2012problems}\oa{put a few references}. Further motivation
-for exploring it is its interpretability.
+\paragraph{Sentence-level Accuracy.}
+Sentence-level accuracy is the number of sentences which were corrected in a way that exactly matches one of the
+references (also called ``Exact Match''). While this score is less commonly used than F-score as an evaluation
+measure of a corrector, it is a basic, interpretabile measure and is closely related to loss functions used for
+training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems}\oa{put a few references}. 
 
-Given a corrector $C$, a set of test sentences $X=\{x_1,...,x_n\}$ and their reference
-corrections $Y_1,...,Y_n$, we denote with $p_i$ the probability that $y_i$\oa{this needs to be
-  much more formal; let's discuss}
-%For simplicity, assume a corrector has a constant probability $c$ to correct
-%an ungrammatical sentence. Denote with $p_i$ the probability that the $i-th$
 
-The probability to get a specific accuracy assessment over $N$ sentences will be distributed
-as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
-where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
-$Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is a Poisson Binomial random variable divided by $N$. 
+Assume a set of test sentences $X=\{x_1,...,x_N\}$,
+and their gold standard references $Y_1,...,Y_N$ . We define the
+{\it coverage} of the references of the $i$-th sentence to be
 
-First, we are to look at some general properties.
- One interesting property is that the number of sentences considered does not change the expected accuracy value.
- Another property to consider is that the ratio between scores of different correctors stays the same no matter what are $p_1,\ldots,p_n$. So in this assessment we get a reliable way of comparing two correctors, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.
- 
- In the
+\begin{equation}
+  Cov(x_i,Y_i)=Pr_{y \sim \mathcal{D}_i}(y \in Y_i)
+\end{equation}
+
+Given a corrector $C$, we estimate its quality by sampling a set of source sentences
+$x_1,...,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),...,C(x_N)$ relative
+to the source. We define its probability to correct a sentence $P_{corr}(C)$
+as the probability that $x_i \in Correct_i$ for a randomly sampled $x_i$.
+
+Given a gold standard $Y$,  we can compute the common accuracy score, which is an estimate to $P_{corr}(C)$:
+
+\oa{find indicator function in latex}
+
+\begin{equation}
+  Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n 1_{C(x_i) \in Y_i}
+\end{equation}
+
+With $Y_i=Correct_i$ this is an unbiased estimator. It is possible to get a good estimate of $Acc(Z;X,Correct_i)$
+by taking a large enough sample from $Correct_i$, which is the common practice in reference-based evaluation.
+It's clear that the sample size $N$ does not affect $\mathbb{E}[Acc(C;X,Y)]$, but the number of references
+might.
+Another property to consider is that the ratio between scores of different correctors stays the same no matter what are $p_1,\ldots,p_N$. So in this assessment we get a reliable way of comparing two correctors, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.\oa{fix}
+We now proceed to estimating what sample sizes ($M$) give a good estimate of $P_{corr}(C)$.
+
+
+
+\begin{equation}
+  \small
+  Pr[C(x_i) \in Y_i] = 
+  Pr[C(x_i) \in Correct_i] \cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]
+  \label{eq:xxx}
+\end{equation}
+
+The first term is just $P_{corr}(C)$.
+In order to gain insight into the accuracy measure, we simulate a corrector. We assume that
+the corrector is such that if $C(x_i) \in Correct_i$ then $C(x_i) \sim \mathcal{D}_i$. That is, that the
+corrector produces a correction for a sentence in accordance with its prevalance. It is possible to assume
+other correctors, and it will result in a principally analysis.
+Under this assumption, the second
+term in Equation \ref{eq:xxx} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_i)]$. Therefore $Acc(C;X,Y)$ is distributed as
+a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot P_{corr}(C)\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernulli variables with different success probabilities.}
+
+%The probability to get a specific accuracy assessment over $N$ sentences will be distributed
+%as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
+%where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
+%$Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is . 
+
  
  \begin{figure}
  	%	\includesvg{exact__repeat_1000_accuracy.svg}
