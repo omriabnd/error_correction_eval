@@ -197,7 +197,7 @@ deleted fully, added, or changed slightly. This allows us to
 produce word alignment by computing the edit distnace between the tokens.
 We formulate the alignment problem as a weighted bipartite graph matching problem,
 where each side of the graph corresponds to the tokens of another part of the text.
-The weight of each edge is the edit distance between the tokens.
+Given $x_1\ldots x_n,y_1,\ldots y_m$ e weight of each edge is the edit distance between the tokens.
 To break ties, we add a penalty term. The penalty is always smaller than the minimum cost of
 one action, favoring a sentence order when a word occurs twice.\oa{could you write this in
   more exact terms?} This alignment is needed because we only know the final corrections,
@@ -336,9 +336,9 @@ Our goal is to assess what value of $M$ would be a sweetspot, which is both prac
  
 \paragraph{Sentence-level Accuracy.} We begin by analyzing the sentence-level accuracy measure,
 namely the number of sentences which were corrected in a way that exactly matches one of the
-references (also called ``Exact Match'') . While this score is less commonly used as an
+references (also called ``Exact Match''). While this score is less commonly used as an
 evaluation measure (compared to the F-score discussed below), it is the commonly used loss
-function for training statistical GEC systems\oa{put a few references}. Further motivation
+function for training statistical GEC systems\cite{rozovskaya2010training,chodorow2012problems}\oa{put a few references}. Further motivation
 for exploring it is its interpretability.
 
 Given a corrector $C$, a set of test sentences $X=\{x_1,...,x_n\}$ and their reference
