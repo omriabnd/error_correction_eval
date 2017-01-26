@@ -1,5 +1,6 @@
 \documentclass[english]{article}
 %\usepackage[round]{natbib}
+\usepackage{dsfont}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{paralist}
@@ -197,7 +198,7 @@ words in sentences.
 
 In order to measure word changes, we first compute word alignment,
 and then we count the number of different aligned words,
-in addition to the deleted or added words.
+in addition to the deleted or added wrds.
 For alignment, we note that, unlike in translation,
 aligning words is a simple task as most of the words are kept unchanged,
 deleted fully, added, or changed slightly. This allows us to
@@ -227,7 +228,7 @@ $\rho$ is low where the order of tokens is similar on both sides (according to t
 
 \begin{figure}
 	\includegraphics[width = 8cm]{spearman_ecdf}
-		\caption{Probability(y-axis) of a sentence to get Spearman's rho values(x-axis) of index alignment by different correctors. See \S\ref{par:experimental_setup} for a legend
+		\caption{Empirical cumulative probability(y-axis) of a sentence to get Spearman's rho values(x-axis) of index alignment by different correctors. See \S\ref{par:experimental_setup} for a legend
 		of the systems.
           The gold standard(dotted line) makes word change alterations to more sentences than the correctors,
           and within these sentences, it changes order more substantially.}
@@ -243,17 +244,8 @@ $\rho$ is low where the order of tokens is similar on both sides (according to t
 \end{figure}
 
 \paragraph{Results.}
-Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively.\oa{add here explanation on each of the graphs; don't worry about repeating what you said in the caption}
+Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively. In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
-
-%starting at what we see isn't changed in the gold standard. We can think of it as what calls for formal conservatism.
-%We see that it is most common for a sentence to have no change, not to concatenate two consecutive sentences and not to split a sentence into two. We also observe high correlation coefficient for most of the sentences. Summing it all together we indeed have more unchanged than changed in every measure we have. But, with a closer look we should also notice that it mostly tells us about the dataset. Specifically the level of English found in the dataset.
-%These measures should be seen as a gold standard of the amount of corrections to be done, and as we might wish to be a bit conservative and not exceed it, this is still where we should aim.
-
-%When we broaden our view and consider the results of the different correctors, the picture is clear. All correctors are over conservative.
-%It is not only that correctors don't tend to overcorrect, they all,to the last one, by all the measures we checked, undercorrect a lot
-%and are over conservative. {*}is this remark interesting at all, we show the graph for 2 corrections per sentence anyway{*}A special case would be the Cambridge output that has more sentences that have corrections than the gold standard, but unlike the gold standard almost all these sentences have 1 correction, when removing one word changes, or counting the number of changes the differences are still great . {*}do the plots need textual analyzing? e.g. explain what do we see under %correction in fig 1 2 3?{*}
-
 
 \section{Multi-Reference Measures}\label{sec:increase-reference}
 
@@ -266,21 +258,10 @@ We explore the use of multiple references for alleviating the bias towards conse
 While we still use string similarity measures, the use of multiple corrections captures
 some of the variation in the possible corrections of a sentence.
 
-%Our first question 
-%As noted before, assessment might push towards being too conservative. The cause for that
-%might hide in the number of references, denoted $M$. Before we show it, lets assume
-%that each ungrammatical sentence has some possible corrections. From
-%the corrections only 2 are in the gold standard.
-%This leads to low coverage, a high probability that a valid correction is not in the gold standard.
-%In turn, that would lead to
-%problems in both assessment and development process. 
-%In the assessment, results will not be reliable, having correct sentences regarded as mistakes.
-%This leads to more fluctuations and low scores even for a perfect output.
-
 \subsection{Notation}
 
 We assume each source sentence $s$ has a set of valid corrections $Correct_s$,
-and a discrete distribution $\mathcal{D}_s$ over $Correct_s$ reflecting their prevalance.
+and a discrete distribution $\mathcal{D}_s$ over $Correct_s$ reflecting their prevalence.
 We will assume that $s$ is evaluated by
 $M$ independently sampled references from $\mathcal{D}_s$.
 
@@ -294,7 +275,7 @@ a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across s
 An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_N$ to
 a number in $[0,1]$.
 
-Define a corector as a function from learner sentences to corrections. While correctors
+Define a corrector as a function from learner sentences to corrections. While correctors
 in general may be stochastic functions, this does not affect our analysis, and we therefore
 assume it is deterministic for the simplicity of analysis.
 
@@ -304,12 +285,8 @@ assume it is deterministic for the simplicity of analysis.
 To be able to answer interesting statistical questions about assessment we first
 need to understand the behaviour of the distributions $D_x$. For that we sample
 52 sentences with a maximum length of 15 from the NUS test data
-\cite{dahlmeier2013building}. The length restriction was made to make crowdsourcing
-annotation more reliable\oa{what do you mean?}.
-It also made sure we will not capture many interleaving
-errors from text units that could have been separated\oa{explain what you mean by
-  interleaving errors}.
-Very short sentences\oa{threshold?} were discarded, as they were
+\cite{dahlmeier2013building}. The restriction over the length was made to avoid having many different mistakes in the same text unit. It is reasonable to think corrections very far from each other are results of different mistakes, in that case we would not want the analysis to assess a very large number of corrections due to the exponential number of corrections when many unrelated mistakes occur.
+Sentences with less than 6 words were discarded, as they were
 mostly a result of sentence tokenization error,
 Histogram of sentence lengths showed a lot of the mass is below this threshold.\oa{what percent?}
 
@@ -317,18 +294,17 @@ Albeit too expensive for assessment of each development cycle, human assessment
 by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to
 be helpful in different tasks such as translation
 \cite{zaidan2011crowdsourcing,post2012constructing,graham2015improved}
-and even more so in GEC \cite{madnani2011they}\oa{why ``more so''?}.
+and maybe even more so in GEC \cite{madnani2011they} where the task is intuitive to non-experts.
 Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall,
-50 per sentence. A couple of sentences did not need correction according to a large part of the workers and hence were discarded\oa{how many?}.
+50 per sentence. 4 sentences did not need correction according to a large part of the workers and hence were discarded.
 
 \subsection{Estimating The Distribution of Corrections}
 
 We begin by estimating $\mathcal{D}_s$ for each sentence, using the crowdsourced
 corrections. We estimated its distribution of corrections $\mathcal{D}_s$
 using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantifies
-the distribution of frequencies.\oa{add a link in a footnote; also explain in a sentence what
-  this tool is, and what it was developed for} Manual tests with different inputs were done
-with satisfying result.\oa{I didn't understand the last sentence}\footnote{All data
+the distribution of frequencies\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst} is a statistical tool to assess distributions in which only the size of the support and the frequencies matters. It was originally developed for assessing how many variants a gene might have, including undiscovered ones. Thus, it accurately estimates the frequency distribution of variants that have empirical count of 0. }\lc{I put a link to a fork which is not the main but is the updated version, is that ok?} Manual tests of unseenEst with small artificially created frequencies showed
+satisfying results.\footnote{All data
   we collected, along with the estimated distributions can be found in <to be disclosed
   upon publication>}
 
@@ -349,7 +325,7 @@ We discuss two similarity measures. One is the sentence-level accuracy (also cal
 Sentence-level accuracy is the number of sentences which were corrected in a way that exactly matches one of the
 references (also called ``Exact Match''). While this score is less commonly used than F-score as an evaluation
 measure of a corrector, it is a basic, interpretabile measure and is closely related to loss functions used for
-training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems}\oa{put a few references}. 
+training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems}\lc{put a few references of actual classifiers?}. 
 
 
 Assume a set of test sentences $X=\{x_1,\ldots,x_N\}$,
@@ -370,7 +346,7 @@ Given a gold standard $Y$,  we can compute the common accuracy score, which is a
 \oa{find indicator function in latex}
 
 \begin{equation}
-  Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n 1_{C(x_i) \in Y_i}
+  Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
 \end{equation}
 
 With $Y_i=Correct_i$ this is an unbiased estimator. It is possible to get a good estimate of $Acc(C;X,Correct_i)$
@@ -809,7 +785,7 @@ the trees to be ordered, we did that in a top down fashion. An interesting
 future work would be to use unordered tree edit distance methods\cite{zhang1992editing}.
 
 All of the code to implement UCCA structures, align them and evaluate
-them is also given as a \href{https://github.com/borgr/assess_learner_language}{contribution}.
+them is also given as a \href{link will be disclosed upon publication}{contribution}.
 So is code used to create the rest of the paper.
 \lc{concerning the distances table: how many digits? should transpose the matrix? there is no reason to put both lines in the paper, seems like we want to compare them while we actually show distance results}
 
