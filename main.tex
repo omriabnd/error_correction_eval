@@ -201,7 +201,7 @@ in addition to the deleted or added words.
 For alignment, we note that, unlike in translation,
 aligning words is a simple task as most of the words are kept unchanged,
 deleted fully, added, or changed slightly. This allows us to
-produce word alignment by computing the edit distnace between the tokens.
+produce word alignment by computing the edit distance between the tokens.
 We formulate the alignment problem as a weighted bipartite graph matching problem,
 where each side of the graph corresponds to the tokens of another part of the text.
 Given $x_1\ldots x_n,y_1,\ldots y_m$ e weight of each edge is the edit distance between the tokens.\footnote{When breaking ties, we favor alignments where ...}
@@ -352,8 +352,8 @@ measure of a corrector, it is a basic, interpretabile measure and is closely rel
 training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems}\oa{put a few references}. 
 
 
-Assume a set of test sentences $X=\{x_1,...,x_N\}$,
-and their gold standard references $Y_1,...,Y_N$ . We define the
+Assume a set of test sentences $X=\{x_1,\ldots,x_N\}$,
+and their gold standard references $Y_1,\ldots,Y_N$ . We define the
 {\it coverage} of the references of the $i$-th sentence to be
 
 \begin{equation}
@@ -361,11 +361,11 @@ and their gold standard references $Y_1,...,Y_N$ . We define the
 \end{equation}
 
 Given a corrector $C$, we estimate its quality by sampling a set of source sentences
-$x_1,...,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),...,C(x_N)$ relative
-to the source. We define its probability to correct a sentence $P_{corr}(C)$
+$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
+to the source. We define its probability to correct a sentence $CP$
 as the probability that $x_i \in Correct_i$ for a randomly sampled $x_i$.
 
-Given a gold standard $Y$,  we can compute the common accuracy score, which is an estimate to $P_{corr}(C)$:
+Given a gold standard $Y$,  we can compute the common accuracy score, which is an estimate to $CP$:
 
 \oa{find indicator function in latex}
 
@@ -378,7 +378,7 @@ by taking a large enough sample from $Correct_i$, which is the common practice i
 It's clear that the sample size $N$ does not affect $\mathbb{E}[Acc(C;X,Y)]$, but the number of references
 might.
 Another property to consider is that the ratio between scores of different correctors stays the same no matter what are $p_1,\ldots,p_N$. So in this assessment we get a reliable way of comparing two correctors, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.\oa{fix}
-We now proceed to estimating what sample sizes ($M$) give a good estimate of $P_{corr}(C)$.
+We now proceed to estimating what sample sizes ($M$) give a good estimate of $CP$.
 
 
 
@@ -389,21 +389,12 @@ We now proceed to estimating what sample sizes ($M$) give a good estimate of $P_
   \label{eq:xxx}
 \end{equation}
 
-The first term is just $P_{corr}(C)$.
-In order to gain insight into the accuracy measure, we simulate a corrector. We assume that
-the corrector is such that if $C(x_i) \in Correct_i$ then $C(x_i) \sim \mathcal{D}_i$. That is, that the
-corrector produces a correction for a sentence in accordance with its prevalance. It is possible to assume
-other correctors, and it will result in a principally analysis.
-Under this assumption, the second
+The first term is just $CP$.
+In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C(x_i) \in Correct_i$ then $C(x_i) \sim \mathcal{D}_i$. 
+Thus, the second
 term in Equation \ref{eq:xxx} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_i)]$. Therefore $Acc(C;X,Y)$ is distributed as
-a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot P_{corr}(C)\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernulli variables with different success probabilities.}
+a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernoulli variables with different success probabilities.}
 
-%The probability to get a specific accuracy assessment over $N$ sentences will be distributed
-%as $$\hat{S}\sim\frac{\sum_{i=1}^{N}Ber\left(c\cdot p_i\right)}{N} $$ 
-%where $p_i=p_{covered}\left(x_i\right) $ is the probability that the i'th sentence correction will be in the gold standard. 
-%$Ber\left(p\right)$ is a Bernoulli variable with probability $p$. This is . 
-
- 
  \begin{figure}
  	%	\includesvg{exact__repeat_1000_accuracy.svg}
  	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
@@ -415,9 +406,9 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
   	\label{fig:accuracy_vals_ind}
   \end{figure}
  
- Based on the corrections we gathered and the distribution estimation we numerically compute the average coverage of a given sentence given that we randomly sample $M$ corrections for our gold standard. For every $M$ we take the mean coverage of sentence $x_i$ to be $p_i$. This defines the Poisson binomial distributions. We also relax the results when using accuracy for indexes changes in sentence, considering only which words were deleted, changed, and how many words were added. In \ref{fig:accuracy_vals} and \ref{fig:accuracy_vals_ind} we show the expected accuracy of a randomly selected perfect corrector for different values of $M$. The data suggests there is still a lot to be gained by choosing bigger $M$ values, even in the relaxed case.
+ Based on the corrections we gathered and the distribution estimation we numerically compute $p_i$. For every $M\in[20]$ and $i$ we sample 1000 times, calculate the covered probability mass and take $p_i$ to be the mean result. This defines the Poisson binomial distributions. We also relax the results when using accuracy for indexes changes in sentence, considering only which words were deleted, changed, and how many words were added. In \ref{fig:accuracy_vals} and \ref{fig:accuracy_vals_ind} we show the expected accuracy of a randomly selected perfect corrector ($PC=1$) for different values of $M$. The data suggests there is still a lot to be gained by choosing bigger $M$ values, even in the relaxed case.
  
-  As mentioned earlier, this measure is the $100\%$ and the ratio for different $c$ values is the accuracy ratio between corresponding correctors. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a corrector performance, it would be advisable to take these numbers into account.
+  As mentioned earlier, to find the score with different $PC$ all that is needed is to multiply the result by $PC$, keeping the ratio. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a corrector performance, it would be advisable to take these numbers into account.
 
 \paragraph{$F$} While accuracy is very popular for machine learning tasks, $F$ score is currently the only measure to be published in articles. As $F$ score is much more complicated, no analytical way to predict its value was proposed \cite{yeh2000more}. 
 
