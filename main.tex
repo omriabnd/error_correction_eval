@@ -23,7 +23,7 @@
 \newcommand{\lc}[1]{\footnote{\color{green}LC: #1}}
 \begin{document}
 	
-\title{The Intricacies of Reference-based Evaluation in Grammatical Error Correction}
+\title{Improved Methodology for Reference-based Evaluation in \\ Grammatical Error Correction}
 
 \author{
   Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
@@ -373,14 +373,16 @@ Given a gold standard $Y$,  we can compute the common accuracy score, which is a
   Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n 1_{C(x_i) \in Y_i}
 \end{equation}
 
-With $Y_i=Correct_i$ this is an unbiased estimator. It is possible to get a good estimate of $Acc(Z;X,Correct_i)$
-by taking a large enough sample from $Correct_i$, which is the common practice in reference-based evaluation.
+With $Y_i=Correct_i$ this is an unbiased estimator. It is possible to get a good estimate of $Acc(C;X,Correct_i)$
+by taking a large enough sample from $Correct_i$, which is the common practice in reference-based evaluation. However,
+since $Y_i \subset Correct_i$, the estimator will always underestimate $CP$
 It's clear that the sample size $N$ does not affect $\mathbb{E}[Acc(C;X,Y)]$, but the number of references
-might.
-Another property to consider is that the ratio between scores of different correctors stays the same no matter what are $p_1,\ldots,p_N$. So in this assessment we get a reliable way of comparing two correctors, but we underestimate performance depending on our coverage. The only way to get more coverage will be to acquire more annotations.\oa{fix}
+might. Another property to consider is that the ratio between accuracies of different correctors
+is always the ratio between their $CP$s, no matter what the values of $p_1,\ldots,p_N$ are.
+So in this assessment we get a reliable way of comparing two correctors,
+but we underestimate performance depending on our coverage. The only way to get more coverage
+will be to acquire more annotations.\oa{fix} 
 We now proceed to estimating what sample sizes ($M$) give a good estimate of $CP$.
-
-
 
 \begin{equation}
   \small
@@ -389,30 +391,69 @@ We now proceed to estimating what sample sizes ($M$) give a good estimate of $CP
   \label{eq:xxx}
 \end{equation}
 
-The first term is just $CP$.
-In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C(x_i) \in Correct_i$ then $C(x_i) \sim \mathcal{D}_i$. 
+The first term is $CP$. In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C(x_i) \in Correct_i$ then $C(x_i) \sim \mathcal{D}_i$. 
 Thus, the second
 term in Equation \ref{eq:xxx} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_i)]$. Therefore $Acc(C;X,Y)$ is distributed as
-a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernoulli variables with different success probabilities.}
+a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernoulli variables with different success probabilities.} We also assume our corrector is always correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
 
  \begin{figure}
- 	%	\includesvg{exact__repeat_1000_accuracy.svg}
+   	\includegraphics[width=8cm]{exact__repeat_1000_accuracy}
  	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
  	\label{fig:accuracy_vals}
  \end{figure}
-  \begin{figure}
-  	%	\includesvg{exact__repeat_1000_accuracy.svg}
-  	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
-  	\label{fig:accuracy_vals_ind}
-  \end{figure}
- 
- Based on the corrections we gathered and the distribution estimation we numerically compute $p_i$. For every $M\in[20]$ and $i$ we sample 1000 times, calculate the covered probability mass and take $p_i$ to be the mean result. This defines the Poisson binomial distributions. We also relax the results when using accuracy for indexes changes in sentence, considering only which words were deleted, changed, and how many words were added. In \ref{fig:accuracy_vals} and \ref{fig:accuracy_vals_ind} we show the expected accuracy of a randomly selected perfect corrector ($PC=1$) for different values of $M$. The data suggests there is still a lot to be gained by choosing bigger $M$ values, even in the relaxed case.
- 
-  As mentioned earlier, to find the score with different $PC$ all that is needed is to multiply the result by $PC$, keeping the ratio. This measures need not change when we enlarge the test data, the variance of the assessment is all that changes. So both when we consider the amount of annotations needed and a corrector performance, it would be advisable to take these numbers into account.
+ \begin{figure}
+   %	\includesvg{exact__repeat_1000_accuracy.svg}
+   \caption{Mean accuracy values for perfect correctors with different gold standard size.}
+   \label{fig:accuracy_vals_ind}
+ \end{figure}
 
-\paragraph{$F$} While accuracy is very popular for machine learning tasks, $F$ score is currently the only measure to be published in articles. As $F$ score is much more complicated, no analytical way to predict its value was proposed \cite{yeh2000more}. 
+ Using the estimated $\mathcal{D}_i$ for each source sentence $x_i$, we can now compute $p_i$ for any
+ size of $Y_i$ (value of $M$). However, as this computation is exponential in $M$, we estimate $p_i$ using
+ sampling. Specifically, for every $M\in[20]$ and $i$ we sample $Y_i$ 1000 times, compute 
+ the covered probability mass $Pr_{\mathcal{D}_i}[\{y: y \in Y_i\}]$ for each sample and estimate $p_i$ to be their
+ average. The $p_i$ define the Poisson Binominal distribution of $Acc(C;X,Y)$.
 
-We assess different expected results for perfect outputs with different $M$ values (see \ref{tab:F_Ms}). It is a challenge to do that without generating a whole dataset with enough annotations plus a large test set to account for the variability of different annotators. We sample uniformly a sentence from the empirical data set for each sentence in the NUS test data that needed correction by the current gold standard. For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector output. With that we use the many corrections for each sentence to account for annotation variability. At last, we transform each of the corrections into a set of edits as requested by the $M^2$ scorer\cite{dahlmeier2012better}.  
+ Figure \ref{fig:accuracy_vals} presents the expected values of $Acc(C;X,Y)$ according to our estimates of $p_i$ for
+ different values of $M$. As our corrector is perfect, we would ideally expect its accuracy to be
+ $Acc(C;X,Correct_i) = 1$. However, as the graph shows, even for values of $M$ which are much larger than
+ those considered in the GEC literature (e.g., $M=20$), the expected accuracy is only of about 0.5. 
+ 
+ In order to examine whether our findings persist with a more relaxed measure, we examine the relaxed
+ {\it Exact Index Match}, where two corrections $y$ and $y'$
+ are equivalent relative to a source $x$ if in their alignments with $x$, $a$ and $a'$ respectively,
+ if the number of deleted and added words is the same, and aligned words according to $a$ are
+ changed (different from the aligned source word) if and only if, they are changed according to $a'$.\oa{
+   explain that the alignment here is the same as described in section 2} Figure \ref{fig:accuracy_vals_ind}
+ shows that while expected accuracy is somewhat higher, still with $M=20$, it is no more than ... .
+ 
+ To recap, we see that computing accuracy exactly requires many more references than was previously attempted.
+ While common practice in GEC is to use $M=1$ or $M=2$, our simulations show that computing accuracy with
+ so few references yields a scaling down of 5 or more. The graphs do show near linear behaviour from $M=9$ or
+ so, which indicates that it reflects a reasonable balance between cost and bias.
+ 
+ \paragraph{F-Score.}
+ % present F-score
+ % say that its analysis is more difficult
+ % in order to estimate how different values of $M$ affect the bias of
+ % the F-score, we use bootstrapping methods. again with a perfect corrector
+ % explain briefly what we do.
+ % show results
+ % results are comparable to the index-based accuracy, i.e., an underestimation of the F-score
+ % by a considerable factor for M=1,2, and they do not correspond to any natural point in the graph
+ % near-linear behaviour with M=8, which is perhaps a practical solution
+
+ While accuracy is very popular for machine learning tasks, $F$ score is currently the
+ only measure to be published in articles. As $F$ score is much more complicated, no analytical way to
+ compute its value was proposed \cite{yeh2000more}. \oa{you need to define F-score, even if only in a paragraph}
+ 
+ We assess different expected results for perfect outputs with different $M$ values (see \ref{tab:F_Ms}).
+ It is a challenge to do that without generating a whole dataset with enough annotations plus a large test
+ set to account for the variability of different annotators. We sample uniformly a sentence from the
+ empirical data set for each sentence in the NUS test data that needed correction by the current gold standard.
+ For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
+ output. With that we use the many corrections for each sentence to account for annotation variability.
+ At last, we transform each of the corrections into a set of edits as requested
+ by the $M^2$ scorer \cite{dahlmeier2012better}.  
 
 This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not making a big change in respect to the human edits.
 
@@ -447,14 +488,14 @@ for both a smart allocation of resources when building a corpus and for assessin
 \end{figure}
 
 
-\paragraph{Accuracy}As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
+\paragraph{Accuracy.} As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
 \paragraph{$F$}We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
 
 The results(\ref{tab:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
-\subsection{discussion}
+\subsection{Discussion}
 
 If the NLP community has agreed one correction is not enough\cite{tetreault2008native}
 we can now say 2 is no magic number either. The gain from each annotation in respect to mean value is still high and only at about 8 becomes semi-linear. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
