@@ -136,7 +136,7 @@ The analysis of this bias is backed with an analysis of the variance of these es
 
 We further pursue an alternative way of determining whether a correction faithfully
 represents the semantics of the source, by developing a semantic measure based on the similarity
-in their semantic structures. We define a measure using the UCCA scheme \cite{abend2013universal} as a
+in their semantic structures. We define a measure using the universal conceptual cognitive annotation scheme (UCCA) \cite{abend2013universal} as a
 test case, motivated by the recent use of the scheme for machine translation evaluation \cite{birch2016hume}.
 In order to assess the feasibility of this approach, we annotate a section of the NUS \cite{dahlmeier2013building}
 parallel corpus. Our results support the feasibility of the proposed approach,
@@ -391,7 +391,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  Figure \ref{fig:accuracy_vals} presents the expected values of $Acc(C;X,Y)$ according to our estimates of $p_i$ for
  different values of $M$. As our corrector is perfect, we would ideally expect its accuracy to be
  $Acc(C;X,Correct_i) = 1$. However, as the graph shows, even for values of $M$ which are much larger than
- those considered in the GEC literature (e.g., $M=20$), the expected accuracy is only of about 0.5. 
+ those considered in the GEC literature (e.g., $M=20$), the expected accuracy is only of about 0.5.
  
  In order to examine whether our findings persist with a more relaxed measure, we examine the relaxed
  {\it Exact Index Match}, where two corrections $y$ and $y'$
@@ -501,51 +501,43 @@ conservative, and not to overcorrect. High-quality corrections make the minimal 
 necessary to form a grammatical sentence (\textit{conservatism}), and not alter the
 meaning of the source (\textit{faithfulness}). Reference-based string similarity measures
 assess the similarity of a proposed correction to a high-quality reference, 
-and thus indirectly capture both criteria. However, as demonstrated in Section \ref{sec:3},
+and thus indirectly capture both criteria. However, as demonstrated in Section \ref{sec:increase-reference},
 the variability of valid corrections may be prohibitively difficult
 to capture with a handful of references.
 
 In this section we explore a second possibility to assess the faithfulness dimension, by
-measure the {\it semantic} similarity of a proposed correction to a reference, rather
+measuring the {\it semantic} similarity of a proposed correction to a reference, rather
 than its string similarity. In doing so, we are effectively capturing some of the variation
 between possible references, which are semantically similar among themselves.
-In this section we present a semantic similarity measure between sentences in LL and
+We present a semantic similarity measure between sentences in LL and
 correct English sentences. The measure is defined as a graph distance measure between
-semantic graph representations that reflect the meaning of the source sentence and its
-reference. 
+semantic graph representations that reflect the meaning of the source sentence and its reference. 
 
 In order to empirically validate our proposal, we address two
-questions. First we ask whether a semantic annotation can be consistently
-applied to LL, as LL consists of many grammatical mistakes that makes syntactic analysis problematic. We show evidence
-that this is the case, by having two annotators annotate a sub-corpus from
-the NUS dataset, and measuring their inter-annotator agreement.\lc{It is more complicated than just to say the number of paragraphs, paragraphs come in pairs, some of the paragraphs were annotated by both annotators some were not}
-Second, we ask whether a semantic similarity between a correction and the source indeed
-reflects faithfulness of the correction. We seek to answer this question by measuring
-the semantic similarity between the source and the reference. We show support for
-an affirmative answer to this question 
+questions. First, we ask whether a semantic annotation can be consistently
+applied to LL, as LL consists of many grammatical mistakes that makes syntactic analysis ill-defined for the task. We show evidence that this is the case, by having two annotators annotate a sub-corpus from the NUS dataset, and by measuring their inter-annotator agreement.
+Second, we ask whether corrections for a sentence indeed need to be faithful to the source. We seek to answer this question by measuring
+the semantic similarity between the source and the reference. We show support for an affirmative answer to this question 
 by annotating the references provided for the NUS dataset,
-and detecting high semantic similarity between the corresponding sentences on both
-sides. 
+and detecting high semantic similarity between the corresponding sentences on both sides. 
 
+\subsection{Semantic Representation for GEC evaluation}
 
-\subsection{Syntactic and Semantic Representation for LL}
-
-Another approach of using semantic annotation would be for assessment.
 Reliable assessment by a gold standard might be hard to obtain (see
 \ref{sec:increase-reference}), and human annotation for each output
 is great \cite{madnani2011they} but costly, especially considering the
-development process. In these conditions,
-given a reliable semantic annotation we can enhance the reliability
-of our assessment. A simple way to do it is to somehow account in the
-score for semantic changes. Another, more ambitious way to do that might be to decouple the meaning
+development process. Under these conditions,
+given a reliable semantic annotation we can enhance the reliability of our assessment. A simple way to do it is to somehow account in the assessment score for semantic changes. 
+Another, more ambitious way to do that might be to decouple the meaning
 from the structure. We propose a broad idea for a reduction from grammatical
 error detection and a comparable semantics annotation to grammatical
 error correction assessment. Lets assume we have both a reliable error
 detection tool and a good way to measure semantic changes. Then, we
-can transform assessment to a 3 steps assessment. First, detect errors
-in the original text. Assess the percentage of needed corrections
-that were actually corrected. Second, assess how much did the semantics change.
- Give a negative score for changing semantics. Third, use
+can transform assessment to a 3 steps assessment. 
+Step one, detect errors in the original text. Assess the amount of needed corrections, and the percentage of which that were changed.
+Step two, assess how much did the semantics change.
+ Give a negative score for changing semantics.
+Last step, use
 the error detection again to assess how many errors exist in the correction
 output, whether uncorrected by the corrector or new errors presented
 by the correction process itself. 
@@ -565,32 +557,15 @@ fifth type. We do that without getting a human to confirm this is
 indeed a correction.
 
 This system would be even more informative than the current one. Allowing assessment of
-what exactly is the part in which a corrector failed. Answering questions
-like: was it over formally conservative and did not make enough corrections?
-Was it making changes in the right places but not correcting grammar
-successfully? Was the corrector correcting grammar but changing things
+what subtask exactly did the corrector fail to perform. Answering questions
+like: was the corrector too conservative and did not make enough corrections?
+Was it making changes in the right places but not correcting grammar successfully?
+ as the corrector correcting grammar but changing things
 it was not supposed to? etc.
 
-Semantic structures were used for LL tasks \cite{king2013shallow}, but so
-far not to GEC.
+Semantic structures were used for LL tasks \cite{king2013shallow}, but so far not to GEC. Some syntactic representations were suggested for this task, and as they are popular for structural representation we devote the next subsection to discuss them. Specifically we explain, why, apart from not being based on semantics, syntactic representation is not a good fit for LL and in particular not for enhancing the evaluation without enlarging reference number.
 
-\paragraph{UCCA.} UCCA \cite{abend2013universal} is a cross-linguistically applicable semantic annotation scheme. Formally, 
-A UCCA annotation for a sentence $s$ is a labeled directed acyclic graph $G$, whose
-leaves are the words of $s$. For every node in $G$,
-we define its yield to be its leaf descendants. The
-semantic units for $s$ according to $G$ are the yields
-of nodes in $G$.
-
- In the DAG edges are labeled with the relation the child has to the broader semantic unit the parent represents. UCCA's basic unit is a \textit{Scene} describing an action or a state that persists in time. In a \textit{Scene} there may be other \textit{Scenes} or elements such as \textit{Participant} or \textit{Time}. 
-
-
-\subsection{Experimental Setup.}
-
-\oa{how many sentences, how did you select them,
-  how was annotation performed, by how many annotators etc.}
-
-
-\subsection{Is Semantic Annotation Well-Defined for LL?}
+\subsection{Structural representation for LL}
 
 Syntactic representation is very popular and useful in many NLP tasks 
 \cite{mesfar2007named,ng2002improving,zollmann2006syntax}.
@@ -600,7 +575,7 @@ might hold a consistent
 language \cite{huebner1985system,tarone1983variability}.
 While not useless, grammatical approach is not well
 defined, and unclear both practically and theoretically. One might
-say that the grammar would be the one induced by the actual words
+say that the LL grammar would be the one induced by the actual words
 that appear in the sentence. This would lead to annotation that calls
 for applying the syntax of Proper English to the different learner
 languages that just don't correspond to it. Thus, the structures may
@@ -613,11 +588,22 @@ approach, saying the grammar meant by the learner is the one we should
 tag, but that requires having a corrected form of the sentences.
 In \ref{sec:increase-reference} we showed that for many sentences different
 corrections are possible and so, where the corrections differ so does their grammar,
-making this approach even harder to define. later in this
+making this approach even harder to define. Later in this
 section, we propose semantic annotation as a well defined structure over learner language. We also suggest that as semantics would not change much throughout the corrections, it is less prone to coverage problems due to lack of enough reference in the gold standard.
 
-\subsection{Experiments}
 
+\subsection{Experimental Setup.}
+ For all of the experiments we used paragraphs from NUS\cite{dahlmeier2013building} consisting of about 800 UCCA nodes and about 400 words each. The paragraphs were arbitrarily chosen from the first paragraphs in NUS.
+ We employed two cognition graduate students, both
+ with background of working as translators. Each
+ one had received the guidelines to read and annotate a couple of
+ proper English paragraphs and then LL paragraphs as
+ an exercise. These paragraphs were compared between the annotators
+ and each disagreement discussed in the hope of finding common annotation
+ mistakes and choosing a methodological approach to borderline cases.
+ For the different experiments 20 paragraphs were annotated, a table with the full information can be found in the appendix \ref{tab:annotated-paragraphs}.Overall, 2 LL and 2 corrected paragraphs were annotated by both annotators, 9 parallel paragraphs were annotated by the same annotator and 6 by different annotators.
+
+\subsection{Experiments}
 
 \paragraph{Is Semantic Annotation Well-Defined for LL?}
 
@@ -626,79 +612,69 @@ text. With the right tools we might capture at least some of the semantics
 of sentences and use them for whatever we wanted grammar for and for
 other tasks. In this work we will use Universal Conceptual Cognitive
 Annotation (UCCA)\cite{abend2013universal}, we will show that practically
-there are semantic annotation schemes that can be used for the purposes
-discussed.
+there are semantic annotation schemes that can be used for the purposes discussed.
+
+\paragraph{UCCA.} UCCA  is a cross-linguistically applicable semantic annotation scheme. Formally, 
+A UCCA annotation for a sentence $s$ is a labeled directed acyclic graph $G$, whose
+leaves are the words of $s$. For every node in $G$,
+we define its yield to be its leaf descendants. The
+semantic units for $s$ according to $G$ are the yields
+of nodes in $G$.
+
+In the DAG edges are labeled with the relation the child has to the broader semantic unit the parent represents. UCCA's basic unit is a \textit{Scene} describing an action or a state that persists in time. In a \textit{Scene} there may be other \textit{Scenes} or elements such as \textit{Participant} or \textit{Time}. 
 
 But as in the syntactic representation, before we can claim anything
-about semantics using UCCA it is needed to show that UCCA is even
+about semantics using UCCA it is needed to show that UCCA is
 consistent when applied to ungrammatical language such as learner
-language. To do that we used NUS\cite{dahlmeier2013building}.
-We employed two cognition graduate students, both
-with background of working as translators. Each
-one had received the guidelines to read and annotate a couple of
-proper English paragraphs and then LL paragraphs as
-an exercise. These paragraphs were compared between the annotators
-and each disagreement discussed in the hope of finding common annotation
-mistakes and choosing a methodological approach to borderline cases.
-After that each annotator has annotated 2 LL paragraphs
-consisting of almost 800 UCCA nodes each. Over the uncoordinated paragraphs
-we computed the strict inter annotator agreement mentioned by \cite{abend2013universal}
+language. \lc{things were cut from here make sure it is fluent} Over the uncoordinated paragraphs
+we computed the strict inter annotator agreement(IAA) mentioned by \cite{abend2013universal}
 considering each Node in the directed acyclic graph (DAG) of UCCA
 annotation as agrees if and only if its label and the labels of all
 its span leaves were considered to have the same labels respectively,
 from that we derive an F1 score. 
 
-We got an F1 score for the inter annotator agreement of 0.845 with
+We got an F1 score for the IAA of 0.845 with
 Precision 0.834 and Recall 0.857 we see that as enough to be a proof
 that UCCA can be applied to LL, especially considering those numbers
-are a bit higher than the inter annotator agreement originally reported
+are a bit higher than the IAA originally reported
 for native English\cite{abend2013universal}.
 We explain the rise in agreement by the fact that the guidelines and
 procedures were refined since UCCA was first introduced and not to
 superiority of UCCA for annotating LL. A similar F1
-score for inter annotator agreement (0.849) over 2 corrected paragraphs
+score for IAA (0.849) corrected paragraphs
 suggests the same.
 
 \paragraph{Is Semantic Structure Preserved in Correction?}
 
-As a next step we need to check our hypothesis that indeed when correcting we
-expect faithfulness. With UCCA as our case study each annotator annotated
-corrected paragraphs corresponding to LL ones he already annotated,
-7 different paragraphs were annotated in this way. 
-%To avoid misleading high score due to the fact that each annotator annotated both the LL paragraph and the correctedp aragraph 3 different tuples of paragraphs were annotated by both annotators allowing a cross comparison. It means that 
-We compared the annotation of the LL done by one annotator
-with the corrected
-paragraph annotation of the other annotator and vice versa, comparing 6 pairs overall. 
+After showing we can really on the UCCA annotation for LL, the next experiment aims to check our hypothesis that indeed when correcting we expect faithfulness.
+To do that we compared annotation of parallel paragraphs by the same annotator and separately parallel paragraphs annotated by different annotators. 
 
-As a next step a comparison between the annotations was needed, but
-there exists no measure for how similar two different UCCA annotations
-of different texts are. We considered using suggested semantic measures
+While planning the experimental setup a small problem occurred,
+there exists no measure for how similar two different UCCA annotations of different texts are. We considered using suggested semantic measures
 such as SMATCH\cite{cai2013smatch} but it can not work for UCCA or
 DAG similarity measures such as graph kernels (e.g.\cite{kashima2003marginalized}),
 but those tend to work on bigger graphs and would be the wrong tool
 for the small UCCA DAGs. Thus, a new measure is called upon.
 
+
 \subsection{Similarity measures\label{subsec:Similarity-measures}}
 
 We propose several new methods to compare UCCA annotation of a LL with UCCA annotation of corrected texts, giving a more accurate
-measure than the upper bound suggested by \cite{sulem2015conceptual}for
+measure than the upper bound suggested by \cite{sulem2015conceptual} for
 comparing two parallel texts in different languages, while keeping
-the essence of comparing how many of the aligned nodes conserve meaning
-and tag. For that we may think for a moment on GEC as
+the essence of comparing how many of the aligned nodes conserve meaning and tag. For that we may think for a moment on GEC as
 translation from LL to Proper English, and a good translation
 would be a translation which keeps the meaning but has the syntax
-of English. Considering that, just like in translation, we can align
-words from the LL to the corresponding words in English
+of English. Considering that, just like in translation, we can align words from the LL to the corresponding words in English
 and keep record of how many of those nodes kept their labels.
 
-As comparing labels is trivial, and done before us. We should focus on how we propose to
-align nodes. First, note that alignment should not be at
+As comparing labels is trivial, and done before us. We should focus on how we propose to align nodes. 
+First, note that comparison should not be at
 the token level, as we want to allow tokens to be corrected - replaced or removed -
 as long as the higher structures convey the same meaning. We thus
 prune the labels above the leaves, the tokens of the sentence. To
 define an alignment of the nodes, we suggest some possible ways, all
-based on first aligning the words in order to give order to the DAG
-and then comparing the structure in one way or another.
+based on first aligning the words in order to give order to the DAG and then comparing the structure in one way or another.
 
 We align words in the same manner explained in \ref{sec:formal_conservatism}.
 As to aligning nodes, we can use word spans of each node, based on
@@ -706,11 +682,11 @@ the token alignment and the DAG structure, to choose how best to align.
 A first and most straightforward approach would be to compare all
 pairs of nodes in parallel paragraphs and to each node from one paragraph
 assign the one most similar node, span wise from the other. That approach
-is quite similar to the inter annotator agreement aligning, but it
+is quite similar to the IAA aligning, but it
 has three drawbacks; it is asymmetric; it may be over optimistic aligning
 nodes without considering the DAG structure; and it might be
 slow for many nodes. Being asymmetric is not much of a problem. If we thrive for symmetry
-we can compute the measure twice and use the mean of the results,
+we can compute the measure twice and use the results mean,
 that would also be the case for other asymmetric methods we suggest.
 In order to address the other drawbacks we propose different aligning methods.
 
@@ -730,7 +706,7 @@ call for future work on refining or adjusting them, moreover, some
 labels are more semantic while other labels are currently just a place
 holder as each node must get a level, and the semantic role is not
 always clearly defined (e.g. the word ``is'' in ``he is walking''
-seem to be more syntactically related than semantically). The unused
+seem to be more syntactically related than semantically. In UCCA it is tagged as a \textit{function} word.). The unused
 labels are center, elaborator, function, relation, linker, ground
 and connector.
 
@@ -742,7 +718,7 @@ future work would be to use unordered tree edit distance methods\cite{zhang1992e
 All of the code to implement UCCA structures, align them and evaluate
 them is also given as a \href{link will be disclosed upon publication}{contribution}.
 So is code used to create the rest of the paper.
-\lc{concerning the distances table: how many digits? should transpose the matrix? there is no reason to put both lines in the paper, seems like we want to compare them while we actually show distance results}
+\lc{concerning the distances table: how many digits? should transpose the matrix? there is no reason to put both rows in the paper, seems like we want to compare them while we actually show distance results}
 
 \begin{table}[h!]
 	\centering
@@ -756,21 +732,21 @@ So is code used to create the rest of the paper.
 		Different annotator & 209.55 & 0.85 & 0.87 & 0.89
 		\\
 		\end{tabular}
-		\caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the inter annotator agreement, which means distances are indeed low.}
+		\caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the IAA, which means distances are indeed low.}
 	\end{table}
 		
 	\subsection{Results}
 	
 	We present in \ref{tab:Distances} the scores of the different presented
-	methods. For each method we present the average results of 9 pairs
-	of paragraphs annotated by the same annotator and 6 pairs where each
+	methods. For each method we present the average results of pairs
+	of paragraphs annotated by the same annotator and pairs where each
 	paragraph was annotated by a different annotator.
 	
 	Finally, we present as a control measure and a bound on the best score
-	we can expect to get in such comparison the scores of 7 paragraphs
+	we can expect to get in such comparison the scores of paragraphs
 	in which we compare two annotations for the same paragraph using all
 	the similarity measures discussed, it can be thought of as a different
-	way to defining inter annotator agreement. Note that a similarity
+	way to defining IAA. Note that a similarity
 	of 1 and distance of 0 is indeed reached when comparing an annotation with itself.
 	
 	In \ref{tab:Token_analysis} we present the results of the token analysis, the
@@ -810,7 +786,6 @@ So is code used to create the rest of the paper.
 	In conclusion, we have shown some direct ways to measure
 	semantic conservatism. Such ways will allow correctors to be less formally conservative while controlling semantic conservatism. Thus, focusing on the conservatism type users - and hence we - are more interested in.
 	\subsection{need to add to the discussion}
-	\oa{move the following two paragraphs to the discussion}
 	{\color{red} In many of the uses for correction,
 		the user does know his grammar is not perfect and would accept
 		a change in grammar when needed. Because of this approval we also
@@ -856,7 +831,35 @@ So is code used to create the rest of the paper.
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
-\appendix
-\section{}
 
+\appendix
+\section{Annotated paragraphs}
+\begin{table}[]
+	\centering
+	\label{tab:annotated-paragraphs}
+	\begin{tabular}{lll}
+		Annotator-id & NUS-id & type      \\
+		1         & 2  & corrected \\
+		2         & 2  & corrected \\
+		1         & 2  & learner   \\
+		2         & 2  & learner   \\
+		1         & 3  & corrected \\
+		2         & 3  & corrected \\
+		1         & 3  & learner   \\
+		2         & 3  & learner   \\
+		1         & 5  & corrected \\
+		2         & 5  & corrected \\
+		1         & 5  & learner   \\
+		2         & 5  & learner   \\
+		1         & 6  & learner   \\
+		2         & 6  & learner   \\
+		2         & 7  & corrected \\
+		2         & 7  & learner   \\
+		1         & 8  & corrected \\
+		1         & 8  & learner   \\
+		1         & 10 & corrected \\
+		1         & 10 & learner  
+	\end{tabular}
+	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUS corpus. Note that parallel paragraphs have the same id.}
+\end{table}
 \end{document}
