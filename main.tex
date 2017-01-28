@@ -574,13 +574,14 @@ it was not supposed to? etc.
 Semantic structures were used for LL tasks \cite{king2013shallow}, but so
 far not to GEC.
 
-\paragraph{UCCA.}\oa{we need to say a bit more about UCCA. Look for the HUME
-  paper for an example}
-A UCCA annotation for a sentence $s$ is a labeled DAG $G$, whose
+\paragraph{UCCA.} UCCA \cite{abend2013universal} is a cross-linguistically applicable semantic annotation scheme. Formally, 
+A UCCA annotation for a sentence $s$ is a labeled directed acyclic graph $G$, whose
 leaves are the words of $s$. For every node in $G$,
 we define its yield to be its leaf descendants. The
 semantic units for $s$ according to $G$ are the yields
 of nodes in $G$.
+
+ In the DAG edges are labeled with the relation the child has to the broader semantic unit the parent represents. UCCA's basic unit is a \textit{Scene} describing an action or a state that persists in time. In a \textit{Scene} there may be other \textit{Scenes} or elements such as \textit{Participant} or \textit{Time}. 
 
 
 \subsection{Experimental Setup.}
