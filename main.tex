@@ -266,8 +266,8 @@ $M$ independently sampled references from $\mathcal{D}_s$.
 
 Denote the set of source learner language sentences $X=x_{1}\ldots x_N \sim \mathcal{L}$, where
 $L$ is a distribution over all learner sentences from the domain. For each $x_i$, denote
-with $\mathcal{D}_{x_i}$ (also $\mathcal{D}_i$) its distribution of corrections (i.e., a discrete
-distribution representing, how many corrections are there and their relative frequency).
+with $\mathcal{D}_{x_i}$ (also $\mathcal{D}_i$) its distribution of corrections (i.e. a discrete
+distribution representing how many corrections are there and their relative frequency).
 Denote with $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\} \sim \mathcal{D}_{x_i}$
 a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
   Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
@@ -302,7 +302,7 @@ Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers
 We begin by estimating $\mathcal{D}_s$ for each sentence, using the crowdsourced
 corrections. We estimated its distribution of corrections $\mathcal{D}_s$
 using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantifies
-the distribution of frequencies\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst} is a statistical tool to assess distributions in which only the size of the support and the frequencies matters. It was originally developed for assessing how many variants a gene might have, including undiscovered ones. Thus, it accurately estimates the frequency distribution of variants that have empirical count of 0. }\lc{I put a link to a fork which is not the main but is the updated version(mainly python3,2 instead of only python2), is that reasonable? pull request was dead for half a year} Manual tests of unseenEst with small artificially created frequencies showed
+the distribution of frequencies\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst} is a nonparametric statistical tool to assess distributions in which only the size of the support and the frequencies matters. It was originally developed for assessing how many variants a gene might have, including undiscovered ones. Thus, it accurately estimates the frequency distribution of variants that have empirical count of 0. }\lc{I put a link to a fork which is not the main but is the updated version(mainly python3,2 instead of only python2), is that reasonable? pull request was dead for half a year.} Manual tests of unseenEst with small artificially created frequencies showed
 satisfying results.\footnote{All data
   we collected, along with the estimated distributions can be found in <to be disclosed
   upon publication>}
@@ -312,35 +312,28 @@ satisfying results.\footnote{All data
 \subsection{Assessment values}\label{subsec:Assessment-values}
 
 In the previous section we presented empirical assessment of the distribution of
-corrections of a sentence. We now turn to the consequent bias (under-estimation) in the estimation of a string-based similarity measure, for different values of $M$. Our goal is to assess what value of $M$ would be a sweet spot, which is both practical (as collecting references is costly) and reasonably biased.\lc{do we indeed assess the sweet spot? we only show the door someone must walk through it according to the budget he has}
+corrections to a sentence. We now turn to the consequent bias (under-estimation) in the estimation of a string-based similarity measure, for different values of $M$. Our goal is to assess what value of $M$ would be a sweet spot, which is both practical (as collecting references is costly) and reasonably biased.\lc{do we indeed assess the sweet spot? we only show the door someone must walk through it according to the budget he has}
 
 We discuss two similarity measures. One is the sentence-level accuracy (also called ``Exact Match'') and the other is the GEC F-score.
-
-%The values an assessment process produces are the base foundation of
-%every improvement in Computer Sciences. This gives the value an
-%almost sacred place. We think this role should be earned and measured.
  
 \paragraph{Sentence-level Accuracy.}
 Sentence-level accuracy is the number of sentences which were corrected in a way that exactly matches one of the
 references (also called ``Exact Match''). While this score is less commonly used than F-score as an evaluation
-measure of a corrector, it is a basic, interpretabile measure and is closely related to loss functions used for
-training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems}\lc{put a few references of actual classifiers?}. 
-
+measure of a corrector, it is a basic, interpretable measure and it is closely related to loss functions used for
+training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems,rozovskaya2013joint}. 
 
 Assume a set of test sentences $X=\{x_1,\ldots,x_N\}$,
 and their gold standard references $Y_1,\ldots,Y_N$ . We define the
 {\it coverage} of the references of the $i$-th sentence to be
-
 \begin{equation}
-  Cov(x_i,Y_i)=Pr_{y \sim \mathcal{D}_i}(y \in Y_i)
+  Cov\left((x_i,Y_i\right)=Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right)
 \end{equation}
 
-Given a corrector $C$, we estimate its quality by sampling a set of source sentences
+Given a corrector $C$, we define $CP$ to be its probability to correct a sentence $\mathbb{E}_{x\sim{L}}Pr\left(C\left(x\right)\in Correct_i\right)$. We estimate $C$s quality by sampling a set of source sentences
 $x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
-to the source. We define its probability to correct a sentence $CP$
-as the probability that $x_i \in Correct_i$ for a randomly sampled $x_i$.
+to the source. 
 
-Given a gold standard $Y$,  we can compute the common accuracy score, which is an estimate to $CP$:
+Given a gold standard $Y$, we can compute the common accuracy score, which is an estimate to $CP$:
 
 \begin{equation}
   Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
@@ -361,11 +354,11 @@ It's clear that the sample size $N$ does not affect $\mathbb{E}[Acc(C;X,Y)]$, bu
 might. Another property to consider is that under the reasonable assumption that $\mathbb{E}Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]$ is the same for $C$, $C'$ the ratio between their expected accuracy
 is always the ratio between their $CP$s, no matter what the values of $p_1,\ldots,p_N$ are. Intuitively, if we assume the different systems corrections are independent from the way gold standard corrections were generated, than the ratio of accuracy scores reflects the ratio between their probability to have a valid correction.
 So using $Acc$ score we get a reliable way of comparing $CP$ of two correctors,
-but we underestimate $Acc(C;X,Correct_i)$ by the scale of $\mathbb{Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]}$. The only way to decrease this bias
+but we underestimate $Acc\left(C;X,Correct_i\right)$ by the scale of $Pr\left[C\left(x_i\right) \in Y_i | C\left(x_i\right) \in Correct_i\right]$. The only way to decrease this bias
 is to enlarge $p_i$, that is to say to enlarge $M$. 
 We now proceed to estimating what sample sizes ($M$) give a good estimate of $CP$.\lc{make sure measure and score are being used consistently}
 
-In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C(x_i) \in Correct_i$ then $C(x_i) \sim \mathcal{D}_i$. 
+In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C\left(x_i\right) \in Correct_i$ then $C\left(x_i\right) \sim \mathcal{D}_i$. 
 
 Thus, the second
 term in Equation \ref{eq:correction-in-gs} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_i)]$. Therefore $Acc(C;X,Y)$ is distributed as
