@@ -307,8 +307,11 @@ satisfying results.\footnote{All data
   we collected, along with the estimated distributions can be found in <to be disclosed
   upon publication>}
 
-{\sc UnseenEst} estimates that most sentences have a large number of corrections with low probability and a rather small number of frequent corrections. For that reason, it might be reasonable to look at the distribution as taken from a heavy tailed distribution such as a power law distribution.\oa{we need some more numbers here; maybe show the pdf of the averaged distribution over all sentences? maybe with error bars showing the variance? or maybe you have another idea?}
-
+By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of two randomly sampled sentences can be seen in \ref{fig:corrections_dist}.
+\begin{figure}	\label{fig:corrections_dist}
+	\includegraphics[width = 8cm]{exact_dists_plot}
+	\caption{Frequency by rank of 2 corrections distribution. The distributions have steps containing many corrections that are just as probable with very low probability. }
+\end{figure}
 \subsection{Assessment values}\label{subsec:Assessment-values}
 
 In the previous section we presented empirical assessment of the distribution of
