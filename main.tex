@@ -221,8 +221,7 @@ $\rho$ is low where the order of tokens is similar on both sides (according to t
           according to
           the gold standard (striped column) and different correctors (colored columns). See \S\ref{par:experimental_setup} for a legend
           of the systems. The gold standard makes about an order of magnitude more splits and
-          concatenations than the correctors.}
-	\label{fig:split}
+          concatenations than the correctors.\label{fig:split}}
 \end{figure}
 
 \begin{figure}
@@ -230,16 +229,14 @@ $\rho$ is low where the order of tokens is similar on both sides (according to t
 		\caption{Empirical cumulative probability(y-axis) of a sentence to get Spearman's rho values(x-axis) of index alignment by different correctors. See \S\ref{par:experimental_setup} for a legend
 		of the systems.
           The gold standard(dotted line) makes word change alterations to more sentences than the correctors,
-          and within these sentences, it changes order more substantially.}
-	\label{fig:rho}
+          and within these sentences, it changes order more substantially.\label{fig:rho}}
 \end{figure}
 
 \begin{figure}
-	\includegraphics[width = 8cm]{words_differences}
-	\label{fig:words_changed}
+	\includegraphics[width = 8cm]{words_differences_heat}
         \caption{Amount of sentences(heat) by number of words 
         	changed(x-axis) per system(y-label). See \S\ref{par:experimental_setup} for a legend
-        	of the systems. The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.}
+        	of the systems. The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}
 \end{figure}
 
 \paragraph{Results.}
@@ -292,7 +289,7 @@ Histogram of sentence lengths showed a third of the mass is below this threshold
 Albeit too expensive for assessment of each development cycle, human assessment
 by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to
 be helpful in different tasks such as translation
-\cite{zaidan2011crowdsourcing,post2012constructing,graham2015improved}
+\cite{zaidan2011crowdsourcing, post2012constructing}
 and maybe even more so in GEC \cite{madnani2011they} where the task is intuitive to non-experts.
 Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall,
 50 per sentence. 4 sentences did not need correction according to a large part of the workers and hence were discarded.
@@ -308,11 +305,11 @@ satisfying results.\footnote{All data
   upon publication>}
 
 By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of two randomly sampled sentences can be seen in \ref{fig:corrections_dist}.
-\begin{figure}	\label{fig:corrections_dist}
+\begin{figure}
 	\includegraphics[width = 8cm]{exact_dists_plot}
-	\caption{Frequency by rank of 2 corrections distribution. The distributions have steps containing many corrections that are just as probable with very low probability. }
+	\caption{Frequency by rank of 2 corrections distribution. The distributions have steps containing many corrections that are just as probable with very low probability. 	\label{fig:corrections_dist}}
 \end{figure}
-\subsection{Assessment values}\label{subsec:Assessment-values}
+\subsection{Assessment values} \label{subsec:Assessment-values}
 
 In the previous section we presented empirical assessment of the distribution of
 corrections to a sentence. We now turn to the consequent bias (under-estimation) in the estimation of a string-based similarity measure, for different values of $M$. Our goal is to assess what value of $M$ would be a sweet spot, which is both practical (as collecting references is costly) and reasonably biased.\lc{do we indeed assess the sweet spot? we only show the door someone must walk through it according to the budget he has}
@@ -369,13 +366,11 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
 
  \begin{figure}
    	\includegraphics[width=8cm]{exact__repeat_1000_accuracy}
- 	\caption{Mean accuracy values for perfect correctors with different gold standard size.}
- 	\label{fig:accuracy_vals}
+ 	\caption{Mean accuracy values for perfect correctors with different gold standard size.\label{fig:accuracy_vals}}
  \end{figure}
  \begin{figure}
-   %	\includesvg{exact__repeat_1000_accuracy.svg}
-   \caption{Mean accuracy values for perfect correctors with different gold standard size.}
-   \label{fig:accuracy_vals_ind}
+   	\includegraphics[width=8cm]{index__repeat_1000_accuracy}
+   \caption{Mean accuracy values for perfect correctors with different gold standard size.\label{fig:accuracy_vals_ind}}
  \end{figure}
 
  Using the estimated $\mathcal{D}_i$ for each source sentence $x_i$, we can now compute $p_i$ for any
@@ -415,7 +410,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  While accuracy is very popular for machine learning tasks, $F$ score is currently the
  only measure to be published in articles. $F$ score is the weighted harmonic mean of the precision and recall. In GEC the $F$ score in use compares a set of system edits to a set of gold standard edits. As the task of GEC does not require edits from the correctors, complicated scorers \cite{dahlmeier2012better} were created to estimate the closest edits and with it the $F$ score. This and the fact that $F$ score is too complicated to be analytically examined by itself  \cite{yeh2000more} drives us to use \lc{if it is not analytic, how is it called? bootstrapping methods? True for CI not the case of the mean}.
  
- We assess different expected results for perfect outputs with different $M$ values (see \ref{tab:F_Ms}).
+ We assess different expected results for perfect outputs with different $M$ values (see \ref{fig:F_Ms}).
  It is a challenge to do that without generating a whole dataset with enough annotations plus a large test
  set to account for the variability of different annotators. We sample uniformly a sentence from the
  empirical data set for each sentence in the NUS test data that needed correction by the current gold standard.
@@ -437,7 +432,7 @@ So far we have discussed the mean values of the assessment and showed they are l
 
 We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. We also provide the numbers needed for choosing how to balance wisely. 
 
-Choosing how to balance is dependent on the goals of the one collecting data, and affects the mean value as well, as discussed in \ref{sec:Assessment-values}. Thus, we will not discuss this issue here and just point out that such questions have been studied in various fields such as genetics\cite{ionita2010optimal}.
+Choosing how to balance is dependent on the goals of the one collecting data, and affects the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we will not discuss this issue here and just point out that such questions have been studied in various fields such as genetics\cite{ionita2010optimal}.
 
 So, why is significance more complicated? Basically, because variance is more complex than mean. While $\mathbb{E}_{y\sim d_x, x\sim L}\left(\hat{S}\right)$ vary only as we change $M$
 the number of annotations, but not $N$ the number of corrections,
@@ -446,23 +441,21 @@ bound on how much it varies for different $M$ and $N$, allowing
 for both a smart allocation of resources when building a corpus and for assessing on given corpora whether two correctors are actually different.
 
 \begin{figure}
-	%	\includesvg{exact__repeat_1000_accuracy.svg}
-	\caption{F Score results with different sizes of gold standard.}
-	\label{tab:F_Ms}
+   	\includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
+	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms}}
 \end{figure}
 \begin{figure}
-	%	\includesvg{exact__repeat_1000_accuracy.svg}
-	\caption{F Score results for different correctors including confidence interval.}
-	\label{fig:F_correctors}
+   	\includegraphics[width=8cm]{$F_{0.5}$_significance}
+	\caption{F Score results for different correctors including confidence interval.\label{fig:F_correctors}}
 \end{figure}
 
 
 \paragraph{Accuracy.} As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-\paragraph{$F$} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{sec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
+\paragraph{$F$} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
 
-The results(\ref{tab:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
+The results(\ref{fig:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
 \subsection{Discussion}
 
@@ -718,7 +711,6 @@ So is code used to create the rest of the paper.
 
 \begin{table}[h!]
 	\centering
-	\label{tab:Distances}
 	\begin{tabular}{c|c|c|c|c}
 		& edit distance & fully aligned distance & top down distance & token analysis
 		\\
@@ -728,7 +720,7 @@ So is code used to create the rest of the paper.
 		Different annotator & 209.55 & 0.85 & 0.87 & 0.89
 		\\
 		\end{tabular}
-		\caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the IAA, which means distances are indeed low.}
+		\caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the IAA, which means distances are indeed low.\label{tab:Distances}}
 	\end{table}
 		
 	\subsection{Results}
@@ -752,7 +744,6 @@ So is code used to create the rest of the paper.
 		
 		\begin{table}[h!]
 			\centering
-			\label{tab:Token_analysis}
 			\begin{tabular}{c|c|c}
 				& As+Ds & Scenes\\
 				\hline
@@ -761,7 +752,7 @@ So is code used to create the rest of the paper.
 				 & 0.931606299
 				 \\
 				\end{tabular}
-				\caption{Token analysis F score for similarity in UCCA labels between structures in LL and corrected parallel paragraphs. The similarity is evidently very high.}
+				\caption{Token analysis F score for similarity in UCCA labels between structures in LL and corrected parallel paragraphs. The similarity is evidently very high.\label{tab:Token_analysis}}
 				\end{table}
 				
 	\subsection{Discussion}
@@ -832,7 +823,6 @@ So is code used to create the rest of the paper.
 \section{Annotated paragraphs}
 \begin{table}[]
 	\centering
-	\label{tab:annotated-paragraphs}
 	\begin{tabular}{lll}
 		Annotator-id & NUS-id & type      \\
 		1         & 2  & corrected \\
@@ -856,6 +846,6 @@ So is code used to create the rest of the paper.
 		1         & 10 & corrected \\
 		1         & 10 & learner  
 	\end{tabular}
-	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUS corpus. Note that parallel paragraphs have the same id.}
+	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUS corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
 \end{table}
 \end{document}
