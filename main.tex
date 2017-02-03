@@ -756,7 +756,7 @@ So is code used to create the rest of the paper.
 				\end{table}
 				
 	\subsection{Discussion}
-	
+		\lc{from here to the end needs revising}
 	From the result we learn a number of things, the upper
 	bounds in table \ref{tab:Token_analysis} suggest high stability of UCCA over GEC, and the results are similar to those shown over
 	translation. This upper bound seem not to be very strict if the other
@@ -771,9 +771,9 @@ So is code used to create the rest of the paper.
 	Most importantly we learn from it all that even when correcting grammatical errors, the semantic structure (as represented by UCCA at least) is hardly changed and thus can be used as a tool to avoid introducing semantic changes when trying to only change grammar. 
 	The symmetry measures we introduce can be used to enforce semantic conservatism.
 	In conclusion, we have shown some direct ways to measure
-	semantic conservatism. Such ways will allow correctors to be less formally conservative while controlling semantic conservatism. Thus, focusing on the conservatism type users - and hence we - are more interested in.
-	\subsection{need to add to the discussion}
-	{\color{red} In many of the uses for correction,
+	semantic faithfulness. Such ways will allow correctors to be less formally conservative while controlling semantic conservatism. Thus, focusing on what users - and hence we - are more interested in.
+	\subsection{Faithfulness and conservatism - not only due to reference number}
+	In many of the uses for correction,
 		the user does know his grammar is not perfect and would accept
 		a change in grammar when needed. Because of this approval we also
 		hypothesis, and it may call for a user study to prove or disprove
@@ -797,24 +797,7 @@ So is code used to create the rest of the paper.
 		way to say the exact same thing. The latter was recently suggested as a necessary
 		shift in the goals of GEC\cite{sakaguchi2016reassessing}.
 		Considering all this, we propose that next generation correctors and evaluation will be focused on faithfulness
-		when possible rather than on conservatism.
-		}
-		
-		\paragraph{this too}
-		\oa{move to discussion; here we need to mostly talk about what people have done in terms
-			of using syntax and semantics in LL}
-			{\color{red}
-				The first and perhaps the most obvious use of semantic annotation
-				would be to use it as a feature for correctors. The annotation may
-				capture the gist that is supposed to stay the same when correcting,
-				allowing the corrector to filter results or re-rank them based on
-				the annotation or just to put it inside the mesh of features and learn
-				automatically what to do with it, just as done with grammatical annotation.
-				Later in this section we will not only discuss how to compare those
-				features, specifically UCCA, but also why it is suspected to be a
-				valuable feature.}
-
-\section{Conclusions and further work}
+		when possible rather than on conservatism. Of course that with the evaluation comes the development and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment but also as a feature for correctors. 
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
