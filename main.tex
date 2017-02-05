@@ -138,7 +138,7 @@ We further pursue an alternative way of determining whether a correction faithfu
 represents the semantics of the source, by developing a semantic measure based on the similarity
 in their semantic structures. We define a measure using the universal conceptual cognitive annotation scheme (UCCA) \cite{abend2013universal} as a
 test case, motivated by the recent use of the scheme for machine translation evaluation \cite{birch2016hume}.
-In order to assess the feasibility of this approach, we annotate a section of the NUS \cite{dahlmeier2013building}
+In order to assess the feasibility of this approach, we annotate a section of the NUCLE \cite{dahlmeier2013building}
 parallel corpus. Our results support the feasibility of the proposed approach,
 by showing that semantic structural annotation can be consistently applied
 to learner language, as attested by the inter-annotator agreement,
@@ -167,11 +167,11 @@ has resulted in systems that tend to make too few changes in the source.
 
 \paragraph{Experimental Setup: \label{par:experimental_setup}}
 
-We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
+We evaluate conservatism on the NUCLE dataset \cite{dahlmeier2013building}, a parallel
 corpus of learner language(LL) paragraphs and their corrected versions which
 has become the de facto standard since its use in the CoNLL 2013 and 2014
 shared tasks \cite{kao2013conll,ng2014conll}.
-The NUS corpus consists of paragraphs on various topics written by language learners,
+The NUCLE corpus consists of paragraphs on various topics written by language learners,
 each containing about 400 words.
 
 In order to have better evaluation of the real goal of corrections we also
@@ -280,7 +280,7 @@ assume it is deterministic for the simplicity of analysis.
 
 To be able to answer interesting statistical questions about assessment we first
 need to understand the behaviour of the distributions $D_x$. For that we sample
-52 sentences with a maximum length of 15 from the NUS test data
+52 sentences with a maximum length of 15 from the NUCLE test data
 \cite{dahlmeier2013building}. The restriction over the length was made to avoid having many different mistakes in the same text unit. It is reasonable to think corrections very far from each other are results of different mistakes, in that case we would not want the analysis to assess a very large number of corrections due to the exponential number of corrections when many unrelated mistakes occur.
 Sentences with less than 6 words were discarded, as they were
 mostly a result of sentence tokenization error,
@@ -413,7 +413,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  We assess different expected results for perfect outputs with different $M$ values (see \ref{fig:F_Ms}).
  It is a challenge to do that without generating a whole dataset with enough annotations plus a large test
  set to account for the variability of different annotators. We sample uniformly a sentence from the
- empirical data set for each sentence in the NUS test data that needed correction by the current gold standard.
+ empirical data set for each sentence in the NUCLE test data that needed correction by the current gold standard.
  For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
  output. With that we use the many corrections for each sentence to account for annotation variability.
  At last, we transform each of the corrections into a set of edits as requested
@@ -453,7 +453,7 @@ for both a smart allocation of resources when building a corpus and for assessin
 \paragraph{Accuracy:} As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-\paragraph{$F$-score:} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
+\paragraph{$F$-score:} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUCLE test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
 
 The results(\ref{fig:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
@@ -504,10 +504,10 @@ semantic graph representations that reflect the meaning of the source sentence a
 
 In order to empirically validate our proposal, we address two
 questions. First, we ask whether a semantic annotation can be consistently
-applied to LL, as LL consists of many grammatical mistakes that makes syntactic analysis ill-defined for the task. We show evidence that this is the case, by having two annotators annotate a sub-corpus from the NUS dataset, and by measuring their inter-annotator agreement.
+applied to LL, as LL consists of many grammatical mistakes that makes syntactic analysis ill-defined for the task. We show evidence that this is the case, by having two annotators annotate a sub-corpus from the NUCLE dataset, and by measuring their inter-annotator agreement.
 Second, we ask whether corrections for a sentence indeed need to be faithful to the source. We seek to answer this question by measuring
 the semantic similarity between the source and the reference. We show support for an affirmative answer to this question 
-by annotating the references provided for the NUS dataset,
+by annotating the references provided for the NUCLE dataset,
 and detecting high semantic similarity between the corresponding sentences on both sides. 
 
 \subsection{Semantic Representation for GEC evaluation}
@@ -566,8 +566,7 @@ While not useless, grammatical approach is not well
 defined, and unclear both practically and theoretically. One might
 say that the LL grammar would be the one induced by the actual words
 that appear in the sentence. This would lead to annotation that calls
-for applying the syntax of Proper English to the different learner
-languages that just don't correspond to it. Thus, the structures may
+for applying the syntax of Proper English to the different LLs that just don't correspond to it. Thus, the structures may
 differ between different learners and they will tell us little about
 how to understand the sentence. This approach was being pursued in
 \cite{berzak2016universal,ragheb2012defining}. 
@@ -582,7 +581,7 @@ section, we propose semantic annotation as a well defined structure over learner
 
 
 \subsection{Experimental Setup}
- For all of the experiments we used paragraphs from NUS\cite{dahlmeier2013building} consisting of about 800 UCCA nodes and about 400 words each. The paragraphs were arbitrarily chosen from the first paragraphs in NUS.
+ For all of the experiments we used paragraphs from NUCLE\cite{dahlmeier2013building} consisting of about 800 UCCA nodes and about 400 words each. The paragraphs were arbitrarily chosen from the first paragraphs in NUCLE.
  We employed two cognition graduate students, both
  with background of working as translators. Each
  one had received the guidelines to read and annotate a couple of
@@ -598,8 +597,7 @@ section, we propose semantic annotation as a well defined structure over learner
 
 At least theoretically, semantics are well defined even on ungrammatical
 text. With the right tools we might capture at least some of the semantics
-of sentences and use them for whatever we wanted grammar for and for
-other tasks. In this work we will use Universal Conceptual Cognitive
+of sentences and use them for the same purposes of grammatical annotation. In this work we will use Universal Conceptual Cognitive
 Annotation (UCCA)\cite{abend2013universal}, we will show that practically
 there are semantic annotation schemes that can be used for the purposes discussed.
 
@@ -615,22 +613,20 @@ In the DAG edges are labeled with the relation the child has to the broader sema
 But as in the syntactic representation, before we can claim anything
 about semantics using UCCA it is needed to show that UCCA is
 consistent when applied to ungrammatical language such as learner
-language. \lc{things were cut from here make sure it is fluent} Over the uncoordinated paragraphs
+language. Over the uncoordinated paragraphs
 we computed the strict inter annotator agreement(IAA) mentioned by \cite{abend2013universal}
-considering each Node in the directed acyclic graph (DAG) of UCCA
+considering each node in the directed acyclic graph (DAG) of UCCA
 annotation as agrees if and only if its label and the labels of all
 its span leaves were considered to have the same labels respectively,
 from that we derive an F1 score. 
 
-We got an F1 score for the IAA of 0.845 with
-Precision 0.834 and Recall 0.857 we see that as enough to be a proof
-that UCCA can be applied to LL, especially considering those numbers
+IAA showed F1 score of 0.845, Precision 0.834 and Recall 0.857. We see that as enough to be a proof that UCCA can be applied to LL, especially considering those numbers
 are a bit higher than the IAA originally reported
 for native English\cite{abend2013universal}.
 We explain the rise in agreement by the fact that the guidelines and
 procedures were refined since UCCA was first introduced and not to
 superiority of UCCA for annotating LL. A similar F1
-score for IAA (0.849) corrected paragraphs
+score for IAA (0.849) over corrected paragraphs
 suggests the same.
 
 \paragraph{Is Semantic Structure Preserved in Correction?}
@@ -807,7 +803,7 @@ So is code used to create the rest of the paper.
 \begin{table}[]
 	\centering
 	\begin{tabular}{lll}
-		Annotator-id & NUS-id & type      \\
+		Annotator-id & NUCLE-id & type      \\
 		1         & 2  & corrected \\
 		2         & 2  & corrected \\
 		1         & 2  & learner   \\
@@ -829,6 +825,6 @@ So is code used to create the rest of the paper.
 		1         & 10 & corrected \\
 		1         & 10 & learner  
 	\end{tabular}
-	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUS corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
+	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
 \end{table}
 \end{document}
