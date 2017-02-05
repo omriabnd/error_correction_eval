@@ -165,7 +165,7 @@ away from some of the formal variation between different corrections.
 We begin by showing evidence that the bias of current measures towards conservatism
 has resulted in systems that tend to make too few changes in the source. 
 
-\paragraph{Experimental Setup \label{par:experimental_setup}}
+\paragraph{Experimental Setup: \label{par:experimental_setup}}
 
 We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
 corpus of learner language(LL) paragraphs and their corrected versions which
@@ -186,7 +186,7 @@ We conduct our evaluation on all participating systems in the CoNLL 2014,
 in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
 The particiapting systems and their abbreviations are: Adam Mickiewicz University(AMU), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
 
-\paragraph{Measures of Conservatism.} There are several ways in which the source and the reference
+\paragraph{Measures of Conservatism:} There are several ways in which the source and the reference
 may diverge. First, individual words may be altered, deleted or added.
 Second, the order of the words may be different,
 and third, source sentences may be split or concatenated in the reference.
@@ -239,7 +239,7 @@ $\rho$ is low where the order of tokens is similar on both sides (according to t
         	of the systems. The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}
 \end{figure}
 
-\paragraph{Results.}
+\paragraph{Results:}
 Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively. In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
@@ -316,7 +316,7 @@ corrections to a sentence. We now turn to the consequent bias (under-estimation)
 
 We discuss two similarity measures. One is the sentence-level accuracy (also called ``Exact Match'') and the other is the GEC F-score.
  
-\paragraph{Sentence-level Accuracy.}
+\paragraph{Sentence-level Accuracy:}
 Sentence-level accuracy is the number of sentences which were corrected in a way that exactly matches one of the
 references (also called ``Exact Match''). While this score is less commonly used than F-score as an evaluation
 measure of a corrector, it is a basic, interpretable measure and it is closely related to loss functions used for
@@ -396,7 +396,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  so few references yields a scaling down of 5 or more. The graphs do show near linear behaviour from $M=9$ or
  so, which indicates that it reflects a reasonable balance between cost and bias.
  
- \paragraph{F-Score.}
+ \paragraph{F-Score:}
  % present F-score
  % say that its analysis is more difficult
  % in order to estimate how different values of $M$ affect the bias of
@@ -450,10 +450,10 @@ for both a smart allocation of resources when building a corpus and for assessin
 \end{figure}
 
 
-\paragraph{Accuracy.} As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
+\paragraph{Accuracy:} As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-\paragraph{$F$} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
+\paragraph{$F$-score:} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUS test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
 
 The results(\ref{fig:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
@@ -581,7 +581,7 @@ making this approach even harder to define. Later in this
 section, we propose semantic annotation as a well defined structure over learner language. We also suggest that as semantics would not change much throughout the corrections, it is less prone to coverage problems due to lack of enough reference in the gold standard.
 
 
-\subsection{Experimental Setup.}
+\subsection{Experimental Setup}
  For all of the experiments we used paragraphs from NUS\cite{dahlmeier2013building} consisting of about 800 UCCA nodes and about 400 words each. The paragraphs were arbitrarily chosen from the first paragraphs in NUS.
  We employed two cognition graduate students, both
  with background of working as translators. Each
@@ -603,7 +603,7 @@ other tasks. In this work we will use Universal Conceptual Cognitive
 Annotation (UCCA)\cite{abend2013universal}, we will show that practically
 there are semantic annotation schemes that can be used for the purposes discussed.
 
-\paragraph{UCCA.} UCCA  is a cross-linguistically applicable semantic annotation scheme. Formally, 
+\paragraph{UCCA:} UCCA  is a cross-linguistically applicable semantic annotation scheme. Formally, 
 A UCCA annotation for a sentence $s$ is a labeled directed acyclic graph $G$, whose
 leaves are the words of $s$. For every node in $G$,
 we define its yield to be its leaf descendants. The
