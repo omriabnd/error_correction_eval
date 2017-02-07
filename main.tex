@@ -182,52 +182,54 @@ suffer from conservatism: they tend to make too few changes to the source.
 
 \paragraph{Experimental Setup.}\label{par:experimental_setup}
 
-We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel
-corpus of learner language (LL) paragraphs and their corrected versions which
-has become the de facto standard since its use in the CoNLL 2013 and 2014
-shared tasks \cite{kao2013conll,ng2014conll}.
-The NUCLE corpus consists of paragraphs on various topics written by language learners,
-each containing about 400 words.
+We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel corpus of learner language (LL) paragraphs and their corrected versions,
+which is the de facto standard in GEC.
+The NUCLE corpus consists of paragraphs on various topics
+written by language learners, each containing about 400 words.
 
 In order to have better evaluation of the real goal of corrections we also
-compute all of the measures on the TreeBank of Learner Language \cite{berzak2016universal},
-based on the Cambridge First Certificate in English (FCE) \cite{yannakoudakis2011new},
+compute all of the measures on the TreeBank of
+Learner Language \cite{berzak2016universal},
+based on the Cambridge First Certificate in English
+(FCE) \cite{yannakoudakis2011new},
 a new large parallel corpus containing only ungrammatical sentences of learners
-native of different languages.
+native of different languages.\oa{I didn't understand this sentence; how do we use this corpus?}
 
-We discarded all non alpha-numerics whether within a token or a token on its own.
+We discarded from our experiments evaluation all non-alpha-numeric
+characters, both within tokens or as token on their own. Punctuation is not discarded in the training
+of the correctors.
 
 We conduct our evaluation on all participating systems in the CoNLL 2014,
-in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
+in addition to the best performing system on this
+dataset \cite{rozovskaya2014building}.
 The particiapting systems and their abbreviations are: Adam Mickiewicz University(AMU), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
 
-\paragraph{Measures of Conservatism:} There are several ways in which the source and the reference
-may diverge. First, individual words may be altered, deleted or added.
-Second, the order of the words may be different,
-and third, source sentences may be split or concatenated in the reference.
-We quantify these divergences using three corresponding measures.
+\paragraph{Measures of Conservatism.}
+We measure the divergence between  the source and the reference in three ways.
 
-In order to measure sentence splitting/concatenation, we aligned sentences and counted how
-many sentences were split and how many concatenated. To align we matched sequentially last
-words in sentences.
-
-In order to measure word changes, we first compute word alignment,
-and then we count the number of different aligned words,
-in addition to the deleted or added words.
-For alignment, we note that, unlike in translation,
-aligning words is a simple task as most of the words are kept unchanged,
-deleted fully, added, or changed slightly. This allows us to
-produce word alignment by computing the edit distance between the tokens.
+First, we measure whether to what extent words were altered, deleted or added.
+In order to measure this, we first compute word alignment,
+counting the number of unaligned words, that are assumed to have been either
+deleted or added, in addition to the number of words that were altered in any way\oa{is any change considered an alteration?}.
 We formulate the alignment problem as a weighted bipartite graph matching problem,
-where each side of the graph corresponds to the tokens of another part of the text.
-Given $x_1\ldots x_n,y_1,\ldots y_m$ e weight of each edge is the edit distance between the tokens.\footnote{When breaking ties, we favor alignments where the place in the sentence is closer.}
-This alignment is needed because we only know the final corrections,
-a main obstacle that was considered in the assessment methods as well
-\cite{dahlmeier2012better}.
+placing the source and corrected tokens on the two sides of the graph.
+Edge weights are assigned to be the edit distance between the tokens.
+\footnote{When breaking ties, we favor alignments where the place in the sentence is closer.}
+We note that aligning words in this case is much simpler than in machine translation,
+as most of the words are kept unchanged, deleted fully, added, or changed slightly.
 
-Word order differences between the source and corrected sentences is
-computed by first aligning tokens as above, and computing Spearman's $\rho$ on the resulting alignment.
+%This alignment is needed because we only know the final corrections,
+%a main obstacle that was considered in the assessment methods as well
+%\cite{dahlmeier2012better}.
+
+Second, we quantify word order differences between the source and corrected sentences
+by first aligning tokens as above, and computing Spearman's $\rho$ on the resulting alignment.
 $\rho$ is low where the order of tokens is similar on both sides (according to the alignment).
+\oa{shouldn't $\rho$ be close to 1?}
+
+Third, in order to measure sentence splitting/concatenation, we align
+the sentences and count how many sentences were split and how many concatenated.
+To align we matched sequentially last words in sentences.\oa{I didn't exactly follow the last sentence}
 
 
 \begin{figure}
@@ -255,19 +257,26 @@ $\rho$ is low where the order of tokens is similar on both sides (according to t
 \end{figure}
 
 \paragraph{Results:}
-Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively. In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
+Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively.\oa{put all the three figures as sub-figures of a single figure}
+%In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multi-Reference Measures}\label{sec:increase-reference}
 
 In this section we show that the use of few references in reference-based evaluation yields
-under-estimation in the current evaluation, which encourages systems to be overly conservative.
-Specifically, we show that the common use of $M=1$ or $M=2$ yields an evaluation
-measure which penalizes valid corrections more often than deems them as correct.
+a substantial under-estimation of system's performance, which encourages systems
+to be overly conservative.
+For example, our results indicate that commonly used measures under-estimate the true performance
+of correctors by more than half, when using $M=1$ or $M=2$.
+We discuss what values of $M$ may be more suitable for reliably estimating systems' performance.
 
-We explore the use of multiple references for alleviating the bias towards conservatism.
-While we still use string similarity measures, the use of multiple corrections captures
-some of the variation in the possible corrections of a sentence.
+%While we still use string similarity measures, the use of multiple corrections captures
+%some of the variation in the possible corrections of a sentence.
+
 
 \subsection{Notation}
 
@@ -278,18 +287,19 @@ $M$ independently sampled references from $\mathcal{D}_s$.
 
 Denote the set of source learner language sentences $X=x_{1}\ldots x_N \sim \mathcal{L}$, where
 $L$ is a distribution over all learner sentences from the domain. For each $x_i$, denote
-with $\mathcal{D}_{x_i}$ (also $\mathcal{D}_i$) its distribution of corrections (i.e. a discrete
-distribution representing how many corrections are there and their relative frequency).
-Denote with $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\} \sim \mathcal{D}_{x_i}$
+with $\mathcal{D}_{i}$ its distribution of corrections.
+%(i.e. a discrete distribution representing how many corrections are there and their relative frequency).
+Denote with $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\} \sim \mathcal{D}_{i}$
 a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
   Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
 An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_N$ to
 a number in $[0,1]$.
 
-Define a corrector as a function from learner sentences to corrections. While correctors
-in general may be stochastic functions, this does not affect our analysis, and we therefore
-assume it is deterministic for the simplicity of analysis.
+Define a corrector as a function from learner sentences to corrections.
+We assume this function is deterministic for simplicity of presentation,
+but our analysis holds for the case of a stochastic mapping as well.
 
+%% OMRI: until here 7/2
 
 \subsection{Data}
 
