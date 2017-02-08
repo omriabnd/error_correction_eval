@@ -1,10 +1,11 @@
-\documentclass[11pt]{article}
+\documentclass[letter,11pt]{article}
 %\usepackage[round]{natbib}
 \usepackage{dsfont}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{subcaption}
 \usepackage{paralist}
-\usepackage{subfig}
+%\usepackage{subfig}
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage{graphicx}
@@ -18,22 +19,31 @@
 \usepackage[font={small}]{caption}
 \usetikzlibrary{positioning}
 
-\usepackage{acl2017}
+\makeatletter
+\newcommand{\@BIBLABEL}{\@emptybiblabel}
+\newcommand{\@emptybiblabel}[1]{}
+%\makeatother
+\usepackage[hidelinks]{hyperref}
+
+
+\usepackage{acl2012}
 \graphicspath{{./plots/}}
+\newcommand{\com}[1]{}
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\lc}[1]{\footnote{\color{green}LC: #1}}
+
 \begin{document}
 	
 \title{Improved Methodology for Reference-based Evaluation in \\
   Grammatical Error Correction}
 
-\author{
-  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
-  \textsuperscript{1}School of Computer Science and Engineering,
-  \textsuperscript{2} Department of Cognitive Sciences \\
-  The Hebrew University of Jerusalem \\
-  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
-}
+%\author{
+%  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
+%  \textsuperscript{1}School of Computer Science and Engineering,
+%  \textsuperscript{2} Department of Cognitive Sciences \\
+%  The Hebrew University of Jerusalem \\
+%  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
+%}
 
 
 \maketitle
@@ -103,13 +113,13 @@ emphasized over Recall, as a common evaluation measure
 in GEC \cite{dahlmeier2012better}.
 
 However, favoring precision over recall may lead to reluctance of GEC
-systems to make any changes (henceforth, {\it conservatism}).
+systems to make any changes (henceforth, {\it over-conservatism}).
 Using a single reference correction (a common practice in GEC) compounds this problem,
 as systems are not only penalized more for making an incorrect change (over not making
 any change), but are often penalized for any correct change not found in the reference.
 
 We present results that indicate that current state of the art systems suffers
-from such conservatism. Evaluating the output of 15 state
+from over-conservatism. Evaluating the output of 15 state
 of the art GEC systems that participated
 in the recent CoNLL2014 shared task, we find that all of them
 substantially under-predict corrections relative to the gold standard
@@ -148,7 +158,7 @@ We define a measure, using the UCCA scheme \cite{abend2013universal} as a
 test case, motivated by its recent use for machine translation
 evaluation \cite{birch2016hume}.
 In order to assess the feasibility of this approach, we annotate a
-section of the NUS \cite{dahlmeier2013building}
+section of the NUCLE \cite{dahlmeier2013building}
 parallel corpus. Our results support the feasibility of the proposed approach,
 by showing that semantic structural annotation can be consistently applied
 to learner language and that manually compiled references do indeed
@@ -166,7 +176,7 @@ from some of the formal variation between different valid corrections.
 %incurred by the multitude of ways to correct a sentence, and the consequent inadequacy of assessing
 %the validity of a proposed correction using its string similarity to a single reference.
 
-\section{Conservativism in GEC Systems}\label{sec:formal_conservatism}
+\section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
 
 %The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using
 %$F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that
@@ -177,40 +187,48 @@ from some of the formal variation between different valid corrections.
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 
 In this section we demonstrate that current correctors
-suffer from conservatism: they tend to make too few changes to the source. 
+suffer from over-conservatism: they tend to make too few changes to the source. 
 
 
 \paragraph{Experimental Setup.}\label{par:experimental_setup}
 
-We evaluate conservatism on the NUS dataset \cite{dahlmeier2013building}, a parallel corpus of learner language (LL) paragraphs and their corrected versions,
+Our experiments are on the NUCLE dataset \cite{dahlmeier2013building},
+a parallel corpus of learner language (LL) paragraphs and their corrected versions,
 which is the de facto standard in GEC.
-The NUCLE corpus consists of paragraphs on various topics
-written by language learners, each containing about 400 words.
+The corpus contains paragraphs in LL, each of about 400 words.
 
-In order to have better evaluation of the real goal of corrections we also
-compute all of the measures on the TreeBank of
-Learner Language \cite{berzak2016universal},
-based on the Cambridge First Certificate in English
-(FCE) \cite{yannakoudakis2011new},
-a new large parallel corpus containing only ungrammatical sentences of learners
-native of different languages.\oa{I didn't understand this sentence; how do we use this corpus?}
+We evaluate all participating systems in the CoNLL 2014,
+in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
+The particiapting systems and their abbreviations are: Adam Mickiewicz University (AMU),
+University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
+Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
+National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
+Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
+University of Franche-Comte (UFC), University of Macau (UMC),
+Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
+All are trained and tested on the NUCLE corpus.
 
-We discarded from our experiments evaluation all non-alpha-numeric
-characters, both within tokens or as token on their own. Punctuation is not discarded in the training
-of the correctors.
+We compare the prevalance of changes made by the correctors to the source,
+to the prevalance of similar changes between the source and reference (according to NUCLE).
+We discarded from our evaluation all non-alphanumeric
+characters, both within tokens or as token on their own.
 
-We conduct our evaluation on all participating systems in the CoNLL 2014,
-in addition to the best performing system on this
-dataset \cite{rozovskaya2014building}.
-The particiapting systems and their abbreviations are: Adam Mickiewicz University(AMU), University of Cambridge(CAMB), Columbia University and the University of Illinois at Urbana-Champaign(CUUI), Indian Institute of Technology, Bombay(IITB), Instituto Politecnico NacionalIPN, National Tsing Hua University(NTHU), Peking University(PKU), Pohang University of Science and Technology(POST), Research Institute for Artificial Intelligence, Romanian Academy(RAC), Shanghai Jiao Tong University(SJTU), University of Franche-Comte(UFC)University of Macau(UMC), Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
+%In order to have better evaluation of the real goal of corrections we also
+%compute all of the measures on ,
+%based on the Cambridge First Certificate in English
+%(FCE) \cite{yannakoudakis2011new},
+%a new large parallel corpus containing only ungrammatical sentences of learners
+%native of different languages.\oa{I didn't understand this sentence; how do we use this corpus?}
+
 
 \paragraph{Measures of Conservatism.}
-We measure the divergence between  the source and the reference in three ways.
+We measure the divergence between the source and the reference in three ways.
 
 First, we measure whether to what extent words were altered, deleted or added.
 In order to measure this, we first compute word alignment,
 counting the number of unaligned words, that are assumed to have been either
-deleted or added, in addition to the number of words that were altered in any way\oa{is any change considered an alteration?}.
+deleted or added, in addition to the number of words that
+were altered in any way.
 We formulate the alignment problem as a weighted bipartite graph matching problem,
 placing the source and corrected tokens on the two sides of the graph.
 Edge weights are assigned to be the edit distance between the tokens.
@@ -224,43 +242,55 @@ as most of the words are kept unchanged, deleted fully, added, or changed slight
 
 Second, we quantify word order differences between the source and corrected sentences
 by first aligning tokens as above, and computing Spearman's $\rho$ on the resulting alignment.
-$\rho$ is low where the order of tokens is similar on both sides (according to the alignment).
-\oa{shouldn't $\rho$ be close to 1?}
+$\rho$ is high where the order of tokens is similar on both sides (according to the alignment).
 
 Third, in order to measure sentence splitting/concatenation, we align
-the sentences and count how many sentences were split and how many concatenated.
-To align we matched sequentially last words in sentences.\oa{I didn't exactly follow the last sentence}
+the sentences, using word alignment as above, and count how many sentences were split
+and how many concatenated.
+%To align we matched sequentially last words in sentences.\oa{I didn't exactly follow the last sentence}
 
 
-\begin{figure}
-	\includegraphics[width = 8cm]{aligned}
-	\caption{Number of source sentences (y-axis) splitted (right bars) or concatenated (left bars) in the correction,
-          according to
-          the gold standard (striped column) and different correctors (colored columns). See \S\ref{par:experimental_setup} for a legend
-          of the systems. The gold standard makes about an order of magnitude more splits and
-          concatenations than the correctors.\label{fig:split}}
-\end{figure}
-
-\begin{figure}
-	\includegraphics[width = 8cm]{spearman_ecdf}
-		\caption{Empirical cumulative probability(y-axis) of a sentence to get Spearman's rho values(x-axis) of index alignment by different correctors. See \S\ref{par:experimental_setup} for a legend
+\begin{figure}[tbp]
+  \centering
+  \begin{subfigure}[]{0.4\textwidth}
+    \label{fig:split}
+    \includegraphics[width = \textwidth]{aligned}
+    \caption{}
+  \end{subfigure}
+  \vspace{1cm}
+  \begin{subfigure}[]{0.4\textwidth}
+      \label{fig:rho}
+      \includegraphics[width = \textwidth]{spearman_ecdf}
+  \end{subfigure}
+  \vspace{1cm}
+  \begin{subfigure}[]{0.4\textwidth}
+      \includegraphics[width = \textwidth]{words_differences_heat}
+      \label{fig:words_changed}
+  \end{subfigure}
+  \caption{\label{fig:} Number of source sentences (y-axis) splitted (right bars) or concatenated (left bars) in the correction,
+      according to
+      the gold standard (striped column) and different correctors (colored columns). See \S\ref{par:experimental_setup} for a legend of the systems. The gold standard makes about an order of magnitude more splits and
+      concatenations than the correctors.
+      Empirical cumulative probability(y-axis) of a sentence to get Spearman's rho values(x-axis) of index alignment by different correctors. See \S\ref{par:experimental_setup} for a legend
 		of the systems.
           The gold standard(dotted line) makes word change alterations to more sentences than the correctors,
-          and within these sentences, it changes order more substantially.\label{fig:rho}}
+          and within these sentences, it changes order more substantially.
+  Amount of sentences(heat) by number of words 
+        	changed(x-axis) per system(y-label). See \S\ref{par:experimental_setup} for a legend
+        	of the systems. The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.}
+  
+  
 \end{figure}
 
-\begin{figure}
-	\includegraphics[width = 8cm]{words_differences_heat}
-        \caption{Amount of sentences(heat) by number of words 
-        	changed(x-axis) per system(y-label). See \S\ref{par:experimental_setup} for a legend
-        	of the systems. The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}
-\end{figure}
 
 \paragraph{Results:}
-Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively.\oa{put all the three figures as sub-figures of a single figure}
+Figures \ref{fig:split}, \ref{fig:words_changed}, \ref{fig:rho} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures respectively.
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
+For completeness, we also present the prevalance of changes in another
+corpus, the TreeBank of Learner Language \cite[FCE]{berzak2016universal}.
+Unlike NUCLE, FCE contains only ungrammatical sentences.
 
 
 
@@ -307,8 +337,7 @@ To be able to answer interesting statistical questions about assessment we first
 need to understand the behaviour of the distributions $D_x$. For that we sample
 52 sentences with a maximum length of 15 from the NUCLE test data
 \cite{dahlmeier2013building}. The restriction over the length was made to avoid having many different mistakes in the same text unit. It is reasonable to think corrections very far from each other are results of different mistakes, in that case we would not want the analysis to assess a very large number of corrections due to the exponential number of corrections when many unrelated mistakes occur.
-Sentences with less than 6 words were discarded, as they were
-mostly a result of sentence tokenization error,
+Sentences with less than 6 words were discarded, as they were mostly a result of sentence tokenization error,
 Histogram of sentence lengths showed a third of the mass is below this threshold.\lc{does that sound ok? exact number is 0.3210555250137438, sounds a bit small}
 
 Albeit too expensive for assessment of each development cycle, human assessment
@@ -324,16 +353,18 @@ Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers
 We begin by estimating $\mathcal{D}_s$ for each sentence, using the crowdsourced
 corrections. We estimated its distribution of corrections $\mathcal{D}_s$
 using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantifies
-the distribution of frequencies\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst} is a nonparametric statistical tool to assess distributions in which only the size of the support and the frequencies matters. It was originally developed for assessing how many variants a gene might have, including undiscovered ones. Thus, it accurately estimates the frequency distribution of variants that have empirical count of 0. }\lc{I put a link to a fork which is not the main but is the updated version(mainly python3,2 instead of only python2), is that reasonable? pull request was dead for half a year.} Manual tests of unseenEst with small artificially created frequencies showed
+the distribution of frequencies\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst} is a nonparametric statistical tool to assess distributions in which only the size of the support and the frequencies matters. It was originally developed for assessing how many variants a gene might have, including undiscovered ones. Thus, it accurately estimates the frequency distribution of variants that have empirical count of 0. } Manual tests of unseenEst with small artificially created frequencies showed
 satisfying results.\footnote{All data
   we collected, along with the estimated distributions can be found in <to be disclosed
   upon publication>}
 
 By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of two randomly sampled sentences can be seen in \ref{fig:corrections_dist}.
+
 \begin{figure}
 	\includegraphics[width = 8cm]{exact_dists_plot}
 	\caption{Frequency by rank of 2 corrections distribution. The distributions have steps containing many corrections that are just as probable with very low probability. 	\label{fig:corrections_dist}}
 \end{figure}
+
 \subsection{Assessment values} \label{subsec:Assessment-values}
 
 In the previous section we presented empirical assessment of the distribution of
@@ -820,7 +851,7 @@ So is code used to create the rest of the paper.
 		Considering all this, we propose that next generation correctors and evaluation will be focused on faithfulness
 		when possible rather than on conservatism. Of course that with the evaluation comes the development and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment but also as a feature for correctors. 
 
-\bibliographystyle{acl_natbib}
+\bibliographystyle{acl2012}
 \bibliography{propose}
 
 \appendix
