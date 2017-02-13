@@ -429,12 +429,8 @@ term in Equation \ref{eq:correction-in-gs} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_
 a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernoulli variables with different success probabilities.} We also assume our corrector is always correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
 
  \begin{figure}
-   	\includegraphics[width=8cm]{exact__repeat_1000_accuracy}
- 	\caption{Mean accuracy values for perfect correctors with different gold standard size. {\bf merge this and next figure}\label{fig:accuracy_vals}}
- \end{figure}
- \begin{figure}
-   	\includegraphics[width=8cm]{index__repeat_1000_accuracy}
-   \caption{Mean accuracy values for perfect correctors with different gold standard size.\label{fig:accuracy_vals_ind}}
+   	\includegraphics[width=8cm]{repeat_1000_accuracy}
+ 	\caption{Mean accuracy values for perfect correctors with different number of references. Accuracy elbow is at about 6} \label{fig:accuracy_vals}
  \end{figure}
 
  Using the estimated $\mathcal{D}_i$ for each source sentence $x_i$, we can now compute $p_i$ for any
@@ -452,7 +448,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  {\it Exact Index Match}, where two corrections $y$ and $y'$
  are equivalent relative to a source $x$ if in their alignments with $x$, $a$ and $a'$ respectively,
  if the number of deleted and added words is the same, and aligned words according to $a$ are
- changed (different from the aligned source word) if and only if, they are changed according to $a'$. Alignment is done in the same way as in \ref{sec:formal_conservatism}. Figure \ref{fig:accuracy_vals_ind}
+ changed (different from the aligned source word) if and only if, they are changed according to $a'$. Alignment is done in the same way as in \ref{sec:formal_conservatism}. Figure \ref{fig:accuracy_vals}
  shows that while expected accuracy is somewhat higher, still with $M=20$, it is no more than 0.65.
  
  To recap, we see that computing accuracy exactly requires many more references than was previously attempted.
@@ -547,7 +543,7 @@ for both a smart allocation of resources when building a corpus and for assessin
 
 \begin{figure}
    	\includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
-	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms} {\bf add 0}}
+	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms}}
 \end{figure}
 \begin{figure}
    	\includegraphics[width=8cm]{$F_{0.5}$_significance}
