@@ -95,10 +95,11 @@
 Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many other application areas of linguistics. The field is receiving considerable
 interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo},
 CoNLL shared tasks \cite{kao2013conll,ng2014conll}.
-Within GEC, considerable effort has been placed on the difficult task of
-evaluation \cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.
-GEC evaluation is notoriously difficult, much due to the
-many valid corrections each source sentence may have\lc{you left here a place for a cite, should I cite that this is difficult or reference to having many corrections}.
+Within GEC, considerable effort has been placed on system evaluation,
+which is notoriously difficult,
+much due to the many valid corrections each source sentence may have
+\cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.
+%GEC evaluation is notoriously difficult, \lc{you left here a place for a cite, should I cite that this is difficult or reference to having many corrections}\oa{whatever best supports this claim}
 
 An important criterion in the evaluation of GEC systems (henceforth, {\it correctors})
 is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
@@ -253,8 +254,9 @@ and how many concatenated.
   		(c) Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\\
   		See \S\ref{par:experimental_setup} for a legend
   		of the systems.}\label{fig:over-conservatism}}
-  \caption{	See \S\ref{par:experimental_setup} for a legend
-        	of the systems. \label{fig:over-conservatism}}
+  \caption{\label{fig:over-conservatism}
+    See \S\ref{par:experimental_setup} for a legend
+    of the systems.}
   
   \com{
   	\begin{figure}[tbp]
@@ -289,7 +291,8 @@ and how many concatenated.
 \end{figure}
 
 \paragraph{Results:}
-Figure \ref{over-conservatism} present our results using the three measures. %split and concatenate, number of words changed per sentence and Spearman's row measures.
+Figure \ref{fig:over-conservatism} present our results using the three measures. %split and concatenate, number of words changed per sentence and Spearman's row measures.
+
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
@@ -301,13 +304,12 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multi-Reference Measures}\label{sec:increase-reference}
 
-In this section we show that the use of few references in reference-based evaluation yields
-a substantial under-estimation of system's performance, which encourages systems
-to be overly conservative.
-For example, our results indicate that commonly used measures under-estimate the true performance
-of correctors by more than half, when using $M=1$ or $M=2$.
-We discuss what values of $M$ may be more suitable for reliably estimating systems' performance.
+In this section we show that using commonly used number of references in reference-based evaluation yields a substantial under-estimation of system's performance. Specifically, our results indicate that using $M=1$ or $M=2$ leads to an under-estimation of the true performance of correctors by more than half.
+We discuss how which such an under-estimation may lead systems to be
+overly conservative, and which values of $M$ may be more suitable for
+a reliable evaluation.
 
+%, 
 %While we still use string similarity measures, the use of multiple corrections captures
 %some of the variation in the possible corrections of a sentence.
 
@@ -347,8 +349,8 @@ Histogram of sentence lengths showed a third of the mass is below this threshold
 Albeit too expensive for assessment of each development cycle, human assessment
 by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to
 be helpful in different tasks such as translation
-\cite{zaidan2011crowdsourcing, post2012constructing}
-and maybe even more so in GEC \cite{madnani2011they} where the task is intuitive to non-experts.
+\cite{zaidan2011crowdsourcing,post2012constructing}
+and in GEC \cite{madnani2011they}. % where the task is intuitive to non-experts.
 Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them, leading to 2600 corrections overall,
 50 per sentence. 4 sentences did not need correction according to a large part of the workers and hence were discarded.
 
@@ -376,7 +378,7 @@ corrections to a sentence. We now turn to the consequent bias (under-estimation)
 
 We discuss two similarity measures. One is the sentence-level accuracy (also called ``Exact Match'') and the other is the GEC F-score.
  
-\paragraph{Sentence-level Accuracy:}
+\paragraph{Sentence-level Accuracy.}
 Sentence-level accuracy is the number of sentences which were corrected in a way that exactly matches one of the
 references (also called ``Exact Match''). While this score is less commonly used than F-score as an evaluation
 measure of a corrector, it is a basic, interpretable measure and it is closely related to loss functions used for
@@ -385,7 +387,9 @@ training statistical GEC systems \cite{rozovskaya2010training,chodorow2012proble
 Assume a set of test sentences $X=\{x_1,\ldots,x_N\}$,
 and their gold standard references $Y_1,\ldots,Y_N$ . We define the
 {\it coverage} of the references of the $i$-th sentence to be
+
 \begin{equation}
+  \footnotesize
   Cov\left((x_i,Y_i\right)=Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right)
 \end{equation}
 
@@ -396,16 +400,17 @@ to the source.
 Given a gold standard $Y$, we can compute the common accuracy score, which is an estimate to $CP$:
 
 \begin{equation}
+  \footnotesize
   Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
 \end{equation}
 
 With $Y_i=Correct_i$ this is an unbiased estimator. Unlike other fields, in GEC we showed collecting all $Correct_i$ as a reference is impossible. It is possible to get a good estimate of $Acc(C;X,Correct_i)$
 by taking a large enough sample from $Correct_i$, which is the common practice in reference-based evaluation.
 \begin{align}\label{eq:correction-in-gs}
-Pr[C(x_i) \in Y_i] &= 
-Pr[C(x_i) \in Correct_i]\\\nonumber&
- \cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]\\
-&= CP\cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]\nonumber
+  \footnotesize
+  Pr[C(x_i) \in Y_i] = Pr[C(x_i) \in Correct_i] \cdot \\
+  Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i] = \nonumber \\
+  CP\cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]\nonumber
 \end{align}
 
  However, since $Y_i \subset Correct_i$, the estimator will always underestimate $CP$.\lc{We gathered all the information for sampling without repetition too, are those interesting and should be discussed? They are useful if you gather in an unrepeated way and wonder how good is your coverage }
@@ -425,7 +430,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
 
  \begin{figure}
    	\includegraphics[width=8cm]{exact__repeat_1000_accuracy}
- 	\caption{Mean accuracy values for perfect correctors with different gold standard size.\label{fig:accuracy_vals}}
+ 	\caption{Mean accuracy values for perfect correctors with different gold standard size. {\bf merge this and next figure}\label{fig:accuracy_vals}}
  \end{figure}
  \begin{figure}
    	\includegraphics[width=8cm]{index__repeat_1000_accuracy}
@@ -455,41 +460,82 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  so few references yields a scaling down of 5 or more. The graphs do show near linear behaviour from $M=9$ or
  so, which indicates that it reflects a reasonable balance between cost and bias.
  
- \paragraph{F-Score:}
+ \paragraph{F-Score.}
  % present F-score
  % say that its analysis is more difficult
  % in order to estimate how different values of $M$ affect the bias of
  % the F-score, we use bootstrapping methods. again with a perfect corrector
  % explain briefly what we do.
  % show results
- % results are comparable to the index-based accuracy, i.e., an underestimation of the F-score
+ % results are comparable to the index-based accuracy, i.e.,
+ % an underestimation of the F-score
  % by a considerable factor for M=1,2, and they do not correspond to any natural point in the graph
  % near-linear behaviour with M=8, which is perhaps a practical solution
+ While accuracy is popular as a loss function for training GEC systems,
+ $F$-score is standard when reporting a corrector's performance.
 
- While accuracy is very popular for machine learning tasks, $F$ score is currently the
- only measure to be published in articles. $F$ score is the weighted harmonic mean of the precision and recall. In GEC the $F$ score in use compares a set of system edits to a set of gold standard edits. As the task of GEC does not require edits from the correctors, complicated scorers \cite{dahlmeier2012better} were created to estimate the closest edits and with it the $F$ score. This and the fact that $F$ score is too complicated to be analytically examined by itself  \cite{yeh2000more} drives us to use \lc{if it is not analytic, how is it called? bootstrapping methods? True for CI not the case of the mean}.
+ Computing F-score is not at all straightforward. The score is computed
+ in terms of matches of {\it edits}, which are sub-strings of the source
+ that are replaced in the correction, and in the reference. Since correctors
+ do not normally produce edits, F-score is defined optimistically, maximizing
+ over all possible ways to annotate the source with edits, so as to end
+ up with the correction. 
+ The resulting optimization problem is NP-hard, but designated scorers
+ have been developed to estimate it, notably the $M^2$ scorer
+ \cite{dahlmeier2012better}.
+
+ Given the complexity of the definition of the measure, no analytical
+ analysis (as with accuracy). Instead, we use a bootstrapping
+ approach to estimate correctors' performance,
+ incurred by the use of small values of $M$.
+ % how do we measure?
  
- We assess different expected results for perfect outputs with different $M$ values (see \ref{fig:F_Ms}).
+
+% In GEC the $F$ score in use compares a set of system edits to a set of gold standard edits. As the task of GEC does not require edits from the correctors, complicated scorers  were created to estimate the closest edits and with it the $F$ score.
+
+ % what do we measure? we evalaute a perfect corrector
+ As with accuracy, we assume the evluated corrector is perfect 
+ (i.e., for every sentence $s$, it produces a correction in $Correct_s$),
+ rather than the output of existing systems, both
+ in order to avoid introducing any system-specific biases to the analysis,
+ and the high cost of computing the true F-score of a system.\oa{define ``true''
+   in the beginning of the section}
+
+ % our results
+ We assess different expected results for perfect outputs with different
+ $M$ values (see \ref{fig:F_Ms}).
  It is a challenge to do that without generating a whole dataset with enough annotations plus a large test
  set to account for the variability of different annotators. We sample uniformly a sentence from the
  empirical data set for each sentence in the NUCLE test data that needed correction by the current gold standard.
  For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
  output. With that we use the many corrections for each sentence to account for annotation variability.
  At last, we transform each of the corrections into a set of edits as requested
- by the $M^2$ scorer \cite{dahlmeier2012better}.  
+ by the $M^2$ scorer.\oa{this needs to be much more formal. also discussion
+ of difficulty should be at the end.}
+
+ % discussion
+ 
+In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect\oa{why should I expect this?}. This may result by the mechanical creation of edits. The different edits might give bias to the results\oa{but this is also true when evaluating real systems, no?}. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.
 
 This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not making a big change in respect to the human edits.
-
-In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect. This may result by the mechanical creation of edits. The different edits might give bias to the results. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.
 
 To conclude, on both measures we see a large improvement in coverage when enlarging $M$ suggesting that a more reasonable $M$ to choose would be somewhere around 8 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
  Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
 
+
+
+ 
 \subsection{On significance and variation}
 
-So far we have discussed the mean values of the assessment and showed they are lower bounds of the real values of the same assessment with a full gold standard. For some uses the value itself does not matter, what really matters is whether one value is significantly higher than another value. The assumption about significance was that with enough sentences this problem can be overcome.
+\oa{separate disucssion issues and put them in 3.6; this section is only
+  technical, with some more explanation on bootstrapping}
 
-We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. We also provide the numbers needed for choosing how to balance wisely. 
+\cite{yeh2000more}\oa{put where relevant}
+
+
+So far we have discussed the mean values of the assessment and showed they are lower bounds of the real values of the same assessment with a full gold standard.\oa{it's more than that: they substantially under-estimate it; we need to define ``true'' value of a score in the beginning} However, since measures are often used as means of comparison between different systems, not less important than the bias is the variance of these estimators, and subsequently the significance level we may obtain with them.
+
+We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. We also provide the numbers needed for choosing how to balance wisely.\oa{so instead of computing variance, we compute the M,N balance} 
 
 Choosing how to balance is dependent on the goals of the one collecting data, and affects the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we will not discuss this issue here and just point out that such questions have been studied in various fields such as genetics\cite{ionita2010optimal}.
 
@@ -501,7 +547,7 @@ for both a smart allocation of resources when building a corpus and for assessin
 
 \begin{figure}
    	\includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
-	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms}}
+	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms} {\bf add 0}}
 \end{figure}
 \begin{figure}
    	\includegraphics[width=8cm]{$F_{0.5}$_significance}
@@ -517,6 +563,19 @@ The variation is proportional to the square of the number of sentences chosen gi
 The results(\ref{fig:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
 \subsection{Discussion}
+
+\oa{discuss RoRo higher than perfect scorer; explain why perfect is not necessarily
+  maximizer of F-score (even with knowledge of all possible corrections);
+  say that RoRo doesn't make enough changes, so it's far from perfect (according
+  to the gold standard), but still it obtains comparable (and even higher
+  performance) than a perfect corrector, which is severely penalized for selecting
+  random valid corrections, which are likely not to be in the gold standard
+  due to the small value of $M$.
+  at the end explain what other factors may contribute to this difference}
+
+\oa{say that large N values are sufficient for comparing systems (significance),
+  but it will not solve the other problems: under-estimation of true performance,
+  over-conservatism, possible issues when training systems etc.}
 
 If the NLP community has agreed one correction is not enough\cite{tetreault2008native}
 we can now say 2 is no magic number either. The gain from each annotation in respect to mean value is still high and only at about 8 becomes semi-linear. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
