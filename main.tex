@@ -523,10 +523,8 @@ To conclude, on both measures we see a large improvement in coverage when enlarg
 \oa{separate disucssion issues and put them in 3.6; this section is only
   technical, with some more explanation on bootstrapping}
 
-\cite{yeh2000more}\oa{put where relevant}
 
-
-So far we have discussed the mean values of the assessment and showed they are lower bounds of the true value, and for the small $M$ in use a substantially under-estimate of it. However, since measures are often used as means of comparison between different systems, not less important than the bias is the variance of these estimators, and subsequently the significance level we may obtain with them.
+So far we have discussed the mean values of the assessment and showed they are lower bounds of the true value, and for the small $M$ in use a substantially under-estimate of it. However, since measures are often used as means of comparison between different systems, not less important than the bias is the variance of these estimators, and subsequently the significance level we may obtain with them. 
 
 We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. We also provide the numbers needed for choosing how to balance wisely.\oa{so instead of computing variance, we compute the M,N balance} 
 
@@ -551,7 +549,7 @@ for both a smart allocation of resources when building a corpus and for assessin
 \paragraph{Accuracy:} As before, we start considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
 The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-\paragraph{$F$-score:} We use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUCLE test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
+\paragraph{$F$-score:} Analyzing variance of $F$ score is intractable\cite{yeh2000more}, thus, we use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUCLE test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
 
 The results(\ref{fig:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
 
