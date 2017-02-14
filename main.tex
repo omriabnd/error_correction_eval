@@ -106,8 +106,7 @@ is their ability to generate corrections that are faithful to meaning of the sou
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters the meaning of the source \cite{brockett2006correcting}.
 As a result, often when compiling gold standard corrections for the task,
-annotators are instructed to be conservative in their corrections (e.g., in the HOO
-corpus).\footnote{Daniel Dahlmeier, personal communication.}
+annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of LL \lc{helen suddenly answered, sent the guidelines and it is very specific in them is it still "personal communication"?}.
 A recent attempt to formally capture this precision/recall asymmetry has
 been the shift from using $F_1$ to $F_{0.5}$, where Precision is
 emphasized over Recall, as a common evaluation measure
@@ -328,14 +327,13 @@ with $\mathcal{D}_{i}$ its distribution of corrections.
 Denote with $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\} \sim \mathcal{D}_{i}$
 a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
   Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
-An assessment measure is a function which maps $X$ and $Y_1,\ldots,Y_N$ to
-a number in $[0,1]$.
+An assessment measure is a function which maps $C$ a correctors output or system, $X$ and $Y_1,\ldots,Y_N$ to
+a number in $[0,1]$. We use the term true measure when $y=Correct$.
 
 Define a corrector as a function from learner sentences to corrections.
 We assume this function is deterministic for simplicity of presentation,
 but our analysis holds for the case of a stochastic mapping as well.
 
-%% OMRI: until here 7/2
 
 \subsection{Data}
 
@@ -364,7 +362,7 @@ satisfying results.\footnote{All data
   we collected, along with the estimated distributions can be found in <to be disclosed
   upon publication>}
 
-By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of two randomly sampled sentences can be seen in \ref{fig:corrections_dist}.
+By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of two randomly selected sentences can be seen in \ref{fig:corrections_dist}.
 
 \begin{figure}
 	\includegraphics[width = 8cm]{exact_dists_plot}
@@ -430,7 +428,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
 
  \begin{figure}
    	\includegraphics[width=8cm]{repeat_1000_accuracy}
- 	\caption{Mean accuracy values for perfect correctors with different number of references. Accuracy elbow is at about 6} \label{fig:accuracy_vals}
+ 	\caption{Mean accuracy values for perfect correctors with different number of references.} \label{fig:accuracy_vals}
  \end{figure}
 
  Using the estimated $\mathcal{D}_i$ for each source sentence $x_i$, we can now compute $p_i$ for any
@@ -494,8 +492,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  (i.e., for every sentence $s$, it produces a correction in $Correct_s$),
  rather than the output of existing systems, both
  in order to avoid introducing any system-specific biases to the analysis,
- and the high cost of computing the true F-score of a system.\oa{define ``true''
-   in the beginning of the section}
+ and the high cost of computing the true F-score of a system.
 
  % our results
  We assess different expected results for perfect outputs with different
@@ -529,7 +526,7 @@ To conclude, on both measures we see a large improvement in coverage when enlarg
 \cite{yeh2000more}\oa{put where relevant}
 
 
-So far we have discussed the mean values of the assessment and showed they are lower bounds of the real values of the same assessment with a full gold standard.\oa{it's more than that: they substantially under-estimate it; we need to define ``true'' value of a score in the beginning} However, since measures are often used as means of comparison between different systems, not less important than the bias is the variance of these estimators, and subsequently the significance level we may obtain with them.
+So far we have discussed the mean values of the assessment and showed they are lower bounds of the true value, and for the small $M$ in use a substantially under-estimate of it. However, since measures are often used as means of comparison between different systems, not less important than the bias is the variance of these estimators, and subsequently the significance level we may obtain with them.
 
 We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. We also provide the numbers needed for choosing how to balance wisely.\oa{so instead of computing variance, we compute the M,N balance} 
 
