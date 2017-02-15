@@ -755,7 +755,7 @@ and compute their agreement (Section \ref{sec:iaa}).
 
 In order to measure the score
 of a perfect corrector, relative to the source, we compute a similarity measure
-between the UCCA annotation of the NUCLE gold standard 
+between the UCCA annotations of the NUCLE LL essay and correction.
 
 For the different experiments 20 paragraphs were annotated, a table with the full
 information can be found in the appendix \ref{tab:annotated-paragraphs}.Overall, 2 LL
@@ -802,25 +802,15 @@ of IAA, and can be applied as consistently to LL text as to non-LL texts.
 %After showing we can rely on the UCCA annotation for LL, the next experiment
 %aims to check our hypothesis that indeed when correcting we expect faithfulness.
 
-\oa{our experiments are only about what the proposed measure is not sensitive to. (e.g., it is
-  usuaully not sensitive to differences between the LL essays in NUCLE and their corrections).
-  The other direction is important as well: what the measure is sensitive to. this of course
-  depends on the scope of distinctions covered by the semantic annotation. In UCCA's case,
-  it is argument structure etc.. we attempted to empirically show that the measure
-  captures semantic unfaithfulness by the corrections proposed by existing systems,
-  but cases of structural (rather than lexical) corrections are rare, which prohibited
-  such an experiment (footnote: in fact, this is how we got to our findings about system's
-  over-conservatism). we expect that once correctors are less conservative, this evaluation
-  will be made possible. }
 
 
-We now turn to defining a semantic measure of faithfulness.
-To do so, we compare the UCCA anotation of the source sentence and its correction.
+
+We now turn to defining a semantic measure of faithfulness. 
+To do so, we compare the UCCA annotation of the source sentence and its correction. 
 As there are no existing methods for comparing UCCA annotation 
-We propose several new methods to compare UCCA annotation of a LL with UCCA
-annotation of corrected texts.
+We propose several new methods to compare UCCA annotation of a LL with UCCA annotation of corrected texts.
 
-giving a more accurate
+Giving a more accurate
 measure than the upper bound suggested by \cite{sulem2015conceptual} for
 comparing two parallel texts in different languages, while keeping
 the essence of comparing how many of the aligned nodes conserve meaning and tag. For that we may think for a moment on GEC as
@@ -950,6 +940,12 @@ for the small UCCA DAGs. Thus, a new measure is called upon.
 				\end{table}
 				
 	\subsection{Discussion}
+	In our experiments we show that a perfect corrector receives a high faithfulness score using the suggested measures. Unlike the former measure it requires annotation for the source and no references at all.
+	
+	The experiments show the measure is usually not sensitive to differences between the LL essays their corrections. The other direction is important as well: what the measure is sensitive to. This, of course, depends on the scope of distinctions covered by the semantic annotation. In UCCA's case, it is argument structure, the connections between scenes etc. We attempted to empirically show that the measure
+	captures semantic unfaithfulness by the corrections proposed by existing systems, but cases of structural (rather than lexical) corrections are rare, which prohibited such an experiment.\footnote{In fact, this how we arrived to the findings in section \ref{fig:over-conservatism}} We expect that once correctors are less conservative, this evaluation will be made possible.
+	
+	
 		\lc{from here to the end needs revising}
 	From the result we learn a number of things, the upper
 	bounds in table \ref{tab:Token_analysis} suggest high stability of UCCA over GEC, and the results are similar to those shown over
