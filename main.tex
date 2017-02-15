@@ -213,11 +213,9 @@ characters, both within tokens or as token on their own.
 \paragraph{Measures of Conservatism:}
 We measure the divergence between the source and the reference in three ways.
 
-First, we measure to what extent words were altered, deleted or added.
-In order to measure this, we first compute word alignment,
-counting the number of unaligned words, that are assumed to have been either
-deleted or added, in addition to the number of words that
-were altered in any way.
+First, we measure to what extent \emph{words} were changed; altered, deleted or added.
+We compute word alignment, and then
+count the number of unaligned words and the aligned words that  do not match.
 We formulate the alignment problem as a weighted bipartite graph matching problem,
 placing the source and corrected tokens on the two sides of the graph.
 Edge weights are assigned to be the edit distance between the tokens.
@@ -225,12 +223,12 @@ Edge weights are assigned to be the edit distance between the tokens.
 We note that aligning words in GEC is much simpler than in machine translation,
 as most of the words are kept unchanged, deleted fully, added, or changed slightly.
 
-Second, we quantify word order differences 
+Second, we quantify word \emph{order} differences 
 by computing Spearman's $\rho$ on the alignment considered above.
 $\rho$ is lower as more order changes exist.
 
 Third, we align
-sentences and count how many sentences were split
+\emph{sentences} and count how many sentences were split
 and how many concatenated.
 
 
@@ -296,13 +294,14 @@ and how many concatenated.
 \end{figure}
 
 \paragraph{Results:}
-Figure \ref{fig:over-conservatism} present our results using the split and concatenate, number of words changed per sentence and Spearman's row measures.
+Figure \ref{fig:over-conservatism} present our results using the three measures. %split and concatenate, number of words changed per sentence and Spearman's row measures.
+
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
 
-For completeness, we also measured the prevalance of changes in
+For completeness, we also measured the prevalence of changes in
 another corpus, the TreeBank of LL \cite[FCE]{yannakoudakis2011new}.
-While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungrammatical sentences. As expected, FCE is even less conservative than NUCLE by our measures.
+While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungrammatical sentences. As expected, FCE is a bit less conservative than NUCLE by our measures.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -433,12 +432,8 @@ term in Equation \ref{eq:correction-in-gs} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_
 a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernoulli variables with different success probabilities.} We also assume our corrector is always correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
 
  \begin{figure}
-   	\includegraphics[width=8cm]{exact__repeat_1000_accuracy}
- 	\caption{Mean accuracy values for perfect correctors with different gold standard size. {\bf merge this and next figure}\label{fig:accuracy_vals}}
- \end{figure}
- \begin{figure}
-   	\includegraphics[width=8cm]{index__repeat_1000_accuracy}
-   \caption{Mean accuracy values for perfect correctors with different gold standard size.\label{fig:accuracy_vals_ind}}
+   	\includegraphics[width=8cm]{repeat_1000_accuracy}
+ 	\caption{Mean accuracy values for perfect correctors with different number of references. Accuracy elbow is at about 6} \label{fig:accuracy_vals}
  \end{figure}
 
  Using the estimated $\mathcal{D}_i$ for each source sentence $x_i$, we can now compute $p_i$ for any
@@ -456,7 +451,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  {\it Exact Index Match}, where two corrections $y$ and $y'$
  are equivalent relative to a source $x$ if in their alignments with $x$, $a$ and $a'$ respectively,
  if the number of deleted and added words is the same, and aligned words according to $a$ are
- changed (different from the aligned source word) if and only if, they are changed according to $a'$. Alignment is done in the same way as in \ref{sec:formal_conservatism}. Figure \ref{fig:accuracy_vals_ind}
+ changed (different from the aligned source word) if and only if, they are changed according to $a'$. Alignment is done in the same way as in \ref{sec:formal_conservatism}. Figure \ref{fig:accuracy_vals}
  shows that while expected accuracy is somewhat higher, still with $M=20$, it is no more than 0.65.
  
  To recap, we see that computing accuracy exactly requires many more references than was previously attempted.
@@ -551,7 +546,7 @@ for both a smart allocation of resources when building a corpus and for assessin
 
 \begin{figure}
    	\includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
-	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms} {\bf add 0}}
+	\caption{F Score results with different sizes of gold standard.\label{fig:F_Ms}}
 \end{figure}
 \begin{figure}
    	\includegraphics[width=8cm]{$F_{0.5}$_significance}
