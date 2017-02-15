@@ -102,7 +102,6 @@ Within GEC, considerable effort has been placed on system evaluation,
 which is notoriously difficult,
 much due to the many valid corrections each source sentence may have
 \cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.
-%GEC evaluation is notoriously difficult, \lc{you left here a place for a cite, should I cite that this is difficult or reference to having many corrections}\oa{whatever best supports this claim}
 
 An important criterion in the evaluation of GEC systems (henceforth, {\it correctors})
 is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
@@ -206,7 +205,7 @@ characters, both within tokens or as token on their own.
 %based on the Cambridge First Certificate in English
 %(FCE) \cite{yannakoudakis2011new},
 %a new large parallel corpus containing only ungrammatical sentences of learners
-%native of different languages.\oa{I didn't understand this sentence; how do we use this corpus?}
+%native of different languages.
 
 
 \paragraph{Measures of Conservatism:}
@@ -474,15 +473,14 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  Computing F-score is not at all straightforward. The score is computed
  in terms of matches of {\it edits}, which are sub-strings of the source
  that are replaced in the correction, and in the reference. Since correctors
- do not normally produce edits, F-score is defined optimistically, maximizing
+ do not normally produce edits, $F$-score is defined optimistically, maximizing
  over all possible ways to annotate the source with edits, so as to end
  up with the correction. 
  The resulting optimization problem is NP-hard, but designated scorers
  have been developed to estimate it, notably the $M^2$ scorer
  \cite{dahlmeier2012better}.
 
- Given the complexity of the definition of the measure, no analytical
- analysis (as with accuracy). Instead, we use a bootstrapping
+ Given the complexity of the definition of the measure, no analytical analysis is at hand (as with accuracy). Instead, we use a bootstrapping
  approach to estimate correctors' performance,
  incurred by the use of small values of $M$.
  % how do we measure?
@@ -491,7 +489,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
 % In GEC the $F$ score in use compares a set of system edits to a set of gold standard edits. As the task of GEC does not require edits from the correctors, complicated scorers  were created to estimate the closest edits and with it the $F$ score.
 
  % what do we measure? we evalaute a perfect corrector
- As with accuracy, we assume the evluated corrector is perfect 
+ As with accuracy, we assume the evaluated corrector is perfect 
  (i.e., for every sentence $s$, it produces a correction in $Correct_s$),
  rather than the output of existing systems, both
  in order to avoid introducing any system-specific biases to the analysis,
@@ -506,8 +504,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
  output. With that we use the many corrections for each sentence to account for annotation variability.
  At last, we transform each of the corrections into a set of edits as requested
- by the $M^2$ scorer.\oa{this needs to be much more formal. also discussion
- of difficulty should be at the end.}
+ by the $M^2$ scorer.\oa{this needs to be much more formal. also discussion of difficulty should be at the end.}
 
  % discussion
  
@@ -517,9 +514,6 @@ This would be a good place to mention the drawbacks and assumptions of the metho
 
 To conclude, on both measures we see a large improvement in coverage when enlarging $M$ suggesting that a more reasonable $M$ to choose would be somewhere around 8 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
  Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
-
-
-
  
 \subsection{On significance and variation}
 
