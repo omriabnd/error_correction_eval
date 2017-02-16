@@ -234,30 +234,28 @@ and how many concatenated.
   \centering
   \begin{subfigure}[]{0.4\textwidth}
   	\includegraphics[width = \textwidth]{aligned}
-  	\caption{Number of source sentences (y-axis) split 
-  		(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\label{fig:split}}
+  	\com{\caption{Number of source sentences (y-axis) split 
+  		(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\label{fig:split}}}
   \end{subfigure}
 
   \begin{subfigure}[]{0.4\textwidth}
   	\com{\caption{\label{fig:rho}}}
     \includegraphics[width = \textwidth]{spearman_ecdf}
-    \caption{Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\label{fig:rho}}
+    \com{\caption{Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\label{fig:rho}}}
   \end{subfigure}
 
   \begin{subfigure}[]{0.4\textwidth}
   	%\caption{\label{fig:words_changed}}
   	\includegraphics[width = \textwidth]{words_differences_heat}
-  	\caption{Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}
+  	\com{\caption{Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}}
   \end{subfigure}
-  \com{\caption{(a) Number of source sentences (y-axis) split 
+  \caption{(top) Number of source sentences (y-axis) split 
   		(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\\
-  		(b) Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\\
-  		(c) Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\\
+  		(mid) Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\\
+  		(bottom) Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\\
   		See \S\ref{par:experimental_setup} for a legend
-  		of the systems.}\label{fig:over-conservatism}}
-  \caption{\label{fig:over-conservatism}
-    See \S\ref{par:experimental_setup} for a legend
-    of the systems.}
+  		of the systems.\label{fig:over-conservatism}}
+  %5\caption{\label{fig:over-conservatism} See \S\ref{par:experimental_setup} for a legend of the systems.}
   
   \com{
   	\begin{figure}[tbp]
@@ -457,6 +455,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  so, which indicates that it reflects a reasonable balance between cost and bias.
  
  \paragraph{F-Score.}
+ \lc{reread}
  % present F-score
  % say that its analysis is more difficult
  % in order to estimate how different values of $M$ affect the bias of
@@ -468,7 +467,7 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  % by a considerable factor for M=1,2, and they do not correspond to any natural point in the graph
  % near-linear behaviour with M=8, which is perhaps a practical solution
  While accuracy is popular as a loss function for training GEC systems,
- $F$-score is standard when reporting a corrector's performance.
+ $F_\alpha$-score, the weighted harmonic mean of precision and recall, is standard when reporting a corrector's performance.
 
  Computing F-score is not at all straightforward. The score is computed
  in terms of matches of {\it edits}, which are sub-strings of the source
@@ -483,26 +482,29 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  Given the complexity of the definition of the measure, no analytical analysis is at hand (as with accuracy). Instead, we use a bootstrapping
  approach to estimate correctors' performance,
  incurred by the use of small values of $M$.
+ 
  % how do we measure?
+ To assess $F$ score we create a source text and gold standards with different $M$s based on the corrections we gathered.
+ For each sentence which had at least one error by the NUCLE gold standard we sample uniformly $M$ sentences from the
+ gathered empirical data to replace it. We leave sentences that do not need corrections as is. This results in reference texts accounting for the variability choices of corrections while approximating the reduction of variability by a big $N$ by consisting of $N$ sentences overall.
  
 
 % In GEC the $F$ score in use compares a set of system edits to a set of gold standard edits. As the task of GEC does not require edits from the correctors, complicated scorers  were created to estimate the closest edits and with it the $F$ score.
 
  % what do we measure? we evalaute a perfect corrector
- As with accuracy, we assume the evaluated corrector is perfect 
+ As with accuracy, we assume the evaluated corrector is perfect and sample corrections for it
  (i.e., for every sentence $s$, it produces a correction in $Correct_s$),
  rather than the output of existing systems, both
  in order to avoid introducing any system-specific biases to the analysis,
  and the high cost of computing the true F-score of a system.
 
+\lc{rewrite from here}
  % our results
  We assess different expected results for perfect outputs with different
  $M$ values (see \ref{fig:F_Ms}).
- It is a challenge to do that without generating a whole dataset with enough annotations plus a large test
- set to account for the variability of different annotators. We sample uniformly a sentence from the
- empirical data set for each sentence in the NUCLE test data that needed correction by the current gold standard.
- For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
- output. With that we use the many corrections for each sentence to account for annotation variability.
+ %It is a challenge to do that without generating a whole dataset with enough annotations plus a large test set to account for the variability of different annotators. 
+ %For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
+ %output. With that we use the many corrections for each sentence to account for annotation variability.
  At last, we transform each of the corrections into a set of edits as requested
  by the $M^2$ scorer.\oa{this needs to be much more formal. also discussion of difficulty should be at the end.}
 
