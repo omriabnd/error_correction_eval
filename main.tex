@@ -455,7 +455,6 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  so, which indicates that it reflects a reasonable balance between cost and bias.
  
  \paragraph{F-Score.}
- \lc{reread}
  % present F-score
  % say that its analysis is more difficult
  % in order to estimate how different values of $M$ affect the bias of
@@ -469,12 +468,11 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  While accuracy is popular as a loss function for training GEC systems,
  $F_\alpha$-score, the weighted harmonic mean of precision and recall, is standard when reporting a corrector's performance.
 
- Computing F-score is not at all straightforward. The score is computed
+ Computing $F$-score for GEC is not at all straightforward. The score is computed
  in terms of matches of {\it edits}, which are sub-strings of the source
  that are replaced in the correction, and in the reference. Since correctors
  do not normally produce edits, $F$-score is defined optimistically, maximizing
- over all possible ways to annotate the source with edits, so as to end
- up with the correction. 
+ over all possible ways to annotate the source with edits, so as to end up with the correction. 
  The resulting optimization problem is NP-hard, but designated scorers
  have been developed to estimate it, notably the $M^2$ scorer
  \cite{dahlmeier2012better}.
@@ -484,9 +482,10 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  incurred by the use of small values of $M$.
  
  % how do we measure?
- To assess $F$ score we create a source text and gold standards with different $M$s based on the corrections we gathered.
- For each sentence which had at least one error by the NUCLE gold standard we sample uniformly $M$ sentences from the
- gathered empirical data to replace it. We leave sentences that do not need corrections as is. This results in reference texts accounting for the variability choices of corrections while approximating the reduction of variability by a big $N$ by consisting of $N$ sentences overall.
+ To assess $F$ score we create a source text and $M$ gold standard texts based on the corrections we gathered.
+ For each sentence which had at least one error according to the NUCLE gold standard we sample $M$ sentences uniformly from the
+ gathered empirical data to replace it. We leave sentences that do not need corrections untouched. This results in reference texts accounting for the variability in different choices of corrections while approximating the reduction of variability of a big $N$ by consisting of $N$ sentences overall.
+ We transform each gold sentence into a set of edits with a heuristic mapping based on the assumption aligned words that differ define an edit.\lc{this is not formal, on the other hand it is a total heuristic, no science is involved and not even a theory of how gold edits "should" look like. So what can people do with it? and we will probably not want to focus on yet another detail.}
  
 
 % In GEC the $F$ score in use compares a set of system edits to a set of gold standard edits. As the task of GEC does not require edits from the correctors, complicated scorers  were created to estimate the closest edits and with it the $F$ score.
@@ -496,25 +495,27 @@ a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \
  (i.e., for every sentence $s$, it produces a correction in $Correct_s$),
  rather than the output of existing systems, both
  in order to avoid introducing any system-specific biases to the analysis,
- and the high cost of computing the true F-score of a system.
+ and the high cost of computing the true $F$-score of a system.
 
-\lc{rewrite from here}
  % our results
- We assess different expected results for perfect outputs with different
- $M$ values (see \ref{fig:F_Ms}).
- %It is a challenge to do that without generating a whole dataset with enough annotations plus a large test set to account for the variability of different annotators. 
- %For each sentence we sample $M$ corrections as a gold standard and one correction to be the perfect corrector
- %output. With that we use the many corrections for each sentence to account for annotation variability.
- At last, we transform each of the corrections into a set of edits as requested
- by the $M^2$ scorer.\oa{this needs to be much more formal. also discussion of difficulty should be at the end.}
+The results (see figure \ref{fig:F_Ms}) support the conclusions that there is an under estimation with $F_{0.5} = 0.42$ and an increase with bigger $M$ values.
 
  % discussion
+ An interesting finding comes from the combination of the results with the scores correctors get (with $M=2$). Some correctors get a result close to the perfect score, with one actually surpassing it. If we consider the results from section \ref{sec:formal_conservatism} it is evident that they are far from being a perfect corrector, as many sentences which evidently need correcting (even if there is more than one way to correct) are not corrected by them. Then how can they get such a high score?
  
-In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect\oa{why should I expect this?}. This may result by the mechanical creation of edits. The different edits might give bias to the results\oa{but this is also true when evaluating real systems, no?}. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.
+ \lc{Is that the right place for this general discussion of when can a system over-correct? Isn't that a prediction that drives us to look at thim multi reference? I can't find any other place in which we discuss why over conservatism comes from this problem. could it be? where should this argument come?}
+Consider an all knowing perfect corrector, this corrector takes into account the evaluation coverage and knows the probabilities of corrections to be in the gold standard. Such a corrector will choose the most frequent correction, or no correction at all.  Notably, it will choose not correct when the increase in precision when the correction is in the gold standard contributes in expectation less to the $F$ score than the loss in recall for the times it is not in the gold standard.
 
-This would be a good place to mention the drawbacks and assumptions of the methods we are using. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very large sentence for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not making a big change in respect to the human edits.
+ One would like to suggest that the outstanding correctors have learned to correct like the specific annotator they have seen in the train. But as noted it does not correct enough, so that explanation lacks. An alternative explanation for it is that our prediction was right. The correctors avoid correcting sentences which they predict not to be well covered in the gold standard, gaining from that significantly.
+ \lc{Supposedly why creating the gold standard texts and the edits is hard should come here. Not sure how important it is, well it is hard, but this is what we have chosen and I don't think of a specific criticism we should fend off by it.}
+%In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect\oa{why should I expect this?}. \lc{funny that you ask, well you did ask me that in person afterwards didn't you? :D}
 
-To conclude, on both measures we see a large improvement in coverage when enlarging $M$ suggesting that a more reasonable $M$ to choose would be somewhere around 8 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
+This would be a good place to mention the drawbacks and assumptions of the methods we are using, e.g. the explanation of a bad sampling is not probable but can not be refuted. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very long sentences for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not a big shift in respect to the human edits.
+
+\com{This may result by the mechanical creation of edits. The different edits might give bias to the results\oa{but this is also true when evaluating real systems, no?}. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.}
+\lc{as you have writen, edits bring bias to evaluation generallym not only in our case, and they are actually not a part of the task, should we include it somehow? we do talk about evaluation as the main frame of this discussion, this sounds to me like an interesting and important note}
+
+To conclude, on both measures we see a large improvement in coverage when enlarging $M$ suggesting that a more reasonable $M$ to choose would be somewhere around 7 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
  Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
  
 \subsection{On significance and variation}
@@ -535,49 +536,39 @@ So far we have discussed the mean values of the assessment and showed they are l
 \end{figure}
 
 
-\paragraph{Accuracy:} As before, we start by considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $m$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $n$ we get $\frac{\sum_{i=1}^{n}p_i\cdot\left(1-p_i\right)}{n^2}$. 
-The variation is proportional to the square of the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
+\paragraph{Accuracy:} As before, we start by considering the analytic formalism we have for accuracy. For that, sentences which were not corrected, or wrongly corrected have no variance with different $M$s, corrected sentences do. The variation of the Poisson binomial random variable we have is $\sum_{i=1}^{N}p_i\cdot\left(1-p_i\right)$ and as we divide the variable by $N$ we get $\frac{\sum_{i=1}^{N}p_i\cdot\left(1-p_i\right)}{N^2}$. 
+The variation is proportional to the number of sentences chosen given fixed $p_i$ values. Given a fixed $N$ variation gets lower as $p_i$s get away from $0.5$, a change that, from a certain point, occurs when $M$ is increased.
 
-\paragraph{$F$-score:} Analyzing variance of $F$ score is intractable\cite{yeh2000more}, thus, we use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUCLE test data ($m=2$), based on the same process as in \ref{subsec:Assessment-values}. Results can be seen in \ref{fig:F_correctors}. The results supports our method of assessing as the bounds indeed cover the actual scores seen in all of the cases.
+\paragraph{$F$-score:} Analyzing variance of $F$ score is intractable\cite{yeh2000more}, thus, we use bias-corrected and accelerated bootstrap \cite{efron1987better}, to assess the $95\%$ confidence interval of different correctors with the current NUCLE test data ($M=2$), based on the same process as in \ref{subsec:Assessment-values}. In short, bootstrapping methods sample with repetition from the empirical distribution of the observed data to estimate properties (e.g. confidence-interval) of the statistic (e.g. $F$-score) over the distribution. 
 
-The results(\ref{fig:F_Ms}) suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$. We can also learn from them what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}.
+We can learn from the results as seen in figure \ref{fig:F_correctors} what should be thought of as significant, for example the best performing corrector is significantly better than the second best we have checked, but is not significantly better than the other correctors proposed in the same article\cite{rozovskaya2016grammatical}. The results also  support the validity of the assessment method as the confidence interval indeed cover the actual scores seen in all of the cases. 
+
+The results in figure \ref{fig:F_Ms} suggest no great improvement of significance should be expected in the transition from $M=2$ to $M=5,8$.
 
 \subsection{Discussion}
-\com{migrated paragraphs:
-	
-	We wish to show a somewhat more complex point of view, stating that the way to reduce variation in assessment values would be to balance between the number of sentences and the number of annotations per sentence. We also provide the numbers needed for choosing how to balance wisely.\oa{so instead of computing variance, we compute the M,N balance} 
-	
-	Choosing how to balance is dependent on the goals of the one collecting data, and affects the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we will not discuss this issue here and just point out that such questions have been studied in various fields such as genetics\cite{ionita2010optimal}.
-	
-	So, why is significance more complicated? Basically, because variance is more complex than mean. While $\mathbb{E}_{y\sim d_x, x\sim L}\left(\hat{S}\right)$ vary only as we change $M$
-	the number of annotations, but not $N$ the number of corrections,
-	$Var_{y\sim d_x, x\sim L}(\hat{S})$ depends on both. We try to assess and give an upper
-	bound on how much it varies for different $M$ and $N$, allowing
-	for both a smart allocation of resources when building a corpus and for assessing on given corpora whether two correctors are actually different.
-	}
-
-
-\oa{discuss RoRo higher than perfect scorer; explain why perfect is not necessarily
-  maximizer of F-score (even with knowledge of all possible corrections);
-  say that RoRo doesn't make enough changes, so it's far from perfect (according
-  to the gold standard), but still it obtains comparable (and even higher
-  performance) than a perfect corrector, which is severely penalized for selecting
-  random valid corrections, which are likely not to be in the gold standard
-  due to the small value of $M$.
-  at the end explain what other factors may contribute to this difference}
-
-\oa{say that large N values are sufficient for comparing systems (significance),
-  but it will not solve the other problems: under-estimation of true performance,
-  over-conservatism, possible issues when training systems etc.}
-
-If the NLP community has agreed one correction is not enough\cite{tetreault2008native}
-we can now say 2 is no magic number either. The gain from each annotation in respect to mean value is still high and only at about 8 becomes semi-linear. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
+\lc{make it a coherent discussion, add the discussion found in the F score.}
 We see that considering the changed indexes, looking for example at different synonyms as the same correction, still holds a very large number of different corrections for every sentence.
 
 Perhaps less obvious will be how low coverage affects the development
 process. Even if corrected well, sentences which have more possible
 corrections will grant lower scores on precision for correcting, while recall will not grant high reward for correcting, as most of the time the correction will be considered false anyway. This, and especially in the precision oriented scenario, will lead implicitly in algorithm development cycles, to learn \textbf{not} to correct those sentences at all. Also, consider any machine learning algorithm which somehow represents the notion that not correcting is more important than false correction. An example for such algorithm would be one that uses a loss function with a special case for the output equals the input. Such algorithms would also learn to avoid correcting, as corrections would most likely result in high loss, even when their correction is actually valid.
 In the rest of this section we will show that the assumptions we made are the current reality. 
+\lc{from here more coherent}
+
+The factors controlling what is considered significance are more complex than the ones controlling the mean score. Variation comes from the variation across sentences which is reduced with $N$ and the variation across choices of corrections which might be reduced with either $M$ or $N$. One can rightly deduce that large $N$ is sufficient for variation, but it will not solve the other problems: under-estimation of true performance,
+over-conservatism, possible issues when training systems, and might be more costly than annotating a larger $M$ without acquiring more sentences and also annotating them.
+	Choosing how to balance is dependent on the goals of the one collecting data, and affects over the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we bring supporting data and leave the decision to the reader. We just point out that such balancing questions have been studied in various fields such as genetics\cite{ionita2010optimal}.
+
+\com{\lc{I think this can be omitted}
+So, why is significance more complicated? Basically, because variance is more complex than mean. While $\mathbb{E}_{y\sim d_x, x\sim L}\left(\hat{S}\right)$ vary only as we change $M$
+	the number of annotations, but not $N$ the number of corrections,
+	$Var_{y\sim d_x, x\sim L}(\hat{S})$ depends on both. We try to assess and give an upper
+	bound on how much it varies for different $M$ and $N$, allowing
+	for both a smart allocation of resources when building a corpus and for assessing on given corpora whether two correctors are actually different.
+	}
+
+To conclude, if the NLP community has agreed one correction is not enough\cite{tetreault2008native}
+we can now say 2 is no magic number either. We better understand the gain from each annotation in respect to mean value and it is still high becoming semi-linear only at about 7. We can also see the effect of different references amounts on significance and mean value of both accuracy and precision, recall and F score.
 
 
 \section{Semantic Similarity Measure}\label{sec:Semantics}
