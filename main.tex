@@ -735,8 +735,7 @@ and {\it Adverbials}, such as manner or temporal descriptions.
 
 Importantly, UCCA's categories directly reflect semantic, rather than distributional, distinctions .
 For instance, UCCA is not sensitive to POS distinctions: a Scene's main relation can be a verb but also an adjective
-(``[He]${\rm_{A}}$ ['s thin]${\rm_{S}}$'') or 
-a noun (``[John 's]${\rm_{A}}$ [decision]${\rm_{P}}$'').
+(``He is {\bf thin}'') or a noun (``John's {\bf decision}'').
 Indeed, \newcite{sulem2015conceptual} has found
 that UCCA structures are preserved remarkably well across translations.
 
@@ -750,8 +749,8 @@ Training passages were excluded from the evaluation.
 
 We experiment on 7 essays and their corrections from NUCLE, each of about 400 tokens.
 In order to measure inter-anntoator agreement, we assigned 4 of these essays to both annotators
-and compute their agreement (Section \ref{sec:iaa}).
-In order to measure the faithfulness score for a perfect corrector, we annotate both
+and compute their agreement. In order to measure
+the faithfulness score for a perfect corrector, we annotate both
 the source and corrected version for 6 essays, some of which were annotated by
 both annotators.
 
@@ -769,14 +768,6 @@ edge $(v_1,u_1) \in G_1$ is said to match an edge in $(v_2,u_2) \in G_2$ if
 they have the same label, and if the leaves
 reachable from $u_1$ are the same as those reachable from $u_2$. 
 (the measure collapses to the common parsing F-score if $G_1$ and $G_2$ are trees)
-
-We obtain an F1 score of 0.845 (Precision 0.834, Recall 0.857), which
-is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
-As another point of comparison, we doubly annotated 3 corrected NUCLE passages,
-obtaining a similar agreement rate.
-
-These results suggest that annotating LL with UCCA does not lead to any degradation
-of IAA, and can be applied as consistently to LL text as to non-LL texts.
 
 %We see that as enough to be a proof that UCCA can be applied to LL, especially considering those numbers
 %are a bit higher than the IAA originally reported
@@ -821,46 +812,72 @@ and assume the children of each node are unordered.\footnote{The use of graph ke
 %define an alignment of the nodes, we suggest some possible ways, all
 %based on first aligning the words in order to give order to the DAG and then comparing the structure in one way or another.
 
-We begin by aligning the leaves of $G_s$ and $G_c$, in the same manner explained
-in Section \ref{sec:formal_conservatism}.
+The measure is an analogue to the DAG F-score measure discussed above, generalized
+for the case where $G_s=(V_s,E_s)$ and $G_c=(V_c,E_c)$ do not share their leaf nodes.
+We assume a (possibly partial, possibly many-to-1) alignment between $G_s$ and $G_c$,
+$A \subset V_s \times V_c$. An edge $(v_1,v_2) \in E_c$ is said to match an edge
+$(u_1,u_2) \in E_s$ if they have the same label and $(v_2,u_2) \in A$. Recall (Precision)
+is defined as the ratio of edges in $E_s$ ($E_c$) that have a match in $E_c$ ($E_s$) respectively, and
+F-score is their harmonic mean. We note that this measure indeed collapses to the
+DAG F-score discussed above where $A$ includes all pairs of nodes in $E_s$ and $E_c$ that have
+the same yield.
 
-As to aligning nodes, we can use word spans of each node, based on
-the token alignment and the DAG structure, to choose how best to align.
-A first and most straightforward approach would be to compare all
-pairs of nodes in parallel paragraphs and to each node from one paragraph
-assign the one most similar node, span wise from the other. That approach
-is quite similar to the IAA aligning, but it
-has three drawbacks; it is asymmetric; it may be over optimistic aligning
-nodes without considering the DAG structure; and it might be
-slow for many nodes. Being asymmetric is not much of a problem. If we thrive for symmetry
-we can compute the measure twice and use the results mean,
-that would also be the case for other asymmetric methods we suggest.
-In order to address the other drawbacks we propose different aligning methods.
+In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
+(tokens) in $V_s$ and $V_c$ using the same method detailed in Section \ref{sec:formal_conservatism}.
+Denote the results leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
+Then for each node in $v \in V_s$, we compute its descendent leaves $yield(v) \subset Leaves_s$ as before,
+and compute their projection $yield'(v) = \{u \in Leaves_c:(v,u) \in A_l\}$.
+We now define the node alignment to be $A = \{(u,v) \in V_s \times V_c : yield'(u) = yield(v) \}$.
+We note that $A_l \subset A$ and that if $V_s$ and $V_c$ share the same tokens,
+this computation again reduces to DAG F-score.
 
-A second method driven by the assumption that nodes higher in the
-hierarchy are more important to the semantic representation is measuring
-the largest cut in which nodes are aligned (top down) to each other
-and have the same labels. This is a harsher lower similarity
-score but one of which might be more representative of the semantics
-that are kept and hopefully more informative for tasks that will use it.
+While generalziing DAG F-score, this approach has the shortcoming
+of being asymmetrical. We therefore report both the resulting F-score when aligning
+from the source to the correction and the other way around.
 
-A third type of methods were token similarity methods, these methods
-use one kind of aligning (top down, bottom up or pairwise) and only
-compare the meaningful nodes. This was called upon by \cite{sulem2015conceptual}. 
-This approach makes sense due to the fact that some labels
-are well defined and thought upon while others are still vague and
-call for future work on refining or adjusting them, moreover, some
-labels are more semantic while other labels are currently just a place
-holder as each node must get a level, and the semantic role is not
-always clearly defined (e.g., the word ``is'' in ``he is walking''
-seem to be more syntactically related than semantically. In UCCA it is tagged as a \textit{function} word.). The unused
-labels are center, elaborator, function, relation, linker, ground
-and connector.
+For completeness, we also replicated the protocol of \newcite{sulem2015conceptual},
+which we call {\sc DistSim}.
+For a given UCCA label $l$, denote $c_i(l)$ the number of $l$-labled UCCA nodes
+in the i-th source sentence, and $d_i(l)$ the number of $l$-labled UCCA nodes
+in its corresponding correction. We define {\sc DistSim}(l) between these
+sentences to be $\frac{1}{N}\sum_{i=1}^N \vert c_i(l) - d_i(l) \vert$, where
+$N$ is the total number of sentence pairs.
 
-A bit different way than all the others is to compute the labeled
-tree edit distance\cite{zhang1989simple}, for that we first needed
-the trees to be ordered, we did that in a top down fashion. An interesting
-future work would be to use unordered tree edit distance methods\cite{zhang1992editing}.
+%A first and most straightforward approach would be to compare all
+%pairs of nodes in parallel paragraphs and to each node from one paragraph
+%assign the one most similar node, span wise from the other. That approach
+%is quite similar to the IAA aligning, but it
+%has three drawbacks; it is asymmetric; it may be over optimistic aligning
+%nodes without considering the DAG structure; and it might be
+%slow for many nodes. Being asymmetric is not much of a problem. If we thrive for symmetry
+%we can compute the measure twice and use the results mean,
+%that would also be the case for other asymmetric methods we suggest.
+%In order to address the other drawbacks we propose different aligning methods.
+
+%A second method driven by the assumption that nodes higher in the
+%hierarchy are more important to the semantic representation is measuring
+%the largest cut in which nodes are aligned (top down) to each other
+%and have the same labels. This is a harsher lower similarity
+%score but one of which might be more representative of the semantics
+%that are kept and hopefully more informative for tasks that will use it.
+
+%A third type of methods were token similarity methods, these methods
+%use one kind of aligning (top down, bottom up or pairwise) and only
+%compare the meaningful nodes. This was called upon by \cite{sulem2015conceptual}. 
+%This approach makes sense due to the fact that some labels
+%are well defined and thought upon while others are still vague and
+%call for future work on refining or adjusting them, moreover, some
+%labels are more semantic while other labels are currently just a place
+%holder as each node must get a level, and the semantic role is not
+%always clearly defined (e.g., the word ``is'' in ``he is walking''
+%seem to be more syntactically related than semantically. In UCCA it is tagged as a \textit{function} word.). The unused
+%labels are center, elaborator, function, relation, linker, ground
+%and connector.
+
+%A bit different way than all the others is to compute the labeled
+%tree edit distance\cite{zhang1989simple}, for that we first needed
+%the trees to be ordered, we did that in a top down fashion. An interesting
+%future work would be to use unordered tree edit distance methods\cite{zhang1992editing}.
 
 %We see that measurements for symmetry that are similar to the inter
 %annotator agreement measure also suggest high stability, achieving
@@ -875,10 +892,6 @@ future work would be to use unordered tree edit distance methods\cite{zhang1992e
 %semantic faithfulness. Such ways will allow correctors to be less formally conservative
 %while controlling semantic conservatism. Thus, focusing on what users - and hence we - are more interested in.
 
-In order to control for differences between the annotators, we explore both
-a setting where the two annotations were annotated by the same annotator,
-and settings where they were annotated by different annotators.
-
 
 \subsection{The Faithfulness of a Perfect Corrector}
 
@@ -888,6 +901,20 @@ to the different semantic similarity measures.
 For each method we present the average results of pairs
 of paragraphs annotated by the same annotator and pairs where each
 paragraph was annotated by a different annotator.
+
+We obtain an F1 score of 0.845 (Precision 0.834, Recall 0.857), which
+is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
+As another point of comparison, we doubly annotated 3 corrected NUCLE passages,
+obtaining a similar agreement rate.
+
+These results suggest that annotating LL with UCCA does not lead to any degradation
+of IAA, and can be applied as consistently to LL text as to non-LL texts.
+
+
+In order to control for differences between the annotators, we explore both
+a setting where the two annotations were annotated by the same annotator,
+and settings where they were annotated by different annotators.
+
 
 Finally, we present as a control measure and a bound on the best score
 we can expect to get in such comparison the scores of paragraphs
