@@ -224,8 +224,7 @@ Edge weights are assigned to be the edit distance between the tokens.
 We note that aligning words in GEC is much simpler than in machine translation,
 as most of the words are kept unchanged, deleted fully, added, or changed slightly.
 Following word alignment, we define the {\sc WordChange} measure
-as the number of unaligned words and aligned words that do
-not match.\oa{what does that mean ``not match''?}
+as the number of unaligned words and aligned words that are not the same.
 
 Second, we quantify word \emph{order} differences by computing
 Spearman's $\rho$ between the order of the words in the source sentence,
@@ -992,7 +991,7 @@ who compared standard English sentences and their French translations.
   \singlespacing
   \begin{tabular}{c|c|c|c||c|c|}
   	\cline{2-6} 
-  	& \multicolumn{3}{c||}{Fully aligned} & \multicolumn{2}{c|}{Token analysis}\\ \cline{2-6}
+  	& \multicolumn{3}{c||}{UCCASim} & \multicolumn{2}{c|}{DistSim}\\ \cline{2-6}
   	& s$\rightarrow$r & r$\rightarrow$s & avg & A+D & Scene\
     \\
     \hline
@@ -1003,7 +1002,7 @@ who compared standard English sentences and their French translations.
     \\
     Baseline & 0.85 & 0.81 & 0.83 & 0.95 & 0.96
 	  \end{tabular}
-  \caption{Similarity measures for different mapping, their average and token analysis. For fully aligned similarity score the baseline is the score over two LL annotations and for the Token analysis the translation between English and French. The correction similarity introduces less noise than the different annotators and annotating LL changes even less than translating does.\label{tab:Distances}}
+  \caption{Similarity measures for different mapping, their average and token analysis. For UCCASim the baseline is the score over two LL annotations and for DistSim the translation between English and French. For mapping the baseline one annotator was consistently considered the reference and the other the source. The correction similarity introduces less noise than the different annotators and annotating LL changes even less than translating does.\label{tab:Distances}}
 \end{table}
 
 
