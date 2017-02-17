@@ -364,11 +364,17 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		
 		We begin by estimating $\mathcal{D}_s$ for each sentence, using the crowdsourced
 		corrections. We estimated its distribution of corrections $\mathcal{D}_s$
-		using {\sc UnseenEst} \cite{zou2015quantifying}, a statistical algorithm that quantifies
-		the distribution of frequencies\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst} is a nonparametric statistical tool to assess distributions in which only the size of the support and the frequencies matters. It was originally developed for assessing how many variants a gene might have, including undiscovered ones. Thus, it accurately estimates the frequency distribution of variants that have empirical count of 0. } Manual tests of unseenEst with small artificially created frequencies showed
+		using {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
+                estimates a multinomial distribution,
+                in which only the individual values do not matter, only the distribution of probabilities
+                across values.%\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst}}
+                The algorithm was originally developed for assessing how many
+                variants a gene might have, including undiscovered ones.
+                Thus, it is designed to estimate the distribution of variants that were not seen in the sample.
+                Manual tests of unseenEst with small artificially created frequencies show
 		satisfying results.\footnote{All data
-			we collected, along with the estimated distributions can be found in <to be disclosed
-			upon publication>}
+		  we collected, along with the estimated distributions can be found in <to be disclosed
+		  upon publication>}
 		
 		By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of two randomly selected sentences can be seen in \ref{fig:corrections_dist}.
 		
