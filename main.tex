@@ -597,7 +597,7 @@ As a test case, we use the UCCA to define the semantic structures \cite{abend201
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
 We present results from two experiments that support the feasibility of the approach.
 First, we show that semantic annotation can be consistently applied to LL,
-through inter-annotator agreement experiments.
+through inter-annotator agreement (IAA) experiments.
 Second, we show that a perfect corrector scores high on this measure, unlike on
 the multi-reference measures disucssed in Section \ref{sec:increase-reference}.
 
@@ -716,9 +716,8 @@ A Scene, the most basic notion of this layer, describes a movement,
 an action or a state which is persistent in time.
 Every Scene contains one main relation, 
 zero or more {\it Participants}, 
-which are interpreted in a broad sense, 
-and include locations, destinations and complement clauses,
-and {\it Adverbials}, such as manner or temporal descriptions.
+an inclusive category that covers locations, destinations and complement
+clauses, and {\it Adverbials}, such as manner or temporal descriptions.
 
 Importantly, UCCA's categories directly reflect semantic, rather than distributional, distinctions .
 For instance, UCCA is not sensitive to POS distinctions: a Scene's main relation can be a verb but also an adjective
@@ -726,17 +725,17 @@ For instance, UCCA is not sensitive to POS distinctions: a Scene's main relation
 Indeed, \newcite{sulem2015conceptual} has found
 that UCCA structures are preserved remarkably well across translations.
 
-We use UCCA's standard annotation guidelines, without introducting any adaptations.
 
 \subsection{Experimental Setup}
 
 We employ two annotators, trained by annotating both LL and standard English
 passages, until a high enough agreement was reached (6 hours of training in total).
 Training passages were excluded from the evaluation.
+We use UCCA's standard annotation guidelines, without any genre-specific modifications.
 
 We experiment on 7 essays and their corrections from NUCLE, each of about 400 tokens.
 In order to measure inter-anntoator agreement, we assigned 4 of these essays to both annotators
-and compute their agreement (Section \ref{sec:iaa}).
+and compute their agreement.
 In order to measure the faithfulness score for a perfect corrector, we annotate both
 the source and corrected version for 6 essays, some of which were annotated by
 both annotators.
@@ -766,20 +765,21 @@ both annotators.
 \subsection{Semantic Similarity Measures}
 
 \paragraph{Inter-annotator Agreement Measure.} We define a similarity measure over UCCA annotations 
-$G_1$ and $G_2$ over the same set of leaves (tokens) $W$.
+$G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ over the same set of leaves (tokens) $W$.
 For a node $v$ in either graph, define its yield $yield(v) \subseteq W$ as its
 set of leaf descendants.
-Define a pair of edges $(v_1,u_1) \in G_1$ and $(v_2,u_2) \in G_2$ to be matching
+Define a pair of edges $(v_1,u_1) \in E_1$ and $(v_2,u_2) \in E_2$ to be matching
 if $yield(u_1) = yield(u_2)$ and they have the same label.
 Labeled precision and recall are defined by dividing the number of matching edges
-in $|G_1$ and $|G_2$ by $|E_1|$ and $|E_2|$. Their {\it DAG F-score} is their harmonic mean.
-We note that the measure collapses to the common parsing F-score if $G_1$ and $G_2$ are trees.
+in $G_1$ and $G_2$ by $|E_1|$ and $|E_2|$.
+The {\it DAG F-score} between $G_1$ and $G_2$ is defined to be their harmonic mean,
+and it collapses to the standard parsing F-score if $G_1$ and $G_2$ are trees.
 
 \paragraph{Semantic Faithfulness Measure.} Computing a faithfulness
 measure is slightly more involved, as the source sentence graph $G_s$ and its
-correction $G_c$ do not share the same set of leaves.
-\footnote{The use of graph kernels as a similarity measure between UCCA 
-  structures is unsuitable here due to the small size of a UCCA DAG \cite{kashima2003marginalized}.} 
+correction $G_c$ do not share the same set of
+leaves.\footnote{The use of graph kernels as a similarity measure between UCCA 
+  structures is unsuitable here due to the small size of UCCA DAGs \cite{kashima2003marginalized}.} 
 
 %Giving a more accurate
 %measure than the upper bound suggested by \cite{sulem2015conceptual} for
@@ -810,18 +810,24 @@ In order to define the alignment between $V_s$ and $V_c$, we begin by aligning t
 (tokens) in $V_s$ and $V_c$ using the same method detailed in Section \ref{sec:formal_conservatism}.
 Denote the results leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
 
-We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
-the set of nodes $V_s$ and the set $V_c$, where the weight of an edge $(u,v) \in V_s \times V_c$ is
-defined to be $w(u,v) = \frac{\vert A_l \cap (yield(u) \times yield(v))\vert}{\vert yield(u) \vert} $.
-$A$ is defined to be the maximum weighted matching, excluding edges
-with weight 0.\oa{is this true? why do we use many-to-1? {\bf this doesn't make sense because it favors
-nodes up the tree. better to normalize}}
-The resulting F-score measure, using this computation of $A$ is called {\sc UCCASim}.
+Extending $A_l$ to a full node alignment $A$ proceeds as follows.\footnote{We experimented
+  with several other methods for alignment, obtaining similar trends.}
+For every $v \in V_s$, we find the node $u \in V_c$ which maximizes
 
-We note that {\sc UCCASim} is somewhat more relaxed than DAG F-score defined above,
+\begin{equation*}
+    w(v,u) = \frac{\vert A_l \cap (yield(u) \times yield(v))\vert}{\vert yield(u) \vert}.
+\end{equation*}
+
+Diving by $|yield(u)|$ is important for avoiding a bias towards $u$'s further up the graph.
+The resulting F-score measure, using this computation of $A$ is called {\sc UccaSim}.
+
+We note that this approach has the shortcoming of being asymmetrical (computing the alignment
+for $V_c$ to $V_s$ may yield. We therefore report the obtained F-score in both directions.
+We further note that {\sc UCCASim} is somewhat more relaxed than DAG F-score defined above,
 as it aligns two nodes not only if their yields are in perfect alignment with
 one another, but it may also match nodes whose yields are in partial alignment
-with one another. This relaxation is necessary given that a correction often adds
+with one another, provided that they have the same label.
+This relaxation is necessary given that a correction often adds
 or removes nodes, thus eliminating the possibility of a perfect alignment between
 the sentences. 
 
@@ -831,18 +837,13 @@ the sentences.
 %We note that $A_l \subset A$ and that if $V_s$ and $V_c$ share the same tokens,
 %this computation again reduces to DAG F-score.
 
-While generalziing DAG F-score, this approach has the shortcoming
-of being asymmetrical. We therefore report both the resulting F-score when aligning
-from the source to the correction and the other way around.\oa{this paragraph will not be
-  true if we do 1-1 alignment}
-
 For completeness, we also replicated the protocol of \newcite{sulem2015conceptual},
-which we call {\sc DistSim}.
-For a given UCCA label $l$, denote $c_i(l)$ the number of $l$-labled UCCA nodes
-in the i-th source sentence, and $d_i(l)$ the number of $l$-labled UCCA nodes
+which we call {\sc DistSim}. For a given UCCA label $l$, denote the
+number of $l$-labled UCCA nodes 
+in the i-th source sentence with $c_i(l)$, and with $d_i(l)$ the number of $l$-labled UCCA nodes
 in its corresponding correction. We define {\sc DistSim}(l) between these
 sentences to be $\frac{1}{N}\sum_{i=1}^N \vert c_i(l) - d_i(l) \vert$, where
-$N$ is the total number of sentence pairs.
+$N$ is the total number of sentence pairs.\oa{is this right?}
 
 %A first and most straightforward approach would be to compare all
 %pairs of nodes in parallel paragraphs and to each node from one paragraph
@@ -894,31 +895,32 @@ $N$ is the total number of sentence pairs.
 %while controlling semantic conservatism. Thus, focusing on what users - and hence we - are more interested in.
 
 
-\subsection{The Faithfulness of a Perfect Corrector}
+\subsection{Results}
 
-We obtain an inter-annotator agreement DAG F-score of 0.845
+We obtain an IAA DAG F-score of 0.845
 (Precision 0.834, Recall 0.857), which
 is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
-As another point of comparison, we doubly annotated 3 corrected NUCLE passages,
+As another point of comparison, we doubly annotate 3 corrected NUCLE passages,
 obtaining a similar agreement rate.
-
 These results suggest that annotating LL with UCCA does not lead to any degradation
 of IAA, and can be applied as consistently to LL text as to non-LL texts.
 
-Table \ref{tab:Distances} presents the {\sc UCCASim} scores obtained by comparing the 
-NUCLE gold standard and the source sentences, or equivalently the {\sc UCCASim} score
-of a perfect corrector.
+Table \ref{tab:Distances} presents the {\sc UccaSim} scores obtained by comparing the 
+NUCLE gold standard and the source sentences, which is a proxy
+to the {\sc UccaSim} score of a perfect corrector.
 In order to control for differences between the annotators, we explore both
 a setting where the two annotations were annotated by the same annotator,
 and settings where they were annotated by different annotators.
-In order to obtain an upper bound on the {\sc UCCASim} of a perfect corrector,
-the table also presents {\sc UCCASim} scores between source sentences annotated by
-different annotators.
+In order to obtain an upper bound on the {\sc UccaSim} of a perfect corrector,
+the table also presents {\sc UccaSim} scores between annotations of
+the same source sentences, produced by different annotators.
 
-Our results indicate that a perfect corrector receives a faithfulness score comparable
-to the inter-annotator agreement, which is an indication that {\sc UCCASim} is indeed
+Results show that the faithfulness score of a perfect corrector are only slightly
+lower than the {\sc UccaSim} inter-annotator agreement.
+This is an indication that {\sc UCCASim} is indeed
 insensitive to the surface divergence between a source sentence and its valid correction.
-However, more work is required to establish whether the converse holds, namely that the measure is sensitive
+However, more work is required to establish whether the converse holds,
+namely that the measure is sensitive
 to unfaithfulness of a proposed correction.
 This, of course, depends on the scope of distinctions covered by the semantic annotation.
 In UCCA's case, it is argument structure, the connections between scenes etc.
