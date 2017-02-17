@@ -602,7 +602,7 @@ As a test case, we use the UCCA to define the semantic structures \cite{abend201
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
 We present results from two experiments that support the feasibility of the approach.
 First, we show that semantic annotation can be consistently applied to LL,
-through inter-annotator agreement experiments.
+through inter-annotator agreement (IAA) experiments.
 Second, we show that a perfect corrector scores high on this measure, unlike on
 the multi-reference measures disucssed in Section \ref{sec:increase-reference}.
 
@@ -902,29 +902,30 @@ $N$ is the total number of sentence pairs.\oa{is this right?}
 
 \subsection{Results}
 
-We obtain an inter-annotator agreement DAG F-score of 0.845
+We obtain an IAA DAG F-score of 0.845
 (Precision 0.834, Recall 0.857), which
 is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
-As another point of comparison, we doubly annotated 3 corrected NUCLE passages,
+As another point of comparison, we doubly annotate 3 corrected NUCLE passages,
 obtaining a similar agreement rate.
-
 These results suggest that annotating LL with UCCA does not lead to any degradation
 of IAA, and can be applied as consistently to LL text as to non-LL texts.
 
-Table \ref{tab:Distances} presents the {\sc UCCASim} scores obtained by comparing the 
-NUCLE gold standard and the source sentences, or equivalently the {\sc UCCASim} score
-of a perfect corrector.
+Table \ref{tab:Distances} presents the {\sc UccaSim} scores obtained by comparing the 
+NUCLE gold standard and the source sentences, which is a proxy
+to the {\sc UccaSim} score of a perfect corrector.
 In order to control for differences between the annotators, we explore both
 a setting where the two annotations were annotated by the same annotator,
 and settings where they were annotated by different annotators.
-In order to obtain an upper bound on the {\sc UCCASim} of a perfect corrector,
-the table also presents {\sc UCCASim} scores between source sentences annotated by
-different annotators.
+In order to obtain an upper bound on the {\sc UccaSim} of a perfect corrector,
+the table also presents {\sc UccaSim} scores between annotations of
+the same source sentences, produced by different annotators.
 
-Our results indicate that a perfect corrector receives a faithfulness score comparable
-to the inter-annotator agreement, which is an indication that {\sc UCCASim} is indeed
+Results show that the faithfulness score of a perfect corrector are only slightly
+lower than the {\sc UccaSim} inter-annotator agreement.
+This is an indication that {\sc UCCASim} is indeed
 insensitive to the surface divergence between a source sentence and its valid correction.
-However, more work is required to establish whether the converse holds, namely that the measure is sensitive
+However, more work is required to establish whether the converse holds,
+namely that the measure is sensitive
 to unfaithfulness of a proposed correction.
 This, of course, depends on the scope of distinctions covered by the semantic annotation.
 In UCCA's case, it is argument structure, the connections between scenes etc.
