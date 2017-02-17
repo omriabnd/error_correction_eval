@@ -19,6 +19,7 @@
 \usepackage{lipsum,adjustbox}
 \usepackage[font={small}]{caption}
 \usetikzlibrary{positioning}
+\usepackage{bbm}
 
 \makeatletter
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
@@ -35,7 +36,7 @@
 
 \begin{document}
 	
-\title{Towards Overcoming Over-conservatism in Grammatical Error Correction}
+\title{Conservatism and Over-conservatism in Grammatical Error Correction}
 
 %\author{
 %  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
@@ -95,12 +96,12 @@
 
 Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many
 other application areas of linguistics. The field is receiving considerable
-interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo},
+interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo} and
 CoNLL shared tasks \cite{kao2013conll,ng2014conll}.
 Within GEC, considerable effort has been placed on system evaluation,
 which is notoriously difficult,
 much due to the many valid corrections each source sentence may have
-\cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.
+\cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.\oa{why so many citations?}
 %GEC evaluation is notoriously difficult, \lc{you left here a place for a cite, should I
 %cite that this is difficult or reference to having many corrections}\oa{whatever best supports this claim}
 
@@ -109,53 +110,55 @@ is their ability to generate corrections that are faithful to meaning of the sou
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters the meaning of the source \cite{brockett2006correcting}.
 As a result, often when compiling gold standard corrections for the task,
-annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of LL \lc{helen suddenly answered, sent the guidelines and it is very specific in them is it still "personal communication"?}.
+annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of LL \lc{helen suddenly answered, sent the guidelines and it is very specific in them is it still "personal communication"?}\oa{no, you can just cite the guidelines.}.
 A recent attempt to formally capture this precision/recall asymmetry has
-been the shift from using $F_1$ to $F_{0.5}$, where Precision is
-emphasized over Recall, as a common evaluation measure
-in GEC \cite{dahlmeier2012better}.
+been the standardized use of $F_{.5}$ over $F_{1}$, where Precision is
+emphasized over Recall \cite{dahlmeier2012better}.
 
-However, favoring precision over recall may lead to reluctance of correctors to make any changes (henceforth, {\it over-conservatism}).
-Using a single reference correction (a common practice in GEC) compounds this problem,
-as systems are not only penalized more for making an incorrect change (over not making
-any change), but are often penalized for any correct change not found in the reference.
+However, favoring precision over recall may lead to reluctance of correctors to
+make any changes (henceforth, {\it over-conservatism}).
+Using a single reference correction, which is a common practice in GEC, compounds this problem,
+as correctors are not only more severely penalized for making an incorrect change that for not making
+any change, but are often penalized for making correct changes not found in the reference.
 
 We present results that indicate that current state of the art systems suffers
-from over-conservatism. Evaluating the output of 15 state
-of the art GEC systems that participated
+from over-conservatism. Evaluating the output of all 15 systems that participated
 in the recent CoNLL2014 shared task, we find that all of them
 substantially under-predict corrections relative to the gold standard
-(\S\ref{sec:formal_conservatism}). 
+(Section \ref{sec:formal_conservatism}). 
 
 We pursue two approaches to address this gap, proposing
-improved reference-based protocols to decrease penalties of valid correction. Thus, avoiding over-conservatism.
-First, we study the effect of increasing the amount of references
-(henceforth, $M$) (\S\ref{sec:increase-reference}).
+improved reference-based protocols to decrease the penalization of valid correction,
+thereby avoiding over-conservatism.
+First, we study the effect of increasing the amount of references,
+which we denote by $M$ (Section \ref{sec:increase-reference}).
 While previous evaluation explored the case of $M=2$,
-no empirical assessment has been carried out, of its sufficiency
-or its added value over $M=1$.
-In our experiments we estimate the number of corrections necessary
-to cover the bulk of the distribution of possible corrections.
-We then consider two measures for
+no empirical assessment of its sufficiency or its added value over $M=1$
+has been carried out.
+%In our experiments we estimate the number of corrections necessary
+%to cover the bulk of the distribution of possible corrections.
+We consider two measures for
 assessing the validity of a proposed correction relative to a set of references,
 and characterize the distribution of their scores as a function of $M$.
-We find that assessment based on $M=1$ or $M=2$ dramatically under-estimate
-the true performance of the systems (\S\ref{sec:increase-reference}). 
+Our findings suggest that using $M=1$ or $M=2$ dramatically under-estimates
+the true performance of the systems, and commonly leads to cases where a valid
+correction is more likely to be penalized than to be deemed valid
+(Section \ref{sec:increase-reference}). 
 We conclude with an analysis of
 the statistical significance of these evaluation protocols.
 
 Second, we pursue an alternative way of determining whether a correction faithfully
-represents the semantics of the source, by developing a semantic measure based
-on the similarity of their {\it semantic} structures (\S\ref{sec:Semantics}).
-We define a measure, using the UCCA scheme \cite{abend2013universal} as a
-test case, motivated by its recent use for machine translation
-evaluation \cite{birch2016hume}.
+represents the semantics of the source, by measuring the
+similarity of their semantic structures (Section \ref{sec:Semantics}).
+%We define a measure, using the UCCA scheme \cite{abend2013universal} as a
+%test case, motivated by its recent use for machine translation
+%evaluation \cite{birch2016hume}.
 In order to assess the feasibility of this approach, we annotate a
 section of the NUCLE \cite{dahlmeier2013building}
 parallel corpus. Our results support the feasibility of the proposed approach,
 by showing that semantic structural annotation can be consistently applied
-to LL and that manually compiled references do indeed
-have similar semantic structures to those of their source sentences.
+to learner's language (LL) and that the measure is less prone to undue penalization of
+valid corrections.
 
 The two approaches address the insufficiency of using too few references from
 complementary angles. 
@@ -164,6 +167,7 @@ corrections for a sentence, while the second
 uses semantic instead of string similarity, in order to abstract away
 from some of the formal variation between different valid corrections.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
 
 %The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using
@@ -174,16 +178,16 @@ from some of the formal variation between different valid corrections.
 %Manual analysis showed excessive formal conservatism and under correction.
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 
-In this section we demonstrate that current correctors
+We demonstrate that current correctors
 suffer from over-conservatism: they tend to make too few changes to the source. 
 
 
-\paragraph{Experimental Setup:}\label{par:experimental_setup}
+\paragraph{Experimental Setup.}\label{par:experimental_setup}
 
 Our experiments are on the NUCLE dataset,
-a parallel corpus of learner language (LL) paragraphs and their corrected versions,
+a parallel corpus of LL essays and their corrected versions,
 which is the de facto standard in GEC.
-The corpus contains paragraphs in LL, each of about 400 words.
+The corpus contains essays\oa{how many?} in LL, each of about 400 words.
 
 We evaluate all participating systems in the CoNLL 2014,
 in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
@@ -196,10 +200,9 @@ University of Franche-Comte (UFC), University of Macau (UMC),
 Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
 All are trained and tested on the NUCLE corpus.
 
-We compare the prevalence of changes made by the correctors to the source,
-to the one made by a NUCLE reference to the source.
-We discarded from our evaluation all non-alphanumeric
-characters, both within tokens or as token on their own.
+We compare the prevalence of changes made to the source by the correctors,
+to the ones made by the NUCLE reference. In the evaluation, we discard all non-alphanumeric
+characters, both within tokens or as token of their own.
 
 %In order to have better evaluation of the real goal of corrections we also
 %compute all of the measures on ,
@@ -209,26 +212,29 @@ characters, both within tokens or as token on their own.
 %native of different languages.\oa{I didn't understand this sentence; how do we use this corpus?}
 
 
-\paragraph{Measures of Conservatism:}
-We measure the divergence between the source and the reference in three ways.
+\paragraph{Measures of Conservatism.}
+We consider three types of divergences between the source and the reference.
 
-First, we measure to what extent \emph{words} were changed; altered, deleted or added.
-We compute word alignment, and then
-count the number of unaligned words and the aligned words that  do not match.
-We formulate the alignment problem as a weighted bipartite graph matching problem,
-placing the source and corrected tokens on the two sides of the graph.
+First, we measure to what extent \emph{words} were changed: altered, deleted or added.
+To do so, we compute word alignment between the source and the reference, casting it
+as a weighted bipartite matching problem, between the words of the source
+and the correction. 
 Edge weights are assigned to be the edit distance between the tokens.
 \footnote{When breaking ties, we favor alignments where the place in the sentence is closer.}
 We note that aligning words in GEC is much simpler than in machine translation,
 as most of the words are kept unchanged, deleted fully, added, or changed slightly.
+Following word alignment, we define the {\sc WordChange} measure
+as the number of unaligned words and aligned words that do
+not match.\oa{what does that mean ``not match''?}
 
-Second, we quantify word \emph{order} differences 
-by computing Spearman's $\rho$ on the alignment considered above.
-$\rho$ is lower as more order changes exist.
+Second, we quantify word \emph{order} differences by computing
+Spearman's $\rho$ between the order of the words in the source sentence,
+and the order of their corresponding words according to the word alignment considered above.
+$\rho$ is closer to 0 where the word order is uncorrelated, and closer to 1 where they
+exactly match. We report the average $\rho$ over all sentence pairs. 
 
-Third, we align
-\emph{sentences} and count how many sentences were split
-and how many concatenated.
+Third, we report how many source sentences were split and how many concatenated by the references,
+and by each of the correctors.
 
 
 \begin{figure}[tbp]
@@ -292,11 +298,11 @@ and how many concatenated.
   	\end{figure}}
 \end{figure}
 
-\paragraph{Results:}
-Figure \ref{fig:over-conservatism} present our results using the three measures. %split and concatenate, number of words changed per sentence and Spearman's row measures.
 
+\paragraph{Results.}
+Figure \ref{fig:over-conservatism} presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
-Results show that the gold standard makes changes to considerably more source sentences than any of the systems, and within the changed sentences, changes more words and makes more word order changes, often an order of magnitude more. For example, in the gold standard there are 44 sentences which have 5 words corrected, the most sentences with only 4 corrections another corrector has is 34.
+Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, in the reference corrections there are 44 sentences which have 5 words corrections, where the most 5-word corrections by any corrector is ....\oa{fill in}
 
 For completeness, we also measured the prevalence of changes in
 another corpus, the TreeBank of LL \cite[FCE]{yannakoudakis2011new}.
@@ -749,8 +755,8 @@ Training passages were excluded from the evaluation.
 
 We experiment on 7 essays and their corrections from NUCLE, each of about 400 tokens.
 In order to measure inter-anntoator agreement, we assigned 4 of these essays to both annotators
-and compute their agreement. In order to measure
-the faithfulness score for a perfect corrector, we annotate both
+and compute their agreement (Section \ref{sec:iaa}).
+In order to measure the faithfulness score for a perfect corrector, we annotate both
 the source and corrected version for 6 essays, some of which were annotated by
 both annotators.
 
@@ -758,16 +764,6 @@ both annotators.
 %information can be found in the appendix \ref{tab:annotated-paragraphs}.Overall, 2 LL
 %and 2 corrected paragraphs were annotated by both annotators, 9 parallel paragraphs were
 %annotated by the same annotator and 6 by different annotators.
-
-\subsection{Inter-Annotator Agreement}\label{sec:iaa}
-
-In order to measure agreement, we
-compute the similarity of UCCA annotations $G_1$ and $G_2$ over the same LL sentences
-using a generalization of the parsing F-score metric to DAGs. Specifically, an
-edge $(v_1,u_1) \in G_1$ is said to match an edge in $(v_2,u_2) \in G_2$ if
-they have the same label, and if the leaves
-reachable from $u_1$ are the same as those reachable from $u_2$. 
-(the measure collapses to the common parsing F-score if $G_1$ and $G_2$ are trees)
 
 %We see that as enough to be a proof that UCCA can be applied to LL, especially considering those numbers
 %are a bit higher than the IAA originally reported
@@ -788,11 +784,20 @@ reachable from $u_1$ are the same as those reachable from $u_2$.
 
 \subsection{Semantic Similarity Measures}
 
-We now turn to defining a semantic measure of faithfulness between the source
-sentence and its correction. We define several similarity measures between
-their edge-labeled UCCA DAGs $G_s$ for the source and $G_c$ for the correction,
-and assume the children of each node are unordered.\footnote{The use of graph kernels
-  as a similarity measure between UCCA 
+\paragraph{Inter-annotator Agreement Measure.} We define a similarity measure over UCCA annotations 
+$G_1$ and $G_2$ over the same set of leaves (tokens) $W$.
+For a node $v$ in either graph, define its yield $yield(v) \subseteq W$ as its
+set of leaf descendants.
+Define a pair of edges $(v_1,u_1) \in G_1$ and $(v_2,u_2) \in G_2$ to be matching
+if $yield(u_1) = yield(u_2)$ and they have the same label.
+Labeled precision and recall are defined by dividing the number of matching edges
+in $|G_1$ and $|G_2$ by $|E_1|$ and $|E_2|$. Their {\it DAG F-score} is their harmonic mean.
+We note that the measure collapses to the common parsing F-score if $G_1$ and $G_2$ are trees.
+
+\paragraph{Semantic Faithfulness Measure.} Computing a faithfulness
+measure is slightly more involved, as the source sentence graph $G_s$ and its
+correction $G_c$ do not share the same set of leaves.
+\footnote{The use of graph kernels as a similarity measure between UCCA 
   structures is unsuitable here due to the small size of a UCCA DAG \cite{kashima2003marginalized}.} 
 
 %Giving a more accurate
@@ -812,8 +817,6 @@ and assume the children of each node are unordered.\footnote{The use of graph ke
 %define an alignment of the nodes, we suggest some possible ways, all
 %based on first aligning the words in order to give order to the DAG and then comparing the structure in one way or another.
 
-The measure is an analogue to the DAG F-score measure discussed above, generalized
-for the case where $G_s=(V_s,E_s)$ and $G_c=(V_c,E_c)$ do not share their leaf nodes.
 We assume a (possibly partial, possibly many-to-1) alignment between $G_s$ and $G_c$,
 $A \subset V_s \times V_c$. An edge $(v_1,v_2) \in E_c$ is said to match an edge
 $(u_1,u_2) \in E_s$ if they have the same label and $(v_2,u_2) \in A$. Recall (Precision)
@@ -825,15 +828,32 @@ the same yield.
 In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
 (tokens) in $V_s$ and $V_c$ using the same method detailed in Section \ref{sec:formal_conservatism}.
 Denote the results leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
-Then for each node in $v \in V_s$, we compute its descendent leaves $yield(v) \subset Leaves_s$ as before,
-and compute their projection $yield'(v) = \{u \in Leaves_c:(v,u) \in A_l\}$.
-We now define the node alignment to be $A = \{(u,v) \in V_s \times V_c : yield'(u) = yield(v) \}$.
-We note that $A_l \subset A$ and that if $V_s$ and $V_c$ share the same tokens,
-this computation again reduces to DAG F-score.
+
+We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
+the set of nodes $V_s$ and the set $V_c$, where the weight of an edge $(u,v) \in V_s \times V_c$ is
+defined to be $w(u,v) = \frac{\vert A_l \cap (yield(u) \times yield(v))\vert}{\vert yield(u) \vert} $.
+$A$ is defined to be the maximum weighted matching, excluding edges
+with weight 0.\oa{is this true? why do we use many-to-1? {\bf this doesn't make sense because it favors
+nodes up the tree. better to normalize}}
+The resulting F-score measure, using this computation of $A$ is called {\sc UCCASim}.
+
+We note that {\sc UCCASim} is somewhat more relaxed than DAG F-score defined above,
+as it aligns two nodes not only if their yields are in perfect alignment with
+one another, but it may also match nodes whose yields are in partial alignment
+with one another. This relaxation is necessary given that a correction often adds
+or removes nodes, thus eliminating the possibility of a perfect alignment between
+the sentences. 
+
+%Then for each node in $v \in V_s$, we compute its descendent leaves $yield(v) \subset Leaves_s$ as before,
+%and compute their projection $yield'(v) = \{u \in Leaves_c:(v,u) \in A_l\}$.
+%We now define the node alignment to be $A = \{(u,v) \in V_s \times V_c : yield'(u) = yield(v) \}$.
+%We note that $A_l \subset A$ and that if $V_s$ and $V_c$ share the same tokens,
+%this computation again reduces to DAG F-score.
 
 While generalziing DAG F-score, this approach has the shortcoming
 of being asymmetrical. We therefore report both the resulting F-score when aligning
-from the source to the correction and the other way around.
+from the source to the correction and the other way around.\oa{this paragraph will not be
+  true if we do 1-1 alignment}
 
 For completeness, we also replicated the protocol of \newcite{sulem2015conceptual},
 which we call {\sc DistSim}.
@@ -895,14 +915,8 @@ $N$ is the total number of sentence pairs.
 
 \subsection{The Faithfulness of a Perfect Corrector}
 
-Table \ref{tab:Distances} presents the scores obtained by a corrector
-that produces the NUCLE gold standard, i.e., a perfect corrector, according
-to the different semantic similarity measures.
-For each method we present the average results of pairs
-of paragraphs annotated by the same annotator and pairs where each
-paragraph was annotated by a different annotator.
-
-We obtain an F1 score of 0.845 (Precision 0.834, Recall 0.857), which
+We obtain an inter-annotator agreement DAG F-score of 0.845
+(Precision 0.834, Recall 0.857), which
 is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
 As another point of comparison, we doubly annotated 3 corrected NUCLE passages,
 obtaining a similar agreement rate.
@@ -910,23 +924,42 @@ obtaining a similar agreement rate.
 These results suggest that annotating LL with UCCA does not lead to any degradation
 of IAA, and can be applied as consistently to LL text as to non-LL texts.
 
-
+Table \ref{tab:Distances} presents the {\sc UCCASim} scores obtained by comparing the 
+NUCLE gold standard and the source sentences, or equivalently the {\sc UCCASim} score
+of a perfect corrector.
 In order to control for differences between the annotators, we explore both
 a setting where the two annotations were annotated by the same annotator,
 and settings where they were annotated by different annotators.
+In order to obtain an upper bound on the {\sc UCCASim} of a perfect corrector,
+the table also presents {\sc UCCASim} scores between source sentences annotated by
+different annotators.
 
+Our results indicate that a perfect corrector receives a faithfulness score comparable
+to the inter-annotator agreement, which is an indication that {\sc UCCASim} is indeed
+insensitive to the surface divergence between a source sentence and its valid correction.
+However, more work is required to establish whether the converse holds, namely that the measure is sensitive
+to unfaithfulness of a proposed correction.
+This, of course, depends on the scope of distinctions covered by the semantic annotation.
+In UCCA's case, it is argument structure, the connections between scenes etc.
 
-Finally, we present as a control measure and a bound on the best score
-we can expect to get in such comparison the scores of paragraphs
-in which we compare two annotations for the same paragraph using all
-the similarity measures discussed, it can be thought of as a different
-way to defining IAA. Note that a similarity
-of 1 and distance of 0 is indeed reached when comparing an annotation with itself.
+Our attempts to conduct experiments to determine {\sc UCCASim}'s sensitivity to erroneous
+corrections introduced by the correctors described in Section \ref{sec:formal_conservatism} were
+unsuccessful, as there are only very few cases of structural (rather than word-level)
+corrections which these systems make (see Figure \ref{fig:over-conservatism}).
+We expect that once the over-conservatism of existing correctors is resolved,
+such an evaluation will be made possible.
 
-In \ref{tab:Token_analysis} we present the results of the token analysis, the
-upper bound suggested by \cite{sulem2015conceptual}, showing similar
-results between sources and gold standard corrections tuples as to those obtained
-in their English-French parallel corpus comparison.
+%Finally, we present as a control measure and a bound on the best score
+%we can expect to get in such comparison the scores of paragraphs
+%in which we compare two annotations for the same paragraph using all
+%the similarity measures discussed, it can be thought of as a different
+%way to defining IAA. Note that a similarity
+%of 1 and distance of 0 is indeed reached when comparing an annotation with itself.
+
+Finally, Table \ref{tab:Token_analysis} presents the results of label distributional
+similarity measure, {\sc DistSim}, between the source and reference sentences.
+Our results are similar to the ones obtained by \newcite{sulem2015conceptual},
+who compared standard English sentences and their French translations.
 
 
 \begin{table}[h!]
@@ -958,40 +991,8 @@ in their English-French parallel corpus comparison.
   \caption{Token analysis F score for similarity in UCCA labels between structures in LL and corrected parallel paragraphs. The similarity is evidently very high.\label{tab:Token_analysis}}
 \end{table}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Discussion}
-
-%In our experiments we show that a perfect corrector receives a high faithfulness score using the suggested measures.
-%Unlike the former measure it requires annotation for the source and no references at all,
-%solving a lot of the problem of references.
-
-Our results indicate that {\sc SemSim} is fairly insensitive to differences between the LL essays their corrections, which
-captures our intuition that a valid correction should be semantically faithful to the source.
-However, more work is required to establish whether the converse holds, namely that the measure is sensitive
-to unfaithfulness of a proposed correction.
-This, of course, depends on the scope of distinctions covered by the semantic annotation.
-In UCCA's case, it is argument structure, the connections between scenes etc.
-
-Our attempts to conduct experiments to determine {\sc SemSim}'s sensitivity to erroneous
-corrections introduced by the correctors described in Section \ref{sec:formal_conservatism} were
-unsuccessful, as there are only very few cases of structural (rather than word-level)
-corrections which these systems make (see Figure \ref{fig:over-conservatism}).
-We expect that once the over-conservatism of existing correctors is resolved,
-such an evaluation will be made possible.
-
-%\lc{from here to the end needs revising}
-%From the result we learn a number of things, the upper
-%bounds in table \ref{tab:Token_analysis} suggest high stability of UCCA over GEC, and the results are similar to those shown over
-%translation. This upper bound seem not to be very strict if the other
-%measures are to be considered true values. 
-%However, due to aligning errors those measures are actually a close lower bound more than they are an exact value.
-
-
-Our results suggest that a semantic similarity measure can yield reliable results
-without enumerating all possible corrections, which may be prohibitively difficult.
-
-
-
 \section{Conclusion}
 
 We presented results that indicate that state of the art systems in GEC suffer from
@@ -1044,6 +1045,7 @@ but also as a feature for correctors.
 \bibliographystyle{acl2012}
 \bibliography{propose}
 
+\com{
 \appendix
 \section{Annotated paragraphs}
 \begin{table}[]
@@ -1073,4 +1075,6 @@ but also as a feature for correctors.
 	\end{tabular}
 	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
 \end{table}
+}
+
 \end{document}
