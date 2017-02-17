@@ -912,7 +912,7 @@ obtaining a similar agreement rate.
 These results suggest that annotating LL with UCCA does not lead to any degradation
 of IAA, and can be applied as consistently to LL text as to non-LL texts.
 
-Table \ref{tab:Distances} presents the {\sc UCCASim} scores obtained by comparing the 
+Table \ref{tab:Distances} on its left presents the {\sc UCCASim} scores obtained by comparing the 
 NUCLE gold standard and the source sentences, or equivalently the {\sc UCCASim} score
 of a perfect corrector.
 In order to control for differences between the annotators, we explore both
@@ -945,7 +945,7 @@ such an evaluation will be made possible.
 %way to defining IAA. Note that a similarity
 %of 1 and distance of 0 is indeed reached when comparing an annotation with itself.
 
-Finally, Table \ref{tab:Token_analysis} presents the results of label distributional
+Finally, Table \ref{tab:Distances} on its right presents the results of label distributional
 similarity measure, {\sc DistSim}, between the source and reference sentences.
 Our results are similar to the ones obtained by \newcite{sulem2015conceptual},
 who compared standard English sentences and their French translations.
@@ -954,30 +954,20 @@ who compared standard English sentences and their French translations.
 \begin{table}[h!]
   \centering
   \singlespacing
-  \begin{tabular}{c|c|c|c|c}
-    Annotator & Edit & Fully aligned & Top down & Token analysis
+  \begin{tabular}{c|c|c|c||c|c|}
+  	\cline{2-6} 
+  	& \multicolumn{3}{c||}{Fully aligned} & \multicolumn{2}{c|}{Token analysis}\\ \cline{2-6}
+  	& s$\rightarrow$r & r$\rightarrow$s & avg & A+D & Scene\
     \\
     \hline
-    Same & 323.16 & 0.78 & 0.79 & 0.85
+    Same & 0.92 & 0.91 & 0.92 & 0.97 & 0.96
     \\
-    Different & 209.55 & 0.85 & 0.87 & 0.89
-    \\
-  \end{tabular}
-  \caption{Different UCCA distance measures between LL and corrected parallel paragraphs. The scores are quite similar to the IAA, which means distances are indeed low.\label{tab:Distances}}
-\end{table}
-
-
-\begin{table}[h!]
-  \centering
-  \begin{tabular}{c|c|c}
-    Annotator& As+Ds & Scenes\\
-    \hline
-    Same  & 0.97 & 0.96\\
-    Different & 0.96
+    Different & 0.85 & 0.83 & 0.84 & 0.96
     & 0.93
     \\
-  \end{tabular}
-  \caption{Token analysis F score for similarity in UCCA labels between structures in LL and corrected parallel paragraphs. The similarity is evidently very high.\label{tab:Token_analysis}}
+    Baseline & 0.85 & 0.81 & 0.83 & 0.95 & 0.96
+	  \end{tabular}
+  \caption{Similarity measures for different mapping, their average and token analysis. For fully aligned similarity score the baseline is the score over two LL annotations and for the Token analysis the translation between English and French. The correction similarity introduces less noise than the different annotators and annotating LL changes even less than translating does.\label{tab:Distances}}
 \end{table}
 
 
