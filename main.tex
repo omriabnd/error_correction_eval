@@ -386,45 +386,81 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		\subsection{Assessment values} \label{subsec:Assessment-values}
 		
 		In the previous section we presented empirical assessment of the distribution of
-		corrections to a sentence. We now turn to the consequent bias (under-estimation) in the estimation of a string-based similarity measure, for different values of $M$. Our goal is to assess what value of $M$ would be a sweet spot, which is both practical (as collecting references is costly) and reasonably biased.\lc{do we indeed assess the sweet spot? we only show the door someone must walk through it according to the budget he has}
+		corrections to a sentence. We now turn to estimating the resulting bias, namely
+                the under-estimation of reference-based similarity measures, for different values of $M$.
+                %Our goal is to assess what value of $M$ would be a sweet spot,
+                %which is both practical (as collecting references is costly) and reasonably
+                %biased.\lc{do we indeed assess the sweet spot? we only show the door someone must walk through it according to the budget he has}
 		
-		We discuss two similarity measures. One is the sentence-level accuracy (also called ``Exact Match'') and the other is the GEC $F$-score.
+		We discuss two similarity measures. One is the sentence-level accuracy
+                (also called ``Exact Match'') and the other is the GEC $F$-score.
 		
 		\paragraph{Sentence-level Accuracy.}
-		Sentence-level accuracy is the number of sentences which were corrected in a way that exactly matches one of the
-		references (also called ``Exact Match''). While this score is less commonly used than $F$-score as an evaluation
-		measure of a corrector, it is a basic, interpretable measure and it is closely related to loss functions used for
-		training statistical GEC systems \cite{rozovskaya2010training,chodorow2012problems,rozovskaya2013joint}. 
+		Sentence-level accuracy is the number of sentences whose corrections
+                exactly matches one of the references (also called ``Exact Match'').
+                While this score is less
+                commonly used than $F$-score as an evaluation
+		measure of a corrector, it is a basic, interpretable measure and it is
+                closely related to the 0-1 loss function used for
+		training statistical GEC systems
+                \cite{chodorow2012problems,rozovskaya2013joint}. 
 		
-		Assume a set of test sentences $X=\{x_1,\ldots,x_N\}$,
-		and their gold standard references $Y_1,\ldots,Y_N$ . We define the
-		{\it coverage} of the references of the $i$-th sentence to be
-		
-		\begin{equation}
-		\footnotesize
-		Cov\left((x_i,Y_i\right)=Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right)
-		\end{equation}
-		
-		Given a corrector $C$, we define $CP$ to be its probability to correct a sentence $\mathbb{E}_{x\sim{L}}Pr\left(C\left(x\right)\in Correct_i\right)$. We estimate $C$s quality by sampling a set of source sentences
-		$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
-		to the source. 
-		
-		Given a gold standard $Y$, we can compute the common accuracy score, which is an estimate to $CP$:
-		
+		Formally, given test sentences $X=\{x_1,\ldots,x_N\}$,
+		their references $Y_1,\ldots,Y_N$, and a corrector $C$,
+                we define $C$'s accuracy to be
+
 		\begin{equation}
 		\footnotesize
 		Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
 		\end{equation}
-		
-		With $Y_i=Correct_i$ this is an unbiased estimator. Unlike other fields, in GEC we showed collecting all $Correct_i$ as a reference is impossible. It is possible to get a good estimate of $Acc(C;X,Correct_i)$
-		by taking a large enough sample from $Correct_i$, which is the common practice in reference-based evaluation.
-		\begin{align}\label{eq:correction-in-gs}
+
+                Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
+                a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
+
+                \begin{equation}
+		  \footnotesize
+		  TrueAcc(C) = \mathbb{E}_{x\sim{L}}\left[Pr\left(C\left(x\right)\in Correct_i\right)\right]
+		\end{equation}
+                
+                %We estimate $C$s quality by sampling a set of source sentences
+                %$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
+		%to the source. 
+
+                The bias of $Acc(C;X,Y)$ for a sample of $N$ sentences, each paired with $M$ references
+                is then
+
+                \begin{align*}
+                  \footnotesize
+                  TrueAcc(C) - \mathbb{E}_{X,Y}\left[Acc(C;X,Y)\right] = \\
+                  TrueAcc(C) - Pr_{x \sim L,Y \sim \mathcal{D}_x}(C(x) \in Y)
+                \end{align*}
+                  
+		It is clear that the bias is not affected by $N$, only by $M$, and we therefore denote it
+                with $b_M$. With $M$ tending to infinity, the bias is 0. However, as the results above show,
+                this is generally impossible in GEC, as enumerating all valid corrections is prohibitively difficult.
+
+                %%% UNTIL HERE %%%
+                
+                %The question 
+                %It is possible to get a good estimate of $Acc(C;X,Correct_i)$
+		%by taking a large enough sample from $Correct_i$, which is the common practice
+                %in reference-based evaluation.
+
+                \begin{align}\label{eq:correction-in-gs}
 		\footnotesize
 		Pr[C(x_i) \in Y_i] = Pr[C(x_i) \in Correct_i] \cdot \\
 		Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i] = \nonumber \\
 		CP\cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]\nonumber
 		\end{align}
+
+                We further define the {\it coverage} of the reference set $Y_i$ for the sentence $x_i$ to be
 		
+		\begin{equation*}
+		\footnotesize
+		Cov\left(x_i,Y_i\right)=Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right).
+		\end{equation*}
+                
+                
 		However, since $Y_i \subset Correct_i$, the estimator will always underestimate $CP$.\lc{We gathered all the information for sampling without repetition too, are those interesting and should be discussed? They are useful if you gather in an unrepeated way and wonder how good is your coverage }
 		It's clear that the sample size $N$ does not affect $\mathbb{E}[Acc(C;X,Y)]$, but the number of references
 		might. Another property to consider is that under the reasonable assumption that $\mathbb{E}Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]$ is the same for $C$, $C'$ the ratio between their expected accuracy
