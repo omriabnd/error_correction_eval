@@ -17,7 +17,7 @@
 \usepackage{titlesec}
 \usepackage{color}
 \usepackage{lipsum,adjustbox}
-\usepackage[font={small}]{caption}
+e\usepackage[font={small}]{caption}
 \usetikzlibrary{positioning}
 \usepackage{bbm}
 
@@ -408,18 +408,16 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		their references $Y_1,\ldots,Y_N$, and a corrector $C$,
                 we define $C$'s accuracy to be
 
-		\begin{equation}
-		\footnotesize
+		\begin{equation*}
 		Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
-		\end{equation}
+		\end{equation*}
 
                 Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
                 a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
-                \begin{equation}
-		  \footnotesize
-		  TrueAcc(C) = \mathbb{E}_{x\sim{L}}\left[Pr\left(C\left(x\right)\in Correct_i\right)\right]
-		\end{equation}
+                \begin{equation*}
+		  TrueAcc(C) = Pr_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right)
+		\end{equation*}
                 
                 %We estimate $C$s quality by sampling a set of source sentences
                 %$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
@@ -428,17 +426,16 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 The bias of $Acc(C;X,Y)$ for a sample of $N$ sentences, each paired with $M$ references
                 is then
 
+                \begin{small}
                 \begin{align*}
-                  \footnotesize
                   TrueAcc(C) - \mathbb{E}_{X,Y}\left[Acc(C;X,Y)\right] = \\
-                  TrueAcc(C) - Pr_{x \sim L,Y \sim \mathcal{D}_x}(C(x) \in Y)
+                  TrueAcc(C) - Pr(C(x) \in Y) = \\
+                  Pr(x \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct) \right)     
                 \end{align*}
+                \end{small}
                   
-		It is clear that the bias is not affected by $N$, only by $M$, and we therefore denote it
-                with $b_M$. With $M$ tending to infinity, the bias is 0. However, as the results above show,
-                this is generally impossible in GEC, as enumerating all valid corrections is prohibitively difficult.
-
-                %%% UNTIL HERE %%%
+		It is easy to see that the bias is not affected by $N$, only by $M$, and we therefore denote it
+                with $b_M$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
                 
                 %The question 
                 %It is possible to get a good estimate of $Acc(C;X,Correct_i)$
@@ -446,7 +443,6 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 %in reference-based evaluation.
 
                 \begin{align}\label{eq:correction-in-gs}
-		\footnotesize
 		Pr[C(x_i) \in Y_i] = Pr[C(x_i) \in Correct_i] \cdot \\
 		Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i] = \nonumber \\
 		CP\cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]\nonumber
@@ -455,14 +451,14 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 We further define the {\it coverage} of the reference set $Y_i$ for the sentence $x_i$ to be
 		
 		\begin{equation*}
-		\footnotesize
 		Cov\left(x_i,Y_i\right)=Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right).
 		\end{equation*}
                 
-                
-		However, since $Y_i \subset Correct_i$, the estimator will always underestimate $CP$.\lc{We gathered all the information for sampling without repetition too, are those interesting and should be discussed? They are useful if you gather in an unrepeated way and wonder how good is your coverage }
-		It's clear that the sample size $N$ does not affect $\mathbb{E}[Acc(C;X,Y)]$, but the number of references
-		might. Another property to consider is that under the reasonable assumption that $\mathbb{E}Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]$ is the same for $C$, $C'$ the ratio between their expected accuracy
+		%However, since $Y_i \subset Correct_i$, the estimator will always underestimate $CP$.
+
+                %\lc{We gathered all the information for sampling without repetition too, are those interesting and should be discussed? They are useful if you gather in an unrepeated way and wonder how good is your coverage }
+
+                Another property to consider is that under the reasonable assumption that $\mathbb{E}Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]$ is the same for $C$, $C'$ the ratio between their expected accuracy
 		is always the ratio between their $CP$s, no matter what the values of $p_1,\ldots,p_N$ are. Intuitively, if we assume the different systems corrections are independent from the way gold standard corrections were generated, than the ratio of accuracy scores reflects the ratio between their probability to have a valid correction.
 		So using $Acc$ score we get a reliable way of comparing $CP$ of two correctors,
 		but we underestimate $Acc\left(C;X,Correct_i\right)$ by the scale of $Pr\left[C\left(x_i\right) \in Y_i | C\left(x_i\right) \in Correct_i\right]$. The only way to decrease this bias
