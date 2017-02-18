@@ -200,9 +200,7 @@ University of Franche-Comte (UFC), University of Macau (UMC),
 Rozovskaya and Roth's best performing system (RoRo) \cite{rozovskaya2016grammatical}.
 All are trained and tested on the NUCLE corpus.
 
-We compare the prevalence of changes made to the source by the correctors,
-to the ones made by the NUCLE reference. In the evaluation, we discard all non-alphanumeric
-characters, both within tokens or as token of their own.
+We compare the prevalence of changes made to the source by the correctors, to the ones made by the NUCLE reference. In the evaluation, we discard all non-alphanumeric characters, both within tokens or as token of their own.
 
 %In order to have better evaluation of the real goal of corrections we also
 %compute all of the measures on ,
@@ -311,9 +309,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		\section{Multi-Reference Measures}\label{sec:increase-reference}
 		
 		In this section we show that using commonly used number of references in reference-based evaluation yields a substantial under-estimation of system's performance. Specifically, our results indicate that using $M=1$ or $M=2$ leads to an under-estimation of the true performance of correctors by more than half.
-		We discuss how such an under-estimation may lead systems to be
-		overly conservative, and which values of $M$ may be more suitable for
-		a reliable evaluation.
+		We discuss how such an under-estimation may lead systems to be overly conservative, and which values of $M$ may be more suitable for a reliable evaluation.
 		
 		%, 
 		%While we still use string similarity measures, the use of multiple corrections captures
@@ -399,7 +395,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 exactly matches one of the references (also called ``Exact Match'').
                 While this score is less
                 commonly used than $F$-score as an evaluation
-		measure of a corrector, it is a basic, interpretable measure and it is
+		measure of a corrector, it is a basic, interpretable measure and a variant of it was recently suggested as evaluation \cite{felice2015towards}\lc{added one evaluation method that helps our claim that accuracy is an interesting measure. should the other measure be cited somewhere?}. It is also
                 closely related to the 0-1 loss function used for
 		training statistical GEC systems
                 \cite{chodorow2012problems,rozovskaya2013joint}. 
@@ -523,7 +519,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		do not normally produce edits, $F$-score is defined optimistically, maximizing
 		over all possible ways to annotate the source with edits, so as to end up with the correction. 
 		The resulting optimization problem is NP-hard, but designated scorers
-		have been developed to estimate it, notably the $M^2$ scorer
+		have been developed to estimate it, notably the $M^2$ scorer 
 		\cite{dahlmeier2012better}.
 		
 		Given the complexity of the definition of the measure, no analytical analysis is at hand (as with accuracy). Instead, we use a bootstrapping
