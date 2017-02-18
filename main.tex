@@ -110,7 +110,7 @@ is their ability to generate corrections that are faithful to meaning of the sou
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters the meaning of the source \cite{brockett2006correcting}.
 As a result, often when compiling gold standard corrections for the task,
-annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of LL \lc{helen suddenly answered, sent the guidelines and it is very specific in them is it still "personal communication"?}\oa{no, you can just cite the guidelines.}.
+annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of LL \cite{nicholls2003cambridge}.
 A recent attempt to formally capture this precision/recall asymmetry has
 been the standardized use of $F_{.5}$ over $F_{1}$, where Precision is
 emphasized over Recall \cite{dahlmeier2012better}.
@@ -187,7 +187,7 @@ suffer from over-conservatism: they tend to make too few changes to the source.
 Our experiments are on the NUCLE dataset,
 a parallel corpus of LL essays and their corrected versions,
 which is the de facto standard in GEC.
-The corpus contains essays\oa{how many?} in LL, each of about 400 words.
+The corpus contains 1,414 essays in LL, each of about 500 words.
 
 We evaluate all participating systems in the CoNLL 2014,
 in addition to the best performing system on this dataset \cite{rozovskaya2014building}.
@@ -301,7 +301,7 @@ and by each of the correctors.
 \paragraph{Results.}
 Figure \ref{fig:over-conservatism} presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
-Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, in the reference corrections there are 44 sentences which have 5 words corrections, where the most 5-word corrections by any corrector is ....\oa{fill in}
+Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, in the reference corrections there are 44 sentences which have 5 words corrections, where the most 5-word corrections by any corrector is 11.
 
 For completeness, we also measured the prevalence of changes in
 another corpus, the TreeBank of LL \cite[FCE]{yannakoudakis2011new}.
@@ -630,9 +630,9 @@ on semantic similarity.
 The measure is based on the semantic similarity of the source and the proposed correction,
 measured as graph similarity between their semantic representations.
 We note that such a measure needs to be complemented with an additional
-measure of fluency or grammaticality, as it only captures
+measure of fluency or grammaticality\cite{sakaguchi2016reassessing}, as it only captures
 the faithfulness dimension, namely the extent to which
-the meaning of the source is preserved in the correction.\oa{we could cite the fluency people from ACL? or maybe fluency scores from MT evaluation?}
+the meaning of the source is preserved in the correction.\lc{The reduction to semantic and error detection is another way to convert this into an evaluation measure, one without references}
 
 As a test case, we use the UCCA to define the semantic structures \cite{abend2013universal}, motivated by
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
@@ -855,7 +855,7 @@ We cast the problem of finding a node alignment as a maximum weighted bipartite 
 the set of nodes $V_s$ and the set $V_c$, where the weight of an edge $(u,v) \in V_s \times V_c$ is
 defined to be $w(u,v) = \frac{\vert A_l \cap (yield(u) \times yield(v))\vert}{\vert yield(u) \vert} $.
 $A$ is defined to be the maximum weighted matching, excluding edges
-with weight 0.\oa{is this true? why do we use many-to-1? {\bf this doesn't make sense because it favors
+with weight 0.\oa{why do we use many-to-1? {\bf this doesn't make sense because it favors
 nodes up the tree. better to normalize}}
 The resulting F-score measure, using this computation of $A$ is called {\sc UCCASim}.
 
