@@ -426,57 +426,57 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 \begin{align*}
                   TrueAcc(C) - \mathbb{E}_{X,Y}\left[Acc(C;X,Y)\right] = \\
                   TrueAcc(C) - Pr(C(x) \in Y) = \\
-                  Pr(x \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct) \right)     
+                  Pr(x \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct_x) \right)     
                 \end{align*}
                 \end{small}
                   
 		It is easy to see that the bias is not affected by $N$, only by $M$, and we therefore denote it
-                with $b_M$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
-                
-                %The question 
-                %It is possible to get a good estimate of $Acc(C;X,Correct_i)$
-		%by taking a large enough sample from $Correct_i$, which is the common practice
-                %in reference-based evaluation.
-
-                \begin{align}\label{eq:correction-in-gs}
-		Pr[C(x_i) \in Y_i] = Pr[C(x_i) \in Correct_i] \cdot \\
-		Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i] = \nonumber \\
-		CP\cdot Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]\nonumber
-		\end{align}
-
-                We further define the {\it coverage} of the reference set $Y_i$ for the sentence $x_i$ to be
+    with $b_M(C)$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
+		
+		In order to gain insight about the evaluation measure and the GEC task
+		(and not the idiosyncracies of specific systems), we consider an idealized learner,
+		which is not biased towards a specific type of valid corrections. 
+		Formally, we assume that $Pr(C(x) \in Y \vert C(x) \in Correct_x) = Pr(y \in Y)$, where $y \sim \mathcal{D}_x$.
+		Under this assumption $b_M(C)$ can be written as the true accuracy of $C$ multiplied
+		by a factor which is independent of $C$. We will hence assume that $C$ is perfect (i.e., its true
+		accuracy is 1), noting that assuming any other value for $C$'s true accuracy would simply scale
+		our graphs by that accuracy. Denote the bias of a perfect corrector with $b_M$. To recap:
 		
 		\begin{equation*}
-		Cov\left(x_i,Y_i\right)=Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right).
+		b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}(y \in Y)
 		\end{equation*}
-                
-		%However, since $Y_i \subset Correct_i$, the estimator will always underestimate $CP$.
-
-                %\lc{We gathered all the information for sampling without repetition too, are those interesting and should be discussed? They are useful if you gather in an unrepeated way and wonder how good is your coverage }
-
-                Another property to consider is that under the reasonable assumption that $\mathbb{E}Pr[C(x_i) \in Y_i | C(x_i) \in Correct_i]$ is the same for $C$, $C'$ the ratio between their expected accuracy
-		is always the ratio between their $CP$s, no matter what the values of $p_1,\ldots,p_N$ are. Intuitively, if we assume the different systems corrections are independent from the way gold standard corrections were generated, than the ratio of accuracy scores reflects the ratio between their probability to have a valid correction.
-		So using $Acc$ score we get a reliable way of comparing $CP$ of two correctors,
-		but we underestimate $Acc\left(C;X,Correct_i\right)$ by the scale of $Pr\left[C\left(x_i\right) \in Y_i | C\left(x_i\right) \in Correct_i\right]$. The only way to decrease this bias
-		is to enlarge $p_i$, that is to say to enlarge $M$. 
-		We now proceed to estimating what sample sizes ($M$) give a good estimate of $CP$.\lc{make sure measure and score are being used consistently}
+    
+		We turn to estimating $b_M$ empirically. We note that $Acc(C;X,Y)$
+		is a sum of Bernoulli variables (i.e., a Poisson Binomial distribution), 
+		with probabilities $p_i = Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right)$.
 		
-		In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C\left(x_i\right) \in Correct_i$ then $C\left(x_i\right) \sim \mathcal{D}_i$. 
+		Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, 
+		we can estimate $p_i$ on our sentences, for any size of $Y_i$ (value of $M$). 
+		However, as this computation is exponential in $M$, we estimate $p_i$ using
+		sampling. Specifically, for every $M\in[20]$ and $i$ we sample $Y_i$ 1000 times, compute 
+		the covered probability mass $Pr_{\mathcal{D}_i}[\{y: y \in Y_i\}]$ for each sample and 
+		estimate $p_i$ to be their average. The resulting estimates for $p_i$ 
+		define the estimate for the distribution of $Acc(C;X,Y)$.
 		
-		Thus, the second
-		term in Equation \ref{eq:correction-in-gs} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_i)]$. Therefore $Acc(C;X,Y)$ is distributed as
-		a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random variable is a sum of Bernoulli variables with different success probabilities.} We also assume our corrector is always correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
+		%Given a set of LL sentences $x_1,...,x_N$ and their corresponding references
+		%$Y_1,...,Y_N$, we define the coverage of the reference set $Y_i$ for the sentence $x_i$ to be
+		
+		%\begin{equation*}
+		%Cov\left(x_i,Y_i\right)=.
+		%\end{equation*}
+  
+		%In order to gain insight into the accuracy measure, we need to know something about the distribution from which the given corrector chooses valid corrections. As each corrector might have its own biases, the most appealing choice would be to evaluate a corrector in which this distribution is the same as the one from which corrections for the gold standard are being drawn from. Formally, if $C\left(x_i\right) \in Correct_i$ then $C\left(x_i\right) \sim \mathcal{D}_i$. 
+		
+		%Thus, the second term in Equation \ref{eq:correction-in-gs} is $p_i = \mathbb{E}_{Y_i}[Cov(x_i,Y_i)]$. 
+		%Therefore $Acc(C;X,Y)$ is distributed as
+		%a Poisson Binomial random variable (divided by $N$), with probabilities $\{p_i \cdot CP\}_{i=1}^N$. \footnote{A Poisson Binomial random 
+		%variable is a sum of Bernoulli variables with different success probabilities.} We also assume our corrector is always 
+		%correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
 		
 		\begin{figure}
 			\includegraphics[width=8cm]{repeat_1000_accuracy}
 			\caption{Mean accuracy values for perfect correctors with different number of references.} \label{fig:accuracy_vals}
 		\end{figure}
-		
-		Using the estimated $\mathcal{D}_i$ for each source sentence $x_i$, we can now compute $p_i$ for any
-		size of $Y_i$ (value of $M$). However, as this computation is exponential in $M$, we estimate $p_i$ using
-		sampling. Specifically, for every $M\in[20]$ and $i$ we sample $Y_i$ 1000 times, compute 
-		the covered probability mass $Pr_{\mathcal{D}_i}[\{y: y \in Y_i\}]$ for each sample and estimate $p_i$ to be their
-		average. The $p_i$ define the Poisson Binominal distribution of $Acc(C;X,Y)$.
 		
 		Figure \ref{fig:accuracy_vals} presents the expected values of $Acc(C;X,Y)$ according to our estimates of $p_i$ for
 		different values of $M$. As our corrector is perfect, we would ideally expect its accuracy to be
