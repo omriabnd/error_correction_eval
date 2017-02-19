@@ -110,26 +110,27 @@ is their ability to generate corrections that are faithful to meaning of the sou
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters the meaning of the source \cite{brockett2006correcting}.
 As a result, often when compiling gold standard corrections for the task,
-annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of LL \cite{nicholls2003cambridge}.
+annotators are instructed to be conservative in their corrections, e.g. in NUCLE \footnote{Daniel Dahlmeier, personal communication.} and the Treebank of Learner English \cite{nicholls2003cambridge}.
 A recent attempt to formally capture this precision/recall asymmetry has
-been the standardized use of $F_{.5}$ over $F_{1}$, where Precision is
+been the standardized use of $F_{0.5}$ over $F_{1}$, where Precision is
 emphasized over Recall \cite{dahlmeier2012better}.
 
-However, favoring precision over recall may lead to reluctance of correctors to
+However, penalizing over-correction more harshly than under-correction
+may lead to reluctance of correctors to
 make any changes (henceforth, {\it over-conservatism}).
 Using a single reference correction, which is a common practice in GEC, compounds this problem,
 as correctors are not only more severely penalized for making an incorrect change that for not making
 any change, but are often penalized for making correct changes not found in the reference.
 
-We present results that indicate that current state of the art systems suffers
+We present results that indicate that current state of the art systems do suffer
 from over-conservatism. Evaluating the output of all 15 systems that participated
 in the recent CoNLL2014 shared task, we find that all of them
 substantially under-predict corrections relative to the gold standard
 (Section \ref{sec:formal_conservatism}). 
 
 We pursue two approaches to address this gap, proposing
-improved reference-based protocols to decrease the penalization of valid correction,
-thereby avoiding over-conservatism.
+improved reference-based protocols to decrease the undue penalization of valid corrections,
+in an attempt to alleviate over-conservatism.
 First, we study the effect of increasing the amount of references,
 which we denote by $M$ (Section \ref{sec:increase-reference}).
 While previous evaluation explored the case of $M=2$,
