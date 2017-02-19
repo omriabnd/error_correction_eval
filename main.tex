@@ -410,7 +410,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 exactly matches one of the references (also called ``Exact Match'').
                 While this score is less
                 commonly used than $F$-score as an evaluation
-		measure of a corrector, it is a basic, interpretable measure and a variant of it was recently suggested as evaluation \cite{felice2015towards}\lc{added one od the two newly found evaluation methods it helps our claim that accuracy is an interesting measure.
+		measure of a corrector, it is a basic, interpretable measure and a variant of it was recently suggested as evaluation \cite{felice2015towards}\lc{added one of the two newly found evaluation methods it helps our claim that accuracy is an interesting measure.
                   should the other measure be cited somewhere?}. It is also closely related to the 0-1 loss function used
                 for training statistical GEC systems \cite{chodorow2012problems,rozovskaya2013joint}. 
 		
@@ -419,29 +419,29 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 we define $C$'s accuracy to be
 
 		\begin{equation*}
-		Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
+		Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C\left(x_i\right) \in Y_i}
 		\end{equation*}
 
                 Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
                 a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
                 \begin{equation*}
-		  TrueAcc(C) = Pr_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right)
+		  TrueAcc\left(C\right) = Pr_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right)
 		\end{equation*}
                 
                 %We estimate $C$s quality by sampling a set of source sentences
                 %$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
 		%to the source. 
 
-                The bias of $Acc(C;X,Y)$ for a sample of $N$ sentences, each paired with $M$ references
+                The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $M$ references
                 is then
-
+\lc{make all equations footnotesize and make this one aligned}
                 \begin{footnotesize}
                   \centering
                 \begin{align*}
-                  TrueAcc(C) - \mathbb{E}_{X,Y}\left[Acc(C;X,Y)\right] = \\
-                  TrueAcc(C) - Pr(C(x) \in Y) = \\
-                  Pr(C(x) \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct_x) \right)     
+                  TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] = \\
+                  TrueAcc\left(C\right) - Pr\left(C\left(x\right) \in Y\right) = \\
+                  Pr\left(C\left(x\right) \in Correct_x)\right \cdot \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)     
                 \end{align*}
                 \end{footnotesize}
 
@@ -458,8 +458,6 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		by a factor which is independent of $C$. We will hence assume that $C$ is perfect (i.e., its true
 		accuracy is 1), noting that assuming any other value for $C$'s true accuracy would simply scale
 		our graphs by that accuracy. Denote the bias of a perfect corrector with $b_M$. To recap:
-		\lc{beutify equations}
-		\lc{Go through bias}
 		\begin{equation*}
 		b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}\left(y \in Y\right)
 		\end{equation*}
