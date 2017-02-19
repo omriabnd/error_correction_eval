@@ -378,7 +378,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 			\caption{Frequency by rank of 2 corrections distribution. The distributions have steps containing many corrections that are just as probable with very low probability. 	\label{fig:corrections_dist}}
 		\end{figure}
 		
-		\subsection{Assessment values} \label{subsec:Assessment-values}
+		\subsection{Under-estimation as a function of M} \label{subsec:Assessment-values}
 		
 		In the previous section we presented empirical assessment of the distribution of
 		corrections to a sentence. We now turn to estimating the resulting bias, namely
@@ -570,7 +570,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 corrector is only 0.42 with $M=2$.
 		
 		
-		\subsection{Significance of Real-World Correctors}
+		\subsection{Significance of Real-World Correctors}\label{sec:real_world}
 
                 We are not aware of any empirical estimates of the significance level of the F-score based
                 comparison of existing systems. Therefore, as a service to the reader, we apply
@@ -607,40 +607,74 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 %      while for statistical significance increasing $N$ is sufficient, this would not solve this problem:
 % -- low coverage entails other problems: it incentivizes systems not to correct, even if they can perfectly predict valid corrections.
 % -- mathematical argument
-% -- indeed, we see RoRo > Perfect and other systems are close to Perfect. it could be that they are better taylored to those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not. we hypothesize that this is the reason.
-% 
+% -- indeed, we see RoRo > Perfect and other systems are close to Perfect. it could be that they are better taylored to
+%    those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not.
+%    we hypothesize that this is the reason.
 
-The factors controlling significance are two. Variation across sentences themselves (different $D_x$)
-which is reduced with $N$ and the variation across choices of corrections which might be reduced with
-either $M$ or $N$. One can rightly deduce that large $N$ is sufficient for variation, but it will not
-solve the other problems: under-estimation of true performance,
-over-conservatism, possible issues when training systems, and might be more costly than annotating
-a larger $M$ without acquiring more sentences and also annotating them.
-Choosing how to balance is dependent on the goals of the one collecting data, and affects over
-the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we bring supporting data and
-leave the decision to the reader. We just point out that such balancing questions have been studied in
-various fields such as genetics \cite{ionita2010optimal}.\oa{}
+Our empirical results show that the number of corrections needed for a reliable reference-based estimation
+is considerably greater than was previously expected. On average, two references
+cover only about a quarter of the probability mass of valid corrections (Section \ref{subsec:Assessment-values}).
+While taking a large enough value of $N$ may yield statistically significant results for comparing the
+different systems (Section \ref{sec:real_world}), low values of $M$, and the low coverage they entail, lead to other problems
+that cannot be easily fixed.
 
-Assume that for a given source sentence $x$, and references $Y \sim \mathcal{D}_x$,
-the overall score will increase by $r$ if $aa$.
+%The factors controlling significance are two. Variation across sentences themselves (different $D_x$)
+%which is reduced with $N$ and the variation across choices of corrections which might be reduced with
+%either $M$ or $N$. One can rightly deduce that large $N$ is sufficient for variation, but it will not
+%solve the other problems: under-estimation of true performance,
+%over-conservatism, possible issues when training systems, and might be more costly than annotating
+%a larger $M$ without acquiring more sentences and also annotating them.
+%Choosing how to balance is dependent on the goals of the one collecting data, and affects over
+%the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we bring supporting data and
+%leave the decision to the reader. We just point out that such balancing questions have been studied in
+%various fields such as genetics \cite{ionita2010optimal}.\oa{}
 
-The effect of under estimation on evaluation and hence on how correctors are perceived is obvious. 
-Perhaps less obvious will be how under estimation affects the development
-process. We shall consider any evaluation which scores a wrong correction lower than no correction at all
-(e.g. $F$-score). For simplicity lets consider a scenario with only one sentence. We denote by $r>0$ the
-reward for a valid correction, $pu>0$ the punishment for a wrong correction and 0 otherwise.
-Thus, an average the score of a correction $x$ would be
-$S\left(x\right) = p\left(x\in y\right)*r - \left(1-p\left(x\in y\right)\right)*pu$.
-Under the assumption that development cycles or ML is gradually optimizing to get closer to the best solution,
-we will examine an all knowing perfect corrector.
-This corrector may take into account the probabilities of corrections to be in the gold standard.
-When choosing to correct such a corrector will choose the most frequent correction yielding $max_xS\left(x\right)$.
-Notably, not matter what are $r, pu$ when $p\left(x\in y\right)$ is small enough the perfect
-corrector will choose \emph{not} to correct.
+Importantly, low coverage in conjunction with asymmetric evaluation measures that penalize over-correction
+more severely than under-correction, results in evaluation measures that incentivize correctors not to correct,
+even if they are able to predict a valid correction. 
+Assume that for a given source sentence $x$, references $Y \sim \mathcal{D}_x$, and proposed correction $y$,
+a given evaluation measure increases by $\alpha$ if $y \in Y$, and decreases by $\beta > \alpha$ if $y \notin Y$.
+Assume that the corrector is perfect, i.e., it invariably produces $y \in Correct_x$.
+Still, if the covered probability mass $Pr(y \in Y)$ for $Y$ of size $M$ and $y$ sampled from $\mathcal{D}_x$)
+is less than 0.5, the expected utility of the corrector from producing $y$ is $Pr(y \in Y) \cdot \alpha - Pr(y \notin Y) \cdot \beta < 0$.
+For a non-perfect corrector, the utility of predicting a correction is further decreased, due to the probability
+of producing $y \notin Correct_x$.
+
+As we have seen above, the expected coverage (which is equal to the accuracy; see Figure \ref{}) is often lower
+than 0.5 for $M=2$, which suggests that such incentivization for over-conservatism is likely to be pervasive.
+Considering the F-score of the best performing systems in Figure \ref{}, and comparing them to the F-score
+of a perfect corrector with $M=2$, we find that their scores are comparable, with one system surpassing
+the perfect system's F-score.
+As we know that the output of these systems considerably diverges from the gold standard (Section \ref{sec2}),
+it is quite possible that their high performance relative to a perfect corrector's is due to these systems
+ability to predict when not to correct.
+
+%Finally, there a few assumptions made in our experiments that are worth fleshing out.
+%First, e.g. the explanation of a bad sampling is not probable but can not be refuted. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very long sentences for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not a big shift in respect to the human edits.
+
+% it could be that they are better taylored to
+% those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not.
+% we hypothesize that this is the reason.
+
+
+%An interesting finding comes from the combination of the scores of a perfect corrector with the scores correctors get (with $M=2$). Some correctors get a result close to the perfect score, with one actually surpassing it. If we consider the results from section \ref{sec:formal_conservatism} it is evident that they are far from being a perfect corrector, as many sentences which evidently need correcting (even if there is more than one way to correct) are not corrected by them. Then how can they get such a high score?
+
+
+%The effect of under estimation on evaluation and hence on how correctors are perceived is obvious. 
+%Perhaps less obvious will be how under estimation affects the development
+%process. We shall consider any evaluation which scores a wrong correction lower than no correction at all
+%(e.g. $F$-score). For simplicity lets consider a scenario with only one sentence. We denote by $r>0$ the
+%reward for a valid correction, $pu>0$ the punishment for a wrong correction and 0 otherwise.
+%Thus, an average the score of a correction $x$ would be
+%$S\left(x\right) = p\left(x\in y\right)*r - \left(1-p\left(x\in y\right)\right)*pu$.
+%Under the assumption that development cycles or ML is gradually optimizing to get closer to the best solution,
+%we will examine an all knowing perfect corrector.
+%This corrector may take into account the probabilities of corrections to be in the gold standard.
+%When choosing to correct such a corrector will choose the most frequent correction yielding $max_xS\left(x\right)$.
+%Notably, not matter what are $r, pu$ when $p\left(x\in y\right)$ is small enough the perfect
+%corrector will choose \emph{not} to correct.
 		
-An interesting finding comes from the combination of the scores of a perfect corrector with the scores correctors get (with $M=2$). Some correctors get a result close to the perfect score, with one actually surpassing it. If we consider the results from section \ref{sec:formal_conservatism} it is evident that they are far from being a perfect corrector, as many sentences which evidently need correcting (even if there is more than one way to correct) are not corrected by them. Then how can they get such a high score?
 
-This would be a good place to mention the drawbacks and assumptions of the methods we are using, e.g. the explanation of a bad sampling is not probable but can not be refuted. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very long sentences for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not a big shift in respect to the human edits.
 
 %One would like to suggest that the outstanding correctors have learned to correct like the specific annotator they have seen in the train. But as noted they do not correct enough, so that explanation lacks. An alternative explanation for it is that our prediction was right. The correctors avoid correcting sentences which they predict not to be well covered in the gold standard, gaining from that significantly.
 %\lc{Supposedly why creating the gold standard texts and the edits is hard should come here. Not sure how important it is, well it is hard, but this is what we have chosen and I don't think of a specific criticism we should fend off by it.}
