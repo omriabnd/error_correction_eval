@@ -102,8 +102,6 @@ Within GEC, considerable effort has been placed on system evaluation,
 which is notoriously difficult,
 much due to the many valid corrections each source sentence may have
 \cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better}.\oa{why so many citations?}
-%GEC evaluation is notoriously difficult, \lc{you left here a place for a cite, should I
-%cite that this is difficult or reference to having many corrections}\oa{whatever best supports this claim}
 
 An important criterion in the evaluation of GEC systems (henceforth, {\it correctors})
 is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
@@ -426,7 +424,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 \begin{align*}
                   TrueAcc(C) - \mathbb{E}_{X,Y}\left[Acc(C;X,Y)\right] = \\
                   TrueAcc(C) - Pr(C(x) \in Y) = \\
-                  Pr(x \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct_x) \right)     
+                  Pr(C(x) \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct_x) \right)     
                 \end{align*}
                 \end{footnotesize}
 
@@ -436,13 +434,17 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		
 		In order to gain insight about the evaluation measure and the GEC task
 		(and not the idiosyncracies of specific systems), we consider an idealized learner,
-		which is not biased towards a specific type of valid corrections. 
-		Formally, we assume that $Pr(C(x) \in Y \vert C(x) \in Correct_x) = Pr(y \in Y)$, where $y \sim \mathcal{D}_x$.
+		which, when correct, it produces a valid correction with
+		the same distribution as a human annotator (i.e., according to $\mathcal{D}_x$).
+		Formally, we assume that $Pr(C(x) \in Y \vert C(x) \in Correct_x) = Pr_{\mathcal{D}_x}(y \in Y)$.
 		Under this assumption $b_M(C)$ can be written as the true accuracy of $C$ multiplied
 		by a factor which is independent of $C$. We will hence assume that $C$ is perfect (i.e., its true
 		accuracy is 1), noting that assuming any other value for $C$'s true accuracy would simply scale
 		our graphs by that accuracy. Denote the bias of a perfect corrector with $b_M$. To recap:
-		
+		\lc{captions}
+		\lc{add statistics for dists}
+		\lc{beutify equations}
+		\lc{Go through bias}
 		\begin{equation*}
 		b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}(y \in Y)
 		\end{equation*}
@@ -455,7 +457,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 
                 \begin{footnotesize}
 		\begin{equation*}
-		\hat{b}_M = 1 - \frac{1}{N}\sum Pr_{Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_i}(y \in Y_i)
+		\hat{b}_M = 1 - \frac{1}{N}\sum_{i=1}^N Pr_{Y \sim \mathcal{D}_i^M, y \sim \mathcal{D}_i}(y \in Y)
 		\end{equation*}
                 \end{footnotesize}
                 
@@ -778,8 +780,8 @@ We employ two annotators, trained by annotating both LL and standard English
 passages, until a high enough agreement was reached (6 hours of training in total).
 Training passages were excluded from the evaluation.
 
-We experiment on 7 essays and their corrections from NUCLE, each of about 400 tokens.
-In order to measure inter-annotator agreement, we assigned 4 of these essays to both annotators
+We experiment on 7 essays and their corrections from NUCLE, each of about 500 tokens.
+In order to measure IAA, we assigned 4 of these essays to both annotators
 and compute their agreement (Section \ref{sec:iaa}).
 In order to measure the faithfulness score for a perfect corrector, we annotate both
 the source and corrected version for 6 essays, some of which were annotated by both annotators.
@@ -861,8 +863,7 @@ with weight 0.\oa{why do we use many-to-1? {\bf this doesn't make sense because 
 nodes up the tree. better to normalize}}
 The resulting $F$-score measure, using this computation of $A$ is called {\sc UCCASim}.
 
-We note that 
-{\sc UCCASim} is somewhat more relaxed than DAG $F$-score defined above,
+We note that {\sc UCCASim} is somewhat more relaxed than DAG $F$-score defined above,
 as it aligns two nodes not only if their yields are in perfect alignment with
 one another, but it may also match nodes whose yields are in partial alignment
 with one another. This relaxation is necessary given that a correction often adds
