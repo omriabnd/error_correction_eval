@@ -438,26 +438,27 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 \lc{make all equations footnotesize and make this one aligned}
                 \begin{footnotesize}
                   \centering
-                \begin{align*}
-                  TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] = \\
-                  TrueAcc\left(C\right) - Pr\left(C\left(x\right) \in Y\right) = \\
-                  Pr\left(C\left(x\right) \in Correct_x)\right \cdot \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)     
-                \end{align*}
+                \begin{flalign*}
+                TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] & = \\
+                TrueAcc\left(C\right) - Pr\left(C\left(x\right) \in Y\right) & = \\
+                Pr\left(C\left(x\right) \in Correct_x\right) & \cdot\\
+                \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)&
+                \end{flalign*}
                 \end{footnotesize}
 
                 
 		It is easy to see that the bias is not affected by $N$, only by $M$, and we therefore denote it
-                with $b_M(C)$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
+                with $b_M\left(C\right)$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
 		
 		In order to gain insight about the evaluation measure and the GEC task
 		(and not the idiosyncrasies of specific systems), we consider an idealized learner,
 		which, when correct, it produces a valid correction with
 		the same distribution as a human annotator (i.e., according to $\mathcal{D}_x$).
-		Formally, we assume that $Pr(C(x) \in Y \vert C(x) \in Correct_x) = Pr_{\mathcal{D}_x}(y \in Y)$.
-		Under this assumption $b_M(C)$ can be written as the true accuracy of $C$ multiplied
+		Formally, we assume that $Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) = Pr_{\mathcal{D}_x}\left(y \in Y\right)$.
+		Under this assumption $b_M\left(C\right)$ can be written as the true accuracy of $C$ multiplied
 		by a factor which is independent of $C$. We will hence assume that $C$ is perfect (i.e., its true
 		accuracy is 1), noting that assuming any other value for $C$'s true accuracy would simply scale
-		our graphs by that accuracy. Denote the bias of a perfect corrector with $b_M$. To recap:
+		our graphs by that accuracy. Similarly, assuming only a certain percentage of the sentences need correction will also scale the graph by that percentage. Denote the bias of a perfect corrector with $b_M$. To recap:
 		\begin{equation*}
 		b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}\left(y \in Y\right)
 		\end{equation*}
@@ -480,7 +481,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		sampling. Specifically, for every $M\in[20]$ and $x_i$, we sample $Y_i$ 1000 times,
                 with replacement, and estimate $Pr\left(y \in Y_i\right)$ as the covered probability mass
                 $Pr_{\mathcal{D}_i}[\{y: y \in Y_i\}]$.\footnote{We repeat these experiments where $Y_i$
-                  is sampled without replacement, obtaining very similar results. {\bf OA: IS THIS TRUE?}}
+                  is sampled without replacement, obtaining similar trends with faster increase in accuracy.}
 
                 %The resulting estimates for $p_i$ 
 		%define the estimate for the distribution of $Acc(C;X,Y)$.
@@ -514,14 +515,14 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive
                 to which words were changed and not to what they were changed to.
                 Formally, two corrections $y$ and $y'$ over a source sentence $x$ match
-                if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,|y|,Null\}$
-                and $a':\{1,...,|x|\} \rightarrow \{1,...,|y'|,Null\}$, it holds that 
-                $y_{a(i)} \neq x_{i}$ iff $y'_{a'(i)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty).
+                if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,\left|y\right|,Null\}$
+                and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|y'\right|,Null\}$, it holds that 
+                $y_{a\left(i\right)} \neq x_{i}$ iff $y'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty).
                 Figure \ref{fig:accuracy_vals} presents the results of this experiments that
                 show that while the expected accuracy is somewhat higher, still with $M=20$ it is no more than 0.65.
 
                 The figures include As to the variance of $Acc(C;X,Y)$, which is estimated
-                as $\frac{\sum_{i=1}^{N} \hat{b}_M\cdot\left(1-\hat{b}_M\right)}{N^2}$.
+                as $$\frac{\sum_{i=1}^{N} \hat{b}_M\cdot\left(1-\hat{b}_M\right)}{N^2}$$.
                 
 		\paragraph{$F$-Score.}
 		While accuracy is commonly used as a loss function for training GEC systems,
@@ -581,7 +582,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 corrector is only 0.42 with $M=2$.
 
 		\subsection{Significance of Real-World Correctors}
-		
+
                 So far we have discussed the mean values of the assessment. However, since measures are often used as
                 means of comparison between different systems, not less important than the bias is the
                 variance of these estimators, and the significance level they yield.
