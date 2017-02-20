@@ -96,8 +96,6 @@
 % 4.4. Empirical Validation: IAA, semantic conservativism vs. gold std
 % 5. Conclusion
 
-\oa{we need to add the two other measures}
-
 Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many
 other application areas of linguistics. The field is receiving considerable
 interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo} and
@@ -548,15 +546,16 @@ increase in accuracy.\oa{how much faster?}
 
 \begin{figure}
   \includegraphics[width=8cm]{repeat_1000_accuracy}
-  \caption{Mean accuracy values for perfect correctors with different number of references.} \label{fig:accuracy_vals}
+  \caption{Mean Accuracy and Exact Index Match
+    values for a perfect corrector (y-axis) as a function of the number of references $M$ (x-axis).
+    Each data point is paired with a confidence interval ($p=.95$).     
+  } \label{fig:accuracy_vals}
 \end{figure}
 
 Figure \ref{fig:accuracy_vals} presents the expected accuracy values for our perfect
 corrector (i.e., 1-$\hat{b}_M$) for different values of $M$. 
 Results show that even for values of $M$ which are much larger than
 those considered in the GEC literature (e.g., $M=20$), the expected accuracy is only of about 0.5.
-The graphs do show near linear behaviour from $M=9$ or so (after an initial concave behavior),
-which indicates that it reflects a reasonable balance between cost and bias.
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive
 to the identity of the changed words and not to what they were changed to.
@@ -628,6 +627,11 @@ in obtaining a reliable estimation of a corrector's performance.
 For instance, the $F_{0.5}$ score for our perfect corrector, whose true F-score is 1,
 is only 0.42 with $M=2$.
 
+\paragraph{}
+While out experiments focus on the accuracy and F-score measures, but we expect
+that our results would generalize to other reference-based measures, such as the
+I-measure \cite{} and GLEU \cite{}, which are adaptations of the F-score and accuracy
+measures, respectively, that address orthogonal shortcomings from the ones presented here.\oa{please verify!}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -643,12 +647,17 @@ test data ($M=2$).
 
 \begin{figure}
   \includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
-  \caption{F Score results with different sizes of gold standard.\label{fig:F_Ms}}
+  \caption{
+    Mean $F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $M$ (x-axis).
+    Each data point is paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
 \end{figure}
 
 \begin{figure}
   \includegraphics[width=8cm]{$F_{0.5}$_significance}
-  \caption{$F$-Score results for different correctors including confidence interval.\label{fig:F_correctors}}
+  \caption{$F_{0.5}$ values for different correctors, including confidence interval ($p=.95$).
+    The left-most column (``source'') presents the F-score of a corrector that doesn't make any
+    changes to the source sentences.
+    See Section \ref{par:experimental_setup} for a legend of the correctors.\label{fig:F_correctors}}
 \end{figure}
 
 
@@ -712,12 +721,17 @@ comparing them to the F-score of a perfect corrector with $M=2$, we find that th
 where RoRo in fact surpass a perfect corrector's F-score.
 While it is possible that such systems outperform the perfect corrector by learning how to
 correct a sentence in the same way as one of the NUCLE annotators did, we view this possibility
-as unlikely as our results in Section \ref{sec2} show that the output of these systems
-considerably diverge from NUCLE's references.
+as unlikely as our results in Section \ref{sec:formal_conservatism} show that the output of these systems
+considerably diverges from NUCLE's references.
 A more likely possibility is that these systems high performance relative to a perfect corrector's
 is due to these correctors having learned to predict when not to correct.
 
-\oa{We should discuss what number of references of references may be more suitable for a reliable evaluation. maybe 8,9}
+Finally, we turn to discussing what values of $M$ yield a reliable estimate of the performance
+of GEC systems. While there is no one answer to this question, and coverage can be low
+even with $M$ values of 20, both measures we considered begin
+to plateau (in the case of F-score) or present linear increases after an initial
+concave behavior (in the case of accuracy) at $M$ values of 8--10.
+This may indicate that such values are a reasonable balance between cost and bias.
 
 
 %Finally, there a few assumptions made in our experiments that are worth fleshing out.
@@ -726,7 +740,6 @@ is due to these correctors having learned to predict when not to correct.
 % it could be that they are better taylored to
 % those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not.
 % we hypothesize that this is the reason.
-
 
 %An interesting finding comes from the combination of the scores of a perfect corrector with the scores correctors get (with $M=2$). Some correctors get a result close to the perfect score, with one actually surpassing it. If we consider the results from section \ref{sec:formal_conservatism} it is evident that they are far from being a perfect corrector, as many sentences which evidently need correcting (even if there is more than one way to correct) are not corrected by them. Then how can they get such a high score?
 
