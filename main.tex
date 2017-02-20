@@ -232,7 +232,7 @@ exactly match. We report the average $\rho$ over all sentence pairs.
 Third, we report how many source sentences were split and how many concatenated by the references,
 and by each of the correctors.
 
-
+\com{
 \begin{figure}[tbp]
   \centering
   \begin{subfigure}[]{0.4\textwidth}
@@ -261,37 +261,37 @@ and by each of the correctors.
   \caption{\label{fig:over-conservatism}
     See \S\ref{par:experimental_setup} for a legend
     of the systems.}
-  
-  \com{
+  	\end{figure}
+}
+
   	\begin{figure}[tbp]
   		\centering
   		\begin{subfigure}[]{0.4\textwidth}
-  			\caption{\label{fig:split}}
+  			%\caption{\label{fig:split}}
   			\includegraphics[width = \textwidth]{aligned}
   			\com{\caption{Number of source sentences (y-axis) split 
   					(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\label{fig:split}}}
   		\end{subfigure}
   		
   		\begin{subfigure}[]{0.4\textwidth}
-  			\caption{\label{fig:rho}}
+  			%\caption{\label{fig:rho}}
   			\includegraphics[width = \textwidth]{spearman_ecdf}
   			\com{\caption{Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\label{fig:rho}}}
   		\end{subfigure}
   		
   		\begin{subfigure}[]{0.4\textwidth}
-  			\caption{\label{fig:words_changed}}
+  			\com{\caption{\label{fig:words_changed}}}
   			\includegraphics[width = \textwidth]{words_differences_heat}
   			\com{\caption{Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}}
   		\end{subfigure}
-  		\caption{(a) Number of source sentences (y-axis) split 
-  			(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.
-  			(b) Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.
-  			(c) Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\\
+  		\caption{(Top) Number of source sentences (y-axis) split 
+  			(right bars) or concatenated (left bars) in the gold standard (striped column) and in different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\\
+  			(Mid) Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\\
+  			(Bottom) Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences than the correctors.\\
   			See \S\ref{par:experimental_setup} for a legend
   			of the systems.\label{fig:over-conservatism}}
   		\com{\caption{	See \S\ref{par:experimental_setup} for a legend
   				of the systems. \label{fig:over-conservatism}}}
-  	\end{figure}}
 \end{figure}
 
 
@@ -370,13 +370,25 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		  we collected, along with the estimated distributions can be found in <to be disclosed
 		  upon publication>}
 		
-		By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. As example, a plot of three randomly selected sentences can be seen in \ref{fig:corrections_dist}. Considering variants with frequency more than $1\%$ to be frequent variants we calculated that on average there are 8.72 such variants which cover $52\%$ of the total probability mass.
+		By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. In table \ref{tab:corrections_dist} different mean numbers of variants and their mass can be seen, when ignoring variants with negligible frequency.
+		\begin{table}[h!]
+			\centering
+			\singlespacing
+			\begin{tabular}{c|c|c|c|c|}
+				\cline{2-5} 
+				& \multicolumn{4}{c|}{Frequency Threshold}\\ 
+				%\cline{2-5} 
+				& \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0.001} & \multicolumn{1}{c}{0.01} & \multicolumn{1}{c|}{0.1}
+				\\
+				\hline
+				Variants & 1351.24 & 74.34 & 8.72 & 1.35
+				\\
+				Mass & 1 & 0.75 & 0.58 & 0.37\\
+			\end{tabular}
+			\caption{Mean number of variants which are not negligible by different minimum frequency per variant as a threshold and their mass.\label{tab:corrections_dist}}
+		\end{table}
 		
-		\begin{figure}
-			\includegraphics[width = 8cm]{exact_dists_plot}
-			\caption{Frequency by rank of 2 corrections distribution. The distributions have steps containing many corrections that are just as probable with very low probability. 	\label{fig:corrections_dist}}
-		\end{figure}
-		
+
 		\subsection{Under-estimation as a function of M} \label{subsec:Assessment-values}
 		
 		In the previous section we presented empirical assessment of the distribution of
@@ -394,7 +406,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 exactly matches one of the references (also called ``Exact Match'').
                 While this score is less
                 commonly used than $F$-score as an evaluation
-		measure of a corrector, it is a basic, interpretable measure and a variant of it was recently suggested as evaluation \cite{felice2015towards}\lc{added one evaluation method that helps our claim that accuracy is an interesting measure.
+		measure of a corrector, it is a basic, interpretable measure and a variant of it was recently suggested as evaluation \cite{felice2015towards}\lc{added one of the two newly found evaluation methods it helps our claim that accuracy is an interesting measure.
                   should the other measure be cited somewhere?}. It is also closely related to the 0-1 loss function used
                 for training statistical GEC systems \cite{chodorow2012problems,rozovskaya2013joint}. 
 		
@@ -403,51 +415,47 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 we define $C$'s accuracy to be
 
 		\begin{equation*}
-		Acc(C;X,Y) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}
+		Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C\left(x_i\right) \in Y_i}
 		\end{equation*}
 
                 Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
                 a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
                 \begin{equation*}
-		  TrueAcc(C) = Pr_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right)
+		  TrueAcc\left(C\right) = Pr_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right)
 		\end{equation*}
                 
                 %We estimate $C$s quality by sampling a set of source sentences
                 %$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
 		%to the source. 
 
-                The bias of $Acc(C;X,Y)$ for a sample of $N$ sentences, each paired with $M$ references
+                The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $M$ references
                 is then
-
                 \begin{footnotesize}
                   \centering
-                \begin{align*}
-                  TrueAcc(C) - \mathbb{E}_{X,Y}\left[Acc(C;X,Y)\right] = \\
-                  TrueAcc(C) - Pr(C(x) \in Y) = \\
-                  Pr(C(x) \in Correct_x) \cdot \left(1 - Pr(C(x) \in Y \vert C(x) \in Correct_x) \right)     
-                \end{align*}
+                \begin{flalign*}
+                TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] & = \\
+                TrueAcc\left(C\right) - Pr\left(C\left(x\right) \in Y\right) & = \\
+                Pr\left(C\left(x\right) \in Correct_x\right) & \cdot\\
+                \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)&
+                \end{flalign*}
                 \end{footnotesize}
 
                 
 		It is easy to see that the bias is not affected by $N$, only by $M$, and we therefore denote it
-                with $b_M(C)$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
+                with $b_M\left(C\right)$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
 		
 		In order to gain insight about the evaluation measure and the GEC task
-		(and not the idiosyncracies of specific systems), we consider an idealized learner,
+		(and not the idiosyncrasies of specific systems), we consider an idealized learner,
 		which, when correct, it produces a valid correction with
 		the same distribution as a human annotator (i.e., according to $\mathcal{D}_x$).
-		Formally, we assume that $Pr(C(x) \in Y \vert C(x) \in Correct_x) = Pr_{\mathcal{D}_x}(y \in Y)$.
-		Under this assumption $b_M(C)$ can be written as the true accuracy of $C$ multiplied
+		Formally, we assume that $Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) = Pr_{\mathcal{D}_x}\left(y \in Y\right)$.
+		Under this assumption $b_M\left(C\right)$ can be written as the true accuracy of $C$ multiplied
 		by a factor which is independent of $C$. We will hence assume that $C$ is perfect (i.e., its true
 		accuracy is 1), noting that assuming any other value for $C$'s true accuracy would simply scale
-		our graphs by that accuracy. Denote the bias of a perfect corrector with $b_M$. To recap:
-		\lc{captions}
-		\lc{add statistics for dists}
-		\lc{beutify equations}
-		\lc{Go through bias}
+		our graphs by that accuracy. Similarly, assuming only a certain percentage of the sentences need correction will also scale the graph by that percentage. Denote the bias of a perfect corrector with $b_M$. To recap:
 		\begin{equation*}
-		b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}(y \in Y)
+		b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}\left(y \in Y\right)
 		\end{equation*}
     
 		%We turn to estimating $b_M$ empirically. We note that $Acc(C;X,Y)$
@@ -458,7 +466,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 
                 \begin{footnotesize}
 		\begin{equation*}
-		\hat{b}_M = 1 - \frac{1}{N}\sum_{i=1}^N Pr_{Y \sim \mathcal{D}_i^M, y \sim \mathcal{D}_i}(y \in Y)
+		\hat{b}_M = 1 - \frac{1}{N}\sum_{i=1}^N Pr_{Y \sim \mathcal{D}_i^M, y \sim \mathcal{D}_i}\left(y \in Y\right)
 		\end{equation*}
                 \end{footnotesize}
                 
@@ -466,9 +474,9 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 for any size of $Y_i$ (value of $M$). 
 		However, as this computation is highly computationally demanding, we estimate it using
 		sampling. Specifically, for every $M\in[20]$ and $x_i$, we sample $Y_i$ 1000 times,
-                with replacement, and estimate $Pr(y \in Y_i)$ as the covered probability mass
+                with replacement, and estimate $Pr\left(y \in Y_i\right)$ as the covered probability mass
                 $Pr_{\mathcal{D}_i}[\{y: y \in Y_i\}]$.\footnote{We repeat these experiments where $Y_i$
-                  is sampled without replacement, obtaining very similar results. {\bf OA: IS THIS TRUE?}}
+                  is sampled without replacement, obtaining similar trends with faster increase in accuracy.}
 
                 %The resulting estimates for $p_i$ 
 		%define the estimate for the distribution of $Acc(C;X,Y)$.
@@ -502,14 +510,14 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive
                 to which words were changed and not to what they were changed to.
                 Formally, two corrections $y$ and $y'$ over a source sentence $x$ match
-                if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,|y|,Null\}$
-                and $a':\{1,...,|x|\} \rightarrow \{1,...,|y'|,Null\}$, it holds that 
-                $y_{a(i)} \neq x_{i}$ iff $y'_{a'(i)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty).
+                if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,\left|y\right|,Null\}$
+                and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|y'\right|,Null\}$, it holds that 
+                $y_{a\left(i\right)} \neq x_{i}$ iff $y'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty).
                 Figure \ref{fig:accuracy_vals} presents the results of this experiments that
                 show that while the expected accuracy is somewhat higher, still with $M=20$ it is no more than 0.65.
 
                 The figures include As to the variance of $Acc(C;X,Y)$, which is estimated
-                as $\frac{\sum_{i=1}^{N} \hat{b}_M\cdot\left(1-\hat{b}_M\right)}{N^2}$.
+                as $$\frac{\sum_{i=1}^{N} \hat{b}_M\cdot\left(1-\hat{b}_M\right)}{N^2}$$.
                 
 		\paragraph{$F$-Score.}
 		While accuracy is commonly used as a loss function for training GEC systems,
@@ -567,9 +575,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
                 provides further evidence for the insufficiency of $M$ values of 1 or 2
                 for a reliable estimation, For instance, the $F_{0.5}$ score for our perfect
                 corrector is only 0.42 with $M=2$.
-		
-		
-		\subsection{Significance of Real-World Correctors}\label{sec:real_world}
+	\subsection{Significance of Real-World Correctors}\label{sec:real_world}
 
                 We are not aware of any empirical estimates of the significance level of the F-score based
                 comparison of existing systems. Therefore, as a service to the reader, we apply
@@ -584,7 +590,7 @@ While $89.63\%$ of NUCLE sentences need corrections, FCE consists only of ungram
 		\end{figure}
 		\begin{figure}
 			\includegraphics[width=8cm]{$F_{0.5}$_significance}
-			\caption{F Score results for different correctors including confidence interval.\label{fig:F_correctors}}
+			\caption{$F$-Score results for different correctors including confidence interval.\label{fig:F_correctors}}
 		\end{figure}
 		               
 		Figure \ref{fig:F_correctors} shows our results, which present a mixed picture: some
@@ -672,11 +678,11 @@ ability to predict when not to correct.
 %When choosing to correct such a corrector will choose the most frequent correction yielding $max_xS\left(x\right)$.
 %Notably, not matter what are $r, pu$ when $p\left(x\in y\right)$ is small enough the perfect
 %corrector will choose \emph{not} to correct.
-		
 
 
 %One would like to suggest that the outstanding correctors have learned to correct like the specific annotator they have seen in the train. But as noted they do not correct enough, so that explanation lacks. An alternative explanation for it is that our prediction was right. The correctors avoid correcting sentences which they predict not to be well covered in the gold standard, gaining from that significantly.
 %\lc{Supposedly why creating the gold standard texts and the edits is hard should come here. Not sure how important it is, well it is hard, but this is what we have chosen and I don't think of a specific criticism we should fend off by it.}
+
 %In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect\oa{why should I expect this?}. \lc{funny that you ask, well you did ask me that in person afterwards didn't you? :D}
 		
 %\com{This may result by the mechanical creation of edits. The different edits might give bias to the results\oa{but this is also true when evaluating real systems, no?}. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.}
