@@ -1,5 +1,7 @@
 \documentclass[letter,11pt]{article}
 %\usepackage[round]{natbib}
+
+
 \usepackage{setspace} 
 \usepackage{dsfont}
 \usepackage{amsfonts}
@@ -309,76 +311,94 @@ and obtain  similar results to those obtained on NUCLE.
 
 In this section we show that the common practice of using one or two references in reference-based
 GEC evaluation yields a substantial under-estimation of system's performance.
-We discuss the implications of such under-estimation and show how developing correctors
-to optimize such measures may lead them to be overly conservative.
-We also discuss what number of references of references may be more
-suitable for a reliable evaluation.
+We discuss the implications of under-estimation, specifically showing how designing
+correctors so as to optimize existing measures, may lead them to over-conservatism.
+Finally, we discuss what number of references may be more suitable for a reliable evaluation.
 
 
 \subsection{Notation}
 
-We assume each source sentence $s$ has a set of valid corrections $Correct_s$,
-and a discrete distribution $\mathcal{D}_s$ over $Correct_s$ reflecting their prevalence.
-We will assume that $s$ is evaluated by
-$M$ independently sampled references from $\mathcal{D}_s$.
+We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
+and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
+for $y \in Correct_s$ is the probability a human annotator would correct $x$ as $y$.
 
-Denote the set of source learner language sentences $X=x_{1}\ldots x_N \sim \mathcal{L}$, where
-$L$ is a distribution over all learner sentences from the domain. For each $x_i$, denote
-with $\mathcal{D}_{i}$ its distribution of corrections.
-%(i.e. a discrete distribution representing how many corrections are there and their relative frequency).
-Denote with $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\} \sim \mathcal{D}_{i}$
-a sample of $M$ corrections.\footnote{Our analysis assumes $M$ is fixed across source sentences.
-  Generalizing the analysis to sentence-dependent $M$ values is straightforward.}
-An assessment measure is a function which maps $C$ a correctors output or system, $X$ and $Y_1,\ldots,Y_N$ to
-a number in $[0,1]$. We use the term true measure when $y=Correct$.
+Let $X$ be the evaluated set of source LL sentences where $X$ consists
+of the sentences $x_{1}\ldots x_N$, each independently sampled from some
+distribution $\mathcal{L}$ over LL sentences.
+For each $x_i$, denote with $\mathcal{D}_{i}$ its distribution of corrections.
+Each $x_i$ is paired with $M$ corrections $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\}$,
+which are indpendently sampled from $\mathcal{D}_{i}$.\footnote{Our analysis assumes $M$
+  is fixed across source sentences. Generalizing the analysis to sentence-dependent $M$
+  values is straightforward.} 
 
-Define a corrector as a function from learner sentences to corrections.
-We assume this function is deterministic for simplicity of presentation,
-but our analysis holds for the case of a stochastic mapping as well.
+%We will be assuming that each source $x$ is evaluated by $M$ references,
+%where are independently sampled references from $\mathcal{D}_x$.
+
+A corrector $C$ is a function from LL sentences to proposed corrections  (strings).
+A corrector's output is a set of proposed corrections $\{C(x_1),...,C(x_N)\}$.
+An assessment measure is a function from $X$, $Y$ and $C$ to
+a real number. We use the term ``true measure'' to refer to the measure's
+output where the references include all possible corrections, i.e., $y_i=Correct_i$ for
+every $i$.
 
 
 \subsection{Data}
 
-To be able to answer interesting statistical questions about assessment we first
-need to understand the behaviour of the distributions $D_x$. For that we sample
-52 sentences with a maximum length of 15 from the NUCLE test data
-. The restriction over the length was made to avoid having many different mistakes in the same text unit. It is reasonable to think corrections very far from each other are results of different mistakes, in that case we would not want the analysis to assess a very large number of corrections due to the exponential number of corrections when many unrelated mistakes occur.
-Sentences with less than 6 words were discarded, as they were mostly a result of sentence tokenization error,
-Histogram of sentence lengths showed a third of the mass is below this threshold.
+Our analysis assumes that we have a reliable estimate for the distribution of corrections
+$\mathcal{D}_x$ for the source sentences we evaluate.
+Our experiments in the following section are run on a random sample 52 sentences with a
+maximum length of 15 from the NUCLE test data. 
+The length restriction was introduced to avoid introducing too many independent
+errors that may drastically increase the number of annotations
+(as every combination of corrections to these errors are possible),
+thus resulting in an unreliable estimation for $\mathcal{D}_x$.
+Sentences with less than 6 words (about a third of the overall source sentences)
+were discarded, as they were mostly a result of sentence segmentation errors.
 
-Albeit too expensive for assessment of each development cycle, human assessment
-by crowdsourcing is a very useful tool. Crowdsourcing assessment was shown to
-be helpful in different tasks such as translation
-\cite{zaidan2011crowdsourcing,post2012constructing}
-and in GEC \cite{madnani2011they}. % where the task is intuitive to non-experts.
-Thus, for each of the sentences gathered we asked Amazon Mechanical Turk workers to correct them,
-leading to 2600 corrections overall,
-50 per sentence. 4 sentences did not need correction according to a large part of the workers and hence were discarded.
+Crowdsourcing has proven effective in 
+GEC evaluation \cite{madnani2011they,napoles2015ground} and in related
+tasks such as machine translation 
+\cite{zaidan2011crowdsourcing,post2012constructing}.
+We thus use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically,
+for each of the 52 source sentences, we elicited 50 corrections by Amazon Mechanical
+Turk workers.\oa{say a bit more on the correction procedure. How long did it take?
+  Did you apply any filtering? Anything interesting about the protocol you used?}
+4 sentences did not need require any correction according to a large part of the workers and
+were hence discarded.
 
 \subsection{Estimating The Distribution of Corrections}
 
-We begin by estimating $\mathcal{D}_s$ for each sentence, using the crowdsourced
-corrections. We estimated its distribution of corrections $\mathcal{D}_s$
-using {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
+We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced
+corrections.
+We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
 estimates a multinomial distribution,
-in which only the individual values do not matter, only the distribution of probabilities
+in which the individual values do not matter, only the distribution of probabilities
 across values.%\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst}}
-The algorithm was originally developed for assessing how many
-variants a gene might have, including undiscovered ones.
-Thus, it is designed to estimate the distribution of variants that were not seen in the sample.
+{\sc UnseenEst} was originally developed for assessing how many
+variants a gene might have, including undiscovered ones, which is a similar
+estimation problem to the one tackled here.
 Manual tests of unseenEst with small artificially created frequencies show
-satisfying results.\footnote{All data
-  we collected, along with the estimated distributions can be found in <to be disclosed
-  upon publication>}
+satisfying results.\oa{do you mean you conducted these exps? or did the authors?}
+\footnote{All data we collected, along with the estimated
+  distributions can be found in <to be disclosed upon publication>}
 
-By the estimates from {\sc UnseenEst} most sentences have a large number of corrections with low probability accounting for a major part of the probability mass and a rather small number of frequent corrections. Specifically, the distributions tend to have steps with many corrections with the same (low) frequency. In table \ref{tab:corrections_dist} different mean numbers of variants and their mass can be seen, when ignoring variants with negligible frequency.
+By the estimates from {\sc UnseenEst}, most source sentences have a large number of
+corrections with low probability accounting for the bulk of the probability mass
+and a rather small number of frequent corrections.
+The estimated distributions tend to have steps, with many corrections with the same (low) frequency.
+Table \ref{tab:corrections_dist} presents the mean numbers of different corrections with frequency at least
+$\gamma$ (for different values of $\gamma$), and their total probability mass.
+For instance, 8.72 corrections account for 58\% of the total probability mass of the corrections, each
+occuring with a probability of 0.01 or higher.\oa{maybe the graph to show is the total probability mass
+  of the $k$ most frequent variants, where $k=1,2,3,4...$?}
 
 \begin{table}[h!]
   \centering
+  \small
   \singlespacing
   \begin{tabular}{c|c|c|c|c|}
-    \cline{2-5} 
-    & \multicolumn{4}{c|}{Frequency Threshold}\\ 
+    %\cline{2-5} 
+    & \multicolumn{4}{c|}{Frequency Threshold ($\gamma$)}\\ 
     %\cline{2-5} 
     & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0.001} & \multicolumn{1}{c}{0.01} & \multicolumn{1}{c|}{0.1}
     \\
@@ -386,8 +406,13 @@ By the estimates from {\sc UnseenEst} most sentences have a large number of corr
     Variants & 1351.24 & 74.34 & 8.72 & 1.35
     \\
     Mass & 1 & 0.75 & 0.58 & 0.37\\
+    \hline
   \end{tabular}
-  \caption{Mean number of variants which are not negligible by different minimum frequency per variant as a threshold and their mass.\label{tab:corrections_dist}}
+  \caption{\label{tab:corrections_dist}
+    Estimating the distribution of corrections $\mathcal{D}_x$.
+    The table presents the mean number of corrections with a probability of more than
+    $\gamma$ (top row), as well as their total probability mass (bottom row).
+  }
 \end{table}
 
 
@@ -407,79 +432,102 @@ We discuss two similarity measures. One is the sentence-level accuracy
 \paragraph{Sentence-level Accuracy.}
 Sentence-level accuracy is the number of sentences whose corrections
 exactly matches one of the references (also called ``Exact Match'').
-While this score is less
-commonly used than $F$-score as an evaluation
-measure of a corrector, it is a basic, interpretable measure and a variant of it was recently suggested as evaluation \cite{felice2015towards}\lc{added one of the two newly found evaluation methods it helps our claim that accuracy is an interesting measure.
-  should the other measure be cited somewhere?}. It is also closely related to the 0-1 loss function used
+While this measure, in its raw form, is not commonly used as an evaluation
+measure in GEC, it is a basic, interpretable measure, and extentions
+of which have been recently proposed for GEC evaluation \cite{felice2015towards}.
+It is also closely related to the 0-1 loss function used
 for training statistical GEC systems \cite{chodorow2012problems,rozovskaya2013joint}. 
 
 Formally, given test sentences $X=\{x_1,\ldots,x_N\}$,
-their references $Y_1,\ldots,Y_N$, and a corrector $C$,
+their references $Y_1,\ldots,Y_N$, and proposed corrections $\{C(x_1),...,C(x_N)\}$,
 we define $C$'s accuracy to be
 
-\begin{equation*}
-  Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C\left(x_i\right) \in Y_i}
-\end{equation*}
+\begin{small}
+  \centering
+  \begin{equation}
+    Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}.
+  \end{equation}
+\end{small}
 
 Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
 a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
-\begin{equation*}
-  TrueAcc\left(C\right) = Pr_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right)
-\end{equation*}
-
+ \begin{small}
+   \centering
+   \begin{equation}
+     TrueAcc\left(C\right) = P_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right).
+   \end{equation}
+ \end{small}
+ 
 %We estimate $C$s quality by sampling a set of source sentences
 %$x_1,\ldots,x_N \sim \mathcal{L}$, and evaluate the quality of $C(x_1),\ldots,C(x_N)$ relative
 %to the source. 
 
 The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $M$ references
-is then
-\begin{footnotesize}
+is then\oa{could you align it to the left?}
+
+\begin{small}
   \centering
-  \begin{flalign*}
+  \begin{flalign}
     TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] & = \\
-    TrueAcc\left(C\right) - Pr\left(C\left(x\right) \in Y\right) & = \\
-    Pr\left(C\left(x\right) \in Correct_x\right) & \cdot\\
-    \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)&
-  \end{flalign*}
-\end{footnotesize}
+    TrueAcc\left(C\right) - P\left(C\left(x\right) \in Y\right) & = \\
+    Pr\left(C\left(x\right) \in Correct_x\right) & \cdot \\
+    \label{eq:bias} \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)& 
+  \end{flalign}
+\end{small}
 
-
-It is easy to see that the bias is not affected by $N$, only by $M$, and we therefore denote it
-with $b_M\left(C\right)$. As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
+It is easy to see that the bias is not affected by $N$, only by $M$.
+As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
 
 In order to gain insight about the evaluation measure and the GEC task
 (and not the idiosyncrasies of specific systems), we consider an idealized learner,
-which, when correct, it produces a valid correction with
-the same distribution as a human annotator (i.e., according to $\mathcal{D}_x$).
-Formally, we assume that $Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) = Pr_{\mathcal{D}_x}\left(y \in Y\right)$.
-Under this assumption $b_M\left(C\right)$ can be written as the true accuracy of $C$ multiplied
-by a factor which is independent of $C$. We will hence assume that $C$ is perfect (i.e., its true
-accuracy is 1), noting that assuming any other value for $C$'s true accuracy would simply scale
-our graphs by that accuracy. Similarly, assuming only a certain percentage of the sentences need correction will also scale the graph by that percentage. Denote the bias of a perfect corrector with $b_M$. To recap:
-\begin{equation*}
-  b_M = 1 - Pr_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}\left(y \in Y\right)
-\end{equation*}
+which, when correct, produces a valid correction with the same
+distribution as a human annotator (i.e., according to $\mathcal{D}_x$).
+Formally, we assume that, if $C(x) \in Correct_x$ then $C(x) \sim \mathcal{D}_x$.
+Hence the bias (Equation \ref{eq:bias}) can be re-written as
+
+\begin{small}
+\begin{equation}
+  \centering
+  P(C(x) \in Correct_x) \cdot (1 - P_{\mathcal{D}_x}(y \in Y)).
+\end{equation}
+\end{small}
+
+We will from now on assume that $C$ is perfect (i.e., its true accuracy $Pr(C(x) \in Correct_x$ is 1),
+and denote its bias with $b_M$.
+It is easy to see that assuming any other value for $C$'s true accuracy
+would simply scale the bias by that accuracy.
+Similarly, assuming only a percentage $p$ of the sentences require correction
+will scale the bias by $p$.
+
+%Denote the bias of a perfect corrector with $b_M$. To recap:
+%\begin{equation*}
+%  b_M = 1 - P_{x \sim L, Y \in \mathcal{D}_x^M, y \sim \mathcal{D}_x}\left(y \in Y\right)
+%\end{equation*}
 
 %We turn to estimating $b_M$ empirically. We note that $Acc(C;X,Y)$
 %is a sum of Bernoulli variables (i.e., a Poisson Binomial distribution), 
-%with probabilities $p_i = Pr_{y \sim \mathcal{D}_i}\left(y \in Y_i\right)$.
+%with probabilities $p_i = P_{y \sim \mathcal{D}_i}\left(y \in Y_i\right)$.
 
 We estimate $b_M$ empirically using its empirical mean on our experimental corpus:
 
-\begin{footnotesize}
-  \begin{equation*}
-    \hat{b}_M = 1 - \frac{1}{N}\sum_{i=1}^N Pr_{Y \sim \mathcal{D}_i^M, y \sim \mathcal{D}_i}\left(y \in Y\right)
-  \end{equation*}
-\end{footnotesize}
+\begin{small}
+  \begin{equation}
+    \hat{b}_M = 1 - \frac{1}{N}\sum_{i=1}^N P_{Y \sim \mathcal{D}_i^M, y \sim \mathcal{D}_i}\left(y \in Y\right).
+  \end{equation}
+\end{small}
 
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_M$
 for any size of $Y_i$ (value of $M$). 
 However, as this computation is highly computationally demanding, we estimate it using
-sampling. Specifically, for every $M\in[20]$ and $x_i$, we sample $Y_i$ 1000 times,
-with replacement, and estimate $Pr\left(y \in Y_i\right)$ as the covered probability mass
-$Pr_{\mathcal{D}_i}[\{y: y \in Y_i\}]$.\footnote{We repeat these experiments where $Y_i$
-  is sampled without replacement, obtaining similar trends with faster increase in accuracy.}
+sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times
+(with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass
+$P_{\mathcal{D}_i}\{y: y \in Y_i\}$.
+
+We repeated all our experiments where $Y_i$ is sampled without replacement,
+in order to simulate a case where reference corrections are collected by a single
+annotator, and are thus not repeated. We find similar trends with faster
+increase in accuracy.\oa{how much faster?}
 
 %The resulting estimates for $p_i$ 
 %define the estimate for the distribution of $Acc(C;X,Y)$.
@@ -507,31 +555,34 @@ Figure \ref{fig:accuracy_vals} presents the expected accuracy values for our per
 corrector (i.e., 1-$\hat{b}_M$) for different values of $M$. 
 Results show that even for values of $M$ which are much larger than
 those considered in the GEC literature (e.g., $M=20$), the expected accuracy is only of about 0.5.
-The graphs do show near linear behaviour from $M=9$ or
-so, which indicates that it reflects a reasonable balance between cost and bias.
+The graphs do show near linear behaviour from $M=9$ or so (after an initial concave behavior),
+which indicates that it reflects a reasonable balance between cost and bias.
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive
-to which words were changed and not to what they were changed to.
-Formally, two corrections $y$ and $y'$ over a source sentence $x$ match
-if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,\left|y\right|,Null\}$
-and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|y'\right|,Null\}$, it holds that 
-$y_{a\left(i\right)} \neq x_{i}$ iff $y'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty).
-Figure \ref{fig:accuracy_vals} presents the results of this experiments that
-show that while the expected accuracy is somewhat higher, still with $M=20$ it is no more than 0.65.
+to the identity of the changed words and not to what they were changed to.
+Formally, two proposed corrections $c$ and $c'$ over a source sentence $x$ match
+if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,\left|c\right|,Null\}$
+and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that 
+$c_{a\left(i\right)} \neq x_{i}$ iff $c'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty strings).
+Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case
+for different values of $M$, which indicate that while scores of a perfect corrector are somewhat higher,
+still with $M=20$ it is no more than 0.65.
 
-The figures include As to the variance of $Acc(C;X,Y)$, which is estimated
-as $$\frac{\sum_{i=1}^{N} \hat{b}_M\cdot\left(1-\hat{b}_M\right)}{N^2}$$.
+Finally, Figures \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which
+are computed analytically. Specifically, we note that the accuracy measure is a Poisson
+Binominal distribution (i.e., a sum of independent Bernoulli variables with different
+success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$,
+which we compute, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$.
+We use the method of \newcite{hong2013computing} to efficiently compute the intervals.
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
-$F_\alpha$ score, the weighted harmonic mean of precision and recall,
-is standard when reporting a corrector's performance.
+the $F_\alpha$ score is standard when reporting system performance.
 
-Computing $F$-score for GEC is not at all straightforward. The score is computed
-in terms of {\it edit} matches between the correction and the reference, where edits are sub-strings of the source
-that are replaced in the correction/reference.
-Since correctors
-do not normally produce edits, $F$-score is defined optimistically, maximizing
+Computing $F$-score for GEC is not at all straightforward.
+The score is computed in terms of {\it edit} matches between the correction and the reference,
+where edits are sub-strings of the source that are replaced in the correction/reference.
+Since correctors do not normally produce edits, $F$-score is defined optimistically, maximizing
 over all possible ways to annotate the source with edits,
 so as to end up with the correction.\footnote{Since the corrections in our experimental
   corpus do not include an explicit annotation of edits, we produce edits heuristically.}
@@ -540,31 +591,28 @@ have been developed to estimate it, notably the $M^2$ scorer
 \cite{dahlmeier2012better}.
 
 The complexity of the measure prohibits an analytic analysis, and
-we instead use a bootstrapping approach to estimate the bias
-incurred by the use of small values of $M$.
+we instead use a bootstrapping approach to estimate the bias incurred
+by not being able to exhaustively enumerate the set of valid corrections.
 %In short, bootstrapping methods sample with repetition from the empirical
 %distribution of the observed data to estimate properties (e.g. confidence-interval)
 %of the statistic (e.g. $F$-score) over the distribution. 
-As with accuracy, we assume the evaluated corrector is perfect and sample corrections for it
-from the distribution estimated for it by {\sc UnseenEst}, in order
-in order to avoid confounding our results with system-specific biases.
-%(i.e., like a human, for every sentence $s$, it produces a correction in $Correct_s$),
-%rather than the output of existing systems, both
-%and the high cost of computing the true $F$-score of a system.
+As with accuracy,
+in order to avoid confounding our results with system-specific biases,
+we assume the evaluated corrector is perfect and samples its corrections from
+from the human distribution of corrections $\mathcal{D}_x$.
 
-% how do we measure?
 Concretely, given a value for $M$ and for $N$, we uniformly sample from our experimental
 corpus source sentences $x_1,...,x_N$, and $M$ corrections for each $Y_1,...,Y_N$ (with replacement).
-In order to obtain comparable results to those obtained when experimenting on NUCLE,
-we take $N=1312$ (as in NUCLE's test set), and further assume that 136 of these sentences
-require no correction, and the correction is thus unbiased on them. These sentences
-reduce the overall bias and the variance, as we will see in the next section, and are thus
-important to include for obtaining realistic results.
+In order to obtain comparable results to those obtained when experimenting on the NUCLE
+corpus (see below), we take $N=1312$, as in NUCLE's test set,
+and further assume that 136 of these sentences require no correction.
+These sentences reduce the overall bias by their frequency in the corpus (in our
+case by 10.4\%), and are thus important to include for obtaining comparable results.
 
 The bootstrapping procedure is carried out by the
 accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
-We also report confidence intervals ($p=.95$), computed from the variance
-between the different iterations.
+We also report confidence intervals ($p=.95$), computed using the same procedure.\footnote{We
+  use the standard Python scikits.bootstrap implementation of this method.}
 
 %For each sentence which had at least one error according to the NUCLE gold standard
 %we sample $M$ sentences uniformly from the
@@ -575,15 +623,21 @@ between the different iterations.
 
 % our results
 Figure \ref{fig:F_Ms} presents the results of this procedure, which
-provides further evidence for the insufficiency of $M$ values of 1 or 2
-for a reliable estimation, For instance, the $F_{0.5}$ score for our perfect
-corrector is only 0.42 with $M=2$.
+provide further indication for the insufficiency of $M$ values of 1 or 2
+in obtaining a reliable estimation of a corrector's performance.
+For instance, the $F_{0.5}$ score for our perfect corrector, whose true F-score is 1,
+is only 0.42 with $M=2$.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
 
-We are not aware of any empirical estimates of the significance level of the F-score based
-comparison of existing systems. Therefore, as a service to the reader, we apply
-the bootstrapping protocol (Section \ref{subsec:Assessment-values}) to
-compute the confidence interval of different correctors with the current NUCLE
+The bootstrapping method for computing the significance of the F-score can also
+be useful for assessing the significance of the differences in corrector's performance
+reported in the literature.
+We report results with the bootstrapping protocol (Section \ref{subsec:Assessment-values})
+to compute the confidence interval of different correctors with the current NUCLE
 test data ($M=2$).
 
 
@@ -591,10 +645,12 @@ test data ($M=2$).
   \includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
   \caption{F Score results with different sizes of gold standard.\label{fig:F_Ms}}
 \end{figure}
+
 \begin{figure}
   \includegraphics[width=8cm]{$F_{0.5}$_significance}
   \caption{$F$-Score results for different correctors including confidence interval.\label{fig:F_correctors}}
 \end{figure}
+
 
 Figure \ref{fig:F_correctors} shows our results, which present a mixed picture: some
 of the differences between previously reported F-scores are indeed significant and some are not.
@@ -623,8 +679,8 @@ Our empirical results show that the number of corrections needed for a reliable 
 is considerably greater than was previously expected. On average, two references
 cover only about a quarter of the probability mass of valid corrections (Section \ref{subsec:Assessment-values}).
 While taking a large enough value of $N$ may yield statistically significant results for comparing the
-different systems (Section \ref{sec:real_world}), low values of $M$, and the low coverage they entail, lead to other problems
-that cannot be easily fixed.
+different systems (Section \ref{sec:real_world}), low values of $M$, and the low coverage they entail, lead to
+other problems that cannot be mended in the same way.
 
 %The factors controlling significance are two. Variation across sentences themselves (different $D_x$)
 %which is reduced with $N$ and the variation across choices of corrections which might be reduced with
@@ -637,28 +693,31 @@ that cannot be easily fixed.
 %leave the decision to the reader. We just point out that such balancing questions have been studied in
 %various fields such as genetics \cite{ionita2010optimal}.\oa{}
 
-Importantly, low coverage in conjunction with asymmetric evaluation measures that penalize over-correction
-more severely than under-correction, results in evaluation measures that incentivize correctors not to correct,
-even if they are able to predict a valid correction. 
-Assume that for a given source sentence $x$, references $Y \sim \mathcal{D}_x$, and proposed correction $y$,
-a given evaluation measure increases by $\alpha$ if $y \in Y$, and decreases by $\beta > \alpha$ if $y \notin Y$.
+Importantly, low coverage of the reference set,
+in conjunction with asymmetric evaluation measures that penalize over-correction
+more severely than under-correction, result in evaluation measures that incentivize
+correctors not to correct, even if they are able to predict a valid correction with certainty.
+Assume that for a given source sentence $x$, references $Y \sim \mathcal{D}_x$, and proposed correction $c$,
+a given evaluation measure increases by $\alpha$ if $c \in Y$, and decreases by $\beta > \alpha$ if $c \notin Y$.
 Assume that the corrector is perfect, i.e., it invariably produces $y \in Correct_x$.
-Still, if the covered probability mass $Pr(y \in Y)$ for $Y$ of size $M$ and $y$ sampled from $\mathcal{D}_x$)
-is less than 0.5, the expected utility of the corrector from producing $y$ is $Pr(y \in Y) \cdot \alpha - Pr(y \notin Y) \cdot \beta < 0$.
+Still, if the covered probability mass $P(y \in Y)$ for $Y$ of size $M$ and $y$ sampled from $\mathcal{D}_x$
+is less than 0.5, the expected utility of the corrector from producing $y$ is $P(y \in Y) \cdot \alpha - P(y \notin Y) \cdot \beta < 0$.
 For a non-perfect corrector, the utility of predicting a correction is further decreased, due to the probability
 of producing $y \notin Correct_x$.
 
-As we have seen above, the expected coverage (which is equal to the accuracy; see Figure \ref{}) is often lower
-than 0.5 for $M=2$, which suggests that such incentivization for over-conservatism is likely to be pervasive.
-Considering the F-score of the best performing systems in Figure \ref{}, and comparing them to the F-score
-of a perfect corrector with $M=2$, we find that their scores are comparable, with one system surpassing
-the perfect system's F-score.
-As we know that the output of these systems considerably diverges from the gold standard (Section \ref{sec2}),
-it is quite possible that their high performance relative to a perfect corrector's is due to these systems
-ability to predict when not to correct.
+As we have seen above, the expected coverage (which is equal to the accuracy; see Figure \ref{fig:accuracy_vals})
+is often lower than 0.5 for $M=2$, which suggests that such incentivization for over-conservatism is likely to be
+pervasive. Considering the F-score of the best performing systems in Figure \ref{fig:F_correctors}, and
+comparing them to the F-score of a perfect corrector with $M=2$, we find that their scores are comparable,
+where RoRo in fact surpass a perfect corrector's F-score.
+While it is possible that such systems outperform the perfect corrector by learning how to
+correct a sentence in the same way as one of the NUCLE annotators did, we view this possibility
+as unlikely as our results in Section \ref{sec2} show that the output of these systems
+considerably diverge from NUCLE's references.
+A more likely possibility is that these systems high performance relative to a perfect corrector's
+is due to these correctors having learned to predict when not to correct.
 
-We also discuss what number of references of references may be more
-suitable for a reliable evaluation.
+\oa{We should discuss what number of references of references may be more suitable for a reliable evaluation. maybe 8,9}
 
 
 %Finally, there a few assumptions made in our experiments that are worth fleshing out.
@@ -1069,7 +1128,9 @@ Our results are similar to the ones obtained by \newcite{sulem2015conceptual},
 who compared standard English sentences and their French translations.
 
 
+
 \begin{table}[h!]
+  \small
   \centering
   \singlespacing
   \begin{tabular}{c|c|c|c||c|c|}
