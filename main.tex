@@ -786,23 +786,23 @@ This may indicate that such values are a reasonable balance between cost and bia
 %not even aware, not being corrected, but would not be so understanding
 %of corrections altering what he meant to say, in a way he perceives as wrong.
 
-In this section we explore an alternative approach to overcoming the bias
-introduced by the multitude of different valid corrections for an LL sentence, based
-on semantic similarity.
+In this section we explore a semantic approach to overcoming the bias
+introduced by the multitude of different valid corrections for an LL sentence.
 The measure is based on the semantic similarity of the source and the proposed correction,
 measured as graph similarity between their semantic representations.
 We note that such a measure needs to be complemented with an additional
-measure of fluency or grammaticality\cite{sakaguchi2016reassessing}, as it only captures
+measure of fluency (cf. \cite{sakaguchi2016reassessing}), as it only captures
 the faithfulness dimension, namely the extent to which
-the meaning of the source is preserved in the correction.\lc{The reduction to semantic and error detection is another related way to convert this into an evaluation measure, one without references}
+the meaning of the source is preserved in the correction,
+and not the correction's grammaticality.\lc{The reduction to semantic and error detection is another related way to convert this into an evaluation measure, one without references}
 
 As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
-We present results from two experiments that support the feasibility of the approach.
+
+We conduct two experiments that support the feasibility of our approach.
 First, we show that semantic annotation can be consistently applied to LL,
-through inter-annotator agreement(IAA) experiments.
-Second, we show that a perfect corrector scores high on this measure, unlike on
-the multi-reference measures disucssed in Section \ref{sec:increase-reference}.
+through inter-annotator agreement (IAA) experiments.
+Second, we show that a perfect corrector scores high on this measure.
 
 %As semantic structures represent an abstraction over different realizations
 %of a similar meaning,  In fact, $M$ plays no role in this approach, as the measure
