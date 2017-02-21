@@ -791,7 +791,7 @@ introduced by the multitude of different valid corrections for an LL sentence.
 The measure is based on the semantic similarity of the source and the proposed correction,
 measured as graph similarity between their semantic representations.
 We note that such a measure needs to be complemented with an additional
-measure of fluency (cf. \cite{sakaguchi2016reassessing}), as it only captures
+measure of fluency (e.g., \cite{sakaguchi2016reassessing}), as it only captures
 the faithfulness dimension, namely the extent to which
 the meaning of the source is preserved in the correction,
 and not the correction's grammaticality.\lc{The reduction to semantic and error detection is another related way to convert this into an evaluation measure, one without references}
@@ -967,6 +967,7 @@ the source and corrected version for 6 essays, some of which were annotated by b
 
 \subsection{Semantic Similarity Measures}
 
+
 \paragraph{Inter-annotator Agreement Measure.} We define a similarity measure over UCCA annotations 
 $G_1$ and $G_2$ over the same set of leaves (tokens) $W$.
 For a node $v$ in either graph, define its yield $yield(v) \subseteq W$ as its
@@ -974,13 +975,13 @@ set of leaf descendants.
 Define a pair of edges $(v_1,u_1) \in G_1$ and $(v_2,u_2) \in G_2$ to be matching
 if $yield(u_1) = yield(u_2)$ and they have the same label.
 Labeled precision and recall are defined by dividing the number of matching edges
-in $|G_1$ and $|G_2$ by $|E_1|$ and $|E_2|$. Their {\it DAG $F$-score} is their harmonic mean.
+in $G_1$ and $G_2$ by $|E_1|$ and $|E_2|$, respectively. Their {\it DAG $F$-score} is their harmonic mean.
 We note that the measure collapses to the common parsing $F$-score if $G_1$ and $G_2$ are trees.
 
 \paragraph{Semantic Faithfulness Measure.} Computing a faithfulness
 measure is slightly more involved, as the source sentence graph $G_s$ and its
-correction $G_c$ do not share the same set of leaves.
-\footnote{The use of graph kernels as a similarity measure between UCCA 
+correction $G_c$ do not share the same set of leaves.\footnote{The use of graph kernels
+  as a similarity measure between UCCA 
   structures is unsuitable here due to the small size of a UCCA DAG \cite{kashima2003marginalized}.} 
 
 %Giving a more accurate
