@@ -101,11 +101,9 @@ other application areas of linguistics. The field is receiving considerable
 interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo} and
 CoNLL shared tasks \cite{kao2013conll,ng2014conll}.
 Within GEC, considerable effort has been placed on system evaluation
-\cite{tetreault2008native,madnani2011they,chodorow2012problems,dahlmeier2012better,felice2015towards,napoles2015ground},
+\cite{tetreault2008native,madnani2011they,dahlmeier2012better,felice2015towards,napoles2015ground},
 a notoriously difficult topic,
-in part due to the many valid corrections each source sentence may have.\oa{could you find
-  a reference that alludes to the multiple reference explicitly?}
-
+in part due to the many valid corrections each source sentence may have.\cite{chodorow2012problems}
 An important criterion in the evaluation of GEC systems (henceforth, {\it correctors})
 is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
@@ -359,8 +357,7 @@ tasks such as machine translation
 \cite{zaidan2011crowdsourcing,post2012constructing}.
 We thus use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically,
 for each of the 52 source sentences, we elicited 50 corrections by Amazon Mechanical
-Turk workers.\oa{say a bit more on the correction procedure. How long did it take?
-  Did you apply any filtering? Anything interesting about the protocol you used?}
+Turk workers. To correct grammaticality and not fluency we told the workers that there is no need to rephrase for styling, and that when unnecessary the sentence or parts of it should be left like the original.
 4 sentences did not need require any correction according to a large part of the workers and
 were hence discarded.
 
@@ -375,8 +372,7 @@ across values.%\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst}}
 {\sc UnseenEst} was originally developed for assessing how many
 variants a gene might have, including undiscovered ones, which is a similar
 estimation problem to the one tackled here.
-Manual tests of unseenEst with small artificially created frequencies show
-satisfying results.\oa{do you mean you conducted these exps? or did the authors?}
+Our Manual tests of unseenEst with small artificially created frequencies showed satisfactory results.
 \footnote{All data we collected, along with the estimated
   distributions can be found in <to be disclosed upon publication>}
 
@@ -387,8 +383,8 @@ The estimated distributions tend to have steps, with many corrections with the s
 Table \ref{tab:corrections_dist} presents the mean numbers of different corrections with frequency at least
 $\gamma$ (for different values of $\gamma$), and their total probability mass.
 For instance, 8.72 corrections account for 58\% of the total probability mass of the corrections, each
-occuring with a probability of 0.01 or higher.\oa{maybe the graph to show is the total probability mass
-  of the $k$ most frequent variants, where $k=1,2,3,4...$?}
+occurring with a probability of 0.01 or higher.\oa{maybe the graph to show is the total probability mass
+  of the $k$ most frequent variants, where $k=1,2,3,4...$?  }\lc{you win some you lose some... It might be pretty if you do it on the mean, you won't know the variant numbers and the steps which is one of the interesting factors.}
 
 \begin{table}[h!]
   \centering
@@ -462,15 +458,15 @@ a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 %to the source. 
 
 The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $M$ references
-is then\oa{could you align it to the left?}
+is then
 
 \begin{small}
   \centering
   \begin{flalign}
-    TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] & = \\
-    TrueAcc\left(C\right) - P\left(C\left(x\right) \in Y\right) & = \\
-    Pr\left(C\left(x\right) \in Correct_x\right) & \cdot \\
-    \label{eq:bias} \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right)& 
+    &TrueAcc\left(C\right) - \mathbb{E}_{X,Y}\left[Acc\left(C;X,Y\right)\right] = &\\
+    &TrueAcc\left(C\right) - P\left(C\left(x\right) \in Y\right)  = &\\
+    &Pr\left(C\left(x\right) \in Correct_x\right)  \cdot &\\
+    &\label{eq:bias} \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right) &
   \end{flalign}
 \end{small}
 
@@ -524,8 +520,7 @@ $P_{\mathcal{D}_i}\{y: y \in Y_i\}$.
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
 in order to simulate a case where reference corrections are collected by a single
-annotator, and are thus not repeated. We find similar trends with faster
-increase in accuracy.\oa{how much faster?}
+annotator, and are thus not repeated. We find similar trends with faster increase in accuracy reaching above $0.7$ with $M=20$.
 
 %The resulting estimates for $p_i$ 
 %define the estimate for the distribution of $Acc(C;X,Y)$.
@@ -561,18 +556,19 @@ We also experiment with a more relaxed measure, {\it Exact Index Match}, which i
 to the identity of the changed words and not to what they were changed to.
 Formally, two proposed corrections $c$ and $c'$ over a source sentence $x$ match
 if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,\left|c\right|,Null\}$
-and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that 
-$c_{a\left(i\right)} \neq x_{i}$ iff $c'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty strings).
+and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that $c_{a\left(i\right)} \neq x_{i}$ iff $c'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty strings).
 Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case
 for different values of $M$, which indicate that while scores of a perfect corrector are somewhat higher,
 still with $M=20$ it is no more than 0.65.
 
-Finally, Figures \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which
-are computed analytically. Specifically, we note that the accuracy measure is a Poisson
+	
+{\color{red}Finally, Figures \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which
+are computed analytically. }\lc{I need to take what I said back. \cite{hong2013computing} is indeed used for the PDF, but currently we don't publish anything that uses the pdf. We do compute the confidence intervals, but those are intervals of the mean, for the graph. The account for the significance of the means we got i.e. for the choices of different sentences which we can't compute analytically. So we bootstrap again. The variance (not specifically significance) of the estimator was originally discussed with the analytical formula ($\sum_{i=1}^{N}P_{\mathcal{D}_x}(y_i \in Y)\cdot\left(1-P_{\mathcal{D}_x}(y_i \in Y)\right)$) when what is interesting is actually just that it decreases with N and when M gets away from 0.5.
+We can also compute using bootstrapping with 10000 repetitions }Specifically, we note that the accuracy measure is a Poisson
 Binominal distribution (i.e., a sum of independent Bernoulli variables with different
 success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$,
 which we compute, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$.
-We use the method of \newcite{hong2013computing} to efficiently compute the intervals.
+We use bootstrapping to compute intervals (accounting for sentence variability).
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
@@ -628,11 +624,10 @@ For instance, the $F_{0.5}$ score for our perfect corrector, whose true F-score 
 is only 0.42 with $M=2$.
 
 \paragraph{}
-While out experiments focus on the accuracy and F-score measures, but we expect
-that our results would generalize to other reference-based measures, such as the
-I-measure \cite{} and GLEU \cite{}, which are adaptations of the F-score and accuracy
-measures, respectively, that address orthogonal shortcomings from the ones presented here.\oa{please verify!}
-
+While our experiments focus on the accuracy and F-score measures, we expect
+that our results would generalize to other reference-based measures, such as the\lc{doesn't that cover the same thing as the conclusion paragraph}
+{\color{red}GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}, which are adaptations of the BLEU and accuracy measures, respectively, that address orthogonal shortcomings from the ones presented here.
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
@@ -648,7 +643,7 @@ test data ($M=2$).
 \begin{figure}
   \includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
   \caption{
-    Mean $F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $M$ (x-axis).
+    $F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $M$ (x-axis).
     Each data point is paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
 \end{figure}
 
@@ -1165,13 +1160,13 @@ who compared standard English sentences and their French translations.
     SAR15 & - & - & - & 0.95 & 0.96 \\
     \hline
   \end{tabular}
-  \caption{Similarity measures for different mapping, their average and token analysis. For {\sc UCCASim} the baseline is the score over two LL annotations and for {\sc DistSim} the translation between English and French. For mapping the baseline one annotator was consistently considered the reference and the other the source. The correction similarity introduces less noise than the different annotators and annotating LL changes even less than translating does.\label{tab:Distances}}
+  \caption{On the left {\sc UCCASim} with mapping from source to reference, the opposite and their average. On the right {\sc DistSim} for adverbs and participants and for scenes. The rows show values when the source and reference were annotated by the same annotator or by different ones. As baseline we use IAA and the translation between English and French. The correction similarity introduces less noise than the different annotators and annotating LL changes even less than translating does.\label{tab:Distances}}
 \end{table}
-\oa{fix caption}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
+Answering the need for improving evaluation for GEC three sophisticated measures have been proposed. $M^2$ that is the standard since it was introduced for CoNLL2013, it uses an edit lattice to compute phrase-level edits $F$-Score. Two recent measures have been proposed to overcome $M^2$ shortcomings. GLEU \cite{napoles2015ground} an n-gram based measure shown to correlate with human judgments inspired by BLEU score and I-measure \cite{felice2015towards} an improvement of token-level edits accuracy score scaling from -1 to 1 providing a way to know if a correction is an improvement over the source.
 
 We presented results that indicate that state of the art systems in GEC suffer from over-conservatism. We hypothesize that this over-conservatism results from the use of scoring functions that not only tend to more severely penalize introducing grammatical errors, than to overlooking existing ones, but also to often penalize systems for generating valid corrections, if these are not included in the set of references.
 In fact, in many cases systems are more likely to be penalized for the generation of
