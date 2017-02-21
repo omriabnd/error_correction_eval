@@ -33,8 +33,12 @@
 \usepackage{acl2012}
 \graphicspath{{./plots/}}
 \newcommand{\com}[1]{}
+%\newcommand{\oa}[1]{}
+%\newcommand{\lc}[1]{}
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\lc}[1]{\footnote{\color{green}LC: #1}}
+
+
 
 \begin{document}
 	
@@ -103,7 +107,8 @@ CoNLL shared tasks \cite{kao2013conll,ng2014conll}.
 Within GEC, considerable effort has been placed on system evaluation
 \cite{tetreault2008native,madnani2011they,dahlmeier2012better,felice2015towards,napoles2015ground},
 a notoriously difficult topic,
-in part due to the many valid corrections each source sentence may have.\cite{chodorow2012problems}
+in part due to the many valid corrections each source sentence may have \cite{chodorow2012problems}.
+
 An important criterion in the evaluation of GEC systems (henceforth, {\it correctors})
 is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
@@ -438,7 +443,7 @@ we define $C$'s accuracy to be
 
 \begin{small}
   \centering
-  \begin{equation}
+  \begin{equation}\label{eq:acc_def}
     Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}.
   \end{equation}
 \end{small}
@@ -541,9 +546,9 @@ annotator, and are thus not repeated. We find similar trends with faster increas
 
 \begin{figure}
   \includegraphics[width=8cm]{repeat_1000_accuracy}
-  \caption{Mean Accuracy and Exact Index Match
-    values for a perfect corrector (y-axis) as a function of the number of references $M$ (x-axis).
-    Each data point is paired with a confidence interval ($p=.95$).     
+  \caption{Accuracy and Exact Index Match values for a perfect corrector (y-axis)
+    as a function of the number of references $M$ (x-axis).
+    %Each data point is paired with a confidence interval ($p=.95$).     
   } \label{fig:accuracy_vals}
 \end{figure}
 
@@ -562,13 +567,12 @@ for different values of $M$, which indicate that while scores of a perfect corre
 still with $M=20$ it is no more than 0.65.
 
 	
-{\color{red}Finally, Figures \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which
-are computed analytically. }\lc{I need to take what I said back. \cite{hong2013computing} is indeed used for the PDF, but currently we don't publish anything that uses the pdf. We do compute the confidence intervals, but those are intervals of the mean, for the graph. The account for the significance of the means we got i.e. for the choices of different sentences which we can't compute analytically. So we bootstrap again. The variance (not specifically significance) of the estimator was originally discussed with the analytical formula ($\sum_{i=1}^{N}P_{\mathcal{D}_x}(y_i \in Y)\cdot\left(1-P_{\mathcal{D}_x}(y_i \in Y)\right)$) when what is interesting is actually just that it decreases with N and when M gets away from 0.5.
-We can also compute using bootstrapping with 10000 repetitions }Specifically, we note that the accuracy measure is a Poisson
-Binominal distribution (i.e., a sum of independent Bernoulli variables with different
-success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$,
-which we compute, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$.
-We use bootstrapping to compute intervals (accounting for sentence variability).
+%{\color{red}Finally, Figure \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which are computed analytically. }
+%\lc{I need to take what I said back.  is indeed used for the PDF, but currently we don't publish anything that uses the pdf. We do compute the confidence intervals, but those are intervals of the mean, for the graph. The account for the significance of the means we got i.e. for the choices of different sentences which we can't compute analytically. So we bootstrap again. The variance (not specifically significance) of the estimator was originally discussed with the analytical formula ($\sum_{i=1}^{N}P_{\mathcal{D}_x}(y_i \in Y)\cdot\left(1-P_{\mathcal{D}_x}(y_i \in Y)\right)$) when what is interesting is actually just that it decreases with N and when M gets away from 0.5.
+%We can also compute using bootstrapping with 10000 repetitions }
+
+The analytic tools ws have developed support the computatation of the entire distribution of the accuracy,
+and not only it's expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward creations of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}.\footnote{An implementation of this method and the estimated density functions will be released upon publication.}
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
@@ -579,8 +583,8 @@ The score is computed in terms of {\it edit} matches between the correction and 
 where edits are sub-strings of the source that are replaced in the correction/reference.
 Since correctors do not normally produce edits, $F$-score is defined optimistically, maximizing
 over all possible ways to annotate the source with edits,
-so as to end up with the correction.\footnote{Since the corrections in our experimental
-  corpus do not include an explicit annotation of edits, we produce edits heuristically.}
+so as to end up with the correction.\footnote{Since our crowdsourced corrections
+  do not include an explicit annotation of edits, we produce edits heuristically.}
 The resulting optimization problem is NP-hard, but designated scorers
 have been developed to estimate it, notably the $M^2$ scorer 
 \cite{dahlmeier2012better}.
@@ -598,11 +602,13 @@ from the human distribution of corrections $\mathcal{D}_x$.
 
 Concretely, given a value for $M$ and for $N$, we uniformly sample from our experimental
 corpus source sentences $x_1,...,x_N$, and $M$ corrections for each $Y_1,...,Y_N$ (with replacement).
-In order to obtain comparable results to those obtained when experimenting on the NUCLE
-corpus (see below), we take $N=1312$, as in NUCLE's test set,
-and further assume that 136 of these sentences require no correction.
-These sentences reduce the overall bias by their frequency in the corpus (in our
-case by 10.4\%), and are thus important to include for obtaining comparable results.
+Setting a realistic value for $N$ in our experiments is important
+for obtaining comparable results to those obtained on the NUCLE corpus (see below), 
+as the expected value of $F$-score may depend on $N$ (unlike Accuracy, it is not additive).
+In accordance with the NUCLE's test set,
+we set $N=1312$ and assume that 136 of the sentences require no correction.
+The latter reduce the overall bias by their frequency in the corpus,
+and are thus important to include for obtaining comparable results.
 
 The bootstrapping procedure is carried out by the
 accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
@@ -625,9 +631,9 @@ is only 0.42 with $M=2$.
 
 \paragraph{}
 While our experiments focus on the accuracy and F-score measures, we expect
-that our results would generalize to other reference-based measures, such as the\lc{doesn't that cover the same thing as the conclusion paragraph}
-{\color{red}GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}, which are adaptations of the BLEU and accuracy measures, respectively, that address orthogonal shortcomings from the ones presented here.
-}
+that our results would generalize to other reference-based measures, such as the
+GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}, which are adaptations of the BLEU and accuracy measures, respectively, that address orthogonal shortcomings from the ones presented here. See Section \ref{sec:prev_work}.
+\lc{doesn't that cover the same thing as the conclusion paragraph}\oa{it's a reference to the prev work section}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
@@ -785,11 +791,12 @@ In this section we explore a semantic approach to overcoming the bias
 introduced by the multitude of different valid corrections for an LL sentence.
 The measure is based on the semantic similarity of the source and the proposed correction,
 measured as graph similarity between their semantic representations.
-We note that such a measure needs to be complemented with an additional
-measure of fluency (e.g., \cite{sakaguchi2016reassessing}), as it only captures
+Such a measure needs to be complemented with a
+measure of fluency (e.g., \cite{sakaguchi2016reassessing}) or an
+error detection procedure, as it only captures
 the faithfulness dimension, namely the extent to which
 the meaning of the source is preserved in the correction,
-and not the correction's grammaticality.\lc{The reduction to semantic and error detection is another related way to convert this into an evaluation measure, one without references}
+and not the correction's grammaticality.
 
 As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
@@ -867,8 +874,7 @@ language. This entails difficulties in defining syntactic annotation for LL,
 as, on the face of it, the language of each learner has to be annotated
 in its own terms.
 
-Existing approaches to syntactic representation of LL in NLP
-differ in how they annotate syntactic errors.
+LL resources differ as to how they annotate syntactic errors.
 \newcite{berzak2016universal} and \newcite{ragheb2012defining}
 annotate syntactic structures according to the syntax used
 by the learner, even if this use is not grammatical.
@@ -895,12 +901,17 @@ annotate LL text.
 
 
 \paragraph{UCCA.}\label{sec:ucca}
-UCCA is a a semantic annotation scheme, influenced
-by typological and cognitive linguistic theories.
-The scheme aims to provide a coarse-grained, cross-linguistically
-applicable representation by directly reflecting the major semantic
-phenomena represented in the text and abstracting away from
-specific syntactic forms.
+UCCA is a a semantic annotation scheme that builds on
+typological and cognitive linguistic theories.
+The scheme's aims are to provide a coarse-grained, cross-linguistically
+applicable representation.
+Importantly, UCCA's categories directly reflect semantic, rather than
+distributional distinctions.
+For instance, UCCA is not sensitive to POS distinctions:
+a Scene's main relation can be a verb but also an adjective
+(``He is {\bf thin}'') or a noun (``John's {\bf decision}'').
+Indeed, \newcite{sulem2015conceptual} has found that UCCA structures are
+preserved remarkably well across English-French translations. 
 
 UCCA structures are directed acyclic graphs, where the words in the text 
 correspond to (a sub-set of) their leaves.
@@ -918,25 +929,18 @@ which are interpreted in a broad sense,
 and include locations, destinations and complement clauses,
 and {\it Adverbials}, such as manner or temporal descriptions.
 
-Importantly, UCCA's categories directly reflect semantic, rather than distributional, distinctions .
-For instance, UCCA is not sensitive to POS distinctions: a Scene's main relation can be a verb but also an adjective
-(``He is {\bf thin}'') or a noun (``John's {\bf decision}'').
-Indeed, \newcite{sulem2015conceptual} has found
-that UCCA structures are preserved remarkably well across translations.
-
-We use UCCA's standard annotation guidelines, without introducing any adaptations.
-
 \subsection{Experimental Setup}
 
 We employ two annotators, trained by annotating both LL and standard English
 passages, until a high enough agreement was reached (6 hours of training in total).
 Training passages were excluded from the evaluation.
+We use UCCA's standard annotation guidelines,\footnote{\url{http://www.cs.huji.ac.il/~oabend/ucca/guidelines.pdf}} without introducing any adaptations.
 
 We experiment on 7 essays and their corrections from NUCLE, each of about 500 tokens.
 In order to measure IAA, we assigned 4 of these essays to both annotators
-and compute their agreement (Section \ref{sec:iaa}).
+and compute their agreement.
 In order to measure the faithfulness score for a perfect corrector, we annotate both
-the source and corrected version for 6 essays, some of which were annotated by both annotators.
+the source and the corrected version for 6 essays, some of which were annotated by both annotators.
 
 %For the different experiments 20 paragraphs were annotated, a table with the full
 %information can be found in the appendix \ref{tab:annotated-paragraphs}.Overall, 2 LL
@@ -963,21 +967,22 @@ the source and corrected version for 6 essays, some of which were annotated by b
 \subsection{Semantic Similarity Measures}
 
 
-\paragraph{Inter-annotator Agreement Measure.} We define a similarity measure over UCCA annotations 
+\paragraph{IAA Measure.} We define a similarity measure over UCCA annotations 
 $G_1$ and $G_2$ over the same set of leaves (tokens) $W$.
 For a node $v$ in either graph, define its yield $yield(v) \subseteq W$ as its
 set of leaf descendants.
 Define a pair of edges $(v_1,u_1) \in G_1$ and $(v_2,u_2) \in G_2$ to be matching
 if $yield(u_1) = yield(u_2)$ and they have the same label.
 Labeled precision and recall are defined by dividing the number of matching edges
-in $G_1$ and $G_2$ by $|E_1|$ and $|E_2|$, respectively. Their {\it DAG $F$-score} is their harmonic mean.
+in $G_1$ and $G_2$ by $|E_1|$ and $|E_2|$, respectively, and
+the {\it DAG $F$-score} is their harmonic mean.
 We note that the measure collapses to the common parsing $F$-score if $G_1$ and $G_2$ are trees.
 
 \paragraph{Semantic Faithfulness Measure.} Computing a faithfulness
 measure is slightly more involved, as the source sentence graph $G_s$ and its
 correction $G_c$ do not share the same set of leaves.\footnote{The use of graph kernels
   as a similarity measure between UCCA 
-  structures is unsuitable here due to the small size of a UCCA DAG \cite{kashima2003marginalized}.} 
+  structures is unsuitable here due to the small size of UCCA DAGs \cite{kashima2003marginalized}.} 
 
 %Giving a more accurate
 %measure than the upper bound suggested by \cite{sulem2015conceptual} for
@@ -1007,21 +1012,33 @@ the same yield.
 In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
 (tokens) in $V_s$ and $V_c$ using the same method detailed in Section \ref{sec:formal_conservatism}.
 Denote the results leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
+We now extend $A_l$ to define the node alignment $A$, by aligning each non-leaf $v \in V_s$
+with the node $u \in V_c$ that maximimizes 
 
-We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
-the set of nodes $V_s$ and the set $V_c$, where the weight of an edge $(u,v) \in V_s \times V_c$ is
-defined to be $w(u,v) = \frac{\vert A_l \cap (yield(u) \times yield(v))\vert}{\vert yield(u) \vert} $.
-$A$ is defined to be the maximum weighted matching, excluding edges
-with weight 0.\oa{why do we use many-to-1? {\bf this doesn't make sense because it favors
-nodes up the tree. better to normalize}}
-The resulting $F$-score measure, using this computation of $A$ is called {\sc UCCASim}.
+\begin{small}
+  \centering
+  \begin{equation}
+    w(v,u) = \frac{\vert A_l \cap (yield(u) \times yield(v))\vert}{\vert yield(u) \vert}.
+  \end{equation}
+\end{small}
 
-We note that {\sc UCCASim} is somewhat more relaxed than DAG $F$-score defined above,
-as it aligns two nodes not only if their yields are in perfect alignment with
-one another, but it may also match nodes whose yields are in partial alignment
-with one another. This relaxation is necessary given that a correction often adds
-or removes nodes, thus eliminating the possibility of a perfect alignment between
-the sentences. 
+%We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
+%the set of nodes $V_s$ and the set $V_c$, where the weight of an edge $(u,v) \in V_s \times V_c$ is
+%defined to be 
+%$A$ is defined to be the maximum weighted matching, excluding edges
+%with weight 0.\oa{why do we use many-to-1? {\bf this doesn't make sense because it favors
+%nodes up the tree. better to normalize}}
+We exclude from $A$ pairs $(v,u)$ such that $w(v,u)=0$.
+The resulting $F$-score measure, using the resulting $A$ is called UCCA Similarity ({\sc UCCASim}).
+As the resulting alignment may differ when aligning nodes from $V_c$ to $V_s$
+and the other way around, we report the resulting $F$-score in both directions.
+
+We note that {\sc UCCASim} is somewhat more relaxed than the DAG $F$-score defined above,
+as it also aligns nodes whose yields are not in perfect alignment with one another,
+unlike the DAG $F-score$ which requires a perfect match.
+While this relaxation is necessary, given that corrections often add
+or removes nodes, thus eliminating the possibility of a perfect alignment,
+in order to obtain comparable IAA scores, we report IAA using {\sc UCCASim} as well.
 
 %Then for each node in $v \in V_s$, we compute its descendent leaves $yield(v) \subset Leaves_s$ as before,
 %and compute their projection $yield'(v) = \{u \in Leaves_c:(v,u) \in A_l\}$.
@@ -1029,13 +1046,9 @@ the sentences.
 %We note that $A_l \subset A$ and that if $V_s$ and $V_c$ share the same tokens,
 %this computation again reduces to DAG $F$-score.
 
-While generalizing DAG $F$-score, this approach has the shortcoming
-of being asymmetrical. We therefore report both the resulting $F$-score when aligning
-from the source to the correction and the other way around.\oa{this paragraph will not be
-  true if we do 1-1 alignment}
-
-For completeness, we also replicated the protocol of \newcite{sulem2015conceptual},
-which we call {\sc DistSim}.
+For completeness, we also replicate the protocol used by \newcite{sulem2015conceptual}
+for comparing the UCCA annotations of English-French translations, which we call
+Distributional Similarity ({\sc DistSim}).
 For a given UCCA label $l$, denote $c_i(l)$ the number of $l$-labled UCCA nodes
 in the i-th source sentence, and $d_i(l)$ the number of $l$-labled UCCA nodes
 in its corresponding correction. We define {\sc DistSim}(l) between these
@@ -1097,33 +1110,37 @@ $N$ is the total number of sentence pairs.
 We obtain an IAA DAG $F$-score of 0.845
 (Precision 0.834, Recall 0.857), which
 is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
-As another point of comparison, we doubly annotated 3 corrected NUCLE passages, obtaining a similar agreement rate.
+As another point of comparison, we doubly annotate 3 corrected
+NUCLE passages, obtaining a similar IAA.
 
-These results suggest that annotating LL with UCCA does not lead to any degradation of IAA, and can be applied as consistently to LL text as to non-LL texts.
+These results suggest that annotating LL with UCCA does not lead to
+any degradation of IAA, and can be applied as consistently to LL text as to standard English text.
 
-Table \ref{tab:Distances} on its left presents the {\sc UCCASim} scores obtained by comparing the NUCLE gold standard and the source sentences, or equivalently the {\sc UCCASim} score of a perfect corrector.
+Table \ref{tab:Distances} (left side)
+presents the {\sc UCCASim} scores obtained by comparing the NUCLE references and the source
+sentences, or equivalently the {\sc UCCASim} score of a perfect corrector.
 In order to control for differences between the annotators, we explore both
-a setting where the two annotations were annotated by the same annotator,
-and settings where they were annotated by different annotators.
-In order to obtain an upper bound on the {\sc UCCASim} of a perfect corrector,
-the table also presents {\sc UCCASim} scores between 
-source sentences annotated by
-different annotators.
+a setting where both sides were annotated by the same annotator,
+and a setting where they were annotated by different ones.
+As an upper bound on the score of a perfect corrector (using different annotators),
+we also report the IAA on source sentences, computed using {\sc UCCASim}. 
 
-Our results indicate that a perfect corrector receives a faithfulness score comparable
-to the IAA, which is an indication that {\sc UCCASim} is indeed
+Our results indicate that a perfect corrector obtains a score comparable
+to the IAA, which indicates that {\sc UCCASim} is indeed
 insensitive to the surface divergence between a source sentence and its valid correction.
-However, more work is required to establish whether the converse holds, namely that the measure is sensitive
+However, more work is required to establish whether the converse holds, namely
+that the measure is sensitive enough
 to unfaithfulness of a proposed correction.
 This, of course, depends on the scope of distinctions covered by the semantic annotation.
-In UCCA's case, it is argument structure, the connections between scenes etc.
+In UCCA's case, it is predicate-argument structures, the inter-relations between them,
+as well as the semantic heads of complex arguments.
 
-Our attempts to conduct experiments to determine {\sc UCCASim}'s sensitivity to erroneous
-corrections introduced by the correctors described in Section \ref{sec:formal_conservatism} were
-unsuccessful, as there are only very few cases of structural (rather than word-level)
-corrections which these systems make (see Figure \ref{fig:over-conservatism}).
+Our attempts to conduct experiments to determine {\sc UCCASim}'s sensitivity to correction
+errors introduced by the correctors described in Section \ref{sec:formal_conservatism} were
+unsuccessful, as these systems make only very few structural (rather than word-level)
+corrections (see Figure \ref{fig:over-conservatism}).
 We expect that once the over-conservatism of existing correctors is resolved,
-such an evaluation will be made possible.
+such evaluation will be more informative.
 
 %Finally, we present as a control measure and a bound on the best score
 %we can expect to get in such comparison the scores of paragraphs
@@ -1132,7 +1149,8 @@ such an evaluation will be made possible.
 %way to defining IAA. Note that a similarity
 %of 1 and distance of 0 is indeed reached when comparing an annotation with itself.
 
-Finally, The right-hand side of Table \ref{tab:Distances} presents {\sc DistSim} between the source and reference sentences.
+Finally, the right-hand side of Table \ref{tab:Distances} presents {\sc DistSim}
+between the source and reference sentences.
 Our results are similar to the ones obtained by \newcite{sulem2015conceptual},
 who compared standard English sentences and their French translations.
 
@@ -1145,7 +1163,7 @@ who compared standard English sentences and their French translations.
   \begin{tabular}{c|c|c|c||c|c|}
   	\cline{2-6} 
   	& \multicolumn{3}{c||}{\sc UCCASim} & \multicolumn{2}{c|}{\sc DistSim}\\ \cline{2-6}
-  	& s$\rightarrow$r & r$\rightarrow$s & avg & A+D & Scene\
+  	& s$\rightarrow$r & r$\rightarrow$s & Avg & A+D & Scene\
     \\
     \hline
     Different & 0.85 & 0.83 & 0.84 & 0.96 & 0.93
@@ -1160,41 +1178,76 @@ who compared standard English sentences and their French translations.
     SAR15 & - & - & - & 0.95 & 0.96 \\
     \hline
   \end{tabular}
-  \caption{On the left {\sc UCCASim} with mapping from source to reference, the opposite and their average. On the right {\sc DistSim} for adverbs and participants and for scenes. The rows show values when the source and reference were annotated by the same annotator or by different ones. As baseline we use IAA and the translation between English and French. The correction similarity introduces less noise than the different annotators and annotating LL changes even less than translating does.\label{tab:Distances}}
+  \caption{\label{tab:Distances}
+    The faithfulness of a perfect corrector. The left-hand side presents results with {\sc UCCASim}
+    where the alignment is computed from the source to the reference (s$\rightarrow$r), the opposite direction
+    (r$\rightarrow$s), and their average (Avg).
+    %The direction of the alignment evidentally has little impact on the results.
+    The right-hand side presents {\sc DistSim} for the UCCA categories Participants and Adverbials, considered
+    together (A+D), and for Scene units (Scene), as reported by \newcite{sulem2015conceptual}.
+    The rows show values when the source and reference are annotated by the same annotator
+    or by different ones. As a point of reference, we report IAA computed using {\sc UCCASim} (IAA row).
+    Results show that the faithfulness of a perfect corrector is comparable with the IAA.
+    The bottom row presents the results reported by Sulem et al. (SAR15) on English-French
+    translations, which are comparable to ours.}
 \end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion}
-Answering the need for improving evaluation for GEC three sophisticated measures have been proposed. $M^2$ that is the standard since it was introduced for CoNLL2013, it uses an edit lattice to compute phrase-level edits $F$-Score. Two recent measures have been proposed to overcome $M^2$ shortcomings. GLEU \cite{napoles2015ground} an n-gram based measure shown to correlate with human judgments inspired by BLEU score and I-measure \cite{felice2015towards} an improvement of token-level edits accuracy score scaling from -1 to 1 providing a way to know if a correction is an improvement over the source.
+\section{Previous Work}\label{sec:prev_work}
 
-We presented results that indicate that state of the art systems in GEC suffer from over-conservatism. We hypothesize that this over-conservatism results from the use of scoring functions that not only tend to more severely penalize introducing grammatical errors, than to overlooking existing ones, but also to often penalize systems for generating valid corrections, if these are not included in the set of references.
-In fact, in many cases systems are more likely to be penalized for the generation of
+Addressing the need to improve GEC evaluation, we propose three sophisticated
+measures have been proposed. $M^2$ that is the standard since it was introduced
+for CoNLL2013, it uses an edit lattice to compute phrase-level edits $F$-Score.
+Two recent measures have been proposed to overcome $M^2$ shortcomings. GLEU \cite{napoles2015ground} an n-gram based measure shown to correlate with human judgments inspired by BLEU score and I-measure \cite{felice2015towards} an improvement of token-level edits accuracy score scaling from -1 to 1 providing a way to know if a correction is an improvement over the source.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+
+This paper addresses the shortcomings of existing reference-based evaluation protocols in GEC.
+We demonstrated that state of the art GEC systems suffer from over-conservatism and
+hypothesize that this over-conservatism results from the use of measures that
+not only more harshly penalize over-correction over under-correction,
+but also often penalize correctors for proposing perfectly valid corrections.
+In fact, in many cases systems are more likely to be penalized for 
 a valid correction than to receive credit for it, due to the small number of references
 taken into account.
 
-We explored two approaches for tackling this caveat in current measures, one by
+We explored two approaches for addressing this caveat, one by
 increasing the number of references, and the other by employing a semantic similarity
 measure for estimating the semantic faithfulness of the correction to the source.
-We compute the scores a perfect corrector would receive with both approaches, showing that both increasing the number of references and using semantics are less prone to severely penalize valid corrections, and thus constitute valid solutions for addressing this caveat.
+We compute the scores a perfect corrector would receive with both approaches,
+which suggest that increasing the number of references and using semantic faithfulness
+measures are feasible solutions.
 
-In many of the uses for correction, the user does know his grammar is not perfect and would accept a change in grammar when needed.
-Because of this approval we also hypothesis, and it may call for a user study to prove or disprove this hypothesis, that users might accept a correct text unit of theirs being corrected to another correct text unit with the same meaning.
-This would be an example of being faithful but not conservative.
-Maybe even more importantly, we aim to have as many correct sentences as possible, but as neither the grammar is fully correct in the first place, nor is the user's understanding of it, failing to correct grammar is acceptable. Changing meaning will be totally unacceptable, and also surely detectable by the user. In other words, the users do expect the corrector to be active and not too conservative, but only as long as it is faithful. 
+% In many of the uses for correction, the user does know his grammar is not perfect and
+% would accept a change in grammar when needed.
+% Because of this approval we also hypothesis, and it may call for a user study to prove or disprove this hypothesis, that users might accept a correct text unit of theirs being corrected to another correct text unit with the same meaning.
+% This would be an example of being faithful but not conservative.
+%Maybe even more importantly, we aim to have as many correct sentences as possible, but as neither the grammar is fully correct in the first place, nor is the user's understanding of it, failing to correct grammar is acceptable. Changing meaning will be totally unacceptable, and also surely detectable by the user. In other words, the users do expect the corrector to be active and not too conservative, but only as long as it is faithful. 
 
-Moreover, as correctors are based on statistics, they might even
-just correct to a more common way of saying the same thing. Such unnecessary
-correction is not conservative, and at GEC maybe be unwanted, but not strictly unwanted as overall
-it is still faithful. Additionally, some may even
-consider such correction a needed one because it has a better grammar considering
-Fuzzy Grammar\cite{lakoff1973fuzzy,madnani2011they} or a more fluent
-way to say the exact same thing. The latter was recently suggested as a necessary
-shift in the goals of GEC\cite{sakaguchi2016reassessing}.
-Considering all this, we propose that next generation correctors and evaluation will be focused on faithfulness
-when possible rather than on conservatism. Of course that with the evaluation comes the development
-and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment
-but also as a feature for correctors. 
+%Moreover, as correctors are based on statistics, they might even
+%just correct to a more common way of saying the same thing. Such unnecessary
+%correction is not conservative, and at GEC maybe be unwanted, but not strictly unwanted as overall
+%it is still faithful. Additionally, some may even
+%consider such correction a needed one because it has a better grammar considering
+%Fuzzy Grammar\cite{lakoff1973fuzzy,madnani2011they} or a more fluent
+%way to say the exact same thing. The latter was recently suggested as a necessary
+%shift in the goals of GEC\cite{sakaguchi2016reassessing}.
+%Considering all this, we propose that next generation correctors and evaluation will be focused on faithfulness
+%when possible rather than on conservatism. Of course that with the evaluation comes the development
+%and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment
+%but also as a feature for correctors. 
+
+Future work will assess the relative importance, ascribed by users of GEC systems,
+to different evaluation criteria of the output. We believe that in terms of coservatism,
+end users will be tolerant to (possibly necessary) changes in the sentence structure, i.e.,
+violation of conservatism, but much less tolerant to changes in the sentence's meaning,
+i.e., violation of faithfulness. A better understanding of how these factors interact
+may lead to improved protocols of semantic evaluation, that will alleviate the requirement
+for a high number of references.\oa{the conclusion was too long. please let me know if there's something
+  I missed}
 
 
 
