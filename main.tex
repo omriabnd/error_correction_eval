@@ -639,8 +639,7 @@ is only 0.42 with $M=2$.
 
 \paragraph{}
 While our experiments focus on the accuracy and F-score measures, we expect
-that our results would generalize to other reference-based measures, such as the
-GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}, which are adaptations of the BLEU and accuracy measures, respectively, that address orthogonal shortcomings from the ones presented here. See Section \ref{sec:prev_work}.
+our results to generalize to other reference-based measures (see Section \ref{sec:prev_work}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
@@ -1203,19 +1202,51 @@ who compared standard English sentences and their French translations.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Previous Work}\label{sec:prev_work}
 
-Addressing the need to improve automatic GEC evaluation, three sophisticated measures have been proposed,
-all of them are reference based. 
-$M^2$ was introduced for CoNLL2013, providing a way to compute phrase-level edits $F$-Score. As an
-input $M^2$ expects a source sentence, a correction and a set of edits for each reference in the
-gold standard. It uses an edit lattice to optimistically choose edits for the reference that
-will best match those of the references. Since it was introduced $M^2$ is the standard scorer for GEC. 
-I-measure \cite{felice2015towards} was shown to have some wanted attributes that the $M^2$ scorer lacks.
-For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the
-source. I-measure expects the same input as $M^2$ but its score differs as it is based on token-level
-edits accuracy score. The motivation for GLEU \cite{napoles2015ground} came from finding a negative
-correlation between the two score mentioned. GLUE is an n-gram based measure inspired by BLEU, so it is
-based on correction sentences rather than on edits. This score was show to correlate better with human
-judgment an n-gram based measure inspired by BLEU score.
+A number of evaluation measures have been proposed for GEC.
+An earlier version of $F$-score was used in the HOO shared task, which required that
+the proposed corrections include edits (markings of phrases that were changed 
+in the source) explicitly. The $M^2$ measure, used for the CoNLL shared tasks and the standard
+measure since, automatically produces edits on the corrections, thus relieving correctors from
+the need to do so. 
+
+\newcite{felice2015towards} proposed the {\sc I-measure},
+which introduces some novel features to GEC evaluation, such as distinguishing
+different quality levels of ungrammatical corrections (e.g., some improve the quality of
+the source, while others degrade it), and restricting edits to only consist of single words,
+rather than phrases.\oa{check if they have any empirical evaluation, and if so, mention it
+  in a sentence}
+
+\newcite{napoles2015ground} compares the system ranking of different correctors inspired by
+$M^2$ and I-measure, relative crowdsourced human rankings. They find a low correlation between
+these rankings, and propose the GLEU measure (an adaptation of BLEU), which is shown
+to correlate much better with human rankings.
+
+We expect that our findings, that reference-based measures substantially under-estimate the
+performance of correctors, to generalize to these reference-based measures, as they all
+apply string similarity measures relative to a small number of references.\oa{make sure
+  that they used $M=1,2$}
+These measures thus address orthogonal gaps in GEC evavaluation from the ones presented here.
+
+\newcite{napoles2016theres} address the insufficiency of reference-based measures
+and proposes a reference-less evaluation protocol, which is based
+on a combination of grammar (also include in the motivation for semantic evaluation, and say
+that it addresses the gap they have).
+
+%was shown to have some wanted attributes that the $M^2$ scorer lacks.
+%For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the
+%source. I-measure expects the same input as $M^2$ but its score differs as it is based on token-level
+%edits accuracy score. 
+
+%Addressing the need to improve automatic GEC evaluation, three sophisticated measures have been proposed,
+%all of them are reference based. 
+%$M^2$ was introduced for CoNLL2013, providing a way to compute phrase-level edits $F$-Score. As an
+%input $M^2$ expects a source sentence, a correction and a set of edits for each reference in the
+%gold standard.
+%It uses an edit lattice to optimistically choose edits for the reference that
+%will best match those of the references. Since it was introduced $M^2$ is the standard scorer for GEC.
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
