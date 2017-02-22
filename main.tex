@@ -56,7 +56,15 @@
 \maketitle
 
 \begin{abstract}
-Does grammatical error correction systems learn not to learn? We show that state-of-the-art systems are over conservative and are reluctant to correct. We analyze the distributions of corrections showing that a single ungrammatical sentence tends to have hundreds of valid corrections, a problem for current evaluation methods which are based on a reference or two. We suspect it causes correctors to avoid correcting and proceed to analyze the effect of increasing amount of references in the gold standard on different evaluation measures. Discovering that more references are helpful but only to a certain point, we also find that semantic structures are promising as a measure that is not reference based.
+  Grammatical Error Correction systems (henceforth, {\it correctors}) aim to correct ungrammatical text,
+  while changing it as little as possible. However, while such conservatism is a virtue for correctors,
+  we find that state-of-the-art systems make substantially less changes to the source sentences than needed.
+  Analyzing the distribution of possible corrections for a given sentence,   
+  we show that this over-conservatism likely stems from the common use of very few reference
+  corrections in training and evaluation. We demonstrate the feasibility of two approaches to address this gap,
+  one by increasing the number of references, and the other by using semantic evaluation.
+  %Does grammatical error correction systems learn not to learn?
+  %We show that state-of-the-art systems are over conservative and are reluctant to correct. We analyze the distributions of corrections showing that a single ungrammatical sentence tends to have hundreds of valid corrections, a problem for current evaluation methods which are based on a reference or two. We suspect it causes correctors to avoid correcting and proceed to analyze the effect of increasing amount of references in the gold standard on different evaluation measures. Discovering that more references are helpful but only to a certain point, we also find that semantic structures are promising as a measure that is not reference based.
 \end{abstract}
 
 \section{Introduction}
@@ -109,7 +117,7 @@ Within GEC, considerable effort has been placed on system evaluation
 a notoriously difficult topic,
 in part due to the many valid corrections each source sentence may have \cite{chodorow2012problems}.
 
-An important criterion in the evaluation of GEC systems (henceforth, {\it correctors})
+An important criterion in the evaluation of correctors
 is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
 a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
 that alters the meaning of the source \cite{brockett2006correcting}.
@@ -1194,10 +1202,20 @@ who compared standard English sentences and their French translations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Previous Work}\label{sec:prev_work}
-Addressing the need to improve automatic GEC evaluation, three sophisticated measures have been proposed, all of them are reference based. 
-$M^2$ was introduced for CoNLL2013, providing a way to compute phrase-level edits $F$-Score. As an input $M^2$ expects a source sentence, a correction and a set of edits for each reference in the gold standard. It uses an edit lattice to optimistically choose edits for the reference that will best match those of the references. Since it was introduced $M^2$ is the standard scorer for GEC. 
-I-measure \cite{felice2015towards} was shown to have some wanted attributes that the $M^2$ scorer lacks. For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the source. I-measure expects the same input as $M^2$ but its score differs as it is based on token-level edits accuracy score.
-The motivation for GLEU \cite{napoles2015ground} came from finding a negative correlation between the two score mentioned. GLUE is an n-gram based measure inspired by BLEU, so it is based on correction sentences rather than on edits. This score was show to correlate better with human judgment an n-gram based measure inspired by BLEU score.
+
+Addressing the need to improve automatic GEC evaluation, three sophisticated measures have been proposed,
+all of them are reference based. 
+$M^2$ was introduced for CoNLL2013, providing a way to compute phrase-level edits $F$-Score. As an
+input $M^2$ expects a source sentence, a correction and a set of edits for each reference in the
+gold standard. It uses an edit lattice to optimistically choose edits for the reference that
+will best match those of the references. Since it was introduced $M^2$ is the standard scorer for GEC. 
+I-measure \cite{felice2015towards} was shown to have some wanted attributes that the $M^2$ scorer lacks.
+For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the
+source. I-measure expects the same input as $M^2$ but its score differs as it is based on token-level
+edits accuracy score. The motivation for GLEU \cite{napoles2015ground} came from finding a negative
+correlation between the two score mentioned. GLUE is an n-gram based measure inspired by BLEU, so it is
+based on correction sentences rather than on edits. This score was show to correlate better with human
+judgment an n-gram based measure inspired by BLEU score.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
