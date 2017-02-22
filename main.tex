@@ -145,7 +145,13 @@ We pursue two approaches to decrease the undue penalization of valid corrections
 First, we study the effect of increasing the amount of references,
 which we denote by $M$ (Section \ref{sec:increase-reference}).
 While previous evaluation explored the case of $M=2$ \cite{bryant2015far},
-no empirical assessment of its sufficiency or its added value over $M=1$ has been carried out.{\color{red} We note that a a step on the way was done by  \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} showing correlations between reference-based measures change when $M$ changes in the ranges of 1 to 20.}
+no empirical assessment of its sufficiency or its added
+value over $M=1$ has been carried out.
+The only previous work we are aware of that addressed higher values of $M$
+is \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, which explored the
+correlation between reference-based measures as $M$ ranges between
+1 and 20, but ... \oa{what bad thing can we say about them?}
+
 We consider two representative measures for assessing the validity of a proposed correction relative to a set of references,
 and characterize the distribution of their scores as a function of $M$.
 Our findings suggest that using $M=1$ or $M=2$ dramatically under-estimates
@@ -155,9 +161,11 @@ deemed valid. We argue that this is a likely source of the
 observed over-conservatism (Section \ref{sec:mult_discussion}).
 %We conclude with an analysis of the statistical significance of these evaluation protocols.
 
-Second, we pursue a reference-less semantic evaluation approach which assesses the extent to which
+Second, we pursue a reference-less semantic evaluation approach which assesses
+the extent to which
 a correction faithfully represents the semantics of the source, by measuring the
-{\color{red} similarity of their semantic structures (Section \ref{sec:Semantics}). This approach can be combined with reference-less grammatic evaluation as the one recently proposed by \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.}
+similarity of their semantic structures (Section \ref{sec:Semantics}).
+%This approach can be combined with reference-less grammatic evaluation as the one recently proposed by \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.}
 %We define a measure, using the UCCA scheme \cite{abend2013universal} as a
 %test case, motivated by its recent use for machine translation
 %evaluation \cite{birch2016hume}.
@@ -799,8 +807,10 @@ Such a measure needs to be complemented with an
 error detection procedure, as it only captures
 the faithfulness dimension, namely the extent to which
 the meaning of the source is preserved in the correction,
-and not the correction's grammaticality. {\color{red}
-\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} indeed proposed such a measure, suggesting the use of error detection of the correction providing a reference-less grammaticality score}.
+and not the correction's grammaticality.
+See \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
+for a proposal of a complementary grammaticality measure based
+on automatic error detection.
 
 As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
@@ -1212,9 +1222,7 @@ which introduces some novel features to GEC evaluation, such as distinguishing
 different quality levels of ungrammatical corrections (e.g., some improve the quality of
 the source, while others degrade it), and restricting edits to only consist of single words,
 rather than phrases.\oa{check if they have any empirical evaluation, and if so, mention it
-  in a sentence} \newcite{napoles2015ground} compares the system ranking of different correctors inspired by
-$M^2$ and I-measure, relative crowdsourced human rankings. They find a low correlation between
-these rankings, and propose the GLEU measure (an adaptation of BLEU), which is shown
+  in a sentence} \newcite{napoles2015ground} compares the system ranking of different correctors inspired by $M^2$ and I-measure, relative crowdsourced human rankings. They find a low correlation between these rankings, and propose the GLEU measure (an adaptation of BLEU), which is shown
 to correlate much better with human rankings. \newcite{sakaguchi2016reassessing} proposes
 to construct reference annotations that emphasize fluency over conservatism.
 
@@ -1224,8 +1232,12 @@ apply string similarity measures relative to a small number of references.\oa{ma
   that they used $M=1,2$}
 These measures thus address orthogonal gaps in GEC evavaluation from the ones presented here.
 
-\newcite{napoles2016theres} address the insufficiency of reference-based measures and an evaluation protocol, which is based
-on a combination of reference-less grammatical error detection of the correction combined with a reference based measure.
+\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} address the
+insufficiency of reference-based measures and propose to combine
+reference-based measures for assessing faithfulness and
+grammatical error detection systems for measuring grammaticality.
+We complement their efforts by proposing a faithfulness measure based
+on semantic similarity.
 
 %was shown to have some wanted attributes that the $M^2$ scorer lacks.
 %For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the
