@@ -144,11 +144,9 @@ substantially under-predict corrections relative to the gold standard
 We pursue two approaches to decrease the undue penalization of valid corrections.
 First, we study the effect of increasing the amount of references,
 which we denote by $M$ (Section \ref{sec:increase-reference}).
-While previous evaluation explored the case of $M=2$,
-no empirical assessment of its sufficiency or its added value over $M=1$
-has been carried out.
-We consider two representative measures for assessing the validity of a
-proposed correction relative to a set of references,
+While previous evaluation explored the case of $M=2$ \cite{bryant2015far},
+no empirical assessment of its sufficiency or its added value over $M=1$ has been carried out.{\color{red} We note that a a step on the way was done by  \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} showing correlations between reference-based measures change when $M$ changes in the ranges of 1 to 20.}
+We consider two representative measures for assessing the validity of a proposed correction relative to a set of references,
 and characterize the distribution of their scores as a function of $M$.
 Our findings suggest that using $M=1$ or $M=2$ dramatically under-estimates
 the true performance of the systems, and commonly leads to cases where a valid
@@ -159,7 +157,7 @@ observed over-conservatism (Section \ref{sec:mult_discussion}).
 
 Second, we pursue a reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the
-similarity of their semantic structures (Section \ref{sec:Semantics}). This approach can be combined with reference-less grammatic evaluation as the one recently proposed in ***.
+{\color{red} similarity of their semantic structures (Section \ref{sec:Semantics}). This approach can be combined with reference-less grammatic evaluation as the one recently proposed by \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.}
 %We define a measure, using the UCCA scheme \cite{abend2013universal} as a
 %test case, motivated by its recent use for machine translation
 %evaluation \cite{birch2016hume}.
@@ -801,7 +799,8 @@ Such a measure needs to be complemented with an
 error detection procedure, as it only captures
 the faithfulness dimension, namely the extent to which
 the meaning of the source is preserved in the correction,
-and not the correction's grammaticality.
+and not the correction's grammaticality. {\color{red}
+\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} indeed proposed such a measure, suggesting the use of error detection of the correction providing a reference-less grammaticality score}.
 
 As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by
 its recent use in semantic machine translation evaluation \cite{birch2016hume}.
@@ -1225,10 +1224,8 @@ apply string similarity measures relative to a small number of references.\oa{ma
   that they used $M=1,2$}
 These measures thus address orthogonal gaps in GEC evavaluation from the ones presented here.
 
-\newcite{napoles2016theres} address the insufficiency of reference-based measures
-and proposes a reference-less evaluation protocol, which is based
-on a combination of grammar (also include in the motivation for semantic evaluation, and say
-that it addresses the gap they have).
+\newcite{napoles2016theres} address the insufficiency of reference-based measures and an evaluation protocol, which is based
+on a combination of reference-less grammatical error detection of the correction combined with a reference based measure.
 
 %was shown to have some wanted attributes that the $M^2$ scorer lacks.
 %For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the
