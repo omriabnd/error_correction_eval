@@ -135,16 +135,11 @@ Using one or two reference corrections, which is a common practice in GEC {\colo
 as correctors are not only harshly penalized for making incorrect changes,
 but are often penalized for making correct changes not found in the reference.(\S \ref{sec:mult_discussion})
 
-We present results that indicate that current state of the art systems do suffer
-from over-conservatism. Evaluating the output of all 12 systems that participated
-in the recent CoNLL2014 shared task, we find that all of them
-substantially under-predict corrections relative to the gold standard
-
-(\S \ref{sec:formal_conservatism}).
+We present results that indicate that current state of the art systems do suffer from over-conservatism. Evaluating the output of all 12 systems that participated in the recent CoNLL2014 shared task, we find that all of them substantially under-predict corrections relative to the gold standard (\S \ref{sec:formal_conservatism}).
 
 {\color{red}
 	We first assess whether the undue penalization of valid corrections can be solved by increasing the amount of references, which we denote by $M$ (\S \ref{sec:increase-reference}).
-We start by estimating the number of corrections that exist for each sentence and their frequencies, resulting with the astounding average of above 1,000 corrections per short sentence. }
+We start by estimating the number of corrections that exist for each sentence and their frequencies, resulting with the astounding average of above 1,000 valid corrections per short sentence.}
 We further consider two representative measures for assessing the validity of a proposed correction relative to a set of references,
 and characterize the distribution of their scores as a function of $M$. 
 {\color{red} 
@@ -335,7 +330,7 @@ and obtain  similar results to those obtained on NUCLE.
 \subsection{Discussion}
 {\label{subsec:low_coverage_over_conservatism}\color{red}
 	\lc{in the introduction the order is in reverse, we first discuss and then we show this is indeed the case, is that a problem? It somehow seems more structured this way, after experiments and more fluent from a birds eye view to first reason why we check it and the say it is true.}
-	 Common practice of using one or two references in reference-based GEC evaluation yields a substantial under-estimation of system's performance using $F$-score \cite{bryant2015far} or other reference-based measures (\S\ref{sec:increase-reference}).
+	 The common practice of using one or two references in GEC evaluation yields a substantial under-estimation of system's performance using $F$-score \cite{bryant2015far} or other reference-based measures (\S\ref{sec:increase-reference}).
 	 Theoretically this under estimation could lead to over-conservatism. In the case of detection, the reason is straightforward. If for a given type of error $t$ there is less than 50\% agreement in the gold standard about whether this should be detected as an error or not. Than a perfect corrector will not detect $t$ errors.
 	 
 	 The same holds for corrections, which we see is the case for a small $M$ \cite{bryant2015far}.
@@ -454,8 +449,8 @@ We discuss two similarity measures. One is the sentence-level accuracy
 \paragraph{Sentence-level Accuracy.}
 Sentence-level accuracy is the number of sentences whose corrections
 exactly matches one of the references (also called ``Exact Match'').
-While this measure, in its raw form, is not commonly used as an evaluation
-measure in GEC, it is a basic, interpretable measure, and extentions
+While this measure, in its raw form, is used as an evaluation
+measure in GEC\cite{rozovskaya2010annotating} but not too often\lc{I added the cite, should we still say the not too often part?}, it is a basic, interpretable measure, and extensions
 of which have been recently proposed for GEC evaluation \cite{felice2015towards}.
 It is also closely related to the 0-1 loss function used
 for training statistical GEC systems \cite{chodorow2012problems,rozovskaya2013joint}. 
@@ -708,7 +703,7 @@ is not significantly better than the third and fourth.
 Our empirical results show that the number of corrections needed for a reliable reference-based estimation
 is considerably greater than was previously expected. {\color{red} There are hundreds of valid corrections with very low probability and accuracy and $F$-score analysis shows diminishing returns (carefully analyzing \newcite{bryant2015far} data suggests the same). All these findings suggest that it is too costly to increase $M$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $M=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
 
-\newcite{bryant2015far} mention some of the annotations suggested not to correct sentences. This is another surprising problem with increasing $M$, the more annotators in the gold standard the more probable a correction to be ignored by one of the annotators. For example, out of the 52 sentences we gathered 39 had at least one annotator suggesting it shouldn't be corrected. We note that the $F$-score we report is somewhat lower, it might be due to the fact that there are more sentences that does not need correction than we predicted as suggested by the 4(7\%) sentences we discarded.\lc{all true, but not written well} } 
+\newcite{bryant2015far} mention some of the annotations suggested not to correct sentences. This is another surprising problem with increasing $M$, the more annotators in the gold standard the more probable a correction to be ignored by one of the annotators. For example, out of the 52 sentences we gathered 39 had at least one annotator suggesting it shouldn't be corrected. We note that we report a somewhat lower $F$-score then \newcite{bryant2015far}, it might be due to the fact that there are more sentences that does not need correction than we predicted as suggested by the 4(7\%) sentences we discarded.\lc{all true, but not written well} } 
 %about a quarter of the probability mass of valid corrections (\S \ref{subsec:Assessment-values}).
 
 
