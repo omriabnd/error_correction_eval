@@ -174,7 +174,7 @@ to abstract away from some of the formal variation between different valid corre
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
 
-%The field of GEC was always thriving for conservatism in its corrections, with the prominent example of using
+%The field of GEC was always thriving or conservatism in its corrections, with the prominent example of using
 %$F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that
 %arises from pursuing this conservatism as done today.
 %Then, we wished to be conservative, and we achieved that, why shouldn't we rejoice just yet? Theoretically, we might be progressing towards not correcting at all, instead of progressing towards correcting more accurately. 
@@ -360,7 +360,7 @@ and obtain  similar results to those obtained on NUCLE.
 	\end{small}
 	\lc{I used the opposites (1-P) on the last step, how did you simplify it further?}
 	For example (if we see in bryant probabillity X for that Y for that, etc. when we will be sure about the formula I will write it.)
-	This imply that we would expect low coverage as exists with low values of $M$ to result in over-conservatism. And we hypothesize this is a main reasons for the results shown in this section.}
+	This implies that a corrector optimized in such circumstances will result in over-conservatism. We hypothesize this is a main reasons for the results shown in this section.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multi-Reference Measures}\label{sec:increase-reference}
@@ -648,11 +648,11 @@ We also report confidence intervals ($p=.95$), computed using the same procedure
 Figure \ref{fig:F_Ms} presents the results of this procedure, which
 provide further indication for the insufficiency of $M$ values of 1 or 2
 in obtaining a reliable estimation of a corrector's performance.
-For instance, the $F_{0.5}$ score for our perfect corrector, whose true F-score is 1,
+For instance, the $F_{0.5}$ score for our perfect corrector, whose true $F$-score is 1,
 is only 0.42 with $M=2$. {\color{red} Moreover, the saturation effect that was evident from the discussion of accuracy and with close examination of the results of \newcite{bryant2015far} is replicated and evident.}
 
 \paragraph{}
-While our experiments focus on the accuracy and F-score measures, we expect
+While our experiments focus on the accuracy and $F$-score measures, we expect
 our results to generalize to other reference-based measures (see Section \ref{sec:prev_work}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -676,14 +676,14 @@ test data ($M=2$).
 \begin{figure}
   \includegraphics[width=8cm]{$F_{0.5}$_significance}
   \caption{$F_{0.5}$ values for different correctors, including confidence interval ($p=.95$).
-    The left-most column (``source'') presents the F-score of a corrector that doesn't make any
+    The left-most column (``source'') presents the $F$-score of a corrector that doesn't make any
     changes to the source sentences.
     See Section \ref{par:experimental_setup} for a legend of the correctors.\label{fig:F_correctors}}
 \end{figure}
 
 
 Figure \ref{fig:F_correctors} shows our results, which present a mixed picture: some
-of the differences between previously reported F-scores are indeed significant and some are not.
+of the differences between previously reported $F$-scores are indeed significant and some are not.
 For example, the best performing corrector is significantly better than the second, but the latter
 is not significantly better than the third and fourth.
 
@@ -723,15 +723,14 @@ is considerably greater than was previously expected. {\color{red} There are hun
 %leave the decision to the reader. We just point out that such balancing questions have been studied in
 %various fields such as genetics \cite{ionita2010optimal}.\oa{}
 
-As we have seen above, the expected coverage (which is equal to the accuracy; see Figure \ref{fig:accuracy_vals})
+As we have seen above, the expected coverage (which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals})
 is often lower than 0.5 for $M=2$, which suggests that the incentivization given in \ref{subsec:low_coverage_over_conservatism} for over-conservatism is likely to be
-pervasive. Considering the F-score of the best performing systems in Figure \ref{fig:F_correctors}, and
-comparing them to the F-score of a perfect corrector with $M=2$, we find that their scores are comparable,
-where RoRo in fact surpass a perfect corrector's F-score.
+pervasive. Considering the $F$-score of the best performing systems in Figure \ref{fig:F_correctors}, and
+comparing them to the $F$-score of a perfect corrector with $M=2$, we find that their scores are comparable,
+where RoRo in fact surpass a perfect corrector's $F$-score.
 While it is possible that such systems outperform the perfect corrector by learning how to
 correct a sentence in the same way as one of the NUCLE annotators did, we view this possibility
-as unlikely as our results in Section \ref{sec:formal_conservatism} show that the output of these systems
-considerably diverges from NUCLE's references.
+as unlikely as our results (\S\ref{sec:formal_conservatism}) show that the output of these systems considerably diverges from NUCLE's references.
 A more likely possibility is that these systems high performance relative to a perfect corrector's
 is due to these correctors having learned to predict when not to correct.
 
@@ -739,9 +738,9 @@ is due to these correctors having learned to predict when not to correct.
 
 Finally, While taking a large enough value of $N$ may yield statistically significant results for comparing the
 different systems (\S \ref{sec:real_world}), low values of $M$, and the low coverage they entail, lead to
-other problems that cannot be mended in the same way. Comparing to human performance might be a good solution, even that as we noted, it might result with a score of more than 100\% (without even being a perfect corrector). More importantly, if used for development it seems both theoretically and empirically probable to result in over-conservatism.
+other problems that cannot be mended in the same way. Comparing to human performance might be a good solution\cite{bryant2015far}, even that as we noted, it might result with a score of more than 100\% (without even being a perfect corrector). More importantly, if used for development it seems both theoretically and empirically probable to result in over-conservatism.
 
- %we turn to discussing what values of $M$ yield a reliable estimate of the performance of GEC systems. While there is no one answer to this question, and coverage can be low even with $M$ values of 20, both measures we considered begin to plateau (in the case of F-score) or present linear increases after an initial concave behavior (in the case of accuracy) at $M$ values of 8--10. This may indicate that such values are a reasonable balance between cost and bias.
+ %we turn to discussing what values of $M$ yield a reliable estimate of the performance of GEC systems. While there is no one answer to this question, and coverage can be low even with $M$ values of 20, both measures we considered begin to plateau (in the case of $F$-score) or present linear increases after an initial concave behavior (in the case of accuracy) at $M$ values of 8--10. This may indicate that such values are a reasonable balance between cost and bias.
 }
 
 %Finally, there a few assumptions made in our experiments that are worth fleshing out.
@@ -796,10 +795,9 @@ other problems that cannot be mended in the same way. Comparing to human perform
 %not even aware, not being corrected, but would not be so understanding
 %of corrections altering what he meant to say, in a way he perceives as wrong.
 
-In this section we explore a semantic approach to overcoming the bias
+In this section we explore a reference-less semantic approach to overcoming the bias
 introduced by the multitude of different valid corrections for an LL sentence.
-The measure is based on the semantic similarity of the source and the proposed correction,
-measured as graph similarity between their semantic representations.
+The measure is based on the semantic similarity of the source and the proposed correction, measured as graph similarity between their semantic representations.
 Such a measure needs to be complemented with an
 error detection procedure, as it only captures
 the faithfulness dimension, namely the extent to which
@@ -809,8 +807,7 @@ See \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary grammaticality measure based
 on automatic error detection.
 
-As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by
-its recent use in semantic machine translation evaluation \cite{birch2016hume}.
+As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
 
 We conduct two experiments that support the feasibility of our approach.
 First, we show that semantic annotation can be consistently applied to LL,
@@ -878,23 +875,14 @@ Second, we show that a perfect corrector scores high on this measure.
 
 %The usefulness of syntactic parsing in NLP has encouraged a number of previous
 %projects to define syntactic annotation for LL.
-While linguistic theories propose that each learner
-makes consistent use of syntax \cite{huebner1985system,tarone1983variability},
-this use may not conform the syntax of the learned language, or of any other known
-language. This entails difficulties in defining syntactic annotation for LL,
-as, on the face of it, the language of each learner has to be annotated
-in its own terms.
+While linguistic theories propose that each learner makes consistent use of syntax \cite{huebner1985system,tarone1983variability}, this use may not conform the syntax of the learned language, or of any other known language. This entails difficulties in defining syntactic annotation for LL, as, on the face of it, the language of each learner has to be annotated in its own terms.
 
 LL resources differ as to how they annotate syntactic errors.
 \newcite{berzak2016universal} and \newcite{ragheb2012defining}
 annotate syntactic structures according to the syntax used
 by the learner, even if this use is not grammatical.
-Such annotation may be unreliable as a source of semantic information,
-as semantically similar sentences, formulated by different learners,
-may have considerably different structures. \newcite{nagataphrase} take an opposite approach, and attempt
-to be faithful to the syntax intended by the learner. However, such an
-approach faces difficulties due to the multitude of different syntactic
-structures that can be used to express a similar meaning.
+Such annotation may be unreliable as a source of semantic information, as semantically similar sentences, formulated by different learners, may have considerably different structures. \newcite{nagataphrase} take an opposite approach, and attempt
+to be faithful to the syntax intended by the learner. However, such an approach faces difficulties due to the multitude of different syntactic structures that can be used to express a similar meaning.
 
 %Syntactic representation is very popular and useful in many NLP tasks 
 %\cite{mesfar2007named,ng2002improving,zollmann2006syntax}.
@@ -1039,14 +1027,14 @@ with the node $u \in V_c$ that maximimizes
 %$A$ is defined to be the maximum weighted matching, excluding edges
 %with weight 0.\oa{why do we use many-to-1? {\bf this doesn't make sense because it favors
 %nodes up the tree. better to normalize}}
-We exclude from $A$ pairs $(v,u)$ such that $w(v,u)=0$.
+We exclude from $A$ pairs $v,u$ such that $w(v,u)=0$.
 The resulting $F$-score measure, using the resulting $A$ is called UCCA Similarity ({\sc UCCASim}).
 As the resulting alignment may differ when aligning nodes from $V_c$ to $V_s$
 and the other way around, we report the resulting $F$-score in both directions.
 
-We note that {\sc UCCASim} is somewhat more relaxed than the DAG $F$-score defined above,
+Note that {\sc UCCASim} is somewhat more relaxed than DAG $F$-score defined above,
 as it also aligns nodes whose yields are not in perfect alignment with one another,
-unlike the DAG $F-score$ which requires a perfect match.
+unlike DAG $F$-score which requires a perfect match.
 While this relaxation is necessary, given that corrections often add
 or removes nodes, thus eliminating the possibility of a perfect alignment,
 in order to obtain comparable IAA scores, we report IAA using {\sc UCCASim} as well.
@@ -1202,8 +1190,7 @@ who compared standard English sentences and their French translations.
     The bottom row presents the results reported by Sulem et al. (SAR15) on English-French
     translations, which are comparable to ours.}
 \end{table}
-
-
+\vspace{-0.5cm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Previous Work}\label{sec:prev_work}
 
@@ -1218,15 +1205,13 @@ the need to do so.
 which introduces some novel features to GEC evaluation, such as distinguishing
 different quality levels of ungrammatical corrections (e.g., some improve the quality of
 the source, while others degrade it), and restricting edits to only consist of single words,
-rather than phrases.\oa{check if they have any empirical evaluation, and if so, mention it
-  in a sentence} \newcite{napoles2015ground} compares the system ranking of different correctors inspired by $M^2$ and I-measure, relative crowdsourced human rankings. They find a low correlation between these rankings, and propose the GLEU measure (an adaptation of BLEU), which is shown
+rather than phrases. \newcite{napoles2015ground} compares the system ranking of different correctors inspired by $M^2$ and I-measure, relative crowdsourced human rankings. They find a low correlation between these rankings, and propose the GLEU measure (an adaptation of BLEU), which is shown
 to correlate much better with human rankings. \newcite{sakaguchi2016reassessing} proposes
 to construct reference annotations that emphasize fluency over conservatism.
 
 We expect that our findings, that reference-based measures substantially under-estimate the
 performance of correctors, to generalize to these reference-based measures, as they all
-apply string similarity measures relative to a small number of references.\oa{make sure
-  that they used $M=1,2$}
+apply string similarity measures relative to a small number of references.
 These measures thus address orthogonal gaps in GEC evavaluation from the ones presented here.
 
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} address the
