@@ -71,11 +71,11 @@
   we find that state-of-the-art systems make substantially less changes to the source sentences than needed.
   Analyzing the distribution of possible corrections for a given sentence,   
   we show that this over-conservatism likely stems from
-  the inability of a handful of references to capture the true variation of valid
-  corrections for a given sentence (henceforth, {\it low coverage}).
-  Moreover, we show that simply increasing the number of references is unlikely to solve this gap.
-  We conclude by presenting an alternative reference-less approach to address this gap,
-  based on semantic similarity.
+  the inability of a handful of references to account for the full variation of valid
+  corrections for a given sentence, which results in unduly penalization of valid corrections,
+  thus dincentivizing correctors to make changes.
+  Moreover, we show that simply increasing the number of references is unlikely to resolve this gap,
+  and conclude by presenting an alternative reference-less approach based on semantic similarity.
   %one by , and the other by using semantic evaluation.
   %Does grammatical error correction systems learn not to learn?
   %We show that state-of-the-art systems are over conservative and are reluctant to correct. We analyze the distributions of
@@ -125,13 +125,14 @@
 % 4.4. Empirical Validation: IAA, semantic conservativism vs. gold std
 % 5. Conclusion
 
-Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many
-other areas of linguistics and NLP. The field is receiving considerable
+% is a challenging research field, which interfaces with many
+%other areas of linguistics and NLP. The field
+Grammatical Error Correction (GEC) is receiving considerable
 interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo} and
 CoNLL shared tasks \cite{kao2013conll,ng2014conll}.
 Within GEC, considerable effort has been placed on system evaluation
 \cite{tetreault2008native,madnani2011they,dahlmeier2012better,felice2015towards,napoles2015ground},
-a notoriously difficult topic, in part due to the many valid corrections each source sentence may
+a notoriously difficult challenge, in part due to the many valid corrections each source sentence may
 have \cite{chodorow2012problems}.
 
 An important criterion in the evaluation of correctors
@@ -143,53 +144,53 @@ annotators are instructed to be conservative in their corrections
 (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
 A recent attempt to formally capture this precision/recall asymmetry has
 been the standardized use of $F_{0.5}$ over $F_{1}$, where Precision is
-emphasized over Recall \cite{dahlmeier2012better}.
+emphasized over Recall \cite{dahlmeier2012better}.\oa{are there other examples among
+  the recent measures?}
 
 However, penalizing over-correction more harshly than under-correction
 may lead to reluctance of correctors to
 make any changes (henceforth, {\it over-conservatism}).
 Using one or two reference corrections, which is a common practice in GEC,
 compounds this problem, as correctors are not only harshly penalized for making incorrect changes,
-but are often penalized for making correct changes not found in the reference (see Section \ref{sec:mult_discussion}).
+but are often penalized for making correct changes not found in the reference.
 
-We present results that indicate that current state of the art systems indeed suffer from over-conservatism.
-Evaluating the output of all 12 systems that participated in the recent CoNLL2014 shared task, we find that all of them
-substantially under-predict corrections relative to the gold standard (\S \ref{sec:formal_conservatism}).
+Indeed, we show that current state of the art systems suffer from over-conservatism.
+Evaluating the output of 12 recent correctors, we find that all of them
+substantially under-predict corrections relative to the gold standard (Section \ref{sec:formal_conservatism}).
 
-We first assess whether the undue penalization of valid corrections can be resolved by increasing the amount of
-references, which we denote $M$ (\S \ref{sec:increase-reference}).
+We first assess whether the undue penalization of valid corrections can be resolved by increasing the number
+of references, which we denote with $M$ (Section \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence,
-arriving at and estimate of over 1000 corrections for sentences of no more than 15 tokens.
-
-We further consider two representative reference-based measures (hereby RBM) for
-assessing the validity of a proposed correction relative to a set of references,
+arriving at an estimate of over 1000 corrections for sentences of no more than 15 tokens.
+We then consider two representative reference-based measures (henceforth, {\it RBMs}) for
+%assessing the validity of a proposed correction relative to a set of references,
 and characterize the distribution of their scores as a function of $M$. 
 Our results show that both measures substantially under-estimate the true performance of
-the correctors. Moreover, they show that increasing $M$ only provides a partial
-solution to this under-estimatation problem, as the RBMs already show signs
-of saturation with $M$ values of 10--20, indicating that a prohibitively large value
-for $M$ may be required.
+the correctors. Moreover, they show that increasing $M$ only partially addresses
+the incurred bias, as both RBMs approach saturation with $M$ values of 10--20,
+indicating that a prohibitively large value for $M$ may be required for reliable estimation.
 
 Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$
-on the scores obtained using F-score, the most commonly used RBM for GEC. Their work focused on
+on the F-score measure, the most commonly used RBM for GEC. Their work focused on
 obtaining a more reliable estimate of correctors' performance, and proposed to do so
-by normalizing corrector's estimated performance by the performance of a human corrector using
+by normalizing corrector's estimated performance with the performance of a human corrector using
 the same measure. However, while such normalization may yield more realistic performance estimates,
 it does not have any effect on the training and tuning of correctors.
 
-We conclude by proposing an alternative, reference-less semantic evaluation approach which assesses the extent to which
+We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the
 similarity of their semantic structures (Section \ref{sec:Semantics}).
 This approach can be combined with a measure of grammaticality, based on automatic error detection, as
-proposed by \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
+proposed by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
+Our experiments support the feasibility of the proposed approach,
+by showing that (1) semantic structural annotation can be consistently applied
+to learner's language (LL), and (2) that the proposed measure is less prone to
+unduly penalize valid corrections.
+
 
 %We define a measure, using the UCCA scheme \cite{abend2013universal} as a
 %test case, motivated by its recent use for machine translation
 %evaluation \cite{birch2016hume}.
-Our experiments support the feasibility of this proposed approach,
-by showing that (1) semantic structural annotation can be consistently applied
-to learner's language (LL), and (2) that the proposed measure is less prone to
-undue penalization of valid corrections.
 %We annotate a section of the NUCLE parallel corpus \cite{dahlmeier2013building},
 
 %The two approaches address the insufficiency of using too few references from
@@ -367,8 +368,8 @@ In this section we argue that the observed over-conservatism of correctors likel
 from them being developed to optimize RBMs that suffer from low coverage.
 We begin with a motivating analysis of the relation between low-coverage and over-conservatism (Section \ref{}),
 and continue with an empirical assessment of the distribution of corrections for a given sentence (Section \ref{}),
-and the effect of $M$ on commonly used RBMs (Section \ref{}), extending the results of
-\newcite{bryant2015far}.
+and the effect of $M$ on commonly used RBMs (Section \ref{}).
+%extending the results of \newcite{bryant2015far}.
 We discuss the implication of our results in Section \ref{}, concluding that reference-based
 evaluation may only partially address over-conservatism.
 
@@ -376,13 +377,14 @@ evaluation may only partially address over-conservatism.
 \subsection{Motivating Analysis}
 
 The relation between coverage and over-conservatism requires some explanation.
-We abstract away from the details of the training procedure, and assumed that correctors
-are tuned to maximize the evaluation measure, over some training or development data.
+We abstract away from the details of the training procedure, and assume that correctors
+are attempt to maximize the evaluation measure, over some training or development data.
 
-Assume the corrector is faced with a phrase (or sentence) which it predicts to be
+Assume the corrector is faced with a phrase which it predicts to be
 ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability that the model is able to predict
-a valid correction for this phrase. Finally, assume that the corrector is evaluated
+a valid correction for this phrase (given that it correctly identified it as erroneous).
+Finally, assume that the corrector is evaluated
 against $M$ references, and that $p_{coverage}$ is the coverage of the phrase by $M$ references,
 namely the probability that
 a valid correction for it will be found among $M$ randomly sampled references.
@@ -401,23 +403,23 @@ In cases where
 \end{myequation}
 \end{small}
 
-such a corrector is thus dincentivized from predicting a correction.
-We expect Condition \ref{eq:reward} to frequently hold, especially in cases that
+a corrector is dincentivized from predicting a correction.
+We expect Condition \ref{eq:reward} to frequently hold in cases that
 require non-trivial changes, which are characterized both by low $p_{coverage}$ (as non-trivial
 changes can often be made in numerous ways), and by lower expected performance by the corrector.
 
 Moreover, when using asymmetric measures, that penalize invalidly correcting a sentence more harshly than
 not correcting an ungrammatical sentence (i.e., $P > R$), condition \ref{eq:reward} is even more
-likely to hold.
-Asymmetric measures, such as F-score \cite{} or I-measure \cite{}, are the most common evaluation
-measures used in GEC today.
+likely to hold. An example of such measure is the commonly used $F_{0.5}$.
+%Asymmetric measures, such as $F_{0.5}$, are the most common evaluation
+%measures used in GEC today.
 
 
 \subsection{Data}
 
 Our analysis assumes that we have a reliable estimate for the distribution of corrections
 $\mathcal{D}_x$ for the source sentences we evaluate.
-Our experiments in the following section are run on a random sample 52 sentences with a
+Our experiments in the following section are run on a random sample of 52 sentences with a
 maximum length of 15 from the NUCLE test data. 
 The length restriction was introduced to avoid introducing too many independent errors that may drastically increase
 the number of annotations variants (as every combination of corrections to these errors are possible),
@@ -443,8 +445,8 @@ across values.%\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst}}
 {\sc UnseenEst} was originally developed for assessing how many
 variants a gene might have, including undiscovered ones, which is a similar
 estimation problem to the one tackled here.
-Our Manual tests of unseenEst with small artificially created frequencies showed satisfactory results.
-\footnote{All data we collected, along with the estimated
+Our Manual tests of unseenEst with small artificially created frequencies
+showed satisfactory results.\footnote{All data we collected, along with the estimated
   distributions can be found in <to be disclosed upon publication>}
 
 By the estimates from {\sc UnseenEst}, most source sentences have a large number of
@@ -667,7 +669,7 @@ As with accuracy,
 in order to avoid confounding our results with system-specific biases,
 we assume the evaluated corrector is perfect and samples its corrections from
 from the human distribution of corrections $\mathcal{D}_x$.
-This experiment is thus very similar to the analysis reported by \newcite{bryant2015far},
+Our experiment is very similar to that of \newcite{bryant2015far},
 who also compared the F-score of a human correction against an increasing
 number of references.
 
@@ -695,8 +697,8 @@ We also report confidence intervals ($p=.95$), computed using the same procedure
 
 % our results
 Figure \ref{fig:F_Ms} presents the results of this procedure, which
-provide further indication for the insufficiency of $M$ values of 1 or 2
-in obtaining a reliable estimation of a corrector's performance.
+further indicate the insufficiency of commonly used $M$ values for training and development (1 or 2)
+for obtaining a reliable estimation of a corrector's performance.
 For instance, the $F_{0.5}$ score for our perfect corrector, whose true $F$-score is 1,
 is only 0.42 with $M=2$.
 Moreover, the saturation effect observed in accuracy is even more pronounced with our experiments on F-score.
