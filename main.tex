@@ -52,15 +52,29 @@
 \maketitle
 
 \begin{abstract}
+  %Evaluation in Grammatical Error Correction (GEC) is generally carried out
+  %by comparison to references. Previous work discussed the necessary low
+  %  coverage of such protocols given the multitude of different ways to correct a sentence,
+  %and proposed 
+  %In this paper we discuss the impact of using 
+  %discusses the implications of such reference-based evaluation on
   Grammatical Error Correction systems (henceforth, {\it correctors}) aim to correct ungrammatical text,
   while changing it as little as possible. However, while such conservatism is a virtue for correctors,
   we find that state-of-the-art systems make substantially less changes to the source sentences than needed.
   Analyzing the distribution of possible corrections for a given sentence,   
-  we show that this over-conservatism likely stems from the common use of very few reference
-  corrections in training and evaluation. We demonstrate the feasibility of two approaches to address this gap,
-  one by increasing the number of references, and the other by using semantic evaluation.
+  we show that this over-conservatism likely stems from
+  the inability of a handful of references to capture the true variation of valid
+  corrections for a given sentence (henceforth, {\it low coverage}).
+  Moreover, we show that simply increasing the number of references is unlikely to solve this gap.
+  We conclude by presenting an alternative reference-less approach to address this gap,
+  based on semantic similarity.
+  %one by , and the other by using semantic evaluation.
   %Does grammatical error correction systems learn not to learn?
-  %We show that state-of-the-art systems are over conservative and are reluctant to correct. We analyze the distributions of corrections showing that a single ungrammatical sentence tends to have hundreds of valid corrections, a problem for current evaluation methods which are based on a reference or two. We suspect it causes correctors to avoid correcting and proceed to analyze the effect of increasing amount of references in the gold standard on different evaluation measures. Discovering that more references are helpful but only to a certain point, we also find that semantic structures are promising as a measure that is not reference based.
+  %We show that state-of-the-art systems are over conservative and are reluctant to correct. We analyze the distributions of
+  % corrections showing that a single ungrammatical sentence tends to have hundreds of valid corrections, a problem for
+  %current evaluation methods which are based on a reference or two. We suspect it causes correctors to avoid correcting and proceed to analyze the effect of
+  %increasing amount of references in the gold standard on different evaluation measures. Discovering that more references are helpful but only to a
+  %certain point, we also find that semantic structures are promising as a measure that is not reference based.
 \end{abstract}
 
 \section{Introduction}
@@ -104,18 +118,18 @@
 % 5. Conclusion
 
 Grammatical Error Correction (GEC) is a challenging research field, which interfaces with many
-other application areas of linguistics. The field is receiving considerable
+other areas of linguistics and NLP. The field is receiving considerable
 interest recently, notably through the GEC-HOO \cite{dale2011helping,dale2012hoo} and
 CoNLL shared tasks \cite{kao2013conll,ng2014conll}.
 Within GEC, considerable effort has been placed on system evaluation
 \cite{tetreault2008native,madnani2011they,dahlmeier2012better,felice2015towards,napoles2015ground},
-a notoriously difficult topic,
-in part due to the many valid corrections each source sentence may have \cite{chodorow2012problems}.
+a notoriously difficult topic, in part due to the many valid corrections each source sentence may
+have \cite{chodorow2012problems}.
 
 An important criterion in the evaluation of correctors
-is their ability to generate corrections that are faithful to meaning of the source. In fact, many would prefer
-a somewhat cumbersome or even an occasionally ungrammatical correction over a correction
-that alters the meaning of the source \cite{brockett2006correcting}.
+is their ability to generate corrections that are faithful to meaning of the source.
+In fact, many would prefer a somewhat cumbersome or even an occasionally ungrammatical
+correction over a correction that alters the meaning of the source \cite{brockett2006correcting}.
 As a result, often when compiling gold standard corrections for the task,
 annotators are instructed to be conservative in their corrections
 (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
@@ -126,24 +140,40 @@ emphasized over Recall \cite{dahlmeier2012better}.
 However, penalizing over-correction more harshly than under-correction
 may lead to reluctance of correctors to
 make any changes (henceforth, {\it over-conservatism}).
-Using one or two reference corrections, which is a common practice in GEC {\color{red}development data}, compounds this problem \cite{bryant2015far},
-as correctors are not only harshly penalized for making incorrect changes,
-but are often penalized for making correct changes not found in the reference.(\S \ref{sec:mult_discussion})
+Using one or two reference corrections, which is a common practice in GEC,
+compounds this problem, as correctors are not only harshly penalized for making incorrect changes,
+but are often penalized for making correct changes not found in the reference (see Section \ref{sec:mult_discussion}).
 
-We present results that indicate that current state of the art systems do suffer from over-conservatism. Evaluating the output of all 12 systems that participated in the recent CoNLL2014 shared task, we find that all of them substantially under-predict corrections relative to the gold standard (\S \ref{sec:formal_conservatism}).
+We present results that indicate that current state of the art systems indeed suffer from over-conservatism.
+Evaluating the output of all 12 systems that participated in the recent CoNLL2014 shared task, we find that all of them
+substantially under-predict corrections relative to the gold standard (\S \ref{sec:formal_conservatism}).
 
-{\color{red}
-	We first assess whether the undue penalization of valid corrections can be solved by increasing the amount of references, which we denote $M$ (\S \ref{sec:increase-reference}).
-We start by estimating the number of corrections that exist for each sentence and their frequencies, resulting with the astounding average of above 1,000 valid corrections per short sentence.}
-We further consider two representative reference-based measures(hereby RBM) for assessing the validity of a proposed correction relative to a set of references,
+We first assess whether the undue penalization of valid corrections can be resolved by increasing the amount of
+references, which we denote $M$ (\S \ref{sec:increase-reference}).
+We start by estimating the number and frequency distribution of the valid corrections per sentence,
+arriving at and estimate of over 1000 corrections for sentences of no more than 15 tokens.
+
+We further consider two representative reference-based measures (hereby RBM) for
+assessing the validity of a proposed correction relative to a set of references,
 and characterize the distribution of their scores as a function of $M$. 
-{\color{red} 
-Our findings suggest that the effect of $M$ saturates suggesting increasing $M$ is beneficial only to a certain point.}
-%We conclude with an analysis of the statistical significance of these evaluation protocols.
+Our results show that both measures substantially under-estimate the true performance of
+the correctors. Moreover, they show that increasing $M$ only provides a partial
+solution to this under-estimatation problem, as the RBMs already show signs
+of saturation with $M$ values of 10--20, indicating that a prohibitively large value
+for $M$ may be required.
 
-As increasing $M$ seems not to solve the problem, we pursue a reference-less semantic evaluation approach which assesses the extent to which
+Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$
+on the scores obtained using F-score, the most commonly used RBM for GEC. Their work focused on
+obtaining a more reliable estimate of correctors' performance, and proposed to do so
+by normalizing corrector's estimated performance by the performance of a human corrector using
+the same measure. However, while such normalization may yield more realistic performance estimates,
+it does not have any effect on the training and tuning of correctors.
+
+We conclude by proposing an alternative, reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the
-{\color{red} similarity of their semantic structures (\S \ref{sec:Semantics}). This approach can be combined with reference-less grammatic evaluation as the one recently proposed by \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.}
+similarity of their semantic structures (Section \ref{sec:Semantics}).
+This approach can be combined with a measure of grammaticality, based on automatic error detection, as
+proposed by \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 
 %We define a measure, using the UCCA scheme \cite{abend2013universal} as a
 %test case, motivated by its recent use for machine translation
@@ -154,11 +184,11 @@ to learner's language (LL), and (2) that the proposed measure is less prone to
 undue penalization of valid corrections.
 %We annotate a section of the NUCLE parallel corpus \cite{dahlmeier2013building},
 
-The two approaches address the insufficiency of using too few references from
-complementary angles. The first attempts to cover more of the probability
-mass of valid corrections by taking a larger $M$, 
-while the second uses semantic instead of string similarity, in order
-to abstract away from some of the formal variation between different valid corrections.
+%The two approaches address the insufficiency of using too few references from
+%complementary angles. The first attempts to cover more of the probability
+%mass of valid corrections by taking a larger $M$, 
+%while the second uses semantic instead of string similarity, in order
+%to abstract away from some of the formal variation between different valid corrections.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
