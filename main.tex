@@ -45,6 +45,14 @@
  \end{equation}
  \vspace{-1.2em}
 }
+\newenvironment{myequation*}{
+	\vspace{-1em}
+	\begin{equation*}
+}{
+\end{equation*}
+\vspace{-1.2em}
+}
+
 
 \begin{document}
 
@@ -350,9 +358,9 @@ and obtain  similar results to those obtained on NUCLE.
 In this section we argue that the observed over-conservatism of correctors likely stems
 from them being developed to optimize RBMs that suffer from low coverage.
 We begin with a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}),
-and continue with an empirical assessment of the distribution of corrections for a given sentence (\S \ref{}),
-and the effect of $M$ on commonly used RBMs (\S \ref{}).
-We discuss the implication of our results in \S \ref{}, concluding that reference-based
+and continue with an empirical assessment of the distribution of corrections for a given sentence (\S \ref{subsec:corrections_distribution}),
+and the effect of $M$ on commonly used RBMs (\S \ref{subsec:Assessment-values}).
+We discuss the implication of our results in \S \ref{subsec:mult_discussion}, concluding that reference-based
 evaluation may only partially address over-conservatism.
 
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
@@ -370,9 +378,10 @@ a valid correction for it will be found among $M$ randomly sampled references.\l
 
 We will now assume that the corrector may either choose not to correct the phrase,
 or choose to correct it with the correction it finds the most likely.\lc{not sure I understand, what other options are there? or could less likely be more probable to be covered?} If it selected not to correct the sentence, its probability of being rewarded (i.e., producing
-an output in the reference set $Y$) is $(1-p_{correct})$. Otherwise, its probability
+an output in the reference set $Y$) is $(1-p_{correct})$\lc{maybe I don't understand, didn't you meant $(1-p_{detect})$?}. Otherwise, its probability
 of being rewarded is $p_{detect} \cdot p_{correct} \cdot p_{coverage}$.
 In cases where
+
 \begin{small}
 \begin{myequation}
   \label{eq:reward}
@@ -380,17 +389,16 @@ In cases where
 \end{myequation}
 \end{small}
 
-a corrector is dincentivized from predicting a correction.
+a corrector is disincentivized from predicting a correction.
 We expect Condition \ref{eq:reward} to frequently hold in cases that
 require non-trivial changes, which are characterized both by low $p_{coverage}$ (as non-trivial
 changes can often be made in numerous ways), and by lower expected performance by the corrector.
 
 Moreover, when using asymmetric measures, that penalize invalidly correcting a sentence more harshly than
-not correcting an ungrammatical sentence (i.e., $P > R$), condition \ref{eq:reward} is even more
+not correcting an ungrammatical sentence \lc{(i.e., $P > R$) This paragraph is true without the P>R that I deleted. But is it enough without the formulation? This claim is far from trivial. In the current formulation it does not relate to $P$ but to splitting $P$ into two (wrong corrections, and not corrected when needed), or equivalently thinking of not correcting as score $0$ which creates the formula $p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{detect}) \cdot P  -(1-p_{correct} + p_{correct} \cdot p_{not_coverage})\cdot p_{detect}\cdot P_{punishment_for_wrong_correction} =$ $p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{detect}) \cdot P  -(1 - p_{correct} \cdot p_{coverage})\cdot p_{detect}\cdot P_{punishment_for_wrong_correction} < 0$ }, condition \ref{eq:reward} is even more
 likely to hold. An example of such measure is the commonly used $F_{0.5}$.
 %Asymmetric measures, such as $F_{0.5}$, are the most common evaluation
 %measures used in GEC today.
-
 
 \subsection{Data}
 
@@ -411,10 +419,9 @@ not fluency we told the workers that there is no need to rephrase for styling, a
 the sentence or parts of it should be left like the original.
 4 sentences did not need require any correction according to a large part of the workers and were hence discarded.
 
-\subsection{Estimating The Distribution of Corrections}
+\subsection{Estimating The Distribution of Corrections}\label{subsec:corrections_distribution}
 
-We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced
-corrections.
+We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
 estimates a multinomial distribution,
 in which the individual values do not matter, only the distribution of probabilities
@@ -434,8 +441,6 @@ Table \ref{tab:corrections_dist} presents the mean numbers of different correcti
 $\gamma$ (for different values of $\gamma$), and their total probability mass.
 For instance, 8.72 corrections account for 58\% of the total probability mass of the corrections, each
 occurring with a probability of 0.01 or higher.
-%\oa{maybe the graph to show is the total probability mass
-%  of the $k$ most frequent variants, where $k=1,2,3,4...$?  }\lc{you win some you lose some... It might be pretty if you do it on the mean, you won't know the variant numbers and the steps which is one of the interesting factors.}
 
 \begin{table}[h!]
   \centering
@@ -461,13 +466,8 @@ occurring with a probability of 0.01 or higher.
 \end{table}
 
 \subsection{Under-estimation as a function of M} \label{subsec:Assessment-values}
-In the previous section we presented empirical assessment of the distribution of
-corrections to a sentence. We now turn to estimating the resulting bias, namely
+In the previous section we presented empirical assessment of the distribution of corrections to a sentence. We now turn to estimating the resulting bias, namely
 the under-estimation of reference-based similarity measures, for different values of $M$. 
-%Our goal is to assess what value of $M$ would be a sweet spot,
-%which is both practical (as collecting references is costly) and reasonably
-%biased.\lc{do we indeed assess the sweet spot? we only show the door someone must
-%walk through it according to the budget he has}
 
 We discuss two similarity measures. One is the sentence-level accuracy
 (also called ``Exact Match'') and the other is the GEC $F$-score.
@@ -718,7 +718,7 @@ is not significantly better than the third and fourth.
 %Nevertheless, it seems that $M=2$ value taken in NUCLE is sufficiently high
 %to generally obtain statistically significant ranking of the different correctors.
 
-\subsection{Discussion}\label{sec:mult_discussion}
+\subsection{Discussion}\label{subsec:mult_discussion}
 % -- we saw that we have dramatic under-estimation
 % -- but is this a problem? for instance, in the last section we saw we can get statistical significance between systems by increasing
 %    N even with a low M
@@ -733,7 +733,7 @@ is not significantly better than the third and fourth.
 %
 
 Our empirical results show that the number of corrections needed for a reliable reference-based estimation may
-be prohibitevely large in practice.
+be prohibitively large in practice.
 Results suggest that there are hundreds of valid corrections with low probability, whose total probability mass
 is substantial. RBMs such as accuracy and $F$-score thus show diminishing returns from increasing the value of $M$ over values
 of 10 so.
