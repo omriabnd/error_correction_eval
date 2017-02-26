@@ -1,7 +1,7 @@
 \documentclass[letter,11pt]{article}
 %\usepackage[round]{natbib}
 
-
+\usepackage{mathtools}
 \usepackage{setspace} 
 \usepackage{dsfont}
 \usepackage{amsfonts}
@@ -154,10 +154,10 @@ but are often penalized for making correct changes not found in the reference.
 
 Indeed, we show that current state of the art systems suffer from over-conservatism.
 Evaluating the output of 12 recent correctors, we find that all of them
-substantially under-predict corrections relative to the gold standard (Section \ref{sec:formal_conservatism}).
+substantially under-predict corrections relative to the gold standard (\S \ref{sec:formal_conservatism}).
 
 We first assess whether the undue penalization of valid corrections can be resolved by increasing the number
-of references, which we denote with $M$ (Section \ref{sec:increase-reference}).
+of references, which we denote with $M$ (\S \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence,
 arriving at an estimate of over 1000 corrections for sentences of no more than 15 tokens.
 We then consider two representative reference-based measures (henceforth, {\it RBMs}) for
@@ -176,7 +176,7 @@ the same measure. However, while such normalization may yield more realistic per
 it does not have any effect on the training and tuning of correctors.
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
-a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (Section \ref{sec:Semantics}).
+a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (\S \ref{sec:Semantics}).
 This approach can be combined with a measure of grammaticality, based on automatic error detection, as
 proposed by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 Our experiments support the feasibility of the proposed approach,
@@ -212,8 +212,8 @@ We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_s$ is the probability a human annotator would correct $x$ as $y$.
 
-Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_N$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences.
-For each $x_i$, denote with $\mathcal{D}_{i}$ its distribution of corrections.
+Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_N$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences and {\color{red}denote $\mathcal{D}_{x_i}\coloneqq \mathcal{D}_{i}$.
+\com{For each $x_i$, denote with $\mathcal{D}_{i}$ its distribution of corrections}}.
 Each $x_i$ is paired with $M$ corrections $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\}$,
 which are independently sampled from $\mathcal{D}_{i}$.\footnote{Our analysis assumes $M$
 	is fixed across source sentences. Generalizing the analysis to sentence-dependent $M$
@@ -222,16 +222,10 @@ We define the {\it coverage} of $M$ references for a sentence $x_i$ to be
 $P(y \in Y|y \in Correct_i)$ for $Y$ of size $M$, and $y$ sampled
 according to $\mathcal{D}_y$.
 
-%
-%We will be assuming that each source $x$ is evaluated by $M$ references,
-%where are independently sampled references from $\mathcal{D}_x$.
-
-A corrector $C$ is a function from LL sentences to proposed corrections  (strings).
+A corrector $C$ is a function from LL sentences to proposed corrections (strings).
 A corrector's output is a set of proposed corrections $\{C(x_1),...,C(x_N)\}$.
 An assessment measure is a function from $X$, $Y$ and $C$ to
-a real number. We use the term ``true measure'' to refer to the measure's
-output where the references include all possible corrections, i.e., $y_i=Correct_i$ for
-every $i$.
+a real number. We use the term ``true measure'' to refer to the measure's output where the references include all possible corrections, i.e., $y_i=Correct_i$ for every $i$.
 
 \paragraph{Experimental Setup.}\label{par:experimental_setup}
 Our experiments are on the NUCLE dataset,
@@ -268,7 +262,7 @@ First, we measure to what extent \emph{words} were changed: altered, deleted or 
 To do so, we compute word alignment between the source and the reference, casting it
 as a weighted bipartite matching problem, between the source's words and the correction's. 
 Edge weights are assigned to be the edit distance
-between the tokens.\footnote{When breaking ties, we favor alignments where the place in the sentence is closer.}
+between the tokens.
 We note that aligning words in GEC is much simpler than in machine translation,
 as most of the words are kept unchanged, deleted fully, added, or changed slightly.
 Following word alignment, we define the {\sc WordChange} measure
@@ -277,11 +271,9 @@ as the number of unaligned words and aligned words that were changed in any way.
 Second, we quantify word \emph{order} differences by computing
 Spearman's $\rho$ between the order of the words in the source sentence,
 and the order of their corresponding words in the correction according to the word alignment.
-$\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders
-exactly match. We report the average $\rho$ over all source sentences pairs. 
+$\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exactly match. We report the average $\rho$ over all source sentences pairs. 
 
-Third, we report how many source sentences were split and how many
-concatenated by the references and by each of the correctors.
+Third, we report how many source sentences were split and how many concatenated by the references and by each of the correctors.
 \com{
 \begin{figure}[tbp]
   \centering
@@ -313,7 +305,6 @@ concatenated by the references and by each of the correctors.
     of the systems.}
   	\end{figure}
 }
-
 \begin{figure}[tbp]
   \centering
   \begin{subfigure}[]{0.4\textwidth}
@@ -333,7 +324,7 @@ concatenated by the references and by each of the correctors.
     Spearman $\rho$ values do not exceed a certain threshold (x-axis).
     The bottom figure presents the number of source sentences (y-axis) split (right bars) or concatenated
     (left bars) in the references (striped column) and in the corrector's output (colored columns).
-    See Section \ref{par:experimental_setup} for a legend of the correctors.
+    See \S \ref{par:experimental_setup} for a legend of the correctors.
     The three figures show that under all measures, the gold standard references make
     substantially more changes to the source sentences than any of the correctors,
     in some cases an order of magnitude more.
@@ -351,47 +342,41 @@ and obtain  similar results to those obtained on NUCLE.
 %While $89.6\%$ of NUCLE sentences need corrections,
 %The prevalence of FCE consists only of ungrammatical sentences.
 %As expected, FCE is a bit less conservative than NUCLE by our measures.
-
-
+%
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multi-Reference Measures}\label{sec:increase-reference}
 
 In this section we argue that the observed over-conservatism of correctors likely stems
 from them being developed to optimize RBMs that suffer from low coverage.
-We begin with a motivating analysis of the relation between low-coverage and over-conservatism (Section \ref{}),
-and continue with an empirical assessment of the distribution of corrections for a given sentence (Section \ref{}),
-and the effect of $M$ on commonly used RBMs (Section \ref{}).
-%extending the results of \newcite{bryant2015far}.
-We discuss the implication of our results in Section \ref{}, concluding that reference-based
+We begin with a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}),
+and continue with an empirical assessment of the distribution of corrections for a given sentence (\S \ref{}),
+and the effect of $M$ on commonly used RBMs (\S \ref{}).
+We discuss the implication of our results in \S \ref{}, concluding that reference-based
 evaluation may only partially address over-conservatism.
 
-
-\subsection{Motivating Analysis}
+\subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 
 The relation between coverage and over-conservatism requires some explanation.
-We abstract away from the details of the training procedure, and assume that correctors
-are attempt to maximize the evaluation measure, over some training or development data.
+We abstract away from the details of the training procedure, and assume that correctors attempt to maximize the evaluation measure, over some training or development data.
 
-Assume the corrector is faced with a phrase which it predicts to be
-ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
+Assume the corrector is faced with a phrase which it predicts to be ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability that the model is able to predict
 a valid correction for this phrase (given that it correctly identified it as erroneous).
 Finally, assume that the corrector is evaluated
 against $M$ references, and that $p_{coverage}$ is the coverage of the phrase by $M$ references,
 namely the probability that
-a valid correction for it will be found among $M$ randomly sampled references.
+a valid correction for it will be found among $M$ randomly sampled references.\lc{we define it twice, should we delete it from the notations?}
 
 We will now assume that the corrector may either choose not to correct the phrase,
-or choose to correct it with the correction it finds the most likely. If it selected
-not to correct the sentence, its probability of being rewarded (i.e., producing
+or choose to correct it with the correction it finds the most likely.\lc{not sure I understand, what other options are there? or could less likely be more probable to be covered?} If it selected not to correct the sentence, its probability of being rewarded (i.e., producing
 an output in the reference set $Y$) is $(1-p_{correct})$. Otherwise, its probability
 of being rewarded is $p_{detect} \cdot p_{correct} \cdot p_{coverage}$.
 In cases where
-
 \begin{small}
 \begin{myequation}
   \label{eq:reward}
-  p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{correct}) \cdot P < 0,
+  p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{correct}) \cdot P < 0
 \end{myequation}
 \end{small}
 
@@ -722,7 +707,7 @@ test data ($M=2$).
   \caption{$F_{0.5}$ values for different correctors, including confidence interval ($p=.95$).
     The left-most column (``source'') presents the $F$-score of a corrector that doesn't make any
     changes to the source sentences.
-    See Section \ref{par:experimental_setup} for a legend of the correctors.\label{fig:F_correctors}}
+    See \S \ref{par:experimental_setup} for a legend of the correctors.\label{fig:F_correctors}}
 \end{figure}
 
 Figure \ref{fig:F_correctors} shows our results, which present a mixed picture: some
@@ -1091,7 +1076,7 @@ DAG $F$-score discussed above where $A$ includes all pairs of nodes in $E_s$ and
 the same yield.
 
 In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
-(tokens) in $V_s$ and $V_c$ using the same method detailed in Section \ref{sec:formal_conservatism}.
+(tokens) in $V_s$ and $V_c$ using the same method detailed in \S \ref{sec:formal_conservatism}.
 Denote the results leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
 We now extend $A_l$ to define the node alignment $A$, aligning each non-leaf $v \in V_s$
 with the node $u \in V_c$ that maximizes
@@ -1216,7 +1201,7 @@ In UCCA's case, it is predicate-argument structures, the inter-relations between
 as well as the semantic heads of complex arguments.
 
 Our attempts to conduct experiments to determine {\sc UCCASim}'s sensitivity to correction
-errors introduced by the correctors described in Section \ref{sec:formal_conservatism} were
+errors introduced by the correctors described in \S \ref{sec:formal_conservatism} were
 unsuccessful, as these systems make only very few structural (rather than word-level)
 corrections (see Figure \ref{fig:over-conservatism}).
 We expect that once the over-conservatism of existing correctors is resolved,
