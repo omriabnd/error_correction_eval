@@ -395,7 +395,7 @@ require non-trivial changes, which are characterized both by low $p_{coverage}$ 
 changes can often be made in numerous ways), and by lower expected performance by the corrector.
 
 Moreover, when using asymmetric measures, that penalize invalidly correcting a sentence more harshly than
-not correcting an ungrammatical sentence \lc{(i.e., $P > R$) This paragraph is true without the P>R that I deleted. But is it enough without the formulation? This claim is far from trivial. In the current formulation it does not relate to $P$ but to splitting $P$ into two (wrong corrections, and not corrected when needed), or equivalently thinking of not correcting as score $0$ which creates the formula $p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{detect}) \cdot P  -(1-p_{correct} + p_{correct} \cdot p_{not_coverage})\cdot p_{detect}\cdot P_{punishment_for_wrong_correction} =$ $p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{detect}) \cdot P  -(1 - p_{correct} \cdot p_{coverage})\cdot p_{detect}\cdot P_{punishment_for_wrong_correction} < 0$ }, condition \ref{eq:reward} is even more
+not correcting an ungrammatical sentence \lc{(i.e., $P > R$) This paragraph is true without the P>R that I deleted. But is it enough without the formulation? This claim is far from trivial. In the current formulation it does not relate only to $P>R$ but also to added penalties for the possibility of correcting wrongly(in addition to the chance that it loses a bonus for wrong detection)}, condition \ref{eq:reward} is even more
 likely to hold. An example of such measure is the commonly used $F_{0.5}$.
 %Asymmetric measures, such as $F_{0.5}$, are the most common evaluation
 %measures used in GEC today.
@@ -405,7 +405,7 @@ likely to hold. An example of such measure is the commonly used $F_{0.5}$.
 Our analysis assumes that we have a reliable estimate for the distribution of corrections
 $\mathcal{D}_x$ for the source sentences we evaluate.
 Our experiments in the following section are run on a random sample of 52 sentences with a
-maximum length of 15 from the NUCLE test data. 
+maximum length of 15 from the NUCLE test data.
 The length restriction was introduced to avoid introducing too many independent errors that may drastically increase
 the number of annotations variants (as every combination of corrections to these errors are possible),
 thus resulting in an unreliable estimation for $\mathcal{D}_x$.
@@ -414,7 +414,7 @@ Sentences with less than 6 words were discarded, as they were mostly a result of
 Crowdsourcing has proven effective in GEC evaluation \cite{madnani2011they,napoles2015ground} and in
 related tasks such as machine translation \cite{zaidan2011crowdsourcing,post2012constructing}. We thus
 use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source
-sentences, we elicited 50 corrections by Amazon Mechanical Turk workers. To correct grammaticality and
+sentences, we elicited 50 corrections by Amazon Mechanical Turk workers, allowing for reliable estimation of the distributions. To correct grammaticality and
 not fluency we told the workers that there is no need to rephrase for styling, and that when unnecessary
 the sentence or parts of it should be left like the original.
 4 sentences did not need require any correction according to a large part of the workers and were hence discarded.
@@ -519,7 +519,6 @@ is then
 \end{small}
 \vspace{-1.5em}
 
-
 It is easy to see that the bias is not affected by $N$, only by $M$.
 As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
 
@@ -614,7 +613,6 @@ for different values of $M$, which indicate that while scores of a perfect corre
 still with $M=5$ it is no less than 0.5.
 As Exact Index Match can be interpreted as an accuracy measure for error detection (rather than correction),
 our results indicate that grammar detection systems may suffer from similar difficulties.
-
 %
 %{\color{red}Finally, Figure \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which are computed analytically. }
 %\lc{I need to take what I said back.  is indeed used for the PDF, but currently we don't publish anything that uses the pdf. We do compute the confidence intervals, but those are intervals of the mean, for the graph. The account for the significance of the means we got i.e. for the choices of different sentences which we can't compute analytically. So we bootstrap again. The variance (not specifically significance) of the estimator was originally discussed with the analytical formula ($\sum_{i=1}^{N}P_{\mathcal{D}_x}(y_i \in Y)\cdot\left(1-P_{\mathcal{D}_x}(y_i \in Y)\right)$) when what is interesting is actually just that it decreases with N and when M gets away from 0.5.
@@ -667,7 +665,7 @@ The bootstrapping procedure is carried out by the
 accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
 We also report confidence intervals ($p=.95$), computed using the same procedure.\footnote{We
   use the standard Python scikits.bootstrap implementation of this method.}
-
+%
 %For each sentence which had at least one error according to the NUCLE gold standard
 %we sample $M$ sentences uniformly from the
 %gathered empirical data to replace it. We leave sentences that do not need
@@ -681,9 +679,9 @@ further indicate the insufficiency of commonly used $M$ values for training and 
 for obtaining a reliable estimation of a corrector's performance.
 For instance, the $F_{0.5}$ score for our perfect corrector, whose true $F$-score is 1,
 is only 0.42 with $M=2$.
-Moreover, the saturation effect observed in accuracy is even more pronounced with our experiments on F-score.
+Moreover, the saturation effect observed in accuracy is even more pronounced with our experiments on $F$-score.
 Similar results were obtained by \newcite{bryant2015far}.
-
+%
 %\paragraph{}
 %While our experiments focus on the accuracy and $F$-score measures, we expect
 %our results to generalize to other RBMs (see Section \ref{sec:prev_work}).
@@ -737,9 +735,9 @@ be prohibitively large in practice.
 Results suggest that there are hundreds of valid corrections with low probability, whose total probability mass
 is substantial. RBMs such as accuracy and $F$-score thus show diminishing returns from increasing the value of $M$ over values
 of 10 so.
-
+%
 %All these findings suggest that it is too costly to increase $M$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $M=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
-
+%
 %about a quarter of the probability mass of valid corrections (\S \ref{subsec:Assessment-values}).
 %
 %The factors controlling significance are two. Variation across sentences themselves (different $D_x$)
@@ -753,10 +751,10 @@ of 10 so.
 %leave the decision to the reader. We just point out that such balancing questions have been studied in
 %various fields such as genetics \cite{ionita2010optimal}.\oa{}
 
-Returning to condition \ref{eq:}, we find that the coverage
+Returning to condition \ref{eq:reward}, we find that the coverage
 (which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals})
 is lower than 0.5 for $M=2$ on average (for short sentences). For cases of non-trivial
-changes, we expect it might be even lower, suggesting that condition \ref{eq:} often
+changes, we expect it might be even lower, suggesting that condition \ref{eq:reward} often
 holds in practice, incentivizing over-conservatism.
 
 Considering the $F$-score of the best performing systems in Figure \ref{fig:F_correctors}, and
@@ -765,7 +763,7 @@ where RoRo in fact surpass a perfect corrector's $F$-score.
 While it is possible that such systems outperform the perfect corrector by learning how to
 correct a sentence in the same way as one of the NUCLE annotators did, we view this possibility
 as unlikely as our results (\S\ref{sec:formal_conservatism}) show that the output of these systems considerably diverges from NUCLE's references.
-A more likely possibility is that these systems high performance relative to a perfect corrector's
+A more likely possibility is that these systems' high performance relative to a perfect corrector's
 is due to these correctors having learned to predict when not to correct.
 
 Finally, we note that the proposal of \cite{bryant2015far} to address under-estimation by comparing to
@@ -804,9 +802,9 @@ is not necessarily an upper bound, as an over-conservative corrector may surpass
 	For example (if we see in bryant probabillity X for that Y for that, etc. when we will be sure about the formula I will write it.)
 	This implies that a corrector optimized in such circumstances will result in over-conservatism. We hypothesize this is a main reasons for the results shown in this section.}
 }
-
+%
  %we turn to discussing what values of $M$ yield a reliable estimate of the performance of GEC systems. While there is no one answer to this question, and coverage can be low even with $M$ values of 20, both measures we considered begin to plateau (in the case of $F$-score) or present linear increases after an initial concave behavior (in the case of accuracy) at $M$ values of 8--10. This may indicate that such values are a reasonable balance between cost and bias.
-
+%
 %Finally, there a few assumptions made in our experiments that are worth fleshing out.
 %First, e.g. the explanation of a bad sampling is not probable but can not be refuted. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very long sentences for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not a big shift in respect to the human edits.
 %
@@ -846,11 +844,11 @@ is not necessarily an upper bound, as an over-conservative corrector may surpass
 %
 %
 %
-
-
+%
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Semantic Faithfulness Measure}\label{sec:Semantics}
-
+%
 %
 %Conservatism is considered an important trait for a corrector, reflected for example
 %in the selection of $F_{0.5}$, which emphasizes precision over recall, as the
