@@ -124,7 +124,7 @@
 % 4.3. Similarity Measures (including prev work of elior)
 % 4.4. Empirical Validation: IAA, semantic conservativism vs. gold std
 % 5. Conclusion
-
+%
 % is a challenging research field, which interfaces with many
 %other areas of linguistics and NLP. The field
 Grammatical Error Correction (GEC) is receiving considerable
@@ -142,10 +142,8 @@ correction over a correction that alters the meaning of the source \cite{brocket
 As a result, often when compiling gold standard corrections for the task,
 annotators are instructed to be conservative in their corrections
 (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
-A recent attempt to formally capture this precision/recall asymmetry has
-been the standardized use of $F_{0.5}$ over $F_{1}$, where Precision is
-emphasized over Recall \cite{dahlmeier2012better}.\oa{are there other examples among
-  the recent measures?}
+There were different attempts to formally capture this precision/recall asymmetry such as the standardized use of $F_{0.5}$ over $F_{1}$, where Precision is
+emphasized over Recall \cite{dahlmeier2012better} and the choices of weights in I-measure\cite{felice2015towards}.
 
 However, penalizing over-correction more harshly than under-correction
 may lead to reluctance of correctors to
@@ -163,7 +161,7 @@ of references, which we denote with $M$ (Section \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence,
 arriving at an estimate of over 1000 corrections for sentences of no more than 15 tokens.
 We then consider two representative reference-based measures (henceforth, {\it RBMs}) for
-%assessing the validity of a proposed correction relative to a set of references,
+assessing the validity of a proposed correction relative to a set of references
 and characterize the distribution of their scores as a function of $M$. 
 Our results show that both measures substantially under-estimate the true performance of
 the correctors. Moreover, they show that increasing $M$ only partially addresses
@@ -171,34 +169,31 @@ the incurred bias, as both RBMs approach saturation with $M$ values of 10--20,
 indicating that a prohibitively large value for $M$ may be required for reliable estimation.
 
 Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$
-on the F-score measure, the most commonly used RBM for GEC. Their work focused on
+on the $F$-score measure, the most commonly used RBM for GEC. Their work focused on
 obtaining a more reliable estimate of correctors' performance, and proposed to do so
 by normalizing corrector's estimated performance with the performance of a human corrector using
 the same measure. However, while such normalization may yield more realistic performance estimates,
 it does not have any effect on the training and tuning of correctors.
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
-a correction faithfully represents the semantics of the source, by measuring the
-similarity of their semantic structures (Section \ref{sec:Semantics}).
+a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (Section \ref{sec:Semantics}).
 This approach can be combined with a measure of grammaticality, based on automatic error detection, as
 proposed by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 Our experiments support the feasibility of the proposed approach,
-by showing that (1) semantic structural annotation can be consistently applied
-to learner's language (LL), and (2) that the proposed measure is less prone to
-unduly penalize valid corrections.
-
-
+by showing that (1) semantic structural annotation can be consistently applied to learner's language (LL), and (2) that the proposed measure is less prone to unduly penalize valid corrections.
+%
+%
 %We define a measure, using the UCCA scheme \cite{abend2013universal} as a
 %test case, motivated by its recent use for machine translation
 %evaluation \cite{birch2016hume}.
 %We annotate a section of the NUCLE parallel corpus \cite{dahlmeier2013building},
-
+%
 %The two approaches address the insufficiency of using too few references from
 %complementary angles. The first attempts to cover more of the probability
 %mass of valid corrections by taking a larger $M$, 
 %while the second uses semantic instead of string similarity, in order
 %to abstract away from some of the formal variation between different valid corrections.
-
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
 %The field of GEC was always thriving or conservatism in its corrections, with the prominent example of using
@@ -208,19 +203,16 @@ unduly penalize valid corrections.
 %
 %Manual analysis showed excessive formal conservatism and under correction.
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
-
+%
 We demonstrate that current correctors
 suffer from over-conservatism: they tend to make too few changes to the source. 
 
 \subsection{Notation}
-%\lc{now we need the notation both for the discussion and for the rest of the paper, where would be a good place to put it?}
 We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_s$ is the probability a human annotator would correct $x$ as $y$.
 
-Let $X$ be the evaluated set of source LL sentences where $X$ consists
-of the sentences $x_{1}\ldots x_N$, each independently sampled from some
-distribution $\mathcal{L}$ over LL sentences.
+Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_N$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences.
 For each $x_i$, denote with $\mathcal{D}_{i}$ its distribution of corrections.
 Each $x_i$ is paired with $M$ corrections $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\}$,
 which are independently sampled from $\mathcal{D}_{i}$.\footnote{Our analysis assumes $M$
