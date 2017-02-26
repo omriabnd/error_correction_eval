@@ -530,6 +530,7 @@ a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $M$ references
 is then
 
+\vspace{-1em}
 \begin{small}
   \centering
   \begin{flalign}
@@ -539,6 +540,8 @@ is then
     &\label{eq:bias} \left(1 - Pr\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right) &
   \end{flalign}
 \end{small}
+\vspace{-1.5em}
+
 
 It is easy to see that the bias is not affected by $N$, only by $M$.
 As $M$ grows, $Y$ becomes a better approximation of $Correct_x$, and $b_M$ tends to 0.
@@ -704,9 +707,9 @@ is only 0.42 with $M=2$.
 Moreover, the saturation effect observed in accuracy is even more pronounced with our experiments on F-score.
 Similar results were obtained by \newcite{bryant2015far}.
 
-\paragraph{}
-While our experiments focus on the accuracy and $F$-score measures, we expect
-our results to generalize to other RBMs (see Section \ref{sec:prev_work}).
+%\paragraph{}
+%While our experiments focus on the accuracy and $F$-score measures, we expect
+%our results to generalize to other RBMs (see Section \ref{sec:prev_work}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
@@ -811,8 +814,8 @@ is not necessarily an upper bound, as an over-conservative corrector may surpass
 	 the expected utility of the corrector from producing $y$ is
 	 \vspace{-0.8cm}
 	 \begin{small}
-	 	\begin{center}
-		 	\begin{flalign*}
+	   \begin{center}
+	     \begin{flalign*}
 	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha - P(y \notin Y) \cdot \beta = &\\
 	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\ &(P(y\notin correct) + P(y\in correct)P(y \notin Y)) \cdot \beta = &\\
 	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\
@@ -1289,8 +1292,9 @@ which introduces some novel features to GEC evaluation, such as distinguishing
 different quality levels of ungrammatical corrections (e.g., some improve the quality of
 the source, while others degrade it), and restricting edits to only consist of single words,
 rather than phrases. \newcite{napoles2015ground} compares the system ranking of different correctors inspired by $M^2$ and I-measure, relative crowdsourced human rankings. They find a low correlation between these rankings, and propose the GLEU measure (an adaptation of BLEU), which is shown
-to correlate much better with human rankings. \newcite{sakaguchi2016reassessing} proposes
-to construct reference annotations that emphasize fluency over conservatism.
+to correlate much better with human rankings. \newcite{sakaguchi2016reassessing} argue for emphasizing
+fluency over conservatism in compiling reference annotations.
+%to construct reference annotations that emphasize .
 
 We expect that our findings, that RBMs substantially under-estimate the
 performance of correctors, to generalize to these RBMs, as they all
