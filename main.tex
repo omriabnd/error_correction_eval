@@ -38,9 +38,17 @@
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\lc}[1]{\footnote{\color{blue}LC: #1}}
 
-
+\newenvironment{myequation}{
+  \vspace{-1em}
+ \begin{equation}
+}{
+ \end{equation}
+ \vspace{-1.2em}
+}
 
 \begin{document}
+
+
 \title{Conservatism and Over-conservatism in Grammatical Error Correction}
 %\author{
 %  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
@@ -204,7 +212,7 @@ We demonstrate that current correctors
 suffer from over-conservatism: they tend to make too few changes to the source. 
 
 \subsection{Notation}
-\lc{now we need the notation both for the discussion and for the rest of the paper, where would be a good place to put it?}
+%\lc{now we need the notation both for the discussion and for the rest of the paper, where would be a good place to put it?}
 We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_s$ is the probability a human annotator would correct $x$ as $y$.
@@ -216,7 +224,11 @@ For each $x_i$, denote with $\mathcal{D}_{i}$ its distribution of corrections.
 Each $x_i$ is paired with $M$ corrections $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\}$,
 which are independently sampled from $\mathcal{D}_{i}$.\footnote{Our analysis assumes $M$
 	is fixed across source sentences. Generalizing the analysis to sentence-dependent $M$
-	values is straightforward.} 
+	values is straightforward.}
+We define the {\it coverage} of $M$ references for a sentence $x_i$ to be
+$P(y \in Y|y \in Correct_i)$ for $Y$ of size $M$, and $y$ sampled
+according to $\mathcal{D}_y$.
+
 %
 %We will be assuming that each source $x$ is evaluated by $M$ references,
 %where are independently sampled references from $\mathcal{D}_x$.
@@ -346,53 +358,82 @@ and obtain  similar results to those obtained on NUCLE.
 %While $89.6\%$ of NUCLE sentences need corrections,
 %The prevalence of FCE consists only of ungrammatical sentences.
 %As expected, FCE is a bit less conservative than NUCLE by our measures.
-\subsection{Discussion}
-{\color{red}\label{subsec:low_coverage_over_conservatism}
-	\lc{in the introduction the order is in reverse, we first discuss and then we show this is indeed the case, is that a problem? It somehow seems more structured this way, after experiments and more fluent from a birds eye view to first reason why we check it and the say it is true.}
-	 The common practice of using one or two references in GEC evaluation yields a substantial under-estimation of system's performance using $F$-score \cite{bryant2015far} or other RBMs (\S\ref{sec:increase-reference}).
-	 Theoretically this under estimation could lead to over-conservatism. In the case of detection, the reason is straightforward. If for a given type of error $t$ there is less than 50\% agreement in the gold standard about whether this should be detected as an error or not. Than a perfect corrector will not detect $t$ errors.
-	 
-	 The same holds for corrections, which we see is the case for a small $M$ \cite{bryant2015far}.
-	 Importantly, low coverage of the reference set,
-	 in conjunction with asymmetric evaluation measures that penalize over-correction
-	 more severely than under-correction, result in evaluation measures that further incentivize correctors not to correct.
-	 Assume that for a given source sentence $x$, references $Y \sim \mathcal{D}_x$, and proposed correction $c$,
-	 a given evaluation measure increases by $\alpha$ if $c \in Y$, and decreases by $\beta > \alpha$ if $c \notin Y$.
-	 %Assume that the corrector corrects with , i.e., it invariably produces $y \in Correct_x$.
-	 If the covered probability mass $P(y \in Y)$ for $Y$ of size $M$ and $y$ sampled from $\mathcal{D}_x$
-	 the expected utility of the corrector from producing $y$ is
-	 \vspace{-0.8cm}
-	 \begin{small}
-	 	\begin{center}
-		 	\begin{flalign*}
-	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha - P(y \notin Y) \cdot \beta = &\\
-	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\ &(P(y\notin correct) + P(y\in correct)P(y \notin Y)) \cdot \beta = &\\
-	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\
-	 &(1-P(y\in correct)P(y \in Y)) \cdot \beta = &\\
-		   \end{flalign*}
-	   \end{center}
-	\end{small}
-	\lc{I used the opposites (1-P) on the last step, how did you simplify it further?}
-	For example (if we see in bryant probabillity X for that Y for that, etc. when we will be sure about the formula I will write it.)
-	This implies that a corrector optimized in such circumstances will result in over-conservatism. We hypothesize this is a main reasons for the results shown in this section.}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multi-Reference Measures}\label{sec:increase-reference}
-{\color{red}
-In this section we check to which extent increasing the number of references $M$ leads to a smaller bias in evaluation. We find that while increasing $M$ reduces the bias it is unlikely to be enough to solve the problem of over-conservatism.}
+
+In this section we argue that the observed over-conservatism of correctors likely stems
+from them being developed to optimize RBMs that suffer from low coverage.
+We begin with a motivating analysis of the relation between low-coverage and over-conservatism (Section \ref{}),
+and continue with an empirical assessment of the distribution of corrections for a given sentence (Section \ref{}),
+and the effect of $M$ on commonly used RBMs (Section \ref{}), extending the results of
+\newcite{bryant2015far}.
+We discuss the implication of our results in Section \ref{}, concluding that reference-based
+evaluation may only partially address over-conservatism.
+
+
+\subsection{Motivating Analysis}
+
+The relation between coverage and over-conservatism requires some explanation.
+We abstract away from the details of the training procedure, and assumed that correctors
+are tuned to maximize the evaluation measure, over some training or development data.
+
+Assume the corrector is faced with a phrase (or sentence) which it predicts to be
+ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
+Assume $p_{correct}$ is the probability that the model is able to predict
+a valid correction for this phrase. Finally, assume that the corrector is evaluated
+against $M$ references, and that $p_{coverage}$ is the coverage of the phrase by $M$ references,
+namely the probability that
+a valid correction for it will be found among $M$ randomly sampled references.
+
+We will now assume that the corrector may either choose not to correct the phrase,
+or choose to correct it with the correction it finds the most likely. If it selected
+not to correct the sentence, its probability of being rewarded (i.e., producing
+an output in the reference set $Y$) is $(1-p_{correct})$. Otherwise, its probability
+of being rewarded is $p_{detect} \cdot p_{correct} \cdot p_{coverage}$.
+In cases where
+
+\begin{small}
+\begin{myequation}
+  \label{eq:reward}
+  p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{correct}) \cdot P < 0,
+\end{myequation}
+\end{small}
+
+such a corrector is thus dincentivized from predicting a correction.
+We expect Condition \ref{eq:reward} to frequently hold, especially in cases that
+require non-trivial changes, which are characterized both by low $p_{coverage}$ (as non-trivial
+changes can often be made in numerous ways), and by lower expected performance by the corrector.
+
+Moreover, when using asymmetric measures, that penalize invalidly correcting a sentence more harshly than
+not correcting an ungrammatical sentence (i.e., $P > R$), condition \ref{eq:reward} is even more
+likely to hold.
+Asymmetric measures, such as F-score \cite{} or I-measure \cite{}, are the most common evaluation
+measures used in GEC today.
+
 
 \subsection{Data}
+
 Our analysis assumes that we have a reliable estimate for the distribution of corrections
 $\mathcal{D}_x$ for the source sentences we evaluate.
 Our experiments in the following section are run on a random sample 52 sentences with a
 maximum length of 15 from the NUCLE test data. 
-The length restriction was introduced to avoid introducing too many independent errors that may drastically increase the number of annotations variants (as every combination of corrections to these errors are possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.
+The length restriction was introduced to avoid introducing too many independent errors that may drastically increase
+the number of annotations variants (as every combination of corrections to these errors are possible),
+thus resulting in an unreliable estimation for $\mathcal{D}_x$.
 Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
 
-Crowdsourcing has proven effective in GEC evaluation \cite{madnani2011they,napoles2015ground} and in related tasks such as machine translation \cite{zaidan2011crowdsourcing,post2012constructing}. We thus use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source sentences, we elicited 50 corrections by Amazon Mechanical Turk workers. To correct grammaticality and not fluency we told the workers that there is no need to rephrase for styling, and that when unnecessary the sentence or parts of it should be left like the original.
+Crowdsourcing has proven effective in GEC evaluation \cite{madnani2011they,napoles2015ground} and in
+related tasks such as machine translation \cite{zaidan2011crowdsourcing,post2012constructing}. We thus
+use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source
+sentences, we elicited 50 corrections by Amazon Mechanical Turk workers. To correct grammaticality and
+not fluency we told the workers that there is no need to rephrase for styling, and that when unnecessary
+the sentence or parts of it should be left like the original.
 4 sentences did not need require any correction according to a large part of the workers and were hence discarded.
 
 \subsection{Estimating The Distribution of Corrections}
+
 We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced
 corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
@@ -413,8 +454,9 @@ The estimated distributions tend to have steps, with many corrections with the s
 Table \ref{tab:corrections_dist} presents the mean numbers of different corrections with frequency at least
 $\gamma$ (for different values of $\gamma$), and their total probability mass.
 For instance, 8.72 corrections account for 58\% of the total probability mass of the corrections, each
-occurring with a probability of 0.01 or higher.\oa{maybe the graph to show is the total probability mass
-  of the $k$ most frequent variants, where $k=1,2,3,4...$?  }\lc{you win some you lose some... It might be pretty if you do it on the mean, you won't know the variant numbers and the steps which is one of the interesting factors.}
+occurring with a probability of 0.01 or higher.
+%\oa{maybe the graph to show is the total probability mass
+%  of the $k$ most frequent variants, where $k=1,2,3,4...$?  }\lc{you win some you lose some... It might be pretty if you do it on the mean, you won't know the variant numbers and the steps which is one of the interesting factors.}
 
 \begin{table}[h!]
   \centering
@@ -453,12 +495,10 @@ We discuss two similarity measures. One is the sentence-level accuracy
 
 \paragraph{Sentence-level Accuracy.}
 Sentence-level accuracy is the number of sentences whose corrections
-exactly matches one of the references (also called ``Exact Match'').
-While this measure, in its raw form, is used as an evaluation
-measure in GEC\cite{rozovskaya2010annotating} but not too often\lc{I added the cite, should we still say the not too often part?}, it is a basic, interpretable measure, and extensions
-of which have been recently proposed for GEC evaluation \cite{felice2015towards}.
-It is also closely related to the 0-1 loss function used
-for training statistical GEC systems \cite{chodorow2012problems,rozovskaya2013joint}. 
+exactly match one of the references (also called ``Exact Match'').
+Accuracy is a basic, interpretable measure, used in GEC by, e.g., \cite{rozovskaya2010annotating}.
+It is also closely related to the 0-1 loss function commonly used
+for training statistical correctors \cite{chodorow2012problems,rozovskaya2013joint}. 
 
 Formally, given test sentences $X=\{x_1,\ldots,x_N\}$,
 their references $Y_1,\ldots,Y_N$, and proposed corrections $\{C(x_1),...,C(x_N)\}$,
@@ -466,9 +506,9 @@ we define $C$'s accuracy to be
 
 \begin{small}
   \centering
-  \begin{equation*}\label{eq:acc_def}
+  \begin{myequation}\label{eq:acc_def}
     Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^n \mathds{1}_{C(x_i) \in Y_i}.
-  \end{equation*}
+  \end{myequation}
 \end{small}
 
 Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
@@ -476,9 +516,9 @@ a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
  \begin{small}
    \centering
-   \begin{equation*}
+   \begin{myequation}
      TrueAcc\left(C\right) = P_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right).
-   \end{equation*}
+   \end{myequation}
  \end{small}
 %
 %We estimate $C$s quality by sampling a set of source sentences
@@ -509,10 +549,10 @@ Formally, we assume that, if $C(x) \in Correct_x$ then $C(x) \sim \mathcal{D}_x$
 Hence the bias (Equation \ref{eq:bias}) can be re-written as
 
 \begin{small}
-\begin{equation*}
+\begin{myequation}
   \centering
   P(C(x) \in Correct_x) \cdot (1 - P_{\mathcal{D}_x}(y \in Y)).
-\end{equation*}
+\end{myequation}
 \end{small}
 
 We will from now on assume that $C$ is perfect (i.e., its true accuracy $Pr(C(x) \in Correct_x$ is 1),
@@ -534,9 +574,9 @@ will scale the bias by $p$.
 We estimate $b_M$ empirically using its empirical mean on our experimental corpus:
 
 \begin{small}
-  \begin{equation*}
+  \begin{myequation}
     \hat{b}_M = 1 - \frac{1}{N}\sum_{i=1}^N P_{Y \sim \mathcal{D}_i^M, y \sim \mathcal{D}_i}\left(y \in Y\right).
-  \end{equation*}
+  \end{myequation}
 \end{small}
 
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_M$
@@ -577,16 +617,22 @@ annotator, and are thus not repeated. We find similar trends with faster increas
 
 Figure \ref{fig:accuracy_vals} presents the expected accuracy values for our perfect
 corrector (i.e., 1-$\hat{b}_M$) for different values of $M$. 
-Results show that even for values of $M$ which are much larger than those considered in the GEC literature (e.g., $M=20$), the expected accuracy is only of about 0.5. {\color{red} As $M$ increases the contribution of each additional correction gets smaller to the point it hardly contributes to the accuracy.}
+Results show that even for values of $M$ which are much larger than those considered in the GEC literature (e.g., $M=20$),
+the expected accuracy is only of about 0.5. As $M$ increases the contribution of each additional corrections
+  gets smaller to the point it contributes little to the accuracy (the slope is about ... around $M=20$)\oa{fill in}.
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive
-to the identity of the changed words and not to what they were changed to. {\color{red} This measure can be seen as an estimator for error detection agreement \lc{need to see if anyone mentioned that, I don't think so, as we would cite it in this context even if he was talking about detection and we about correction}.}
+to the identity of the changed words and not to what they were changed to. 
 Formally, two proposed corrections $c$ and $c'$ over a source sentence $x$ match
 if their word alignments with the source (computed as above) $a:\{1,...,|x|\} \rightarrow \{1,...,\left|c\right|,Null\}$
 and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that $c_{a\left(i\right)} \neq x_{i}$ iff $c'_{a'\left(i\right)} \neq x_{i}$ ($y_{NULL}$ and $y'_{NULL}$ are empty strings).
+
 Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case
 for different values of $M$, which indicate that while scores of a perfect corrector are somewhat higher,
 still with $M=5$ it is no less than 0.5.
+As Exact Index Match can be interpreted as an accuracy measure for error detection (rather than correction),
+our results indicate that grammar detection systems may suffer from similar difficulties.
+
 %
 %{\color{red}Finally, Figure \ref{fig:accuracy_vals} include confidence intervals ($p=.95$), which are computed analytically. }
 %\lc{I need to take what I said back.  is indeed used for the PDF, but currently we don't publish anything that uses the pdf. We do compute the confidence intervals, but those are intervals of the mean, for the graph. The account for the significance of the means we got i.e. for the choices of different sentences which we can't compute analytically. So we bootstrap again. The variance (not specifically significance) of the estimator was originally discussed with the analytical formula ($\sum_{i=1}^{N}P_{\mathcal{D}_x}(y_i \in Y)\cdot\left(1-P_{\mathcal{D}_x}(y_i \in Y)\right)$) when what is interesting is actually just that it decreases with N and when M gets away from 0.5.
@@ -597,7 +643,8 @@ and not only it's expected values. From Equation \ref{eq:acc_def} we see that Ac
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
-the $F_\alpha$ score is standard when reporting system performance {\color{red} and assessing it in development}.
+the $F_\alpha$ score is standard when reporting system performance (and consequently in hyper-paramter
+tuning).
 
 Computing $F$-score for GEC is not at all straightforward.
 The score is computed in terms of {\it edit} matches between the correction and the reference,
@@ -620,6 +667,9 @@ As with accuracy,
 in order to avoid confounding our results with system-specific biases,
 we assume the evaluated corrector is perfect and samples its corrections from
 from the human distribution of corrections $\mathcal{D}_x$.
+This experiment is thus very similar to the analysis reported by \newcite{bryant2015far},
+who also compared the F-score of a human correction against an increasing
+number of references.
 
 Concretely, given a value for $M$ and for $N$, we uniformly sample from our experimental
 corpus source sentences $x_1,...,x_N$, and $M$ corrections for each $Y_1,...,Y_N$ (with replacement).
@@ -648,7 +698,9 @@ Figure \ref{fig:F_Ms} presents the results of this procedure, which
 provide further indication for the insufficiency of $M$ values of 1 or 2
 in obtaining a reliable estimation of a corrector's performance.
 For instance, the $F_{0.5}$ score for our perfect corrector, whose true $F$-score is 1,
-is only 0.42 with $M=2$. {\color{red} Moreover, the saturation effect that was evident from the discussion of accuracy and with close examination of the results of \newcite{bryant2015far} is replicated and evident.}
+is only 0.42 with $M=2$.
+Moreover, the saturation effect observed in accuracy is even more pronounced with our experiments on F-score.
+Similar results were obtained by \newcite{bryant2015far}.
 
 \paragraph{}
 While our experiments focus on the accuracy and $F$-score measures, we expect
@@ -683,6 +735,7 @@ is not significantly better than the third and fourth.
 
 %Nevertheless, it seems that $M=2$ value taken in NUCLE is sufficiently high
 %to generally obtain statistically significant ranking of the different correctors.
+
 \subsection{Discussion}\label{sec:mult_discussion}
 % -- we saw that we have dramatic under-estimation
 % -- but is this a problem? for instance, in the last section we saw we can get statistical significance between systems by increasing
@@ -696,10 +749,15 @@ is not significantly better than the third and fourth.
 %    those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not.
 %    we hypothesize that this is the reason.
 %
-Our empirical results show that the number of corrections needed for a reliable reference-based estimation
-is considerably greater than was previously expected. {\color{red} There are hundreds of valid corrections with very low probability and accuracy and $F$-score analysis shows diminishing returns (carefully analyzing \newcite{bryant2015far} data suggests the same). All these findings suggest that it is too costly to increase $M$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $M=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
 
-\newcite{bryant2015far} mention some of the annotations suggested not to correct sentences. This is another surprising problem with increasing $M$, the more annotators in the gold standard the more probable a correction to be ignored by one of the annotators. For example, out of the 52 sentences we gathered 39 had at least one annotator suggesting it shouldn't be corrected. We note that we report a somewhat lower $F$-score then \newcite{bryant2015far}, it might be due to the fact that there are more sentences that does not need correction than we predicted as suggested by the 4(7\%) sentences we discarded.\lc{all true, but not written well} } 
+Our empirical results show that the number of corrections needed for a reliable reference-based estimation may
+be prohibitevely large in practice.
+Results suggest that there are hundreds of valid corrections with low probability, whose total probability mass
+is substantial. RBMs such as accuracy and $F$-score thus show diminishing returns from increasing the value of $M$ over values
+of 10 so.
+
+%All these findings suggest that it is too costly to increase $M$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $M=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
+
 %about a quarter of the probability mass of valid corrections (\S \ref{subsec:Assessment-values}).
 %
 %The factors controlling significance are two. Variation across sentences themselves (different $D_x$)
@@ -713,9 +771,13 @@ is considerably greater than was previously expected. {\color{red} There are hun
 %leave the decision to the reader. We just point out that such balancing questions have been studied in
 %various fields such as genetics \cite{ionita2010optimal}.\oa{}
 
-As we have seen above, the expected coverage (which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals})
-is often lower than 0.5 for $M=2$, which suggests that the incentivization given in \ref{subsec:low_coverage_over_conservatism} for over-conservatism is likely to be
-pervasive. Considering the $F$-score of the best performing systems in Figure \ref{fig:F_correctors}, and
+Returning to condition \ref{eq:}, we find that the coverage
+(which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals})
+is lower than 0.5 for $M=2$ on average (for short sentences). For cases of non-trivial
+changes, we expect it might be even lower, suggesting that condition \ref{eq:} often
+holds in practice, incentivizing over-conservatism.
+
+Considering the $F$-score of the best performing systems in Figure \ref{fig:F_correctors}, and
 comparing them to the $F$-score of a perfect corrector with $M=2$, we find that their scores are comparable,
 where RoRo in fact surpass a perfect corrector's $F$-score.
 While it is possible that such systems outperform the perfect corrector by learning how to
@@ -724,13 +786,45 @@ as unlikely as our results (\S\ref{sec:formal_conservatism}) show that the outpu
 A more likely possibility is that these systems high performance relative to a perfect corrector's
 is due to these correctors having learned to predict when not to correct.
 
-{\color{red}
-Finally, While taking a large enough value of $N$ may yield statistically significant results for comparing the
-different systems (\S \ref{sec:real_world}), low values of $M$, and the low coverage they entail, lead to
-other problems that cannot be mended in the same way. Comparing to human performance might be a good solution\cite{bryant2015far}, even that as we noted, it might result with a score of more than 100\% (without even being a perfect corrector). More importantly, if used for development it seems both theoretically and empirically probable to result in over-conservatism.
+Finally, we note that the proposal of \cite{bryant2015far} to address under-estimation by comparing to
+the score of a human correction (in our terms, a perfect corrector) with the same $M$ does not address under-conservatism, as it only
+scales the original measure. Moreover, as we have seen above, the score obtained for a human correction
+is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in performance.
+
+\com{
+\subsection{Discussion}
+{\color{red}\label{subsec:low_coverage_over_conservatism}
+	\lc{in the introduction the order is in reverse, we first discuss and then we show this is indeed the case, is that a problem? It somehow seems more structured this way, after experiments and more fluent from a birds eye view to first reason why we check it and the say it is true.}
+	 The common practice of using one or two references in GEC evaluation yields a substantial under-estimation of system's performance using $F$-score \cite{bryant2015far} or other RBMs (\S\ref{sec:increase-reference}).
+	 Theoretically this under estimation could lead to over-conservatism. In the case of detection, the reason is straightforward. If for a given type of error $t$ there is less than 50\% agreement in the gold standard about whether this should be detected as an error or not. Than a perfect corrector will not detect $t$ errors.
+	 
+	 The same holds for corrections, which we see is the case for a small $M$ \cite{bryant2015far}.
+	 Importantly, low coverage of the reference set,
+	 in conjunction with asymmetric evaluation measures that penalize over-correction
+	 more severely than under-correction, result in evaluation measures that further incentivize correctors not to correct.
+	 Assume that for a given source sentence $x$, references $Y \sim \mathcal{D}_x$, and proposed correction $c$,
+	 a given evaluation measure increases by $\alpha$ if $c \in Y$, and decreases by $\beta > \alpha$ if $c \notin Y$.
+	 %Assume that the corrector corrects with , i.e., it invariably produces $y \in Correct_x$.
+	 If the covered probability mass $P(y \in Y)$ for $Y$ of size $M$ and $y$ sampled from $\mathcal{D}_x$
+	 the expected utility of the corrector from producing $y$ is
+	 \vspace{-0.8cm}
+	 \begin{small}
+	 	\begin{center}
+		 	\begin{flalign*}
+	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha - P(y \notin Y) \cdot \beta = &\\
+	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\ &(P(y\notin correct) + P(y\in correct)P(y \notin Y)) \cdot \beta = &\\
+	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\
+	 &(1-P(y\in correct)P(y \in Y)) \cdot \beta = &\\
+		   \end{flalign*}
+	   \end{center}
+	\end{small}
+	\lc{I used the opposites (1-P) on the last step, how did you simplify it further?}
+	For example (if we see in bryant probabillity X for that Y for that, etc. when we will be sure about the formula I will write it.)
+	This implies that a corrector optimized in such circumstances will result in over-conservatism. We hypothesize this is a main reasons for the results shown in this section.}
+}
 
  %we turn to discussing what values of $M$ yield a reliable estimate of the performance of GEC systems. While there is no one answer to this question, and coverage can be low even with $M$ values of 20, both measures we considered begin to plateau (in the case of $F$-score) or present linear increases after an initial concave behavior (in the case of accuracy) at $M$ values of 8--10. This may indicate that such values are a reasonable balance between cost and bias.
-}
+
 %Finally, there a few assumptions made in our experiments that are worth fleshing out.
 %First, e.g. the explanation of a bad sampling is not probable but can not be refuted. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very long sentences for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not a big shift in respect to the human edits.
 %
@@ -769,9 +863,12 @@ other problems that cannot be mended in the same way. Comparing to human perform
 %
 %
 %
-%               
+%
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Semantic Faithfulness Measure}\label{sec:Semantics}
+
 %
 %Conservatism is considered an important trait for a corrector, reflected for example
 %in the selection of $F_{0.5}$, which emphasizes precision over recall, as the
@@ -783,10 +880,13 @@ other problems that cannot be mended in the same way. Comparing to human perform
 %not even aware, not being corrected, but would not be so understanding
 %of corrections altering what he meant to say, in a way he perceives as wrong.
 %
-In this section we explore a reference-less semantic approach to overcoming the bias
-introduced by the multitude of different valid corrections for an LL sentence.
-The measure is based on the semantic similarity of the source and the proposed correction, measured as graph similarity between their semantic representations.
-Such a measure needs to be complemented with an
+
+In this section we propose a reference-less semantic measure that eschews the use
+of reference corrections, instead measuring the semantic faithfulness of the proposed
+correction to the source.
+Concretely, we propose to measure the semantic similarity of the source and the proposed correction,
+through the graph similarity of their semantic representations.
+Such a measure has to be complemented with an
 error detection procedure, as it only captures
 the faithfulness dimension, namely the extent to which
 the meaning of the source is preserved in the correction,
@@ -795,12 +895,14 @@ See \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary grammaticality measure based
 on automatic error detection.
 
-As a test case, we use UCCA to define the semantic structures \cite{abend2013universal}, motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
+As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
+motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
 
 We conduct two experiments that support the feasibility of our approach.
 First, we show that semantic annotation can be consistently applied to LL,
 through inter-annotator agreement (IAA) experiments.
 Second, we show that a perfect corrector scores high on this measure.
+
 %As semantic structures represent an abstraction over different realizations
 %of a similar meaning,  In fact, $M$ plays no role in this approach, as the measure
 %is defined not relative to a refernce but relative to the source sentence.
@@ -999,9 +1101,9 @@ with the node $u \in V_c$ that maximizes
 
 \begin{small}
 	  \begin{centering}
-		  \begin{equation*}
+		  \begin{myequation}
 		    w\left(v,u\right) = \frac{\vert A_l \cap \left(yield\left(u\right) \times yield\left(v\right)\right)\vert}{\vert yield\left(u\right) \vert}.
-		  \end{equation*}
+		  \end{myequation}
 	\end{centering}
 \end{small}
 %We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
@@ -1169,8 +1271,10 @@ who compared standard English sentences and their French translations.
     The bottom row presents the results reported by Sulem et al. (SAR15) on English-French
     translations, which are comparable to ours.}
 \end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Previous Work}\label{sec:prev_work}
+
 A number of evaluation measures have been proposed for GEC.
 An earlier version of $F$-score was used in the HOO shared task, which required that
 the proposed corrections include edits (markings of phrases that were changed 
@@ -1192,11 +1296,11 @@ apply string similarity measures relative to a small number of references.
 These measures thus address orthogonal gaps in GEC evavaluation from the ones presented here.
 
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016} address the
-insufficiency of RBMs and propose to combine
-RBMs for assessing faithfulness and
+insufficiency of RBMs and propose to combine RBMs for assessing faithfulness and
 grammatical error detection systems for measuring grammaticality.
 We complement their efforts by proposing a faithfulness measure based
 on semantic similarity.
+
 %
 %was shown to have some wanted attributes that the $M^2$ scorer lacks.
 %For example, it scales from -1 to 1 providing a way to know if a correction is an improvement over the
@@ -1213,19 +1317,25 @@ on semantic similarity.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
+
 This paper addresses the shortcomings of existing reference-based evaluation protocols in GEC.
-We demonstrated that state of the art GEC systems suffer from over-conservatism and
-hypothesize that this over-conservatism results from the use of measures that
+We present evidence that state of the art GEC systems suffer from over-conservatism and
+argue that this over-conservatism results from the use of measures that
 not only more harshly penalize over-correction over under-correction,
 but also often penalize correctors for proposing perfectly valid corrections.
-In fact, in many cases systems are more likely to be penalized for a valid correction than to receive credit for it, due to the small number of references taken into account.
+In fact, our results indicate that systems are often more likely to be penalized for a valid correction
+than to receive credit for it, due to the small number of references taken into account.
 
-We explored two approaches for addressing this caveat, one by
-increasing the number of references, and the other by employing a semantic similarity
-measure for estimating the semantic faithfulness of the correction to the source.
-We compute the scores a perfect corrector would receive with both approaches,
-which suggest that increasing the number of references and using semantic faithfulness
-measures are feasible solutions.
+Estimating the number and distribution of valid corrections for a sentence, we find
+that increasing the number of references is beneficial only up to a point, after which
+the heavy tail of the corrections distribution entails only minor improvement to the coverage
+with every increase of the value of $M$. 
+We propose a semantic measure for measuring the semantic faithfulness of the correction to the source.
+thereby avoiding the pitfalls of reference-based evaluation. We argue that using reference-less
+measures in conjunction with reference-based measures in the training and development of GEC
+systems will better address the challenge of over-conservatism.
+
+
 %
 % In many of the uses for correction, the user does know his grammar is not perfect and
 % would accept a change in grammar when needed.
@@ -1246,6 +1356,7 @@ measures are feasible solutions.
 %and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment
 %but also as a feature for correctors. 
 %
+
 Future work will assess the relative importance, ascribed by users of GEC systems,
 to different evaluation criteria of the output. We believe that in terms of conservatism,
 end users will be tolerant to (possibly necessary) changes in the sentence structure, i.e.,
@@ -1253,8 +1364,12 @@ violation of conservatism, but much less tolerant to changes in the sentence's m
 i.e., violation of faithfulness. A better understanding of how these factors interact
 may lead to improved protocols of semantic evaluation, that will alleviate the requirement
 for a high number of references.
+
+
 \bibliographystyle{acl2012}
 \bibliography{propose}
+
+
 \com{
 \appendix
 \section{Annotated paragraphs}
