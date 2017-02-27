@@ -56,7 +56,6 @@
 
 \begin{document}
 
-
 \title{Conservatism and Over-conservatism in Grammatical Error Correction}
 %\author{
 %  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
@@ -220,8 +219,7 @@ We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_s$ is the probability a human annotator would correct $x$ as $y$.
 
-Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_N$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences and {\color{red}denote $\mathcal{D}_{x_i}\coloneqq \mathcal{D}_{i}$.
-\com{For each $x_i$, denote with $\mathcal{D}_{i}$ its distribution of corrections}}.
+Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_N$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences and denote $\mathcal{D}_{x_i}\coloneqq \mathcal{D}_{i}$.
 Each $x_i$ is paired with $M$ corrections $Y = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\}$,
 which are independently sampled from $\mathcal{D}_{i}$.\footnote{Our analysis assumes $M$
 	is fixed across source sentences. Generalizing the analysis to sentence-dependent $M$
@@ -360,8 +358,7 @@ from them being developed to optimize RBMs that suffer from low coverage.
 We begin with a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}),
 and continue with an empirical assessment of the distribution of corrections for a given sentence (\S \ref{subsec:corrections_distribution}),
 and the effect of $M$ on commonly used RBMs (\S \ref{subsec:Assessment-values}).
-We discuss the implication of our results in \S \ref{subsec:mult_discussion}, concluding that reference-based
-evaluation may only partially address over-conservatism.
+We discuss the implication of our results, concluding that RBMs may only partially address over-conservatism(\S \ref{subsec:mult_discussion}).
 
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 
@@ -370,36 +367,32 @@ We abstract away from the details of the training procedure, and assume that cor
 
 Assume the corrector is faced with a phrase which it predicts to be ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability that the model is able to predict
-a valid correction for this phrase (given that it correctly identified it as erroneous).
+a valid correction for this phrase (including correctly identifying it as erroneous).
 Finally, assume that the corrector is evaluated
 against $M$ references, and that $p_{coverage}$ is the coverage of the phrase by $M$ references,
 namely the probability that
-a valid correction for it will be found among $M$ randomly sampled references.\lc{we define it twice, should we delete it from the notations?}
+a valid correction for it will be found among $M$ randomly sampled references.
 
 We will now assume that the corrector may either choose not to correct the phrase,
-or choose to correct it with the correction it finds the most likely.\lc{not sure I understand, what other options are there? or could less likely be more probable to be covered?} If it selected not to correct the sentence, its probability of being rewarded (i.e., producing
-an output in the reference set $Y$) is $(1-p_{correct})$\lc{maybe I don't understand, didn't you meant $(1-p_{detect})$?}. Otherwise, its probability
-of being rewarded is $p_{detect} \cdot p_{correct} \cdot p_{coverage}$.
+or choose to correct it with the correction it finds the most likely. If it selected not to correct the sentence, its probability of being rewarded (i.e., producing
+an output in the reference set $Y$) is $(1-p_{detect})$. Otherwise, its probability
+of being rewarded is $p_{correct} \cdot p_{coverage}$.
 In cases where
 
 \begin{small}
 \begin{myequation}
   \label{eq:reward}
-  p_{detect} \cdot p_{correct} \cdot p_{coverage} \cdot R - (1-p_{correct}) \cdot P < 0
+  p_{correct} \cdot p_{coverage} < 1-p_{detect} 
 \end{myequation}
 \end{small}
 
-a corrector is disincentivized from predicting a correction.
+a corrector is disincentivize predicting a correction.
 We expect Condition \ref{eq:reward} to frequently hold in cases that
 require non-trivial changes, which are characterized both by low $p_{coverage}$ (as non-trivial
 changes can often be made in numerous ways), and by lower expected performance by the corrector.
 
-Moreover, when using asymmetric measures, that penalize invalidly correcting a sentence more harshly than
-not correcting an ungrammatical sentence \lc{(i.e., $P > R$) This paragraph is true without the P>R that I deleted. But is it enough without the formulation? This claim is far from trivial. In the current formulation it does not relate only to $P>R$ but also to added penalties for the possibility of correcting wrongly(in addition to the chance that it loses a bonus for wrong detection)}, condition \ref{eq:reward} is even more
-likely to hold. An example of such measure is the commonly used $F_{0.5}$.
-%Asymmetric measures, such as $F_{0.5}$, are the most common evaluation
-%measures used in GEC today.
-
+Moreover, asymmetric measures (e.g. $F_{0.5}$) further penalize invalidly correcting more harshly than not correcting an ungrammatical sentence. Denoting that penalty $P$, $\left(1-p_{correct}p_{coverage})\right)P$
+ is subtracted from the left-hand side of Condition \ref{eq:reward}, making it much more likely to hold.
 \subsection{Data}
 
 Our analysis assumes that we have a reliable estimate for the distribution of corrections
@@ -480,7 +473,7 @@ It is also closely related to the 0-1 loss function commonly used
 for training statistical correctors \cite{chodorow2012problems,rozovskaya2013joint}. 
 
 Formally, given test sentences $X=\{x_1,\ldots,x_N\}$,
-their references $Y_1,\ldots,Y_N$, and proposed corrections $\{C(x_1),...,C(x_N)\}$,
+their references $Y_1,\ldots,Y_N$, and a corrector $C$,
 we define $C$'s accuracy to be
 
 \begin{small}
@@ -495,9 +488,9 @@ a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
  \begin{small}
    \centering
-   \begin{myequation}
+   \begin{myequation*}
      TrueAcc\left(C\right) = P_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right).
-   \end{myequation}
+   \end{myequation*}
  \end{small}
 %
 %We estimate $C$s quality by sampling a set of source sentences
@@ -600,7 +593,7 @@ Figure \ref{fig:accuracy_vals} presents the expected accuracy values for our per
 corrector (i.e., 1-$\hat{b}_M$) for different values of $M$. 
 Results show that even for values of $M$ which are much larger than those considered in the GEC literature (e.g., $M=20$),
 the expected accuracy is only of about 0.5. As $M$ increases the contribution of each additional corrections
-  gets smaller to the point it contributes little to the accuracy (the slope is about ... around $M=20$)\oa{fill in}.
+  gets smaller to the point it contributes little to the accuracy (the slope is about 0.004 around $M=20$).
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive
 to the identity of the changed words and not to what they were changed to. 
@@ -774,7 +767,7 @@ is not necessarily an upper bound, as an over-conservative corrector may surpass
 \com{
 \subsection{Discussion}
 {\color{red}\label{subsec:low_coverage_over_conservatism}
-	\lc{in the introduction the order is in reverse, we first discuss and then we show this is indeed the case, is that a problem? It somehow seems more structured this way, after experiments and more fluent from a birds eye view to first reason why we check it and the say it is true.}
+	\lc{in the introduction the order is in reverse, we first discuss and then we show this is indeed the case, is that a problem? It somehow seems more structured this way, after experiments and more fluent from a birds eye view to first reason why we check it anhe say it is true.}d t
 	 The common practice of using one or two references in GEC evaluation yields a substantial under-estimation of system's performance using $F$-score \cite{bryant2015far} or other RBMs (\S\ref{sec:increase-reference}).
 	 Theoretically this under estimation could lead to over-conservatism. In the case of detection, the reason is straightforward. If for a given type of error $t$ there is less than 50\% agreement in the gold standard about whether this should be detected as an error or not. Than a perfect corrector will not detect $t$ errors.
 	 
@@ -867,10 +860,9 @@ correction to the source.
 Concretely, we propose to measure the semantic similarity of the source and the proposed correction,
 through the graph similarity of their semantic representations.
 Such a measure has to be complemented with an
-error detection procedure, as it only captures
-the faithfulness dimension, namely the extent to which
+error detection procedure, as it only captures faithfulness, the extent to which
 the meaning of the source is preserved in the correction,
-and not the correction's grammaticality.
+and not its grammaticality.
 See \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary grammaticality measure based
 on automatic error detection.
@@ -968,7 +960,7 @@ the one intended. We are not aware of any previous attempts to semantically
 annotate LL text.
 
 \paragraph{UCCA.}\label{sec:ucca}
-UCCA is a a semantic annotation scheme that builds on
+UCCA is a semantic annotation scheme that builds on
 typological and cognitive linguistic theories.
 The scheme's aims are to provide a coarse-grained, cross-linguistically
 applicable representation.
