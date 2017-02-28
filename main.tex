@@ -272,7 +272,7 @@ as most of the words are kept unchanged, deleted fully, added, or changed slight
 Following word alignment, we define the {\sc WordChange} measure
 as the number of unaligned words and aligned words that were changed in any way.
 
-Second, we quantify word \emph{order} differences by computing
+Second, we quantify word \emph{order} differences using
 Spearman's $\rho$ between the order of the words in the source sentence,
 and the order of their corresponding words in the correction according to the word alignment.
 $\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exactly match. We report the average $\rho$ over all source sentences pairs. 
@@ -336,11 +336,11 @@ Third, we report how many source sentences were split and how many concatenated 
 \paragraph{Results.}
 Figure \ref{fig:over-conservatism} presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
-Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, in the reference has 44 sentences with 5 words corrections, where the most sentences with 5 word corrections by any corrector is 11.
+Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, the reference has 44 sentences with 5 word changes, where the most sentences with 5 word changes by any corrector is 11.
 
-For completeness, we also measured the prevalence of changes in
+For completeness, we measured the prevalence of changes in
 another corpus, the TreeBank of Learner English \cite{yannakoudakis2011new},
-and obtain  similar results to those obtained on NUCLE.
+and the results were similar to those obtained on NUCLE.
 %While $89.6\%$ of NUCLE sentences need corrections,
 %The prevalence of FCE consists only of ungrammatical sentences.
 %As expected, FCE is a bit less conservative than NUCLE by our measures.
@@ -479,7 +479,7 @@ their references $Y_1,\ldots,Y_N$, and a corrector $C$,
 we define $C$'s accuracy to be
 
 \begin{small}
-\vspace{-0.15cm}
+\vspace{-0.2cm}
   \centering
   \begin{myequation}\label{eq:acc_def}
     Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^N \mathds{1}_{C(x_i) \in Y_i}.
@@ -528,6 +528,7 @@ Formally, we assume that, if $C(x) \in Correct_x$ then $C(x) \sim \mathcal{D}_x$
 Hence the $b_M$ (Equation \ref{eq:bias}) can be re-written as
 
 \begin{small}
+	\vspace{-0.2cm}
 \begin{myequation*}
   \centering
   P(C(x) \in Correct_x) \cdot (1 - P_{Y \sim \mathcal{D}_i^M,y\sim \mathcal{D}_x}(y \in Y)).
@@ -660,7 +661,7 @@ and are thus important to include for obtaining comparable results.
 The bootstrapping procedure is carried out by the
 accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
 We also report confidence intervals ($p=.95$), computed using the same procedure.\footnote{We
-  use the standard Python scikits.bootstrap implementation of this method.}
+  use Python scikits.bootstrap implementation.}
 %
 %For each sentence which had at least one error according to the NUCLE gold standard
 %we sample $M$ sentences uniformly from the
@@ -1051,9 +1052,7 @@ We note that the measure collapses to the common parsing $F$-score if $G_1$ and 
 
 \paragraph{Semantic Faithfulness Measure.} Computing a faithfulness
 measure is slightly more involved, as the source sentence graph $G_s$ and its
-correction $G_c$ do not share the same set of leaves.\footnote{Graph kernels are unsuitable
-  as a similarity measure between UCCA 
-  DAGs due to their small \cite{kashima2003marginalized}.} 
+correction $G_c$ do not share the same set of leaves.
 
 %Giving a more accurate
 %measure than the upper bound suggested by \cite{sulem2015conceptual} for
@@ -1087,11 +1086,11 @@ We now extend $A_l$ to define the node alignment $A$, aligning each non-leaf $v 
 with the node $u \in V_c$ that maximizes
 
 \begin{small}
-	  \begin{centering}
-		  \begin{myequation*}
-		    w\left(v,u\right) = \frac{\vert A_l \cap \left(yield\left(u\right) \times yield\left(v\right)\right)\vert}{\vert yield\left(u\right) \vert}.
-		  \end{myequation*}
-	\end{centering}
+	\vspace{-0.2cm}
+ \begin{myequation*}
+  w\left(v,u\right) = \frac{\vert A_l \cap \left(yield\left(u\right) \times yield\left(v\right)\right)\vert}{\vert yield\left(u\right) \vert}.
+ \end{myequation*}
+ \vspace{-0.2cm}
 \end{small}
 
 %We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
@@ -1197,7 +1196,7 @@ we also report the IAA on source sentences, computed using {\sc UCCASim}.
 
 Our results indicate that a perfect corrector obtains a score comparable
 to the IAA, which indicates that {\sc UCCASim} is indeed
-insensitive to the surface divergence between a source sentence and its valid correction.
+insensitive to the surface divergence between a source sentence and its valid corrections.
 However, more work is required to establish whether the converse holds, namely
 that the measure is sensitive enough
 to unfaithfulness of a proposed correction.
@@ -1223,7 +1222,7 @@ Finally, the right-hand side of Table \ref{tab:Distances} presents {\sc DistSim}
 between the source and reference sentences.
 Our results are similar to the ones obtained by \newcite{sulem2015conceptual},
 who compared standard English sentences and their French translations.
-\begin{table}[h!]
+\begin{table}
 	\vspace{-0.5cm}
   \small
   \centering
@@ -1247,15 +1246,14 @@ who compared standard English sentences and their French translations.
     \hline
   \end{tabular}
   \caption{\label{tab:Distances}
-    The faithfulness of a perfect corrector. The left-hand side presents results with {\sc UCCASim}
+    The faithfulness of a perfect corrector. The left-hand side presents {\sc UCCASim}
     where the alignment is computed from the source to the reference (s$\rightarrow$r), the opposite direction
     (r$\rightarrow$s), and their average (Avg).
     %The direction of the alignment evidentally has little impact on the results.
-    The right-hand side presents {\sc DistSim} for the UCCA categories Participants and Adverbials, considered
-    together (A+D), and for Scene units (Scene), as reported by \newcite{sulem2015conceptual}.
-    The rows show values when the source and reference are annotated by the same annotator
-    or by different ones. As a point of reference, we report IAA computed using {\sc UCCASim} (IAA row).
-    Results show that the faithfulness of a perfect corrector is comparable with the IAA.
+    The right-hand side presents {\sc DistSim} for the UCCA categories Participants and Adverbials
+    together (A+D), and Scene (Scene), as reported by \newcite{sulem2015conceptual}.
+    The rows indicate whether the same annotator annotated the source and reference or not. As a baseline, we report IAA computed using {\sc UCCASim} (IAA row).
+    Results show that the perfect corrector's faithfulness is comparable with IAA.
     The bottom row presents the results reported by Sulem et al. (SAR15) on English-French
     translations, which are comparable to ours.}
 \vspace{-0.6cm}
@@ -1278,7 +1276,7 @@ who compared standard English sentences and their French translations.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 
-This paper addresses the shortcomings of existing reference-based evaluation protocols in GEC.
+This paper addresses the shortcomings of existing RBMs in GEC.
 We present evidence that state of the art GEC systems suffer from over-conservatism and
 argue that this over-conservatism results from the use of measures that
 not only more harshly penalize over-correction over under-correction,
@@ -1286,11 +1284,11 @@ but also often penalize correctors for proposing perfectly valid corrections.
 In fact, our results indicate that systems are often more likely to be penalized for a valid correction
 than to receive credit for it, due to the small number of references taken into account.
 
-Estimating the number and distribution of valid corrections for a sentence, we find
+Estimating the distribution of valid corrections for a sentence, we find
 that increasing the number of references is beneficial only up to a point, after which
 the heavy tail of the corrections distribution entails only minor improvement to the coverage
-with every increase of the value of $M$. 
-We propose a semantic measure for measuring the semantic faithfulness of the correction to the source.
+with every increase of $M$. 
+We propose a measure for the semantic faithfulness of the correction to the source.
 thereby avoiding the pitfalls of reference-based evaluation. We argue that using reference-less
 measures in conjunction with reference-based measures in the training and development of GEC
 systems will better address the challenge of over-conservatism.
