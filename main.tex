@@ -177,10 +177,10 @@ the incurred bias, as both RBMs approach saturation for $M$ values of 10--20,
 indicating that a prohibitively large $M$ may be required for reliable estimation.
 
 Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$
-on the $F$-score RBM, the most commonly used measure for GEC. Their work focused on
+on $F$-score, the most commonly used measure for GEC. Their work focused on
 obtaining a more reliable estimate of correctors' performance, and proposed to do so
 by normalizing corrector's estimated performance with the performance of a human corrector. However, while such normalization may yield more realistic performance estimates,
-it has no effect on the training and tuning of correctors.\oa{do we say what we do more?}
+it has no effect on the training and tuning of correctors. {\color{red}Moreover, we show that under-estimation is an inherent problem to RBMs in general by analyzing two types of accuracy measures.}
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (\S \ref{sec:Semantics}).
@@ -333,10 +333,11 @@ Third, we report how many source sentences were split and how many concatenated 
     in some cases an order of magnitude more.
   }
 \end{figure}
+\vspace{-.2cm}
 \paragraph{Results.}
 Figure \ref{fig:over-conservatism} presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
-Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, the reference has 44 sentences with 5 word changes, where the most sentences with 5 word changes by any corrector is 11.\oa{this is not an order of magnitude}
+Results show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, the reference has 36 sentences with 6 word changes, where the most sentences with 6 word changes by any corrector is 5.
 
 For completeness, we measured the prevalence of changes in
 another corpus, the TreeBank of Learner English \cite{yannakoudakis2011new},
@@ -347,6 +348,7 @@ and the results were similar to those obtained on NUCLE.
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-.1cm}
 \section{Multi-Reference Measures}\label{sec:increase-reference}
 %
 In this section we argue that the observed over-conservatism of correctors likely stems
@@ -356,6 +358,7 @@ and continue with an empirical assessment of the distribution of corrections for
 and the effect of $M$ on commonly used RBMs (\S \ref{subsec:Assessment-values}).
 We discuss the implications of our results, concluding that RBMs may only partially address over-conservatism (\S \ref{subsec:mult_discussion}).
 %
+\vspace{-.2cm}
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 %
 The relation between coverage and over-conservatism requires some explanation.
@@ -380,6 +383,7 @@ In cases where
   \label{eq:reward}
   p_{correct} \cdot p_{coverage} < 1-p_{detect} 
 \end{myequation}
+\vspace{-.1cm}
 \end{small}
 
 a corrector is disincentivized from altering the phrase.
@@ -392,17 +396,15 @@ harshly than not correcting an ungrammatical sentence.
 In these cases, Condition \ref{eq:reward} should be rephrased as
 
 \begin{small}
+	\vspace{-.1cm}
   \begin{myequation*}
     p_{correct} \cdot p_{coverage} - \left(1-p_{correct}p_{coverage}\right) \alpha < 1-p_{detect} 
   \end{myequation*}
+  \vspace{-.1cm}
 \end{small}
 
-where $\alpha$ is ....
-%the ratio between the penalty for 
-%reward for validly correcting an error and the penalty
-%for and $R$ the reward for valid ones
-%and the re  Denoting that penalty  the success reward, 
-The condition is more likely to hold in these cases.\oa{fix this}
+where $\alpha$ is the ratio between penalty for introducing a wrong correction and the reward. 
+The condition is much more likely to hold in these cases.
 
  \subsection{Data}
 %
