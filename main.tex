@@ -1,4 +1,4 @@
-\documentclass[letter,11pt]{article}
+\documentclass[letterpaper, 11pt]{article}
 %\usepackage[round]{natbib}
 
 \usepackage{mathtools}
@@ -180,7 +180,7 @@ Our findings echo the results of \newcite{bryant2015far}, who study the effect o
 on $F$-score, the most commonly used measure for GEC. Their work focused on
 obtaining a more reliable estimate of correctors' performance, and proposed to do so
 by normalizing corrector's estimated performance with the performance of a human corrector. However, while such normalization may yield more realistic performance estimates,
-it has no effect on the training and tuning of correctors. {\color{red}Moreover, we show that under-estimation is an inherent problem to RBMs in general by analyzing two types of accuracy measures.}
+it has no effect on the training and tuning of correctors. 
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (\S \ref{sec:Semantics}).
@@ -238,14 +238,13 @@ which is the de facto standard in GEC.
 The corpus contains 1414 essays in LL, each of about 500 words.
 
 We evaluate all participating systems in the CoNLL 2014 shared task,
-in addition to one of the best performing system on this dataset \cite{rozovskaya2014building}.
+in addition to two of the best performing system on this dataset.
 The particiapting systems and their abbreviations are: Adam Mickiewicz University (AMU),
 University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
 Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
 National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
 Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
-University of Franche Comt\'{e} (UFC), University of Macau (UMC),
-and the system by \newcite[RoRo]{rozovskaya2016grammatical}.
+University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[char]{xie2016neural}.
 All are trained and tested on the NUCLE corpus.
 
 We compare the prevalence of changes made to the source by the correctors,
@@ -403,7 +402,7 @@ In these cases, Condition \ref{eq:reward} should be rephrased as
   \vspace{-.1cm}
 \end{small}
 
-where $\alpha$ is the ratio between penalty for introducing a wrong correction and the reward. 
+where $\alpha$ is the ratio between penalty for introducing a wrong correction and the reward for a valid correction. 
 The condition is much more likely to hold in these cases.
 
  \subsection{Data}
@@ -660,8 +659,7 @@ As with accuracy,
 in order to avoid confounding our results with system-specific biases,
 we assume the evaluated corrector is perfect and samples its corrections from the human distribution of corrections $\mathcal{D}_x$.
 This experiment is very similar to that of \newcite{bryant2015far},
-who also compared the $F$-score of a human correction against an increasing
-number of references.
+who also compared the $F$-score of a human correction against an increasing number of references, although they exclusively addressed $F$-score and did not attempt to estimate the distribution of correction as we do here.
 
 Concretely, given a value for $M$ and for $N$, we uniformly sample from our experimental
 corpus source sentences $x_1,...,x_N$, and $M$ corrections for each $Y_1,...,Y_N$ (with replacement).
