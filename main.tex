@@ -153,7 +153,7 @@ annotators are instructed to be conservative in their corrections
 (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
 There were different attempts to formally capture this precision/recall asymmetry such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{dahlmeier2012better} and the choices of weights in I-measure \cite{felice2015towards}.
 
-However, penalizing over-correction more harshly than under-correction
+However, in development and training penalizing over-correction more harshly than under-correction
 may lead to reluctance of correctors to
 make any changes (henceforth, {\it over-conservatism}).
 Using one or two reference corrections, a common practice in GEC,
@@ -404,6 +404,17 @@ In these cases, Condition \ref{eq:reward} should be rephrased as
 
 where $\alpha$ is the ratio between penalty for introducing a wrong correction and the reward for a valid correction. 
 The condition is much more likely to hold in these cases.
+
+To check this empirically we tested whether more coverage, as expressed by more references results in less conservatism.
+We used \newcite{rozovskaya2016grammatical} 100 best list over CONLL2014 test and chose the output maximizing micro-$F_0.5$ for $M=1,\ldots12$ randomly sampled references. We sampled from \newcite{bryant2015far} together with NUCLE references.
+The results show a consistent decrease in conservatism in word changes with the increase in coverage and no significant change in word order, clearly, as we only rerank sentences, sentence conservatism was not changed.
+\begin{figure}
+	\vspace{-1em}
+	\includegraphics[width=8cm]{words_differences_hist_reranking}
+	\caption{word changes with oracle reranking over different number of references.
+	}
+	\vspace{-0.5cm}
+\end{figure}
 
  \subsection{Data}
 %
