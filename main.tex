@@ -405,13 +405,13 @@ In these cases, Condition \ref{eq:reward} should be rephrased as
 where $\alpha$ is the ratio between penalty for introducing a wrong correction and the reward for a valid correction. 
 The condition is much more likely to hold in these cases.
 
-To check this empirically we tested whether more coverage, as expressed by more references results in less conservatism.
-We used \newcite{rozovskaya2016grammatical} 100 best list over CONLL2014 test and chose the output maximizing micro-$F_0.5$ for $M=1,\ldots12$ randomly sampled references. We sampled from \newcite{bryant2015far} together with NUCLE references.
-The results show a consistent decrease in conservatism in word changes with the increase in coverage and no significant change in word order, clearly, as we only rerank sentences, sentence conservatism was not changed.
+This analysis shows that low coverage is a possible cause for over-conservatism. Ideally, in order to validate this empirically, we should re-train correctors using multiple references, and re-examine their conservatism. However, corpora annotated with more than one correction are scarce. 
+As a proof of concept, we simulate a re-ranking procedure over the corpora of \newcite{bryant2015far}, which provide additional 10 references for each of sentence in the NUCLE test set. In order to abstract away from implementation details and from artefacts that may result from the small dataset available, we explore an oracle re-ranking setting, where the correction with the best Micro F-score taken from the 100-best list of the RoRo state-of-the-art corrector (see Section 2) is selected. The F-score is computed with varying numbers of references (M).
+Our results show a consistent decrease in conservatism in word changes with the increase in coverage and no significant change in word order, clearly, as we only rerank sentences, sentence conservatism was not changed.
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=8cm]{words_differences_hist_reranking}
-	\caption{word changes with oracle reranking over different number of references.
+	\caption{Amount of sentences changed (y-axis) by the amount of words changed per sentence (x-axis) after oracle reranking over different M values (column colors). 
 	}
 	\vspace{-0.5cm}
 \end{figure}
