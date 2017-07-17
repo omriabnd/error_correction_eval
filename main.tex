@@ -1317,24 +1317,46 @@ The results, as shown in table \ref{tab:parser}, shows a high agreement between 
 		The results show that the perfect corrector's faithfulness is captured quite well with the automatic parsing, around the parser reported accuracy and standard English.}
 \end{table}
 \subsection{Sensitivity}
-\lc{rewrite, explain the experiment, cite sakaguchi and JFLEG, add examples}
-To wrap up the argument we show that {\sc UCCASim} is not only insensitive to corrections (\S \ref{tab:Distances}) but also sensitive to meaning changing corrections. First, Theoretically, a semantic measure has certain guidelines, some changes have effect on the structure.
+\begin{table*}[]
+	\centering	
+	\begin{tabular}{p{0.1\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}}
+		
+		&  \begin{center}
+			Source
+		\end{center}                                                                       & \begin{center}
+		Output
+	\end{center}                                                              & \begin{center}
+			Reference
+		\end{center}                                                                 \\\hline
+		\begin{center}
+			Sentence
+		\end{center} & \begin{center}
+		the good student must know how to understand and work hard to get the iede .
+	\end{center} & \begin{center}
+	The good student must know how to understand and work hard to get on .
+\end{center} & \begin{center}
+A good student must be able to understand and work hard to get the idea .
+\end{center} \\\hline
+		\begin{center}
+			UCCASim
+		\end{center}    &  \begin{center}
+			1
+		\end{center}                                                                            & \begin{center}
+		0.33
+	\end{center}                                                                   & \begin{center}
+	0.71
+\end{center}                                                                     
+	\end{tabular}
+	\caption{An example to a source\label{ex:sensitive}}
+\end{table*}
+To wrap up the argument we show that {\sc UCCASim} is not only insensitive to corrections (Table \ref{tab:Distances}) but also sensitive to meaning changing corrections. First, Theoretically, a semantic measure has certain guidelines, some changes have an effect over the structure.
 What affects the structure, of course, depends on the scope of distinctions covered by the semantic annotation.
 In UCCA's case, it is predicate-argument structures, the inter-relations between them,
 as well as the semantic heads of complex arguments. These relations are not only linguistically justified, but they also include the main relations considered today in NLP as capturing the broad semantics of a sentence. Nonetheless, we show in the following experiment that {\sc UCCASim} is indeed changing in other cases.
 
 To show {\sc UCCASim} is sensitive we tested 5 half-trained correctors gathered for \newcite{sakaguchi2017grammatical}. {\sc UCCASim} was calculated automatically for each system's output on JFLEG corpus \cite{napoles2017jfleg}. We expected to have low results as indeed these outputs include major changes, sometimes deleting full phrases from the output or changing every other word in the sentence. As a sanity check we ran {\sc UCCASim} over 4 references. The references had {\sc UCCASim} scores of 0.72-0.78, the corrector predicted (by GLUE score) to be worse got 0.19 and the rest 0.32-0.39. Showing that indeed bad corrections, that change the meaning as represented by UCCA is penalized. In the example \ref{ex:sensitive} one could see the trend an also note that even though the chosen reference changes more words, getting the verb structure wrong is enough for an overall lower score for the corrector's sentence.
 
-\begin{table}[]
-	\centering
-	\caption{My caption}
-	\label{my-label}
-	\begin{tabular}{llll}
-		& source                                                                       & corrector                                                              & reference                                                                 \\
-		sentence & the good student must know how to understand and work hard to get the iede . & The good student must know how to understand and work hard to get on . & A good student must be able to understand and work hard to get the idea . \\
-		score    & 1                                                                            & 0.33                                                                   & 0.71                                                                     
-	\end{tabular}
-\end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %was shown to have some wanted attributes that the $M^2$ scorer lacks.
