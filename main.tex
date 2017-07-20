@@ -460,9 +460,9 @@ We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
 estimates a multinomial distribution,
 in which the individual values do not matter, only the distribution of probabilities
-across values. {\sc UnseenEst} aims to minimize the ``earthmover distance''\oa{explain what this is or give a reference}
+across values. {\sc UnseenEst} aims to minimize the ``earthmover distance'', 
 between the estimated histogram and the histogram of the distribution and has obtained excellent empirical
-results in simulations.\footnote{An implementation of UnseenEst can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}} 
+results in simulations. Intuitively, if histograms are piles of dirt, minimizing the amount of dirt moved times the distance by which it was moved.\footnote{An implementation of UnseenEst can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}} 
 {\sc UnseenEst} was originally developed for assessing how many
 variants a gene might have, including undiscovered ones,
 and their relative frequencies.
@@ -951,7 +951,7 @@ for a proposal of a complementary measure based
 on automatic error detection.
 
 A similar approach was also taken in the field of machine translation, after showing multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}. Several ways to capture semantics (adequacy) to overcome this were proposed \cite{snover2009fluency}.
-More specifically, reference-less machine translation evaluation methods were proposed and shown at the time to be at least as reliable as the reference-based ones \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine,lo2011meant}. Perhaps most similar is the work of \newcite{banchs2015adequacy},
+More specifically, reference-less machine translation evaluation methods were proposed and shown at the time to be reliable measures \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine,lo2011meant}. Perhaps most similar is the work of \newcite{banchs2015adequacy},
 combining semantic and grammatical measures. Despite their similarity, all those methods did not use current semantic annotation schemes or had other specific reasons not to be used in our case.\oa{This is too vague; were they shown to be at least as reliable? why were they not adopted then?}
 
 As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
