@@ -188,7 +188,7 @@ a correction faithfully represents the semantics of the source, by measuring the
 This approach can be combined with a reference-less measure of grammaticality, based on automatic error detection, as
 proposed by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 Our experiments support the feasibility of the proposed approach,
-by showing that (1) semantic structural annotation can be consistently applied to LL, and (2) that the proposed measure is less prone to unduly penalize valid corrections.\oa{can we now say something stronger?}
+by showing that (1) semantic structural annotation can be consistently and automatically applied to LL, (2) that the proposed measure is less prone to unduly penalize valid corrections and (3) that the measure penalizes corrections that change the semantic structure significantly.
 
 %
 %
@@ -240,26 +240,19 @@ which is the de facto standard in GEC.
 The corpus contains 1414 essays in LL and 50 test essays, each of about 500 words.
 
 We evaluate all participating systems in the CoNLL 2014 shared task,
-in addition to two of the best performing systems on this dataset.
+in addition to three of the best performing systems on this dataset, a hybrid corrector, a phrase based machine translator and a neural network based corrector.
 The particiapting systems and their abbreviations are: Adam Mickiewicz University (AMU),
 University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
 Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
 National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
 Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
-University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[char]{xie2016neural}.
+University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[char]{xie2016neural}.
 All are trained and tested on the NUCLE corpus.
 
 We compare the prevalence of changes made to the source by the correctors,
 relative to their prevalence in the NUCLE reference.
 In order to focus on the more substantial changes, we exclude from our evaluation
-all non-alphanumeric characters, both within tokens or as tokens of their own.
-%
-%In order to have better evaluation of the real goal of corrections we also
-%compute all of the measures on ,
-%based on the Cambridge First Certificate in English
-%(FCE) \cite{yannakoudakis2011new},
-%a new large parallel corpus containing only ungrammatical sentences of learners
-%native of different languages.\oa{I didn't understand this sentence; how do we use this corpus?}
+
 
 \paragraph{Measures of Conservatism.}
 We consider three types of divergences between the source and the reference.
@@ -361,7 +354,7 @@ We discuss the implications of our results, concluding that RBMs may only partia
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 %
 The relation between coverage and over-conservatism requires some explanation.
-We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, \oamod{and assume for simplicity that training proceeds by iterating over the samples, as with the Perceptron algorithm.}
+We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, and assume for simplicity of the argument that training proceeds by iterating over the samples, as with the Perceptron algorithm.
 
 Assume the corrector is faced with a phrase which it predicts to be ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability it is able to predict
@@ -418,13 +411,13 @@ namely the NUCLE-test corpus, which has 12 references \cite{bryant2015far}. We u
 the common F-score as an evaluation measure. 
 
 We examine the conservativeness of the oracle reranker for different $M$ values, averaging
-over ???\oa{fill in} samples of $M$ references from the available set of $\mathcal{M}=12$.
+over 1312 samples of $M$ references from the available set of $\mathcal{M}=12$.
 Our results show a consistent decrease in conservatism in
 word changes with the increase in coverage (Figure \ref{fig:reranking_word_change}),
 and no significant change in word order,\footnote{As we only rerank individual sentences,
   there is clearly no change in the number of sentences split or concatenated.}
 indicating that conservatism is indeed related to the number of references available
-to the learner.\oa{do we need to add a discussion as to why this is not trivial?}
+to the learner. A priori, one might have thought the opposite would occur, more references would lead to more conservatism. Having more references would introduce, among others, more conservative references and as it is more likely correctors produce a correction similar to the source those ones will be chosen.
 
 %\com{Ideally, in order to validate this empirically, we should re-train correctors using multiple references, and re-examine their conservatism. However, corpora annotated with more than one correction are scarce. 
 %As a proof of concept, we simulate a re-ranking procedure over the corpora of \newcite{bryant2015far}, which provide additional 10 references for each of sentence in the NUCLE test set. In order to abstract away from implementation details and from artefacts that may result from the small dataset available, we explore an oracle re-ranking setting, where the correction with the best Micro $F$-score taken from the 100-best list of the RoRo state-of-the-art corrector (see \S 2) is selected. The $F$-score is computed with varying numbers of references ($M$).}
@@ -433,9 +426,7 @@ to the learner.\oa{do we need to add a discussion as to why this is not trivial?
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=8cm]{words_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with have a given number of words changes (x-axis), following oracle reranking with different M values (column colors). \oamod{why are the columns not centered around the relevant
-            $x$ value?}
-		\label{fig:reranking_word_change}
+	\caption{The amount of sentences (y-axis) with a given number of words changes (x-axis), following oracle reranking with different M values (column colors). 		\label{fig:reranking_word_change}
 	}
 	\vspace{-0.5cm}
 \end{figure}
@@ -465,7 +456,7 @@ We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
 estimates a multinomial distribution,
 in which the individual values do not matter, only the distribution of probabilities
-across values.%\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst}} 
+across values. {\sc UnseenEst} aims to minimize earthmover distance between the estimated histogram and the histogram of the distribution and was proven empirically and mathematically to be very exact. \footnote{ <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}{UnseenEst implementation}} 
 {\sc UnseenEst} was originally developed for assessing how many
 variants a gene might have, including undiscovered ones,
 and their relative frequencies.
@@ -818,8 +809,7 @@ is substantial. RBMs such as accuracy and $F$-score thus show diminishing return
 %a larger $M$ without acquiring more sentences and also annotating them.
 %Choosing how to balance is dependent on the goals of the one collecting data, and affects over
 %the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we bring supporting data and
-%leave the decision to the reader. We just point out that such balancing questions have been studied in
-%various fields such as genetics \cite{ionita2010optimal}.\oa{}
+%leave the decision to the reader. 
 
 Returning to condition (\ref{eq:reward}) (\S \ref{subsec:motivating_analysis}), we find that the coverage
 (which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals})
@@ -916,14 +906,7 @@ is not necessarily an upper bound, as an over-conservative corrector may surpass
 %Notably, not matter what are $r, pu$ when $p\left(x\in y\right)$ is small enough the perfect
 %corrector will choose \emph{not} to correct.
 %
-%
-%One would like to suggest that the outstanding correctors have learned to correct like the specific annotator they have seen in the train. But as noted they do not correct enough, so that explanation lacks. An alternative explanation for it is that our prediction was right. The correctors avoid correcting sentences which they predict not to be well covered in the gold standard, gaining from that significantly.
-%\lc{Supposedly why creating the gold standard texts and the edits is hard should come here. Not sure how important it is, well it is hard, but this is what we have chosen and I don't think of a specific criticism we should fend off by it.}
-%
-%In respect to the edits, we note that the score for $M=2$ is a bit lower than one would expect\oa{why should I expect this?}. \lc{funny that you ask, well you did ask me that in person afterwards didn't you? :D}
-%		
-%\com{This may result by the mechanical creation of edits. The different edits might give bias to the results\oa{but this is also true when evaluating real systems, no?}. Edit borders are not part of what correctors need to extract, in other words, it is an information that is not inherent to the task. Those edits are a disadvantage of the scoring system itself. It makes crowdsourcing much harder, and the edits are yet another thing that annotations often disagree upon(\cite{dahlmeier2012better}). It might be another reason that calls for use of another, more interpretable score.}
-%\lc{as you have writen, edits bring bias to evaluation generally not only in our case, and they are actually not a part of the task, should we include this discussion somehow? we do talk about evaluation as the main frame of this discussion, this sounds to me like an interesting and important note}
+	
 %To conclude the main discussion of this section, if the NLP community has agreed one correction is not enough\cite{tetreault2008native}
 %%we can now say 2 is no magic number either. On both measures we see a large improvement in coverage when enlarging $M$, suggesting that a more reasonable $M$ to choose would be somewhere around 7 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
 %Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
@@ -961,9 +944,9 @@ See \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary measure based
 on automatic error detection.
 
-A similar approach was also taken in the field of machine translation, after showing multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}. Several ways to capture semantics (adequacy) to overcome this were proposed \cite{snover2009fluency}.\oa{anything that would be relevant here?}
-More specifically, reference-less machine translation evaluation methods were proposed and shown at the time to be at least as reliable as the reference-based ones \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine}. Perhaps most similar is the work of \newcite{banchs2015adequacy},
-combining semantic and grammatical measures.\oa{what about the MEANT line of work?}
+A similar approach was also taken in the field of machine translation, after showing multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}. Several ways to capture semantics (adequacy) to overcome this were proposed \cite{snover2009fluency}.
+More specifically, reference-less machine translation evaluation methods were proposed and shown at the time to be at least as reliable as the reference-based ones \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine,lo2011meant}. Perhaps most similar is the work of \newcite{banchs2015adequacy},
+combining semantic and grammatical measures. Despite their similarity, all those methods did not use current semantic annotation schemes or had other specific reasons not to be used in our case.
 
 As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
 motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
@@ -1039,7 +1022,7 @@ LL resources annotate syntactic errors in different ways.
 \newcite{berzak2016universal} and \newcite{ragheb2012defining}
 annotate according to the syntax used
 by the learner, even if this use is not grammatical.
-Such annotation may be unreliable as a source of semantic information, as semantically similar sentences, formulated by different learners, may use considerably different structures. \newcite{nagataphrase} take the opposite approach, and try to be faithful to the syntax intended by the learner. However, such an approach faces difficulties due to the multitude of different syntactic structures that can be used to express a similar meaning.
+Such annotation may be unreliable as a source of semantic information, as semantically similar sentences, formulated by different learners, may use considerably different structures. \newcite{nagataphrase} take the opposite approach, and try to be faithful to the syntax intended by the learner, this is also the case in works on robustness of parsers assuming grammar should convey meaning and stay robust to errors \cite{bigert2005unsupervised,foster2004parsing}. However, such an approach faces difficulties due to the multitude of different syntactic structures that can be used to express a similar meaning. 
 
 %
 %Syntactic representation is very popular and useful in many NLP tasks 
@@ -1091,8 +1074,8 @@ passages, until a high enough agreement has been reached (a total of 6 hours of 
 Training passages are excluded from the evaluation.
 We use UCCA's annotation guidelines\footnote{\url{http://www.cs.huji.ac.il/~oabend/ucca.html}} without any adaptations.
 
-We experiment on ???\oa{fill in} tokens in 7 essays and their corrections, comprising ???\oa{fill in} tokens. 
-In order to measure IAA, we assigned 4 of these essays (??? tokens) to both annotators
+We experiment on 7 essays and their corrections, comprising each of about 500 words. 
+In order to measure IAA, we assigned 4 of these essays to both annotators
 and compute their agreement.
 In order to measure the faithfulness score for a perfect corrector, we annotate both the source
 and the corrected version for 6 essays, some of which were annotated by both annotators.
@@ -1175,12 +1158,6 @@ with the node $u \in V_c$ that maximizes
  \vspace{-0.1cm}
 \end{small}
 
-%We cast the problem of finding a node alignment as a maximum weighted bipartite matching problem between
-%the set of nodes $V_s$ and the set $V_c$, where the weight of an edge $(u,v) \in V_s \times V_c$ is
-%defined to be 
-%$A$ is defined to be the maximum weighted matching, excluding edges
-%with weight 0.\oa{why do we use many-to-1? {\bf this doesn't make sense because it favors
-%nodes up the tree. better to normalize}}
 We exclude from $A$ pairs $v,u$ such that $w(v,u)=0$.
 The resulting $F$-score measure, using the resulting $A$ is called UCCA Similarity ({\sc UCCASim}).
 As the resulting alignment may differ when aligning nodes from $V_c$ to $V_s$
@@ -1381,38 +1358,6 @@ These results also suggest that an improvement in parsing performance will furth
 
 \subsection{UCCASim's Sensitivity to Errors}
 
-\begin{table*}[]
-	\centering	
-	\begin{tabular}{p{0.1\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}}
-	  &  \begin{center}
-	       Source
-	     \end{center}                                                                       & \begin{center}
-	    Output
-          \end{center}                                                              & \begin{center}
-	    Reference
-	  \end{center}                                                                 \\\hline
-	  \begin{center}
-	    Sentence
-	  \end{center} & \begin{center}
-	    the good student must know how to understand and work hard to get the iede .
-	  \end{center} & \begin{center}
-	The good student must know how to understand and work hard to get on .
-\end{center} & \begin{center}
-A good student must be able to understand and work hard to get the idea .
-\end{center} \\\hline
-		\begin{center}
-			UCCASim
-		\end{center}    &  \begin{center}
-			1
-		\end{center}                                                                            & \begin{center}
-		0.33
-	\end{center}                                                                   & \begin{center}
-	0.71
-\end{center}                                                                     
-	\end{tabular}
-	\caption{An example to a source\label{ex:sensitive}}
-\end{table*}
-
 Our results have hitherto shown that UCCA is insensitive to the differences between a source sentence
 and its valid correction. This sub-section presents an evaluation of the sensitivity of UCCASim
 to proposed corrections, which diverge semantically from the source.
@@ -1427,15 +1372,55 @@ These distinctions are widely accepted in NLP and in the liguistic literature, a
 
 Seeking empirical validation to this claim, we present an experiment which shows that corrections
 of a fairly low quality, indeed receive a much lower UCCASim faithfulness score. Noting that as the
-systems we experiment on in \secref{sec:2} and \ref{sec:3} are over-conservative, they are unlikely
-to produce semantically unfaithful sentences, we insteead experiment on 5 partially trained
+systems we experiment on in \S\ref{sec:formal_conservatism} and \ref{sec:increase-reference} are over-conservative, they are unlikely
+to produce semantically unfaithful sentences, we instead experiment on 5 partially 
 trained correctors, provided by \newcite{sakaguchi2017grammatical}, on the
-JFLEG corpus \cite{napoles2017jfleg}. The training of these systems was halted after 1, 2, 3, 4 and 5\oa{is this
-  right?} iterations over the training data, which yielded correctors, which produced correctors correctors
-of increasingly better quality. 
+JFLEG corpus \cite{napoles2017jfleg}.
 
-\oa{important details missing in this paragraph: what is the number of samples in each setting, who computed the GLUE scores? also, no need to table 3, you can do it like in the HUME paper.}
-  {\sc UCCASim} was calculated automatically for each system's output on . We expected to have low results as indeed these outputs include major changes, sometimes deleting full phrases from the output or changing every other word in the sentence. As a sanity check we ran {\sc UCCASim} over 4 references. The references had {\sc UCCASim} scores of 0.72-0.78, the corrector predicted (by GLUE score) to be worse got 0.19 and the rest 0.32-0.39. Showing that indeed bad corrections, that change the meaning as represented by UCCA is penalized. In the example \ref{ex:sensitive} one could see the trend an also note that even though the chosen reference changes more words, getting the verb structure wrong is enough for an overall lower score for the corrector's sentence.
+  {\sc UCCASim} was calculated automatically for each system's output on 754 sentences. We expected to have low results as indeed these outputs include major changes, sometimes deleting full phrases from the output or changing every other word in the sentence, they also receive a low score by GLUE. As a sanity check we ran {\sc UCCASim} over 4 references. The references had {\sc UCCASim} scores of 0.72-0.78, the corrector predicted (by GLUE score) to be worse got 0.19 and the rest 0.32-0.39. Showing that bad corrections, that change the meaning as represented by UCCA, are penalized. 
+  \com{
+  \begin{table*}[]
+  	\centering	
+  	\begin{tabular}{p{0.1\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}}
+  		&  \begin{center}
+  			Source
+  		\end{center}                                                                       & \begin{center}
+  		Output
+  	\end{center}                                                              & \begin{center}
+  	Reference
+  \end{center}                                                                 \\\hline
+  \begin{center}
+  	Sentence
+  \end{center} & \begin{center}
+  the good student must know how to understand and work hard to get the iede .
+\end{center} & \begin{center}
+The good student must know how to understand and work hard to get on .
+\end{center} & \begin{center}
+A good student must be able to understand and work hard to get the idea .
+\end{center} \\\hline
+\begin{center}
+	UCCASim
+\end{center}    &  \begin{center}
+1
+\end{center}                                                                            & \begin{center}
+0.33
+\end{center}                                                                   & \begin{center}
+0.71
+\end{center}                                                                     
+\end{tabular}
+\caption{An example to a source\label{ex:sensitive}}
+\end{table*}
+}
+\begin{table}[]
+	\centering
+	\label{ex:sensitive}
+	\begin{tabular}{p{0.2\columnwidth}p{0.73\columnwidth}}
+		Source    & \small the good student must know how to understand and work hard to get the iede .\\
+		Reference & \small A good student must be able to understand and work hard to get the idea .\\
+		Corrector & \small The good student must know how to understand and work hard to get on .     
+	\end{tabular}
+\end{table}
+  In the example \ref{ex:sensitive} one could see the general trend, with the source getting a {\sc UCCASim} of 1 the reference 0.71 and the corrector 0.33. Moreover, even though the chosen reference changes more words, getting the verb structure wrong is enough for an overall lower score for the corrector's sentence.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
