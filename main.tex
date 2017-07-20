@@ -1091,8 +1091,8 @@ passages, until a high enough agreement has been reached (a total of 6 hours of 
 Training passages are excluded from the evaluation.
 We use UCCA's annotation guidelines\footnote{\url{http://www.cs.huji.ac.il/~oabend/ucca.html}} without any adaptations.
 
-We experiment on ???\oa{fill in} tokens in 7 essays and their corrections, comprising ???\oa{fill in} tokens. 
-In order to measure IAA, we assigned 4 of these essays (??? tokens) to both annotators
+We experiment on 7 essays and their corrections, comprising each of about 500 words. 
+In order to measure IAA, we assigned 4 of these essays to both annotators
 and compute their agreement.
 In order to measure the faithfulness score for a perfect corrector, we annotate both the source
 and the corrected version for 6 essays, some of which were annotated by both annotators.
@@ -1381,38 +1381,6 @@ These results also suggest that an improvement in parsing performance will furth
 
 \subsection{UCCASim's Sensitivity to Errors}
 
-\begin{table*}[]
-	\centering	
-	\begin{tabular}{p{0.1\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}}
-	  &  \begin{center}
-	       Source
-	     \end{center}                                                                       & \begin{center}
-	    Output
-          \end{center}                                                              & \begin{center}
-	    Reference
-	  \end{center}                                                                 \\\hline
-	  \begin{center}
-	    Sentence
-	  \end{center} & \begin{center}
-	    the good student must know how to understand and work hard to get the iede .
-	  \end{center} & \begin{center}
-	The good student must know how to understand and work hard to get on .
-\end{center} & \begin{center}
-A good student must be able to understand and work hard to get the idea .
-\end{center} \\\hline
-		\begin{center}
-			UCCASim
-		\end{center}    &  \begin{center}
-			1
-		\end{center}                                                                            & \begin{center}
-		0.33
-	\end{center}                                                                   & \begin{center}
-	0.71
-\end{center}                                                                     
-	\end{tabular}
-	\caption{An example to a source\label{ex:sensitive}}
-\end{table*}
-
 Our results have hitherto shown that UCCA is insensitive to the differences between a source sentence
 and its valid correction. This sub-section presents an evaluation of the sensitivity of UCCASim
 to proposed corrections, which diverge semantically from the source.
@@ -1427,15 +1395,57 @@ These distinctions are widely accepted in NLP and in the liguistic literature, a
 
 Seeking empirical validation to this claim, we present an experiment which shows that corrections
 of a fairly low quality, indeed receive a much lower UCCASim faithfulness score. Noting that as the
-systems we experiment on in \secref{sec:2} and \ref{sec:3} are over-conservative, they are unlikely
-to produce semantically unfaithful sentences, we insteead experiment on 5 partially trained
+systems we experiment on in \S\ref{sec:formal_conservatism} and \ref{sec:increase-reference} are over-conservative, they are unlikely
+to produce semantically unfaithful sentences, we instead experiment on 5 partially 
 trained correctors, provided by \newcite{sakaguchi2017grammatical}, on the
-JFLEG corpus \cite{napoles2017jfleg}. The training of these systems was halted after 1, 2, 3, 4 and 5\oa{is this
-  right?} iterations over the training data, which yielded correctors, which produced correctors correctors
-of increasingly better quality. 
+JFLEG corpus \cite{napoles2017jfleg}.
 
 \oa{important details missing in this paragraph: what is the number of samples in each setting, who computed the GLUE scores? also, no need to table 3, you can do it like in the HUME paper.}
-  {\sc UCCASim} was calculated automatically for each system's output on . We expected to have low results as indeed these outputs include major changes, sometimes deleting full phrases from the output or changing every other word in the sentence. As a sanity check we ran {\sc UCCASim} over 4 references. The references had {\sc UCCASim} scores of 0.72-0.78, the corrector predicted (by GLUE score) to be worse got 0.19 and the rest 0.32-0.39. Showing that indeed bad corrections, that change the meaning as represented by UCCA is penalized. In the example \ref{ex:sensitive} one could see the trend an also note that even though the chosen reference changes more words, getting the verb structure wrong is enough for an overall lower score for the corrector's sentence.
+  {\sc UCCASim} was calculated automatically for each system's output on 754 sentences. We expected to have low results as indeed these outputs include major changes, sometimes deleting full phrases from the output or changing every other word in the sentence, they also receive a low score by GLUE. As a sanity check we ran {\sc UCCASim} over 4 references. The references had {\sc UCCASim} scores of 0.72-0.78, the corrector predicted (by GLUE score) to be worse got 0.19 and the rest 0.32-0.39. Showing that bad corrections, that change the meaning as represented by UCCA, are penalized. 
+  \com{
+  \begin{table*}[]
+  	\centering	
+  	\begin{tabular}{p{0.1\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}|p{0.28\textwidth}}
+  		&  \begin{center}
+  			Source
+  		\end{center}                                                                       & \begin{center}
+  		Output
+  	\end{center}                                                              & \begin{center}
+  	Reference
+  \end{center}                                                                 \\\hline
+  \begin{center}
+  	Sentence
+  \end{center} & \begin{center}
+  the good student must know how to understand and work hard to get the iede .
+\end{center} & \begin{center}
+The good student must know how to understand and work hard to get on .
+\end{center} & \begin{center}
+A good student must be able to understand and work hard to get the idea .
+\end{center} \\\hline
+\begin{center}
+	UCCASim
+\end{center}    &  \begin{center}
+1
+\end{center}                                                                            & \begin{center}
+0.33
+\end{center}                                                                   & \begin{center}
+0.71
+\end{center}                                                                     
+\end{tabular}
+\caption{An example to a source\label{ex:sensitive}}
+\end{table*}
+}
+\begin{table}[]
+	\centering
+	\caption{My caption}
+	\label{my-label}
+	\begin{tabular}{p{0.2\columnwidth}p{0.73\columnwidth}}
+		Source    & \small the good student must know how to understand and work hard to get the iede .\\
+		Reference & \small A good student must be able to understand and work hard to get the idea .\\
+		Corrector & \small The good student must know how to understand and work hard to get on .     
+	\end{tabular}
+\end{table}
+  In the example \ref{ex:sensitive} one could see the general trend, with the source getting a {\sc UCCASim} of 1 the reference 0.71 and the corrector 0.33. Moreover, even though the chosen reference changes more words, getting the verb structure wrong is enough for an overall lower score for the corrector's sentence.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
