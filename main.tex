@@ -188,7 +188,7 @@ a correction faithfully represents the semantics of the source, by measuring the
 This approach can be combined with a reference-less measure of grammaticality, based on automatic error detection, as
 proposed by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 Our experiments support the feasibility of the proposed approach,
-by showing that (1) semantic structural annotation can be consistently applied to LL, and (2) that the proposed measure is less prone to unduly penalize valid corrections.\oa{can we now say something stronger?}
+by showing that (1) semantic structural annotation can be consistently and automatically applied to LL, (2) that the proposed measure is less prone to unduly penalize valid corrections and (3) that the measure penalizes corrections that change the semantic structure significantly.
 
 %
 %
@@ -240,7 +240,7 @@ which is the de facto standard in GEC.
 The corpus contains 1414 essays in LL and 50 test essays, each of about 500 words.
 
 We evaluate all participating systems in the CoNLL 2014 shared task,
-in addition to two of the best performing systems on this dataset.
+in addition to two of the best performing systems on this dataset, a hybrid corrector and a neural network based corrector.
 The particiapting systems and their abbreviations are: Adam Mickiewicz University (AMU),
 University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
 Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
@@ -361,7 +361,7 @@ We discuss the implications of our results, concluding that RBMs may only partia
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 %
 The relation between coverage and over-conservatism requires some explanation.
-We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, \oamod{and assume for simplicity that training proceeds by iterating over the samples, as with the Perceptron algorithm.}
+We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, and assume for simplicity of the argument that training proceeds by iterating over the samples, as with the Perceptron algorithm.
 
 Assume the corrector is faced with a phrase which it predicts to be ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability it is able to predict
@@ -418,13 +418,13 @@ namely the NUCLE-test corpus, which has 12 references \cite{bryant2015far}. We u
 the common F-score as an evaluation measure. 
 
 We examine the conservativeness of the oracle reranker for different $M$ values, averaging
-over ???\oa{fill in} samples of $M$ references from the available set of $\mathcal{M}=12$.
+over 1312 samples of $M$ references from the available set of $\mathcal{M}=12$.
 Our results show a consistent decrease in conservatism in
 word changes with the increase in coverage (Figure \ref{fig:reranking_word_change}),
 and no significant change in word order,\footnote{As we only rerank individual sentences,
   there is clearly no change in the number of sentences split or concatenated.}
 indicating that conservatism is indeed related to the number of references available
-to the learner.\oa{do we need to add a discussion as to why this is not trivial?}
+to the learner. A priori, one might have thought the opposite would occur, more references would lead to more conservatism. Having more references would introduce, among others, more conservative references and as it is more likely correctors produce a correction similar to the source those ones will be chosen.
 
 %\com{Ideally, in order to validate this empirically, we should re-train correctors using multiple references, and re-examine their conservatism. However, corpora annotated with more than one correction are scarce. 
 %As a proof of concept, we simulate a re-ranking procedure over the corpora of \newcite{bryant2015far}, which provide additional 10 references for each of sentence in the NUCLE test set. In order to abstract away from implementation details and from artefacts that may result from the small dataset available, we explore an oracle re-ranking setting, where the correction with the best Micro $F$-score taken from the 100-best list of the RoRo state-of-the-art corrector (see \S 2) is selected. The $F$-score is computed with varying numbers of references ($M$).}
@@ -433,9 +433,7 @@ to the learner.\oa{do we need to add a discussion as to why this is not trivial?
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=8cm]{words_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with have a given number of words changes (x-axis), following oracle reranking with different M values (column colors). \oamod{why are the columns not centered around the relevant
-            $x$ value?}
-		\label{fig:reranking_word_change}
+	\caption{The amount of sentences (y-axis) with a given number of words changes (x-axis), following oracle reranking with different M values (column colors). 		\label{fig:reranking_word_change}
 	}
 	\vspace{-0.5cm}
 \end{figure}
@@ -465,7 +463,7 @@ We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
 estimates a multinomial distribution,
 in which the individual values do not matter, only the distribution of probabilities
-across values.%\footnote{\href{https://github.com/borgr/unseenest}{UnseenEst}} 
+across values. {\sc UnseenEst} aims to minimize earthmover distance between the estimated histogram and the histogram of the distribution and was proven empirically and mathematically to be very exact. \footnote{ <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}{UnseenEst implementation}} 
 {\sc UnseenEst} was originally developed for assessing how many
 variants a gene might have, including undiscovered ones,
 and their relative frequencies.
@@ -961,9 +959,9 @@ See \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary measure based
 on automatic error detection.
 
-A similar approach was also taken in the field of machine translation, after showing multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}. Several ways to capture semantics (adequacy) to overcome this were proposed \cite{snover2009fluency}.\oa{anything that would be relevant here?}
-More specifically, reference-less machine translation evaluation methods were proposed and shown at the time to be at least as reliable as the reference-based ones \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine}. Perhaps most similar is the work of \newcite{banchs2015adequacy},
-combining semantic and grammatical measures.\oa{what about the MEANT line of work?}
+A similar approach was also taken in the field of machine translation, after showing multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}. Several ways to capture semantics (adequacy) to overcome this were proposed \cite{snover2009fluency}.
+More specifically, reference-less machine translation evaluation methods were proposed and shown at the time to be at least as reliable as the reference-based ones \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine,lo2011meant}. Perhaps most similar is the work of \newcite{banchs2015adequacy},
+combining semantic and grammatical measures. Despite their similarity, all those methods did not use current semantic annotation schemes or had other specific reasons not to be used in our case.
 
 As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
 motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
@@ -1039,7 +1037,7 @@ LL resources annotate syntactic errors in different ways.
 \newcite{berzak2016universal} and \newcite{ragheb2012defining}
 annotate according to the syntax used
 by the learner, even if this use is not grammatical.
-Such annotation may be unreliable as a source of semantic information, as semantically similar sentences, formulated by different learners, may use considerably different structures. \newcite{nagataphrase} take the opposite approach, and try to be faithful to the syntax intended by the learner. However, such an approach faces difficulties due to the multitude of different syntactic structures that can be used to express a similar meaning.
+Such annotation may be unreliable as a source of semantic information, as semantically similar sentences, formulated by different learners, may use considerably different structures. \newcite{nagataphrase} take the opposite approach, and try to be faithful to the syntax intended by the learner, this is also the case in works on robustness of parsers assuming grammar should convey meaning and stay robust to errors \cite{bigert2005unsupervised,foster2004parsing}. However, such an approach faces difficulties due to the multitude of different syntactic structures that can be used to express a similar meaning. 
 
 %
 %Syntactic representation is very popular and useful in many NLP tasks 
@@ -1400,7 +1398,6 @@ to produce semantically unfaithful sentences, we instead experiment on 5 partial
 trained correctors, provided by \newcite{sakaguchi2017grammatical}, on the
 JFLEG corpus \cite{napoles2017jfleg}.
 
-\oa{important details missing in this paragraph: what is the number of samples in each setting, who computed the GLUE scores? also, no need to table 3, you can do it like in the HUME paper.}
   {\sc UCCASim} was calculated automatically for each system's output on 754 sentences. We expected to have low results as indeed these outputs include major changes, sometimes deleting full phrases from the output or changing every other word in the sentence, they also receive a low score by GLUE. As a sanity check we ran {\sc UCCASim} over 4 references. The references had {\sc UCCASim} scores of 0.72-0.78, the corrector predicted (by GLUE score) to be worse got 0.19 and the rest 0.32-0.39. Showing that bad corrections, that change the meaning as represented by UCCA, are penalized. 
   \com{
   \begin{table*}[]
@@ -1437,8 +1434,7 @@ A good student must be able to understand and work hard to get the idea .
 }
 \begin{table}[]
 	\centering
-	\caption{My caption}
-	\label{my-label}
+	\label{ex:sensitive}
 	\begin{tabular}{p{0.2\columnwidth}p{0.73\columnwidth}}
 		Source    & \small the good student must know how to understand and work hard to get the iede .\\
 		Reference & \small A good student must be able to understand and work hard to get the idea .\\
