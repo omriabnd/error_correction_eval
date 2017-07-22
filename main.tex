@@ -214,13 +214,13 @@ by showing that (1) semantic structural annotation can be consistently and autom
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 %
 We demonstrate that current correctors
-suffer from over-conservatism: they tend to make too few changes to the source.
+suffer from over-conservatism: they tend to make too few changes to the source. { \color{red} Assuming correctors are able to correct a large amount of the corrections in the corpus, this is an indication of some hidden, cross-systems bias.}
 \subsection{Notation}
 We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_x$ is the probability a human annotator would correct $x$ as $y$.
 
-Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_N$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences and denote $\mathcal{D}_{i}\coloneqq \mathcal{D}_{x_i}$.
+Let $X$ be the evaluated set of source LL sentences where $X$ consists of the sentences $x_{1}\ldots x_{N}$, each independently sampled from some distribution $\mathcal{L}$ over LL sentences and denote $\mathcal{D}_{i}\coloneqq \mathcal{D}_{x_i}$.
 Each $x_i$ is paired with $M$ corrections $Y_i = \left\{y_{i}^{1},\ldots, y_{i}^{M}\right\}$,
 which are independently sampled from $\mathcal{D}_{i}$.\footnote{Our analysis assumes $M$
 	is fixed across source sentences. Generalizing the analysis to sentence-dependent $M$
@@ -346,7 +346,7 @@ another corpus, the TreeBank of Learner English \cite{yannakoudakis2011new}, and
 %
 In this section we argue that the observed over-conservatism of correctors likely stems
 from them being developed to optimize RBMs that suffer from low-coverage.
-We begin with a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}).We then continue with an empirical assessment of the distribution of corrections for a given sentence (\S \ref{subsec:corrections_distribution})
+We begin with a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}). We then continue with an empirical assessment of the distribution of corrections for a given sentence (\S \ref{subsec:corrections_distribution})
 and the effect of $M$ on commonly used RBMs (\S \ref{subsec:Assessment-values}).
 We discuss the implications of our results, concluding that RBMs may only partially address over-conservatism (\S \ref{subsec:mult_discussion}).
 %

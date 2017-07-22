@@ -147,7 +147,7 @@ Other related comments:
 	some mistakes just to have the system be able to suggest more corrections
 	requires further justification to me.
 	}
-The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. and have corrected our text to reflect this. Still, we believe the results we present are far from obvious because (1) there is order of magnitude difference between humans and correctors, (2) the conservatism is such that system's today already surpass the F-score obtained by humans, which probably suggests that even if over-conservatism of correctors w.r.t. humans is desirable, other measures should be used from now on to evaluate GEC systems, (3) even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. So over-conservatism in this case is the warning sign, a symptom which can be benign, but is not.
+The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. and have corrected our text to reflect this. Still, we believe the results we present are far from obvious because (1) there is order of magnitude difference between humans and correctors, (2) the conservatism is such that system's today already surpass the F-score obtained by humans, which probably suggests that even if over-conservatism of correctors w.r.t. humans is desirable, other measures should be used from now on to evaluate GEC systems, (3) over-conservatism can be thought of as places were correctors can achieve corrections with high enough precision but they are over-conservative and avoid correcting even when unnecessary. Then the graphs we show are indicating it might be the problem, but not proving it (nothing actually could, as this is counter-factual). (4) even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. So over-conservatism in this case is the warning sign, a symptom which can be benign, but is not.
 
 \emph{The examined systems may well under-predict errors (low recall); however,
 	incorrect predictions (precision) are also (likely) a problem for many error
@@ -188,7 +188,7 @@ We agree that the experiments in section 3 are similar to the one's reported by 
 	directly, against the final RBM, which was $M^2$ for most of the systems here.
 	}
 	
-	We agree, although during development, systems are tuned against an RBM. It is meant to use to exemplify how over-conservatism may be linked to low coverage. We have now also included an empirical analysis to this effect.
+	We agree, although during development, systems are tuned against an RBM. It is meant to use to exemplify how over-conservatism may be linked to low coverage. We also mentioned in the text that "we abstract away" the details. We have now also included an empirical analysis to this effect. One of the reasons to base it on reranking is that development or validation either automatic or by hand is much more likely to use RBMs.
 	
 	\emph{It would be useful to include additional sensitivity analysis of the
 		UnseenEst algorithm to get a sense of the quality of the distribution
