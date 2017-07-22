@@ -37,15 +37,23 @@ Action Editor\\
 %\setlength{\parindent}{.5in}
 
 
+\vspace{.5cm}
+
   \opening{Dear Prof. Hwee Tou Ng,}
+
+
+\vspace{.5cm}
   
-  Please find attached the revised version of our manuscript ``Conservatism and Over-conservatism in Grammatical Error Correction''. We thank you and the reviewers for your helpful and thorough comments, and have made significant changes to the presentation in response. In particular we addressed the following issues.
+  Please find attached the revised version of our manuscript ``Conservatism and Over-conservatism in Grammatical Error Correction''. We thank you and the reviewers for your helpful and thorough comments, and have made significant changes to the presentation in response. In particular we addressed the following issues.\oa{briefly mention all the exps that were added}
 
-{\bf Strengthening the concept of UCCASim}
+\vspace{.5cm}
 
-UCCASim usefulness:
+{\large\bf Stronger Evidence for the validity of UCCASim (Section 4)}
 
-\emph{why it follows that a
+\oa{which reviewer? put next to each}
+\oa{we need to mention the additional exp in section 2 somewhere}
+
+\emph{``... why it follows that a
 	particular 'reference-less' semantic measure (UCCASim) is a solution to the
 	identified issues introduced by the RBMs. The authors suggest that UCCASim
 	is insensitive to surface changes between the source and NUCLE (gold)
@@ -54,99 +62,106 @@ UCCASim usefulness:
 	sensitive to semantic errors, so it is not clear whether the measure
 	provides a useful signal. (Interestingly, the authors seem to suggest that
 	such semantic errors very rarely occur in the data, preventing such
-	experimentation directly.)
+	experimentation directly.)''
 }
 
-As noted, we were aware of this issue and we managed since to acquire poor and under conservative results to test UCCASim sensitivity on them. The details can be found in section 4.6.
+The paper now includes an analysis, using UCCASim, of several systems that do tend to
+make major (and often erroneous) changes to the source. UCCASim indeed deems them to be semantically
+unfaithfulness to the source, indicating that the measure is sensitive to semantic errors. See Section 4.6.
 
-\emph{Where is the evidence that the new semantic adequacy metric \_actually\_
+\emph{``Where is the evidence that the new semantic adequacy metric \_actually\_
 	solves the problem of correctors being over-conservative? The analysis the
 	authors contributes nothing towards that. To determine this, one needs to
 	actually compare systems tuned using this new metric on the same NUCLE
 	dataset vs. a system tuned using the existing F0.5 metric and see whether
-	they have different correction behaviors.
+	they have different correction behaviors.''
 	}
 
-We address this issue in section 4.4 and on. We also added an experiment showing that additional references decrease conservatism in section 2. We would argue that the important experiment is the one we added in section 4.6, because it shows that not only is UCCASim insensitive to meaning-preserving variation, but there is also indication that it is sensitive to meaning-changing variation. This shows the merit of UCCASim as a semantic faithfulness measure, which is what we argue for.
+This issue is now addressed in Sections 4.4 and onwards.
+We would argue that the important experiment is the one we added in section 4.6, because it shows that not only is UCCASim insensitive to meaning-preserving variation, but there is also indication that it is sensitive to meaning-changing variation. This shows the merit of UCCASim as a semantic faithfulness measure, which is what we argue for.
+Tuning a system by a semantic faithfulness measure, is, if at all, likely to increase conservatism, as the source sentence is maximally faithful as a proposed correction. It is the combination of this measure with a grammaticality measure that, we argue, would decrease conservatism, but it is the grammaticality measure that pushes towards less conservatism, where the faithfulness measure modulates this effect, so not to change the semantics. In light of this, we believe that interpreting the results of the experiment the reviewer proposes would be difficult, and instead provide other evidence for the validity of the approach.
 
-In fact, tuning a system by a semantic faithfulness measure, is, if at all, likely to increase conservatism, as the source sentence is maximally faithful as a proposed correction. It is the combination of this measure with a grammaticality measure that, we argue, would decrease conservatism, but this would be due to the grammaticality measure, where faithfulness modulates the changes, so not to change the semantics. 
+%, as well as an additional also added an experiment showing that additional references decrease conservatism in section 2
 
-UCCASim vs. other measures:
+\vspace{.5cm}
+{\large\bf UCCASim vs. other measures:}
 
-\emph{Why propose a completely novel metric in Section 4 that requires human
+\emph{``Why propose a completely novel metric in Section 4 that requires human
 	annotation? Why not use an existing semantic similarity methods? There are
-	literally dozens of choices when it comes to measuring semantic similarity.}
+	literally dozens of choices when it comes to measuring semantic similarity.''}
 
-	\emph{the authors are not proposing (or
+	\emph{``The authors are not proposing (or
 	testing) an automatic means of parsing UCCA. As such, since human annotation
-	is necessary, why not have the humans directly assess semantic faithfulness?}
+	is necessary, why not have the humans directly assess semantic faithfulness?''}
 
-\emph{Even if you are using UCCA, why come up with an entirely new metric? Why not just use HUME which Birch et al. use for MT? }
+\emph{``Even if you are using UCCA, why come up with an entirely new metric? Why not just use HUME which Birch et al. use for MT?''}
 
 
-\emph {Is the UCCA formalism a better choice than semantic role labeling, and, if
-	so, why?
-}
+\emph {``Is the UCCA formalism a better choice than semantic role labeling, and, if so, why?''}
 
-Our response for the above comments:
-We by no means claim that UCCASim is the only appropriate measure for semantic evaluation. We selected UCCA and not other semantic methods due to some of its appealing properties as a basis for semantic evaluation, as discussed in "HUME: Human UCCA-Based Evaluation of Machine Translation" / Birch et al., EMNLP 2016, among them the fact that UCCA pays attention to copula clauses, nominal argument structures and to linkers. 
+We by no means claim that UCCASim is the only appropriate measure for semantic evaluation, and have now stressed this in the paper, as well as added some discussion in the beginning of Section 4. We selected UCCA and not other semantic methods due to some of its appealing properties as a basis for semantic evaluation, as discussed in ``HUME: Human UCCA-Based Evaluation of Machine Translation'' (Birch et al., EMNLP 2016), primarily that UCCA supports a wide variety of semantic structures, including copula clauses, nominal and adjectival structures, as well dicourse markers.
 
-In addition, UCCASim can be automated, which we implemented and reported results in this newer version of the paper. This was also the reason not to choose HUME, as we wanted no human in the loop.
+In addition, UCCASim can be automated. Indeed, the revised submission includes results using an automatic variant of UCCASim. This is also the reason for not selecting HUME, which is not fully automatically.
 
-About the data:
 
-\emph{ Using 7 essays for an annotation study seems ridiculously low.}
+\vspace{.5cm}
+{\large\bf Comments on the Data:}
 
-The annotation study includes 13 annotated essays, 10 doubly-annotated essays (7 source essays, 3 corrected essays) each of about 500 words. These results serve to show that the IAA scores obtained for UCCA (reported, e.g., in Abend and Rappoport / ACL 2013), also hold for the domain in question. As the results match previously obtained results, they serve as a confirmation, and we believe they are adequate. Moreover, the automatic results which also behave just as expected are an addition to that.
+\emph{``Using 7 essays for an annotation study seems ridiculously low.''}
 
-\emph{ The authors do not mention exactly which version of the NUCLE corpus
+The annotation study includes 13 annotated essays, 10 doubly-annotated essays (7 source essays, 3 corrected essays) each of about 500 words. These results serve to show that the IAA scores obtained for UCCA (reported, e.g., in Abend and Rappoport / ACL 2013), also hold for the domain in question (LL and corrected LL). As the results match previously obtained results, they serve as a confirmation, and thus seem adequate in size. The results obtained with the UCCA parser TUPA, provide further support for our results.
+
+\emph{``The authors do not mention exactly which version of the NUCLE corpus
 	they used in Section 2. If it is the 2014 CoNLL data version, that test data
 	has corrections from multiple annotators. Did you account for the multiple
 	annotators? How is the gold row computed for the Word-Change heat map? There
 	are multiple references so is that the average? Given multiple references,
 	isn't it natural to expect the average to behave the way that it does and
-	not just because the correctors are conservative?}
+	not just because the correctors are conservative?''}
 
-We use 2014, but we chose arbitrarily one of the annotators for all the analysis avoiding all the above problems. Also changed in text. Just note that the choice of reference is not crucial and the same effects happen in fce, we did not cherry pick anything.
-Other related comments:
+We used the 2014 test set, selecting arbitrarily one of the references for all the analysis, avoiding the above mentioned problems. We have now also clarified this in the text. Please note that a similar effect was obtained on the FCE corpus\oa{is this right?}.
+
+\vspace{.5cm}
+{\large\bf Other Related Comments:}
 	
-\emph{Very little is said about the DistSim results in Table 2 - I wondered why
-	they were even included.
-	}
+\emph{``Very little is said about the DistSim results in Table 2 - I wondered why
+	they were even included.''}
 	
-	Indeed this is not a focus of our work, we just mention it to replicate the results over English-French translation over LL.
+Indeed these results are only presentated for the sake of comparability with the English-French results of Sulem et al.
 	
-\emph{Some old works on robustness evaluation are somewhat relevant here since
+\emph{``Some old works on robustness evaluation are somewhat relevant here since
 	they propose that the structure of source and corrected sentences be
-	compared in order to check that meaning has been preserved. 
-	}
+	compared in order to check that meaning has been preserved.''}
 	
-	These are indeed relevant to our work in various aspects and is now mentioned too.
+Thank you for these references. We have now added them to the text.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\large\bf Conservatism and Comments realated to Section 2}
 
-{\bf Conservatism and Section 2 related issues}
-
-\emph{Other recent published systems on the CoNLL 2014 data, e.g., Junczys-Dowmunt
+\emph{``Other recent published systems on the CoNLL 2014 data, e.g., Junczys-Dowmunt
 	and Roman Grundkiewicz 2016, are not included. This is notable, since some
 	of the more recent systems are significantly higher performing than those of
-	the original shared task 3 years ago.
-	}
+	the original shared task 3 years ago.''}
 	
-\emph{It would be interesting to see the differences between the over-conservative
+We included an evaluation of the conservatism of Junczys-Dowmunt and Grundkiewicz's corrector  and another character-based neural network (Xie et al.) -- they are not substantially different from the others.
+
+
+\emph{``It would be interesting to see the differences between the over-conservative
 	behaviour of the systems when $f_1$ is used as the evaluation metric and when
-	$f_0.5$ is used.}
+	$f_{0.5}$ is used.''}
 
-	Originally we had an output of one corrector from last acl (Rozovskaya et al.). We added to that Junczys-Dowmunt and Roman Grundkiewicz's corrector  and another character based neural network (Xie et al.), they were not significantly different from the others.
-	About $f_1$, although Rozovskaya et al. report it, it is rarely used since 2014 and hence systems developed with $f_1$ in mind are old and not comparable.
+About $f_1$: although Rozovskaya et al. report it, it has rarely been used since 2014 and hence systems developed with $f_1$ in mind are old and not comparable.
 	
-\emph{"We believe that in terms of conservatism, end users will be tolerant to
-	changes in the sentence structure, i.e., violation of conservatism" Wouldn't
-	this very much depend on the application?
+\emph{```We believe that in terms of conservatism, end users will be tolerant to
+	changes in the sentence structure, i.e., violation of conservatism' Wouldn't
+	this very much depend on the application?''
 	}
 
-\emph{The assumption that users would tolerate
+\emph{``The assumption that users would tolerate
 	some mistakes just to have the system be able to suggest more corrections
-	requires further justification to me.
+	requires further justification to me.''
 	}
+	
 The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. and have corrected our text to reflect this. Still, we believe the results we present are far from obvious because (1) there is order of magnitude difference between humans and correctors, (2) the conservatism is such that system's today already surpass the F-score obtained by humans, which probably suggests that even if over-conservatism of correctors w.r.t. humans is desirable, other measures should be used from now on to evaluate GEC systems, (3) over-conservatism can be thought of as places were correctors can achieve corrections with high enough precision but they are over-conservative and avoid correcting even when unnecessary. Then the graphs we show are indicating it might be the problem, but not proving it (nothing actually could, as this is counter-factual). (4) even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. So over-conservatism in this case is the warning sign, a symptom which can be benign, but is not.
 
 \emph{The examined systems may well under-predict errors (low recall); however,
