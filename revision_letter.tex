@@ -1,6 +1,7 @@
 \documentclass[11pt,letterpaper]{letter}
 \usepackage{fullpage}
 \usepackage{url}
+\usepackage{color}
 
 %\addtolength{\topmargin}{-.5in}
 %\addtolength{\textheight}{1.5in} %for home
@@ -50,7 +51,7 @@ Action Editor\\
 
 {\large\bf Stronger Evidence for the validity of UCCASim (Section 4)}
 
-\oa{which reviewer? put next to each}
+\oa{which reviewer said what? put next to each R1, R2, R3}
 \oa{we need to mention the additional exp in section 2 somewhere}
 
 \emph{``... why it follows that a
@@ -145,7 +146,6 @@ Thank you for these references. We have now added them to the text.
 	
 We included an evaluation of the conservatism of Junczys-Dowmunt and Grundkiewicz's corrector  and another character-based neural network (Xie et al.) -- they are not substantially different from the others.
 
-
 \emph{``It would be interesting to see the differences between the over-conservative
 	behaviour of the systems when $f_1$ is used as the evaluation metric and when
 	$f_{0.5}$ is used.''}
@@ -155,57 +155,61 @@ About $f_1$: although Rozovskaya et al. report it, it has rarely been used since
 \emph{```We believe that in terms of conservatism, end users will be tolerant to
 	changes in the sentence structure, i.e., violation of conservatism' Wouldn't
 	this very much depend on the application?''
-	}
+}
 
 \emph{``The assumption that users would tolerate
 	some mistakes just to have the system be able to suggest more corrections
 	requires further justification to me.''
-	}
+}
 	
-The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. and have corrected our text to reflect this. Still, we believe the results we present are far from obvious because (1) there is order of magnitude difference between humans and correctors, (2) the conservatism is such that system's today already surpass the F-score obtained by humans, which probably suggests that even if over-conservatism of correctors w.r.t. humans is desirable, other measures should be used from now on to evaluate GEC systems, (3) over-conservatism can be thought of as places were correctors can achieve corrections with high enough precision but they are over-conservative and avoid correcting even when unnecessary. Then the graphs we show are indicating it might be the problem, but not proving it (nothing actually could, as this is counter-factual). (4) even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. So over-conservatism in this case is the warning sign, a symptom which can be benign, but is not.
+The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. However, even if this is the case, we believe the effect we find is relevant because (1) there is order of magnitude difference between humans and correctors; (2) the conservatism is such that current systems already surpass the F-score obtained by humans, which may suggest that other measures should be used from now on to evaluate GEC systems.
+%(3) over-conservatism can be thought of as places were correctors can achieve corrections with high enough precision but they are over-conservative and avoid correcting even when unnecessary. Then the graphs we show are indicating it might be the problem, but not proving it (nothing actually could, as this is counter-factual). 
+\oa{commented out point (3), (4) as they seem speculative. Can you formulate them in another way?}
+%More speculatively, even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. In this sense, over-conservatism may be an indication of issues with the training protocol.
 
-\emph{The examined systems may well under-predict errors (low recall); however,
+\emph{``The examined systems may well under-predict errors (low recall); however,
 	incorrect predictions (precision) are also (likely) a problem for many error
 	types for many of the systems. It would be useful to see an analysis or
 	motivation as to whether or not low recall is the primary effectiveness
 	bottleneck in practice. It could be that in practice, the systems are
-	'under-conservative' if end-users prefer high-precision results.
+	'under-conservative' if end-users prefer high-precision results.''
 	}
 
-This is a very good suggestion to couple this research with a user study of GEC systems. However, we would argue that the current evaluation measure is problematic for evaluation itself. It pushes during development not to correct even when precision should have been considered high, just because the coverage is low. Therefore we believe that regardless of whether over-conservatism is the most pressing problem for users, it should be mended. 
+We agree it would be very helpful to supplement this research with a user study of GEC systems, in order to locate potential bottlenecks. However, we would argue that the current evaluation is problematic as it pushes during development not to correct, even in ``high-confidence'' decisions, where precision may have been high, just because the coverage is low. 
 
-\emph{Wouldn't it also be instructive to actually look at the distribution
-	over the exact error types for the analyses in Section 2? Perhaps the automated correctors are heavily conservative for only one or two types of errors?
+\emph{``Wouldn't it also be instructive to actually look at the distribution
+	over the exact error types for the analyses in Section 2? Perhaps the automated correctors are heavily conservative for only one or two types of errors?''
 	}
 	
-	We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this such as defining how to count a type (different annotators don't always agree), how to count corrector outputs (which come without types and might not exist in the reference etc.).
+We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits (which come without types and might not exist in the reference etc.\oa{what do you mean not exist in the reference?}).
 	
 \emph{Why use two separate word-level measures in Section 2? Why not just use
 	an MT metric like METEOR/TER that uses edit distance and takes into account
 	word ordering?}
 
-It seems to us METEOR is less transparent and intuitive and it brings all kinds of sophisticated attributes which are usually desired but here complicate and give hard time for the reader. We did check the results with meteor and found out that no system got a smaller score (comparing to the source) than the references, or in other words, a same tendency as reported in the paper.
+It seems to us that METEOR less transparently reveals what type of changes are made and not made to the source. Nevertheless, we experimented with METEOR and obtained similar results, namely that no corrector obtained mean METEOR score that is lower than the references' (when compared to the source).
 
 {\bf Corrections as a distribution}
 
-\emph{The analysis in Section 3 is definitely somewhat interesting and
+\emph{``The analysis in Section 3 is definitely somewhat interesting and
 	well-done (bringing in estimation procedures from a different field) but not
 	too novel. Bryant and Ng (2015) already showed that there are problems of
 	underscoring with the F0.5 metric and that not even humans score highly on
-	that, as the authors acknowledge.
+	that, as the authors acknowledge.''
 	}
 	
-We agree that the experiments in section 3 are similar to the one's reported by Bryant and Ng (2015). Still, we present a number of contributions: (1) we evaluate not only the coverage of the measures, but also the distribution of corrections, showing that even increasing M considerably is unlikely to improve the under-estimation substantially; (2) We discuss the relation of these results to over-conservatism, (3) show that due to this over-conservatism, GEC systems sometimes surpass human performance in terms of F-score, suggesting that non-RBM may be needed and (4) due to (2) and (3) we suggest a different solution as we see a different problem that was out of Bryant and Ng (2015) scope.
+We agree that the experiments in section 3 are similar to the one's reported by Bryant and Ng (2015). Still, our work presents a number of contributions: (1) we evaluate not only the coverage of the measures, but also the distribution of corrections, showing that even increasing M considerably is unlikely to much improve the under-estimation; (2) we discuss the relation of these results to over-conservatism, (3) we show that due to the observed over-conservatism, GEC systems may surpass human performance in terms of F-score, suggesting that non-RBM may be needed.
+%and (4) due to (2) and (3) we suggest a different solution as we see a different problem that was out of Bryant and Ng (2015) scope.
 
-\emph{3.1 Motivating Analysis: Note that the connection to training is more
+\emph{``Motivating Analysis: Note that the connection to training is more
 	complicated than implied here, at least with the evaluated systems. Namely,
 	most of the reviewed systems are actually not trained/tuned, at least
-	directly, against the final RBM, which was $M^2$ for most of the systems here.
+	directly, against the final RBM, which was $M^2$ for most of the systems here.''
 	}
 	
-	We agree, although during development, systems are tuned against an RBM. It is meant to use to exemplify how over-conservatism may be linked to low coverage. We also mentioned in the text that "we abstract away" the details. We have now also included an empirical analysis to this effect. One of the reasons to base it on reranking is that development or validation either automatic or by hand is much more likely to use RBMs.
+	We agree, although during development, systems are tuned against an RBM. It is meant to use to exemplify how over-conservatism may be linked to low coverage. We also mentioned in the text that "we abstract away" the details. We have now also included an empirical analysis to this effect. One of the reasons to base it on reranking is that development or validation either automatic or by hand is much more likely to use RBMs.\oa{mention the new exp in section ``motivating analysis''}
 	
-	\emph{It would be useful to include additional sensitivity analysis of the
+	\emph{``It would be useful to include additional sensitivity analysis of the
 		UnseenEst algorithm to get a sense of the quality of the distribution
 		prediction. For example, you could have a large number of AMT workers
 		correct a small number of sentences, providing additional annotations
@@ -214,16 +218,18 @@ We agree that the experiments in section 3 are similar to the one's reported by 
 		useful to assess inter-annotator agreement: Namely, it could be that
 		low-frequency corrections have low inter-annotator agreement, in which case
 		it may be preferable (in practice) for correctors to avoid making
-		predictions in the tails of the distribution.
+		predictions in the tails of the distribution.''
 		}
 		
-		UnseenEst's paper (and manual distributions we created and checked) show it behaves well (in the paper there are strong guarantees on that). Assessing UnseenEst using AMT created distribution would actually just be to create another distribution at a high cost, as the algorithm is non-parametric and at the end removes the "labels" (corrections themselves) and only look at the histogram.
-		The second note is a very good point which called for an action. If the low frequency corrections were some kind of noise, a solution of acquiring more references for training might have still worked (and oh, how we and probably everyone else wanted that to be the case) \footnote{too informal?}. We sent all of our corrections to AMT and they told us whether they think those are corrections or not. Using the empirical frequency of the corrections we reported the results in this version of the paper. In short, rare corrections are good as well as frequent ones.
+UnseenEst's paper (and the manual distributions we created and checked) show it behaves well (in the paper there are strong guarantees on that).\oa{what exactly does it show? give an example of an experiment they do. Instead of saying UnseenEst's paper say Xie et al., or whatever their name is}
+%Assessing UnseenEst using AMT created distribution would actually just be to create another distribution at a high cost, as the algorithm is non-parametric and at the end removes the ``labels'' (corrections themselves) and only looks at the histogram.
+Thank you for the note about the reliability of the less frequent corrections. We therefore conducted an additional experiment (results in Section 3.3 and Figure 3), in which we demonstrate that there is no major difference between the validity human annotators assigned to the validity of the frequent corrections, as opposed to the infrequent ones.
+%We sent all of our corrections to AMT and they told us whether they think those are corrections or not. Using the empirical frequency of the corrections we reported the results in this version of the paper. In short, rare corrections are good as well as frequent ones.
 		
-		\emph{More detail should be provided on how UnseenEst works.}
+\emph{``More detail should be provided on how UnseenEst works.''}
 		
-		Some more explanation on the work on UnseenEst was added.
-	
+More extensive presentation of UnseenEst is now included. 
+
 \closing{Sincerely,}
 
 \end{letter}
