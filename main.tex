@@ -75,9 +75,11 @@
   %and proposed 
   %In this paper we discuss the impact of using 
   %discusses the implications of such reference-based evaluation on
-  Grammatical Error Correction systems (henceforth, {\it correctors}) aim to correct ungrammatical text,
-  while changing it as little as possible. However, whereas such conservatism is a virtue for correctors,
-  we find that state-of-the-art systems make substantially less changes to the source sentences than needed.
+  Grammatical Error Correction systems (henceforth, {\it correctors}) aim to
+  correct ungrammatical text, while changing it as little as possible.
+  However, whereas such conservatism is a virtue for correctors,
+  we find that state-of-the-art systems make substantially less changes to the source sentences
+  than needed.
   Analyzing the distribution of possible corrections for a given sentence,   
   we show that this over-conservatism likely stems from
   the inability of a handful of reference corrections to account for the full variation of valid
@@ -147,7 +149,8 @@ have \cite{chodorow2012problems}.
 
 An important criterion in the evaluation of correctors
 is their ability to generate corrections that are faithful to meaning of the source.
-In fact, many would prefer a somewhat cumbersome or even an occasionally ungrammatical
+{\color{red} In fact, it has been argued} that many would prefer a somewhat cumbersome
+or even an occasionally ungrammatical
 correction over a correction that alters the meaning of the source \cite{brockett2006correcting}.
 As a result, 
 annotators are often instructed to be conservative in their corrections
@@ -155,17 +158,21 @@ when compiling gold standard corrections for the task
 (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
 There were different attempts to formally capture this precision/recall asymmetry such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{dahlmeier2012better} and the choices of weights in I-measure \cite{felice2015towards}.
 
-However, during development and training penalizing over-correction more harshly than under-correction may lead to reluctance of correctors to
-make any changes (henceforth, {\it over-conservatism}).
+However, during development and training penalizing over-correction more harshly than under-correction may lead to reluctance of correctors to make any changes (henceforth, {\it over-conservatism}).
 Using only one or two reference corrections, a common practice in GEC,
 compounds this problem, as correctors are not only harshly penalized for making incorrect changes,
 but are often penalized for making {\bf correct} changes not found in the reference.
 
-Indeed, we show that current state of the art systems suffer from over-conservatism.
+Indeed, we show that current state of the art systems present over-conservatism.
 Evaluating the output of 12 recent correctors, we find that all of them
-substantially under-predict corrections relative to the gold standard (\S \ref{sec:formal_conservatism}).
+substantially under-predict corrections relative to the gold standard
+(\S \ref{sec:formal_conservatism}). {\red{color} While it may be possible that it is
+beneficial for a corrector to be more conservatism than a human corrector would be,
+we often find an order of magnitude differences between them, which are unlikely
+to be desirable.}
 
-We first assess whether the undue penalization of valid corrections can be resolved by increasing the number
+We first assess whether the undue penalization of valid corrections can be
+resolved by increasing the number
 of references, which we denote with $M$ (\S \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence,
 arriving at an estimate of over 1000 corrections for sentences of no more than 15 tokens.
@@ -180,8 +187,12 @@ indicating that a prohibitively large $M$ may be required for reliable estimatio
 Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$
 on $F$-score, the most commonly used measure for GEC. Their work focused on
 obtaining a more reliable estimate of correctors' performance, and proposed to do so
-by normalizing corrector's estimated performance with the performance of a human corrector. However, while such normalization may yield more realistic performance estimates,
-it has no effect on the training and tuning of correctors. 
+by normalizing corrector's estimated performance with the performance of a human corrector.
+However, while such normalization may yield more realistic performance estimates,
+it has no effect on the training and tuning of correctors.
+{\color{red} Moreover, in \secref{sec:} we show that current correctors may already surpass
+  human correctors in terms of common reference-based measures, suggesting that more substantial
+  changes to the evaluation measure may be required.}
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (\S \ref{sec:Semantics}).
@@ -955,7 +966,7 @@ A similar approach was also taken in the field of machine translation (MT), afte
 There were attempts to create reference-less measures \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine} and to estimate translation quality in terms of its adequacy (similar to semantic faithfulness) and fluency (similar to
 grammaticality)
 \newcite{banchs2015adequacy}.
-Perhaps the most similar approach to ours was taken by the MEANT measure \newcite{lo2011meant}, which is based on a comparison of semantic role labeling structures on the source and target. Our decision to use UCCA in our experiments is motivated by its wider coverage of predicate types (as opposed to a focus only on verbal structures in MEANT). An elaborate comparison of SRL-based and UCCA-based approaches can be found in \newcite{birch2016hume}. We make no claim of course that UCCA is the best or the only semantic representation that can be used for defining a semantic faithfulness measure. Future work will experiment with a wider variety of semantic representations, both symbolic and distributional \cite[e.g.,][]{cheng2015syntax}.
+Perhaps the most similar approach to ours was taken by the MEANT measure \newcite{lo2011meant}, which is based on a comparison of semantic role labeling structures on the source and target. Our decision to use UCCA in our experiments is motivated by its wider coverage of predicate types (as opposed to a focus only on verbal structures in MEANT). An elaborate comparison of SRL-based and UCCA-based approaches can be found in \newcite{birch2016hume}. We make no claim of course that UCCA is the best or the only semantic representation that can be used for defining a semantic faithfulness measure. Future work will experiment with a wider variety of semantic representations, both symbolic and distributional (e.g., \cite{cheng2015syntax}.)
 
 As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
 motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
