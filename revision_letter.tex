@@ -45,14 +45,14 @@ Action Editor\\
 
 \vspace{.5cm}
   
-  Please find attached the revised version of our manuscript ``Conservatism and Over-conservatism in Grammatical Error Correction''. We thank you and the reviewers for your helpful and thorough comments, and have made significant changes to the presentation in response. In particular we addressed the following issues.\oa{briefly mention all the exps that were added}
+  Please find attached the revised version of our manuscript ``Conservatism and Over-conservatism in Grammatical Error Correction''. We thank you and the reviewers for your helpful and thorough comments, and have made significant changes to the presentation in response. In particular we addressed the following issues: conservatism is empirically caused by low coverage, number of state-of-the-art correctors checked for conservatism, quality of low frequency corrections, all things related to UCCASim can be done automatically with current parsers and the sensitivity of UCCASim.
 
 \vspace{.5cm}
 
 {\large\bf Stronger Evidence for the validity of UCCASim (Section 4)}
 
-\oa{which reviewer said what? put next to each R1, R2, R3}
-\oa{we need to mention the additional exp in section 2 somewhere}
+\oa{which reviewer said what? put next to each R1, R2, R3} \footnote{ok, i'll do it}
+\oa{we need to mention the additional exp in section 2 somewhere}\footnote{don't we?}
 
 \emph{``... why it follows that a
 	particular 'reference-less' semantic measure (UCCASim) is a solution to the
@@ -120,7 +120,7 @@ The annotation study includes 13 annotated essays, 10 doubly-annotated essays (7
 	isn't it natural to expect the average to behave the way that it does and
 	not just because the correctors are conservative?''}
 
-We used the 2014 test set, selecting arbitrarily one of the references for all the analysis, avoiding the above mentioned problems. We have now also clarified this in the text. Please note that a similar effect was obtained on the FCE corpus\oa{is this right?}.
+We used the 2014 test set, selecting arbitrarily one of the references for all the analysis, avoiding the above mentioned problems. We have now also clarified this in the text. Please note that a similar effect was obtained on the FCE corpus.
 
 \vspace{.5cm}
 {\large\bf Other Related Comments:}
@@ -162,9 +162,9 @@ About $f_1$: although Rozovskaya et al. report it, it has rarely been used since
 	requires further justification to me.''
 }
 	
-The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. However, even if this is the case, we believe the effect we find is relevant because (1) there is order of magnitude difference between humans and correctors; (2) the conservatism is such that current systems already surpass the F-score obtained by humans, which may suggest that other measures should be used from now on to evaluate GEC systems.
+The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. However, even if this is the case, the effect we find is relevant because (1) there is an order of magnitude difference between humans and correctors; (2) the conservatism is such that current systems already surpass the F-score obtained by humans, which may suggest that other measures should be used from now on to evaluate GEC systems. {\color{red}(3) over-conservatism can be seen not as a user related issue but as a research measure. In this view, the goal is to eventually be able to be able to have a perfect system, a strong bias to such as this over-conservatism would be an indication that something might be wrong. In our case it seems that indeed it is not only that correctors can not possibly correct more than they do, but that it is probable the methods used incentivize them not to.}
 %(3) over-conservatism can be thought of as places were correctors can achieve corrections with high enough precision but they are over-conservative and avoid correcting even when unnecessary. Then the graphs we show are indicating it might be the problem, but not proving it (nothing actually could, as this is counter-factual). 
-\oa{commented out point (3), (4) as they seem speculative. Can you formulate them in another way?}
+
 %More speculatively, even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. In this sense, over-conservatism may be an indication of issues with the training protocol.
 
 \emph{``The examined systems may well under-predict errors (low recall); however,
@@ -181,7 +181,7 @@ We agree it would be very helpful to supplement this research with a user study 
 	over the exact error types for the analyses in Section 2? Perhaps the automated correctors are heavily conservative for only one or two types of errors?''
 	}
 	
-We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits (which come without types and might not exist in the reference etc.\oa{what do you mean not exist in the reference?}).
+We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits, {\color{red}which come without types and include negative edits as well, which might be correct or not.}
 	
 \emph{Why use two separate word-level measures in Section 2? Why not just use
 	an MT metric like METEOR/TER that uses edit distance and takes into account
@@ -207,7 +207,7 @@ We agree that the experiments in section 3 are similar to the one's reported by 
 	directly, against the final RBM, which was $M^2$ for most of the systems here.''
 	}
 	
-	We agree, although during development, systems are tuned against an RBM. It is meant to use to exemplify how over-conservatism may be linked to low coverage. We also mentioned in the text that "we abstract away" the details. We have now also included an empirical analysis to this effect. One of the reasons to base it on reranking is that development or validation either automatic or by hand is much more likely to use RBMs.\oa{mention the new exp in section ``motivating analysis''}
+	We agree, although during development, systems are tuned against an RBM. It is meant to use to exemplify how over-conservatism may be linked to low coverage. We also mentioned in the text that "we abstract away" the details. We have now also included an empirical analysis to this effect. One of the reasons to base it on reranking is that development or validation either automatic or by hand is much more likely to use RBMs.\footnote{isn't it here already? "We have now also included an empirical analysis to this effect."}\oa{mention the new exp in section ``motivating analysis''}
 	
 	\emph{``It would be useful to include additional sensitivity analysis of the
 		UnseenEst algorithm to get a sense of the quality of the distribution
@@ -221,7 +221,7 @@ We agree that the experiments in section 3 are similar to the one's reported by 
 		predictions in the tails of the distribution.''
 		}
 		
-UnseenEst's paper (and the manual distributions we created and checked) show it behaves well (in the paper there are strong guarantees on that).\oa{what exactly does it show? give an example of an experiment they do. Instead of saying UnseenEst's paper say Xie et al., or whatever their name is}
+Zou et al. (and the manual distributions we created and checked) show UnseenEst behaves well (in the paper there are strong guarantees on that). More specifically, Zou et al. show with different experiments its ability to predict the number of variants and the frequencies when seeing only 10\% of the variants. 
 %Assessing UnseenEst using AMT created distribution would actually just be to create another distribution at a high cost, as the algorithm is non-parametric and at the end removes the ``labels'' (corrections themselves) and only looks at the histogram.
 Thank you for the note about the reliability of the less frequent corrections. We therefore conducted an additional experiment (results in Section 3.3 and Figure 3), in which we demonstrate that there is no major difference between the validity human annotators assigned to the validity of the frequent corrections, as opposed to the infrequent ones.
 %We sent all of our corrections to AMT and they told us whether they think those are corrections or not. Using the empirical frequency of the corrections we reported the results in this version of the paper. In short, rare corrections are good as well as frequent ones.
