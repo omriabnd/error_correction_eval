@@ -215,7 +215,7 @@ by showing that (1) semantic structural annotation can be consistently and autom
 %
 We demonstrate that current correctors
 suffer from over-conservatism: they tend to make too few changes to the source, relative to human correctors.
-{ \color{red} Assuming correctors are able to correct a large amount of the corrections in the corpus, this is an indication of some hidden, cross-systems bias.}
+{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
 
 \subsection{Notation}
 We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
@@ -951,10 +951,10 @@ See \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary measure based
 on automatic error detection.
 
-A similar approach was also taken in the field of machine translation (MT), 
-that attempted to estimate translation quality in terms of its adequacy (similar to semantic faithfulness) and fluency (similar to
+A similar approach was also taken in the field of machine translation (MT), after showing multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}.
+There were attempts to create reference-less measures \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine} and to estimate translation quality in terms of its adequacy (similar to semantic faithfulness) and fluency (similar to
 grammaticality)
-\cite{albrecht-hwa:2008:WMT,turian2006evaluation,reeder2006measuring,albrecht2007regression,snover2009fluency,specia2009estimating,specia2010machine,banchs2015adequacy}.\oa{do all these work talk about a fluency/adequacy decomposition?}
+\newcite{banchs2015adequacy}.
 Perhaps the most similar approach to ours was taken by the MEANT measure \newcite{lo2011meant}, which is based on a comparison of semantic role labeling structures on the source and target. Our decision to use UCCA in our experiments is motivated by its wider coverage of predicate types (as opposed to a focus only on verbal structures in MEANT). An elaborate comparison of SRL-based and UCCA-based approaches can be found in \newcite{birch2016hume}. We make no claim of course that UCCA is the best or the only semantic representation that can be used for defining a semantic faithfulness measure. Future work will experiment with a wider variety of semantic representations, both symbolic and distributional \cite[e.g.,][]{cheng2015syntax}.
 
 As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
