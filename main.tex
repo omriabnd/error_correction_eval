@@ -190,9 +190,9 @@ obtaining a more reliable estimate of correctors' performance, and proposed to d
 by normalizing corrector's estimated performance with the performance of a human corrector.
 However, while such normalization may yield more realistic performance estimates,
 it has no effect on the training and tuning of correctors.
-{\color{red} Moreover, in \secref{sec:} we show that current correctors may already surpass
-  human correctors in terms of common reference-based measures, suggesting that more substantial
-  changes to the evaluation measure may be required.}
+{\color{red} In fact, in \S\ref{sec:increase-reference} we show that current correctors may already surpass
+  human correctors in terms of their single-reference F-score, 
+	suggesting that more substantial changes to the common evaluation protocol are in order.}
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (\S \ref{sec:Semantics}).
@@ -224,9 +224,9 @@ by showing that (1) semantic structural annotation can be consistently and autom
 %Manual analysis showed excessive formal conservatism and under correction.
 %Albeit important, manual analysis is not enough and we aimed for generating some quantitative measures. 
 %
-We demonstrate that current correctors
-suffer from over-conservatism: they tend to make too few changes to the source, relative to human correctors.
-{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
+%We demonstrate that current correctors
+%suffer from over-conservatism: they tend to make too few changes to the source, relative to human correctors.
+%{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
 
 \subsection{Notation}
 We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
