@@ -149,12 +149,9 @@ have \cite{chodorow2012problems}.
 
 An important criterion in the evaluation of correctors
 is their ability to generate corrections that are faithful to meaning of the source.
-{\color{red} In fact, it has been argued} that many would prefer a somewhat cumbersome
-or even an occasionally ungrammatical
-correction over a correction that alters the meaning of the source \cite{brockett2006correcting}.
-As a result, 
-annotators are often instructed to be conservative in their corrections
-when compiling gold standard corrections for the task
+In fact, it has been argued that many would prefer a somewhat cumbersome
+or even an occasionally ungrammatical correction over one that alters the meaning of the source \cite{brockett2006correcting}.
+Consequently, annotators are often instructed to be conservative when compiling gold standard corrections for the task
 (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
 There were different attempts to formally capture this precision/recall asymmetry such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{dahlmeier2012better} and the choices of weights in I-measure \cite{felice2015towards}.
 
@@ -166,14 +163,14 @@ but are often penalized for making {\bf correct} changes not found in the refere
 Indeed, we show that current state of the art systems present over-conservatism.
 Evaluating the output of 12 recent correctors, we find that all of them
 substantially under-predict corrections relative to the gold standard
-(\S \ref{sec:formal_conservatism}). {\red{color} While it may be possible that it is
-beneficial for a corrector to be more conservatism than a human corrector would be,
-we often find an order of magnitude differences between them, which are unlikely
-to be desirable.}
+(\S \ref{sec:formal_conservatism}). {\color{red} 
+  As the gap in the prevalence of corrections between references and
+  correctors' output is often an order of magnitude large, this effect is unlikely to
+  be desirable.}
 
 We first assess whether the undue penalization of valid corrections can be
-resolved by increasing the number
-of references, which we denote with $M$ (\S \ref{sec:increase-reference}).
+resolved by increasing the number of references,
+which we denote with $M$ (\S \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence,
 arriving at an estimate of over 1000 corrections for sentences of no more than 15 tokens.
 We then consider two representative reference-based measures (henceforth, {\it RBMs}) for
@@ -190,9 +187,10 @@ obtaining a more reliable estimate of correctors' performance, and proposed to d
 by normalizing corrector's estimated performance with the performance of a human corrector.
 However, while such normalization may yield more realistic performance estimates,
 it has no effect on the training and tuning of correctors.
-{\color{red} In fact, in \S\ref{sec:increase-reference} we show that current correctors may already surpass
+{\color{red} In fact, in \S\ref{sec:increase-reference} we show that
+  current correctors may already surpass
   human correctors in terms of their single-reference F-score, 
-	suggesting that more substantial changes to the common evaluation protocol are in order.}
+  suggesting that more substantial changes to the common evaluation protocol are in order.}
 
 We conclude by proposing an alternative reference-less semantic evaluation approach which assesses the extent to which
 a correction faithfully represents the semantics of the source, by measuring the similarity of their semantic structures (\S \ref{sec:Semantics}).
@@ -962,18 +960,23 @@ See \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 for a proposal of a complementary measure based
 on automatic error detection.
 
-In the field of machine translation (MT) it was shown multiple references are better for evaluation, but costly \cite{albrecht-hwa:2008:WMT,turian2006evaluation}, what led to a line of works creating semantic inspired reference-less measures \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine}. This was followed by works to estimate translation quality in terms of its adequacy (similar to semantic faithfulness) and fluency (similar to
-grammaticality)
-\newcite{banchs2015adequacy}.
-Perhaps the most similar approach to ours was taken by the MEANT measure \newcite{lo2011meant}, which is based on a comparison of semantic role labeling structures on the source and target.
-Our decision to use UCCA in our experiments is motivated by its wider coverage of predicate types (as opposed to a focus only on verbal structures in MEANT). An elaborate comparison of SRL-based and UCCA-based approaches can be found in \newcite{birch2016hume}. We make no claim of course that UCCA is the best or the only semantic representation that can be used for defining a semantic faithfulness measure. Future work will experiment with a wider variety of semantic representations, both symbolic and distributional (e.g., \cite{cheng2015syntax}.)
+A similar decomposition of output quality to its adequacy (similar to faithfulness)
+and fluency (related to grammaticality), has
+been used in machine translation (MT) evaluation (e.g., \cite{banchs2015adequacy}).
+Another related line of work studies MT reference-less measures
+\cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine}.
+Of which, perhaps the most closely related approach to ours is taken by MEANT \cite{lo2011meant}, which is based on a comparison of semantic role labeling structures on the source and target.
 
-As a test case, we use the UCCA scheme to define semantic structures \cite{abend2013universal},
-motivated by its recent use in semantic machine translation evaluation \cite{birch2016hume}.
+As a test case, we here use the UCCA scheme as a semantic representation \cite{abend2013universal},
+motivated by its recent use in semantic MT evaluation \cite{birch2016hume}.
+UCCA is motivated by its wider coverage of predicate types, as opposed to MEANT's focus on verbal structures. See \cite{birch2016hume} for a more elaborate comparison. Future work will experiment with a wider variety of semantic representations, both symbolic and distributional (e.g., \cite{cheng2015syntax}).
+
 
 We conduct two experiments supporting the feasibility of our approach.
 We show that semantic annotation can be consistently applied to LL,
 through IAA experiments and that a perfect corrector scores high on this measure.
+We conclude by showing that the measure is sensitive to changes in meaning, by comparing
+the semantic strctures of the source to corrections of fairly poor quality.
 
 %As semantic structures represent an abstraction over different realizations
 %of a similar meaning,  In fact, $M$ plays no role in this approach, as the measure
