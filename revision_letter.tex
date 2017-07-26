@@ -11,7 +11,7 @@
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\oamod}[1]{{\color{red}#1}}
 \newcommand{\lc}[1]{\footnote{\color{blue}LC: #1}}
-
+\newcommand{\lcmod}[1]{{\color{blue}#1}}
 
 \signature{Leshem Choshen}
 \address{
@@ -49,12 +49,10 @@ Action Editor\\
 
 \vspace{.5cm}
 
+
 {\large\bf Stronger Evidence for the validity of UCCASim (Section 4)}
 
-\oa{which reviewer said what? put next to each R1, R2, R3} \footnote{ok, i'll do it}
-%\oa{we need to mention the additional exp in section 2 somewhere}\footnote{don't we?}
-
-\emph{``... why it follows that a
+$R_B$: \emph{``... why it follows that a
 	particular 'reference-less' semantic measure (UCCASim) is a solution to the
 	identified issues introduced by the RBMs. The authors suggest that UCCASim
 	is insensitive to surface changes between the source and NUCLE (gold)
@@ -65,12 +63,13 @@ Action Editor\\
 	such semantic errors very rarely occur in the data, preventing such
 	experimentation directly.)''
 }
+$R_C$: \emph{the authors, as they themselves admit, do not carry out the experiment in the opposite direction to show how similar the graphs of a source and a bad correction are.  This should have been possible.}
 
 The paper now includes an analysis, using UCCASim, of several systems that do tend to
 make major, and often erroneous, changes to the source. UCCASim indeed deems them to be semantically
 unfaithfulness to the source, indicating that the measure is sensitive to semantic errors. See Section 4.6.
 
-\emph{``Where is the evidence that the new semantic adequacy metric \_actually\_
+$R_A$: \emph{``Where is the evidence that the new semantic adequacy metric \_actually\_
 	solves the problem of correctors being over-conservative? The analysis the
 	authors contributes nothing towards that. To determine this, one needs to
 	actually compare systems tuned using this new metric on the same NUCLE
@@ -88,18 +87,18 @@ Tuning a system by a semantic faithfulness measure is likely to increase conserv
 \vspace{.5cm}
 {\large\bf UCCASim vs. Other Measures:}
 
-\emph{``Why propose a completely novel metric in Section 4 that requires human
+$R_A$: \emph{``Why propose a completely novel metric in Section 4 that requires human
 	annotation? Why not use an existing semantic similarity methods? There are
 	literally dozens of choices when it comes to measuring semantic similarity.''}
 
-	\emph{``The authors are not proposing (or
+$R_B$: \emph{``The authors are not proposing (or
 	testing) an automatic means of parsing UCCA. As such, since human annotation
 	is necessary, why not have the humans directly assess semantic faithfulness?''}
 
-\emph{``Even if you are using UCCA, why come up with an entirely new metric? Why not just use HUME which Birch et al. use for MT?''}
+$R_A$: \emph{``Even if you are using UCCA, why come up with an entirely new metric? Why not just use HUME which Birch et al. use for MT?''}
 
 
-\emph {``Is the UCCA formalism a better choice than semantic role labeling, and, if so, why?''}
+$R_C$: \emph {``Is the UCCA formalism a better choice than semantic role labeling, and, if so, why?''}
 
 We by no means claim that UCCASim is the only appropriate measure for semantic evaluation, and have now stressed this in the text, as well as added some discussion in the beginning of Section 4. We selected UCCA as a starting point due to some of its appealing properties as a basis for semantic evaluation, as discussed in ``HUME: Human UCCA-Based Evaluation of Machine Translation'' (Birch et al., EMNLP 2016), primarily that UCCA supports a wide variety of semantic structures, including copula clauses, nominal and adjectival structures, as well dicourse markers.
 
@@ -109,11 +108,11 @@ In addition, UCCASim can be automated. Indeed, the revised submission includes r
 \vspace{.5cm}
 {\large\bf Comments on the Data:}
 
-\emph{``Using 7 essays for an annotation study seems ridiculously low.''}
+$R_A$: \emph{``Using 7 essays for an annotation study seems ridiculously low.''}
 
 The annotation study includes 13 annotated essays, 10 doubly-annotated essays (7 source essays, 3 corrected essays) each of about 500 words. These results serve to show that the IAA scores obtained for UCCA (reported, e.g., in Abend and Rappoport / ACL 2013), also hold for the domain in question (LL and corrected LL). As the results match previously obtained results, they serve as a confirmation, and thus seem adequate in size. The results obtained with the UCCA parser TUPA, provide further support for our findings.
 
-\emph{``The authors do not mention exactly which version of the NUCLE corpus
+$R_A$: \emph{``The authors do not mention exactly which version of the NUCLE corpus
 	they used in Section 2. If it is the 2014 CoNLL data version, that test data
 	has corrections from multiple annotators. Did you account for the multiple
 	annotators? How is the gold row computed for the Word-Change heat map? There
@@ -126,49 +125,67 @@ We used the 2014 test set, arbitrarily selecting one of the references for all t
 \vspace{.5cm}
 {\large\bf Other Related Comments:}
 	
-\emph{``Very little is said about the DistSim results in Table 2 - I wondered why
+$R_C$: \emph{``Very little is said about the DistSim results in Table 2 - I wondered why
 	they were even included.''}
 	
-Indeed these results are only presentated for the sake of comparability with the English-French results of Sulem et al.
+Indeed these results are only presented for the sake of comparability with the English-French results of Sulem et al.
 	
-\emph{``Some old works on robustness evaluation are somewhat relevant here since
+	\lcmod{
+$R_C$: \emph{The IAA score for the source sentences is described as an "upper bound" in
+	the main text body and a "baseline" in the caption for Table 2.}
+
+Fixed in text.
+	}
+	
+$R_C$: \emph{``Some old works on robustness evaluation are somewhat relevant here since
 	they propose that the structure of source and corrected sentences be
 	compared in order to check that meaning has been preserved.''}
 	
 Thank you for these references. We have now added them to the text.
-	
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{\large\bf Conservatism and Comments realated to Section 2}
 
-\emph{``Other recent published systems on the CoNLL 2014 data, e.g., Junczys-Dowmunt
+\lcmod{
+	$R_C$: \emph{Diagrams would be helpful in 4.3}
+	
+	Due to space restrictions, we did not manage to fit in an insightful diagram.
+	
+	$R_C$: \emph{"the proposed measure is less prone to unduly penalize valid corrections"
+I'm not sure that the experiments in Section 4 really show this since, if I
+am not mistaken, the corrections that are tested are only the official
+reference ones, and not the extra corrections obtained as part of the
+earlier experiments to show the effect of M.}
+
+Indeed we show that even for the case of single reference, UCCASim assigns a fairly high score to a perfect corrector (i.e., to human references). We do not see how measuring UCCASim with multiple references may change this finding.
+We do not use corrections at all in UCCASim, we compare the coverage of the accuracy and $F$ score measures as was discussed in Section 3 to the UCCASim agreement as seen in Section 4, they are comparable in the sense they can both be interpreted as the score of a perfect corrector. 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\large\bf Conservatism and Comments related to Section 2}
+
+$R_B$: \emph{``Other recent published systems on the CoNLL 2014 data, e.g., Junczys-Dowmunt
 	and Roman Grundkiewicz 2016, are not included. This is notable, since some
 	of the more recent systems are significantly higher performing than those of
 	the original shared task 3 years ago.''}
 	
 We included an evaluation of the conservatism of Junczys-Dowmunt and Grundkiewicz's corrector  and another character-based neural network (Xie et al.) -- they are not substantially different from the others.
 
-\emph{``It would be interesting to see the differences between the over-conservative
+$R_C$: \emph{``It would be interesting to see the differences between the over-conservative
 	behaviour of the systems when $f_1$ is used as the evaluation metric and when
 	$f_{0.5}$ is used.''}
 
 About $f_1$: although Rozovskaya et al. report it, it has rarely been used since 2014 and hence systems developed with $f_1$ fall behind the current state-of-the-art, and were thus not included.
 	
-\emph{```We believe that in terms of conservatism, end users will be tolerant to
+$R_C$: \emph{```We believe that in terms of conservatism, end users will be tolerant to
 	changes in the sentence structure, i.e., violation of conservatism' Wouldn't
 	this very much depend on the application?''
 }
 
-\emph{``The assumption that users would tolerate
+$R_A$: \emph{``The assumption that users would tolerate
 	some mistakes just to have the system be able to suggest more corrections
 	requires further justification to me.''
 }
 	
-The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. However, even if this is the case, the effect we find is relevant because (1) there is an order of magnitude difference between humans and correctors; (2) the conservatism is such that current systems already surpass the F-score obtained by humans, which may suggest that other measures should be used from now on to evaluate GEC systems. %{\color{red}(3) over-conservatism can be seen not as a user-related issue but as a research measure. In this view, the goal is to eventually be able to be able to have a perfect system, a strong bias to such as this over-conservatism would be an indication that something might be wrong. In our case it seems that indeed it is not only that correctors can not possibly correct more than they do, but that it is probable the methods used incentivize them not to.}
-%(3) over-conservatism can be thought of as places were correctors can achieve corrections with high enough precision but they are over-conservative and avoid correcting even when unnecessary. Then the graphs we show are indicating it might be the problem, but not proving it (nothing actually could, as this is counter-factual). 
+The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. Additionally we changed the conclusion to reflect that more user studies to establish what dimensions are the most important for users in GEC.
 
-%More speculatively, even if over-conservatism is desirable, low coverage of references is still an issue, as it likely biases over-conservatism much more on these cases where there are many possible valid corrections, presumably more complicated errors. In this sense, over-conservatism may be an indication of issues with the training protocol.
-
-\emph{``The examined systems may well under-predict errors (low recall); however,
+$R_B$: \emph{``The examined systems may well under-predict errors (low recall); however,
 	incorrect predictions (precision) are also (likely) a problem for many error
 	types for many of the systems. It would be useful to see an analysis or
 	motivation as to whether or not low recall is the primary effectiveness
@@ -178,13 +195,13 @@ The point is taken that it may be desirable for correctors in some contexts to b
 
 We agree it would be very helpful to supplement this research with a user study of GEC systems, in order to locate potential bottlenecks. However, we would argue that the current evaluation is problematic as it incentivizes correctors not to correct, even in ``high-confidence'' cases, where precision may have been high, just because the coverage is low. 
 
-\emph{``Wouldn't it also be instructive to actually look at the distribution
+$R_A$: \emph{``Wouldn't it also be instructive to actually look at the distribution
 	over the exact error types for the analyses in Section 2? Perhaps the automated correctors are heavily conservative for only one or two types of errors?''
 	}
 	
-We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits, {\color{red}which come without types and include negative edits\oa{what are negative edits?} as well, which might be correct or not.}
+We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits, which come without types and {\color{red} include edits that are not accounted for in the reference, and might be true or false. Reference types are more easily used for such analysis, but using crowdsourcing for that is more challenging in that respect.}
 	
-\emph{Why use two separate word-level measures in Section 2? Why not just use
+$R_A$: \emph{Why use two separate word-level measures in Section 2? Why not just use
 	an MT metric like METEOR/TER that uses edit distance and takes into account
 	word ordering?}
 
@@ -192,7 +209,7 @@ It seems to us that METEOR less transparently reveals what type of changes are m
 
 {\bf Corrections as a distribution}
 
-\emph{``The analysis in Section 3 is definitely somewhat interesting and
+$R_A$: \emph{``The analysis in Section 3 is definitely somewhat interesting and
 	well-done (bringing in estimation procedures from a different field) but not
 	too novel. Bryant and Ng (2015) already showed that there are problems of
 	underscoring with the F0.5 metric and that not even humans score highly on
@@ -202,7 +219,7 @@ It seems to us that METEOR less transparently reveals what type of changes are m
 We agree that the experiments in section 3 are similar to the one's reported by Bryant and Ng (2015). Still, our work presents a number of contributions: (1) we evaluate not only the coverage of the measures, but also the distribution of corrections, showing that even increasing M considerably is unlikely to much improve the under-estimation; (2) we discuss the relation of these results to over-conservatism, (3) we show that due to the observed over-conservatism, GEC systems may surpass human performance in terms of F-score, suggesting that non-RBM may be needed.
 %and (4) due to (2) and (3) we suggest a different solution as we see a different problem that was out of Bryant and Ng (2015) scope.
 
-\emph{``Motivating Analysis: Note that the connection to training is more
+$R_B$: \emph{``Motivating Analysis: Note that the connection to training is more
 	complicated than implied here, at least with the evaluated systems. Namely,
 	most of the reviewed systems are actually not trained/tuned, at least
 	directly, against the final RBM, which was $M^2$ for most of the systems here.''
@@ -211,7 +228,7 @@ We agree that the experiments in section 3 are similar to the one's reported by 
 We agree, although during development, systems are tuned against an RBM. The analysis is meant to exemplify how over-conservatism may be linked to low coverage, without getting into the specific details of training. We have now also included an empirical analysis to this effect, through an oracle reranking experiment.
 %One of the reasons to base it on reranking is that development or validation either automatic or by hand is much more likely to use RBMs.\footnote{isn't it here already? "We have now also included an empirical analysis to this effect."}\oa{mention the new exp in section ``motivating analysis''}
 	
-	\emph{``It would be useful to include additional sensitivity analysis of the
+$R_B$: \emph{``It would be useful to include additional sensitivity analysis of the
 		UnseenEst algorithm to get a sense of the quality of the distribution
 		prediction. For example, you could have a large number of AMT workers
 		correct a small number of sentences, providing additional annotations
@@ -228,7 +245,7 @@ Zou et al. (and the manual distributions we created and checked) show UnseenEst 
 Thank you for the note about the reliability of the less frequent corrections. We have now included an additional experiment (results in Section 3.3 and Figure 3), in which we demonstrate that there is no major difference between the validity human annotators assign to the validity of the frequent corrections, as opposed to the infrequent ones.
 %We sent all of our corrections to AMT and they told us whether they think those are corrections or not. Using the empirical frequency of the corrections we reported the results in this version of the paper. In short, rare corrections are good as well as frequent ones.
 		
-\emph{``More detail should be provided on how UnseenEst works.''}
+$R_C$: \emph{``More detail should be provided on how UnseenEst works.''}
 		
 More extensive presentation of UnseenEst is now included. 
 

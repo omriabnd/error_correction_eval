@@ -38,7 +38,7 @@
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\oamod}[1]{{\color{red}#1}}
 \newcommand{\lc}[1]{\footnote{\color{blue}LC: #1}}
-
+\newcommand{\lcmod}[1]{{\color{blue}#1}}
 
 \newenvironment{myequation}{
   \vspace{-1em}
@@ -165,10 +165,10 @@ but are often penalized for making {\bf correct} changes not found in the refere
 Indeed, we show that current state of the art systems present over-conservatism.
 Evaluating the output of 12 recent correctors, we find that all of them
 substantially under-predict corrections relative to the gold standard
-(\S\ref{sec:formal_conservatism}). {\color{red} 
+(\S\ref{sec:formal_conservatism}). 
   As the gap in the prevalence of corrections between references and
   correctors' output is often an order of magnitude large, this effect is unlikely to
-  be desirable. See discussion in \S\ref{sec:increase-reference}.}
+  be desirable. See discussion in \S\ref{sec:increase-reference}.
 
 We first assess whether the undue penalization of valid corrections can be
 resolved by increasing the number of references,
@@ -263,7 +263,7 @@ University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]
 All are trained and tested on the NUCLE corpus.
 
 We compare the prevalence of changes made to the source by the correctors,
-relative to their prevalence in the NUCLE reference.
+relative to their prevalence in the NUCLE references (the corrections of one of the annotators was arbitrarily selected). \newcite{bryant2015far} noticed that the NUCLE references are more conservative than the ones they collected which means that our results may even underestimate the level of conservatism relative to other references.
 In order to focus on the more substantial changes, we exclude from our evaluation
 all non-alphanumeric characters, both within tokens or as tokens of their own.
 
@@ -366,7 +366,7 @@ We discuss the implications of our results, concluding that RBMs may only partia
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 %
 The relation between coverage and over-conservatism requires some explanation.
-We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, and assume for simplicity of the argument that training proceeds by iterating over the samples, as with the Perceptron algorithm.
+We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, and assume for simplicity of the argument that improvement is achieved by iterating over the samples, as with the Perceptron algorithm.
 
 Assume the corrector is faced with a phrase which it predicts to be ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability it is able to predict
@@ -418,12 +418,14 @@ Concretely, given a set of sentences, each paired with $\mathcal{M}$ references,
 a $k$-best list produced by a corrector, we define an oracle re-ranker that selects the highest
 scoring correction of the $k$-best list, according to a given evaluation measure.
 As a test case, we use the RoRo system, with $k$=100, and apply it to the 
-largest available LL corpus which is paired with a substantial amount of references,
+largest available LL corpus which is paired with a substantial amount of GEC references,
 namely the NUCLE-test corpus, which has 12 references \cite{bryant2015far}. We use
 the common F-score as an evaluation measure. 
 
 We examine the conservativeness of the oracle reranker for different $M$ values, averaging
-over 1312 samples of $M$ references from the available set of $\mathcal{M}=12$.
+over 1312 samples of $M$ references from the available set of $M=12$.
+\com{
+As this might be insightful to the way those M references are being used in practice at the training and test sets, we rerank over NUCLE references for M=1,2 and sample by random otherwise. Additionally we report the results with \newcite{bryant2015far} 10 references.}
 Our results show that word changes increase with $M$ (Figure \ref{fig:reranking_word_change}),
 while no significant difference is found in word order.
 %\footnote{As we only rerank individual sentences,
@@ -431,7 +433,7 @@ while no significant difference is found in word order.
 This indicates that conservatism is indeed related to the number of references available
 to the learner.\footnote{We do not see a reason why this reduction in conservatism may
   result from the setup itself. In fact, oracle reranking may in some cases result
-  in additional conservatism, as, as more references are used, some of them may be more
+  in additional conservatism, because, as more references are used, some of them may be more
   similar to the source, thus increasing conservatism.}
 
 
@@ -442,8 +444,9 @@ to the learner.\footnote{We do not see a reason why this reduction in conservati
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=8cm]{words_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with a given number of words changes (x-axis), following oracle reranking with different M values (column colors). 		\label{fig:reranking_word_change}
-          {\color{red} OA: explain what NUCLEA is}
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different M values (column colors). \com{For $M=1,2$ is over one and both NUCLE references respectively and higher $M$ values are sampled by random from all the references, BN column represents the results by \newcite{bryant2015far}(M=10)}$M$ values are sampled by random from all the references, BN column represents the results by \newcite{bryant2015far}(M=10).
+		The figure shows that tuning against a larger number of references indeed reduces conservatism.
+		\label{fig:reranking_word_change}
         }
 	\vspace{-0.5cm}
 \end{figure}
@@ -866,74 +869,7 @@ does not address over-conservatism, as it only
 scales the original measure. Moreover, as seen above, a human correction's score
 is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in performance.
 
-\com{
-\subsection{Discussion}
-{\color{red}\label{subsec:low_coverage_over_conservatism}
-	\lc{in the introduction the order is in reverse, we first discuss and then we show this is indeed the case, is that a problem? It somehow seems more structured this way, after experiments and more fluent from a birds eye view to first reason why we check it anhe say it is true.}d t
-	 The common practice of using one or two references in GEC evaluation yields a substantial under-estimation of system's performance using $F$-score \cite{bryant2015far} or other RBMs (\S\ref{sec:increase-reference}).
-	 Theoretically this under estimation could lead to over-conservatism. In the case of detection, the reason is straightforward. If for a given type of error $t$ there is less than 50\% agreement in the gold standard about whether this should be detected as an error or not. Than a perfect corrector will not detect $t$ errors.
-	 
-	 The same holds for corrections, which we see is the case for a small $M$ \cite{bryant2015far}.
-	 Importantly, low coverage of the reference set,
-	 in conjunction with asymmetric evaluation measures that penalize over-correction
-	 more severely than under-correction, result in evaluation measures that further incentivize correctors not to correct.
-	 Assume that for a given source sentence $x$, references $Y \sim \mathcal{D}_x$, and proposed correction $c$,
-	 a given evaluation measure increases by $\alpha$ if $c \in Y$, and decreases by $\beta > \alpha$ if $c \notin Y$.
-	 %Assume that the corrector corrects with , i.e., it invariably produces $y \in Correct_x$.
-	 If the covered probability mass $P(y \in Y)$ for $Y$ of size $M$ and $y$ sampled from $\mathcal{D}_x$
-	 the expected utility of the corrector from producing $y$ is
-	 \vspace{-0.8cm}
-	 \begin{small}
-	   \begin{center}
-	     \begin{flalign*}
-	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha - P(y \notin Y) \cdot \beta = &\\
-	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\ &(P(y\notin correct) + P(y\in correct)P(y \notin Y)) \cdot \beta = &\\
-	 &P(y \in Y|y \in correct)P(y \in correct) \cdot \alpha -&\\
-	 &(1-P(y\in correct)P(y \in Y)) \cdot \beta = &\\
-		   \end{flalign*}
-	   \end{center}
-	\end{small}
-	\lc{I used the opposites (1-P) on the last step, how did you simplify it further?}
-	For example (if we see in bryant probabillity X for that Y for that, etc. when we will be sure about the formula I will write it.)
-	This implies that a corrector optimized in such circumstances will result in over-conservatism. We hypothesize this is a main reasons for the results shown in this section.}
-}
-%
- %we turn to discussing what values of $M$ yield a reliable estimate of the performance of GEC systems. While there is no one answer to this question, and coverage can be low even with $M$ values of 20, both measures we considered begin to plateau (in the case of $F$-score) or present linear increases after an initial concave behavior (in the case of accuracy) at $M$ values of 8--10. This may indicate that such values are a reasonable balance between cost and bias.
-%
-%Finally, there a few assumptions made in our experiments that are worth fleshing out.
-%First, e.g. the explanation of a bad sampling is not probable but can not be refuted. We assume that the sentences we picked are a good representation of the overall sentences, but know they might be a bit simpler as we did not choose very long sentences for the reasons mentioned earlier. Another assumption is that the simple automatic edits are not a big shift in respect to the human edits.
-%
-% it could be that they are better taylored to
-% those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not.
-% we hypothesize that this is the reason.
-%
-%An interesting finding comes from the combination of the scores of a perfect corrector with the scores correctors get (with $M=2$). Some correctors get a result close to the perfect score, with one actually surpassing it. If we consider the results from section \ref{sec:formal_conservatism} it is evident that they are far from being a perfect corrector, as many sentences which evidently need correcting (even if there is more than one way to correct) are not corrected by them. Then how can they get such a high score?
-%
-%
-%The effect of under estimation on evaluation and hence on how correctors are perceived is obvious. 
-%Perhaps less obvious will be how under estimation affects the development
-%process. We shall consider any evaluation which scores a wrong correction lower than no correction at all
-%(e.g. $F$-score). For simplicity lets consider a scenario with only one sentence. We denote by $r>0$ the
-%reward for a valid correction, $pu>0$ the punishment for a wrong correction and 0 otherwise.
-%Thus, an average the score of a correction $x$ would be
-%$S\left(x\right) = p\left(x\in y\right)*r - \left(1-p\left(x\in y\right)\right)*pu$.
-%Under the assumption that development cycles or ML is gradually optimizing to get closer to the best solution,
-%we will examine an all knowing perfect corrector.
-%This corrector may take into account the probabilities of corrections to be in the gold standard.
-%When choosing to correct such a corrector will choose the most frequent correction yielding $max_xS\left(x\right)$.
-%Notably, not matter what are $r, pu$ when $p\left(x\in y\right)$ is small enough the perfect
-%corrector will choose \emph{not} to correct.
-%
-	
-%To conclude the main discussion of this section, if the NLP community has agreed one correction is not enough\cite{tetreault2008native}
-%%we can now say 2 is no magic number either. On both measures we see a large improvement in coverage when enlarging $M$, suggesting that a more reasonable $M$ to choose would be somewhere around 7 where the high probability corrections are probably covered and the graph turns semi-linear. The results also strongly support the hypothesis assessment values are very low, and hence might be a cause for over conservatism.
-%Another conclusion to be made is that given a value from the assessment process we may estimate how low the value is in respect to the perfect assessment. Some may wish to correct for this under assessment.
-%
-%
-%
-%
-%
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Semantic Faithfulness Measure}\label{sec:Semantics}
 %
@@ -1397,21 +1333,24 @@ in the liguistic literature, as fundamental.
 
 In order to empirically validate this claim, we present an experiment which shows that corrections
 of a fairly low quality indeed receive a much lower UCCASim faithfulness score. As the
-systems we experiment on in \S\ref{sec:formal_conservatism} and \ref{sec:increase-reference}
+systems we experiment on in \S\ref{sec:formal_conservatism} and \S5\ref{sec:increase-reference}
 are over-conservative, they produce few semantically unfaithful sentences. We 
 instead experiment on 5 partially trained correctors, trained and evaluated on the
 JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
 
 {\sc UCCASim} was computed automatically for each system's output on 754 source sentences.
-Low faithfulness results are to be expected, as these outputs include major changes,
+Low faithfulness results are expected, as these outputs include major changes,
 sometimes deleting full phrases from the output or changing every other word in the sentence.
 Indeed, the automatic UCCASim measure obtained scores of 0.32-0.39 for 4 of the systems, and 0.19
 for the system, which obtained the worst GLUE score.
-For completeness, we also ran {\sc UCCASim} on the 4 references provided for each
-source sentence by JFLEG, and obtained scores of 0.72-0.78.
+For completeness, we ran {\sc UCCASim} on the 4 references provided for each
+source by JFLEG, and obtained scores of 0.72-0.78.
 
 Taken together, these results indicate that {\sc UCCASim}, even in its automatic variant,
 is sensitive to semantic changes. Consider the following example: 
+
+
+\vspace{-.1cm}
 
 \begin{table}[h!]
   \centering
@@ -1422,8 +1361,9 @@ is sensitive to semantic changes. Consider the following example:
     Corrector & \small The good student must know how to understand and work hard to get on.     
   \end{tabular}
 \end{table}
+\vspace{-.3cm}
 
-{\sc UCCASim} assigns the reference 0.71, while only assigning the corrector 0.33.
+{\sc UCCASim} assigns the reference 0.71, and only 0.33 to the corrector.
 Moreover, although the reference makes more word changes than the proposed correction,
 it still obtains a higher UCCASim score.
 %, as (unlike the proposed correction), it retains the
