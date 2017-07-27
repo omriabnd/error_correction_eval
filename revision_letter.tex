@@ -13,17 +13,7 @@
 \newcommand{\lc}[1]{\footnote{\color{blue}LC: #1}}
 \newcommand{\lcmod}[1]{{\color{blue}#1}}
 
-\signature{Leshem Choshen}
-\address{
-The Department of Computer Science \& \\
-The Department of Cognitive Science \\
-The Hebrew University of Jerusalem \\
-Rothberg Building A, Room A421 \\
-Edmond Safra Campus, Givat Ram \\ 
-Jerusalem, 91904, Israel \\
-Phone: +972-545961029 \\
-email: leshem.choshen@mail.huji.ac.il
-}
+
 
 \begin{document}
 
@@ -130,12 +120,12 @@ $R_C$: \emph{``Very little is said about the DistSim results in Table 2 - I wond
 	
 Indeed these results are only presented for the sake of comparability with the English-French results of Sulem et al.
 	
-	\lcmod{
+	
 $R_C$: \emph{The IAA score for the source sentences is described as an "upper bound" in
 	the main text body and a "baseline" in the caption for Table 2.}
 
 Fixed in text.
-	}
+	
 	
 $R_C$: \emph{``Some old works on robustness evaluation are somewhat relevant here since
 	they propose that the structure of source and corrected sentences be
@@ -143,7 +133,7 @@ $R_C$: \emph{``Some old works on robustness evaluation are somewhat relevant her
 	
 Thank you for these references. We have now added them to the text.
 
-\lcmod{
+
 	$R_C$: \emph{Diagrams would be helpful in 4.3}
 	
 	Due to space restrictions, we did not manage to fit in an insightful diagram.
@@ -156,7 +146,7 @@ earlier experiments to show the effect of M.}
 
 Indeed we show that even for the case of single reference, UCCASim assigns a fairly high score to a perfect corrector (i.e., to human references). We do not see how measuring UCCASim with multiple references may change this finding.
 We do not use corrections at all in UCCASim, we compare the coverage of the accuracy and $F$ score measures as was discussed in Section 3 to the UCCASim agreement as seen in Section 4, they are comparable in the sense they can both be interpreted as the score of a perfect corrector. 
-}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 {\large\bf Conservatism and Comments related to Section 2}
 
@@ -183,7 +173,7 @@ $R_A$: \emph{``The assumption that users would tolerate
 	requires further justification to me.''
 }
 	
-The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. Additionally we changed the conclusion to reflect that more user studies to establish what dimensions are the most important for users in GEC.
+The point is taken that it may be desirable for correctors in some contexts to be more conservative than human correctors. We changed our text to reflect this. Additionally we changed the conclusion to reflect that more user studies to establish what dimensions are the most important for users in GEC are needed.
 
 $R_B$: \emph{``The examined systems may well under-predict errors (low recall); however,
 	incorrect predictions (precision) are also (likely) a problem for many error
@@ -199,7 +189,7 @@ $R_A$: \emph{``Wouldn't it also be instructive to actually look at the distribut
 	over the exact error types for the analyses in Section 2? Perhaps the automated correctors are heavily conservative for only one or two types of errors?''
 	}
 	
-We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits, which come without types and {\color{red} include edits that are not accounted for in the reference, and might be true or false. Reference types are more easily used for such analysis, but using crowdsourcing for that is more challenging in that respect.}
+We agree it would be instructive, and we indeed plan to pursue this in future work. Note that there are several methodological issues to be resolved to implement this, such as defining what constitutes a type where the annotators disagree with one another, and how to categorize the correctors' edits, which come without types and  include edits that are not accounted for in the reference, and might be true or false. Reference types are more easily used for such analysis, but using crowdsourcing for that is more challenging in that respect.
 	
 $R_A$: \emph{Why use two separate word-level measures in Section 2? Why not just use
 	an MT metric like METEOR/TER that uses edit distance and takes into account
@@ -250,7 +240,7 @@ $R_C$: \emph{``More detail should be provided on how UnseenEst works.''}
 More extensive presentation of UnseenEst is now included. 
 
 
-\closing{Sincerely,}
+\closing{Sincerely.}
 
 \end{letter}
 
