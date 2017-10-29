@@ -190,7 +190,7 @@ the incurred bias, as both RBMs' assessment almost triple with the increasing $M
 	Their work focused on obtaining a more reliable estimate of correctors' performance and proposed to do so by normalizing corrector's estimated performance with the performance of a human corrector.
 %Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$ on $F$-score, the most commonly used measure for GEC. Their work focused on obtaining a more reliable estimate of correctors' performance and proposed to do so by normalizing corrector's estimated performance with the performance of a human corrector.
 However, while such normalization may yield more realistic performance estimates,
-it has no effect on the training and tuning of correctors. Moreover, we show that in some cases it already yields above perfect score for a system that hardly corrects.
+it has no effect on the training and tuning of correctors. Moreover, we show that it already yields above perfect score for a system that hardly corrects.
 }
 %{\color{red} In fact, in \S\ref{sec:increase-reference} we show that
 %  current correctors may already surpass
@@ -232,7 +232,7 @@ by showing that (1) semantic structural annotation can be consistently and autom
 %{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
 
 \subsection{Notation}
-We assume each source sentence $x$ has a set of valid corrections $Correct_x$,
+We assume each LL sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_x$ is the probability a human annotator would correct $x$ as $y$.
 
@@ -256,70 +256,34 @@ which is the de facto standard in GEC.
 The corpus contains 1414 essays in LL and 50 test essays, each of about 500 words.
 
 We evaluate all participating systems in the CoNLL 2014 shared task,
-in addition to three of the best performing systems on this dataset, a hybrid corrector, a phrase based machine translator and a neural network based corrector.
-The participating systems and their abbreviations: Adam Mickiewicz University (AMU),
-University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
-Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
-National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
-Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
-University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[Char]{xie2016neural}.
-All are trained and tested on the NUCLE corpus.
+in addition to three of the best performing systems on this dataset, a hybrid corrector \cite{rozovskaya2016grammatical}, a phrase based machine translation(MT) \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} and a neural network based corrector \cite{xie2016neural}.
+The participating systems and their abbreviations are found in Appendix \ref{ap:abbr}. %All systems were trained and tested on the NUCLE corpus.
 
 We compare the prevalence of changes made to the source by the correctors,
-relative to their prevalence in the NUCLE references (the corrections of one of the annotators was arbitrarily selected). \newcite{bryant2015far} noticed that the NUCLE references are more conservative than the ones they collected which means that our results may even underestimate the level of conservatism relative to other references.
+relative to their prevalence in the NUCLE references. In the figures one annotator was arbitrarily selected. \newcite{bryant2015far} noticed that the NUCLE references are more conservative than the ones they collected which implies that our results may even underestimate the level of conservatism relative to other references.
 In order to focus on the more substantial changes, we exclude from our evaluation
 all non-alphanumeric characters, both within tokens or as tokens of their own.
 
 
 \paragraph{Measures of Conservatism.}
 We consider three types of divergences between the source and the reference.
-First, we measure to what extent \emph{words} were changed: altered, deleted or added.
+First, we measure the extent to which \emph{words} were changed: altered, deleted or added.
 To do so, we compute word alignment between the source and the reference, casting it
-as a weighted bipartite matching problem, between the source's words and the correction's. 
+as a weighted bipartite matching problem.%, between the source's words and the correction's. 
 Edge weights are assigned to be the edit distances
 between the tokens.
-We note that aligning words in GEC is much simpler than in machine translation,
-as most of the words are kept unchanged, deleted fully, added, or changed slightly.
-Following word alignment, we define the {\sc WordChange} measure
+We note that aligning words in GEC is much simpler than in MT,
+as most of the words are unchanged, deleted fully, added, or changed slightly.
+Following word alignment, we define {\sc WordChange}
 as the number of unaligned words and aligned words that were changed in any way.
 
 Second, we quantify word \emph{order} differences using
-Spearman's $\rho$ between the order of the words in the source sentence,
-and the order of their corresponding words in the correction according to the word alignment.
+Spearman's $\rho$ between the order of the words in the source sentence
+and the order of their corresponding-aligned words in the correction.
 $\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exactly match. We report the average $\rho$ over all source sentences pairs. 
 
 Third, we report how many source sentences were split and how many concatenated by the reference and the correctors.
-\com{
-\begin{figure}
-  \centering
-  \begin{subfigure}[]{0.4\textwidth}
-  	\includegraphics[width = \textwidth]{aligned}
-  	\caption{Number of source sentences (y-axis) split 
-  		(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\label{fig:split}}
-  \end{subfigure}
 
-  \begin{subfigure}[]{0.4\textwidth}
-  	\com{\caption{\label{fig:rho}}}
-    \includegraphics[width = \textwidth]{spearman_ecdf}
-    \caption{Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\label{fig:rho}}
-  \end{subfigure}
-
-  \begin{subfigure}[]{0.4\textwidth}
-  	%\caption{\label{fig:words_changed}}
-  	\includegraphics[width = \textwidth]{words_differences_heat}
-  	\caption{Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\label{fig:words_changed}}
-  \end{subfigure}
-  \com{\caption{(a) Number of source sentences (y-axis) split 
-  		(right bars) or concatenated (left bars) in the correction, according to the gold standard (striped column) and different correctors (colored columns). The gold standard makes about an order of magnitude more splits and concatenations than the correctors.\\
-  		(b) Empirical cumulative probability (y-axis) of a sentence to get Spearman's rho values (x-axis) of word alignment. The gold standard(dotted line) makes word change alterations to more sentences than the correctors, and within these sentences, it changes order more substantially.\\
-  		(c) Amount of sentences(heat) by number of words changed(x-axis) per system(y-label). The gold standard(bottom) corrects more words per sentences and more sentences relative to other systems.\\
-  		See \S\ref{par:experimental_setup} for a legend
-  		of the systems.}\label{fig:over-conservatism}}
-  \caption{\label{fig:over-conservatism}
-    See \S\ref{par:experimental_setup} for a legend
-    of the systems.}
-  	\end{figure}
-}
 \begin{figure}
   \centering
   \begin{subfigure}[]{0.4\textwidth}
@@ -345,6 +309,7 @@ Third, we report how many source sentences were split and how many concatenated 
   }
 \end{figure}
 \vspace{-.2cm}
+\lc{read until here}
 \paragraph{Results.}
 % presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
@@ -464,7 +429,7 @@ errors that may drastically increase the number of annotations variants (as ever
 Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
 
 Crowdsourcing has proven effective in GEC evaluation \cite{madnani2011they,napoles2015ground} and in
-related tasks such as machine translation \cite{zaidan2011crowdsourcing,post2012constructing}. We thus
+related tasks such as MT \cite{zaidan2011crowdsourcing,post2012constructing}. We thus
 use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source
 sentences, we elicited 50 corrections from Amazon Mechanical Turk workers.
 %allowing for a reliable estimation of the distributions.
@@ -786,9 +751,9 @@ test data ($M=2$).
 
 \begin{figure}
   \includegraphics[width=8cm]{$F_{0.5}$_significance}
-  \caption{$F_{0.5}$ values for different correctors, including confidence interval ($p=.95$).
+  \caption{$F_{0.5}$ values with $M=2$ for different correctors, including confidence interval ($p=.95$).
     The left-most column (``source'') presents the $F$-score of a corrector that doesn't make any
-    changes to the source sentences.
+    changes to the source sentences. In red is human performance.
     See \S \ref{par:experimental_setup} for a legend of the correctors.\label{fig:F_correctors}}
 \vspace{-0.5cm}
 \end{figure}
@@ -890,7 +855,7 @@ on automatic error detection.
 
 A similar decomposition of output quality to its adequacy (similar to faithfulness)
 and fluency (related to grammaticality), has
-been used in machine translation (MT) evaluation (e.g., \cite{banchs2015adequacy, lo2011meant}).
+been used in machine MT evaluation (e.g., \cite{banchs2015adequacy, lo2011meant}).
 
 As a test case, we use the UCCA scheme as a semantic representation \cite{abend2013universal},
 motivated by its recent use in semantic MT evaluation \cite{birch2016hume} and by appealing linguistic properties See \cite{birch2016hume} for discussion.
@@ -959,11 +924,18 @@ for a high number of references.
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
 
-
-\com{
+\pagebreak
 \appendix
+\section{Systems tested}\label{ap:abbr}
+ Adam Mickiewicz University (AMU),
+ University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
+ Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
+ National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
+ Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
+ University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[Char]{xie2016neural}.
+
 \section{Annotated paragraphs}
-\begin{table}[]
+\begin{table}[hb]
 	\centering
 	\begin{tabular}{lll}
 		Annotator-id & NUCLE-id & type      \\
@@ -990,5 +962,5 @@ for a high number of references.
 	\end{tabular}
 	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
 \end{table}
-}
+
 \end{document}
