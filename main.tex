@@ -78,7 +78,7 @@
   Grammatical Error Correction systems (henceforth, {\it correctors}) aim to
   correct ungrammatical text, while changing it as little as possible.
   However, whereas such conservatism is a virtue for correctors,
-  we find that state-of-the-art systems make substantially less changes to the source sentences
+  we find that state-of-the-art systems make substantially fewer changes to the source sentences
   than needed.
   Analyzing the distribution of possible corrections for a given sentence,   
   we show that this over-conservatism likely stems from
@@ -185,7 +185,7 @@ indicating that a prohibitively large $M$ may be required for reliable estimatio
 
 Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$
 on $F$-score, the most commonly used measure for GEC. Their work focused on
-obtaining a more reliable estimate of correctors' performance, and proposed to do so
+obtaining a more reliable estimate of correctors' performance and proposed to do so
 by normalizing corrector's estimated performance with the performance of a human corrector.
 However, while such normalization may yield more realistic performance estimates,
 it has no effect on the training and tuning of correctors.
@@ -254,7 +254,7 @@ The corpus contains 1414 essays in LL and 50 test essays, each of about 500 word
 
 We evaluate all participating systems in the CoNLL 2014 shared task,
 in addition to three of the best performing systems on this dataset, a hybrid corrector, a phrase based machine translator and a neural network based corrector.
-The particiapting systems and their abbreviations are: Adam Mickiewicz University (AMU),
+The participating systems and their abbreviations: Adam Mickiewicz University (AMU),
 University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
 Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
 National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
@@ -346,7 +346,7 @@ Third, we report how many source sentences were split and how many concatenated 
 % presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
 Results (Figure \ref{fig:over-conservatism}) show that the reference corrections make changes to considerably more source sentences than any of the correctors, and within each changed sentence changes more words and makes more word order changes, often an order of magnitude more. For example, there are  36 reference sentences with 6 word changes, where the most sentences with 6 word changes by any corrector is 5.
-Similar results are obtained on the TreeBank of Learner English \cite{yannakoudakis2011new}.
+Similar amount of correction is observed on the references of the TreeBank of Learner English \cite{yannakoudakis2011new}.
 %While $89.6\%$ of NUCLE sentences need corrections,
 %The prevalence of FCE consists only of ungrammatical sentences.
 %As expected, FCE is a bit less conservative than NUCLE by our measures.
@@ -366,7 +366,7 @@ We discuss the implications of our results, concluding that RBMs may only partia
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
 %
 The relation between coverage and over-conservatism requires some explanation.
-We abstract away from the details of the training procedure, and assume that correctors attempt to maximize an objective function, over some training or development data, and assume for simplicity of the argument that improvement is achieved by iterating over the samples, as with the Perceptron algorithm.
+We abstract away from the details of the training procedure and assume that correctors attempt to maximize an objective function, over some training or development data, and assume for simplicity of the argument that improvement is achieved by iterating over the samples, as with the Perceptron algorithm.
 
 Assume the corrector is faced with a phrase which it predicts to be ungrammatical. Assume $p_{detect}$ is the probability that this prediction is correct.
 Assume $p_{correct}$ is the probability it is able to predict
@@ -426,8 +426,7 @@ We examine the conservativeness of the oracle reranker for different $M$ values,
 over 1312 samples of $M$ references from the available set of $M=12$.
 \com{
 As this might be insightful to the way those M references are being used in practice at the training and test sets, we rerank over NUCLE references for M=1,2 and sample by random otherwise. Additionally we report the results with \newcite{bryant2015far} 10 references.}
-Our results show that word changes increase with $M$ (Figure \ref{fig:reranking_word_change}),
-while no significant difference is found in word order.
+Our results show that word changes increase with $M$ (Figure \ref{fig:reranking_word_change}). No significant difference is found in word order.
 %\footnote{As we only rerank individual sentences,
 %  there is clearly no change in the number of sentences split or concatenated.}
 This indicates that conservatism is indeed related to the number of references available
@@ -444,7 +443,7 @@ to the learner.\footnote{We do not see a reason why this reduction in conservati
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=8cm]{words_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different M values (column colors). \com{For $M=1,2$ is over one and both NUCLE references respectively and higher $M$ values are sampled by random from all the references, BN column represents the results by \newcite{bryant2015far}(M=10)}$M$ values are sampled by random from all the references, BN column represents the results by \newcite{bryant2015far}(M=10).
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different M values (column colors). \com{For $M=1,2$ is over one and both NUCLE references respectively and higher $M$ values are sampled by random from all the references, BN column represents the results by \newcite{bryant2015far}(M=10)}$M$ values are sampled by random from all the references, the BN column represents the oracle reranking results against the 10 references of \newcite{bryant2015far}(M=10).
 		The figure shows that tuning against a larger number of references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
         }
@@ -563,7 +562,7 @@ we define $C$'s accuracy to be
   \end{myequation}
 \end{small}
 
-Note that $C$'s accuracy is in fact an estimate of $C$'s probability to produce
+Note that $C$'s accuracy is, in fact, an estimate of $C$'s probability to produce
 a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
 
  \begin{small}
@@ -644,7 +643,7 @@ $P_{\mathcal{D}_i}\{y: y \in Y_i\}$.
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
 in order to simulate a case where reference corrections are collected by a single
-annotator, and are thus not repeated. We find similar trends with faster increase
+annotator, and are thus not repeated. We find similar trends with a faster increase
 in accuracy reaching over $0.47$ with $M=10$.
 
 %
@@ -808,7 +807,7 @@ is not significantly better than the third and fourth.
 %      while for statistical significance increasing $N$ is sufficient, this would not solve this problem:
 % -- low coverage entails other problems: it incentivizes systems not to correct, even if they can perfectly predict valid corrections.
 % -- mathematical argument
-% -- indeed, we see RoRo > Perfect and other systems are close to Perfect. it could be that they are better taylored to
+% -- indeed, we see RoRo > Perfect and other systems are close to Perfect. it could be that they are better tailored to
 %    those corrections produced by the NUCLE annotators. however in section 2 we saw that they are not.
 %    we hypothesize that this is the reason.
 %
@@ -838,9 +837,9 @@ is lower than 0.5 for $M=2$ on average (for short sentences). For cases of non-t
 changes, we expect it might be even lower, suggesting that condition (\ref{eq:reward}) often
 holds in practice, incentivizing over-conservatism.
 
-Considering the $F$-score of the best performing systems in Figure \ref{fig:F_correctors}, and
+Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and
 comparing them to the $F$-score of a perfect corrector with $M=2$, we find that their scores are comparable,
-where RoRo in fact surpasses a perfect corrector's $F$-score.
+where RoRo, in fact, surpasses a perfect corrector's $F$-score.
 While it is possible that these correctors outperform the perfect corrector by learning how to
 correct a sentence in the same way as one of the NUCLE annotators did, we view this possibility
 as unlikely as our results (\S\ref{sec:formal_conservatism}) show that
@@ -914,7 +913,7 @@ We conduct two experiments supporting the feasibility of our approach.
 We show that semantic annotation can be consistently applied to LL,
 through IAA experiments and that a perfect corrector scores high on this measure.
 We conclude by showing that the measure is sensitive to changes in meaning, by comparing
-the semantic strctures of the source to corrections of fairly poor quality.
+the semantic structures of the source to corrections of fairly poor quality.
 
 %As semantic structures represent an abstraction over different realizations
 %of a similar meaning,  In fact, $M$ plays no role in this approach, as the measure
@@ -996,7 +995,7 @@ Such annotation may be unreliable as a source of semantic information, as semant
 In this section, we use semantic annotation to structurally
 represent LL text. Semantic structures are faithful to the intended
 meaning of the sentence, and not to its formal realization, and thus face
-less conflicts where the syntactic structure used diverges from
+fewer conflicts where the syntactic structure used diverges from
 the one intended. We are not aware of any previous attempts to semantically
 annotate LL text.
 
@@ -1321,7 +1320,7 @@ Results also suggest that an improvement in parsing performance may further impr
 
 Our results have hitherto shown that UCCA is insensitive to the differences between a source sentence
 and its valid correction. This sub-section presents an evaluation of the sensitivity of UCCASim
-to proposed corrections, which diverge semantically from the source.
+to proposed corrections that diverge semantically from the source.
 
 %To wrap up the argument we show that {\sc UCCASim} is not only insensitive to corrections (Table \ref{tab:Distances}) but also sensitive to meaning changing corrections.
 
@@ -1329,11 +1328,11 @@ From a theoretical standpoint, a semantic measure is, by its definition, sensiti
 the semantic dimensions which it encodes. 
 In UCCA's case, these distinctions are focused on predicate-argument structures, the inter-relations between them,
 and the semantic heads of complex arguments. These distinctions are widely accepted in NLP and
-in the liguistic literature, as fundamental.
+in the linguistic literature, as fundamental.
 
 In order to empirically validate this claim, we present an experiment which shows that corrections
 of a fairly low quality indeed receive a much lower UCCASim faithfulness score. As the
-systems we experiment on in \S\ref{sec:formal_conservatism} and \S5\ref{sec:increase-reference}
+systems we experiment on in \S\ref{sec:formal_conservatism} and \S\ref{sec:increase-reference}
 are over-conservative, they produce few semantically unfaithful sentences. We 
 instead experiment on 5 partially trained correctors, trained and evaluated on the
 JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
@@ -1344,7 +1343,7 @@ sometimes deleting full phrases from the output or changing every other word in 
 Indeed, the automatic UCCASim measure obtained scores of 0.32-0.39 for 4 of the systems, and 0.19
 for the system, which obtained the worst GLUE score.
 For completeness, we ran {\sc UCCASim} on the 4 references provided for each
-source by JFLEG, and obtained scores of 0.72-0.78.
+source by JFLEG and obtained scores of 0.72-0.78.
 
 Taken together, these results indicate that {\sc UCCASim}, even in its automatic variant,
 is sensitive to semantic changes. Consider the following example: 
@@ -1363,7 +1362,7 @@ is sensitive to semantic changes. Consider the following example:
 \end{table}
 \vspace{-.3cm}
 
-{\sc UCCASim} assigns the reference 0.71, and only 0.33 to the corrector.
+{\sc UCCASim} assigns the reference 0.71 and only 0.33 to the corrector.
 Moreover, although the reference makes more word changes than the proposed correction,
 it still obtains a higher UCCASim score.
 %, as (unlike the proposed correction), it retains the
@@ -1402,7 +1401,7 @@ the heavy tail of the corrections distribution entails only minor improvements t
 with each additional reference.
 
 We thus propose a measure for the semantic faithfulness of the correction to the source,
-thereby avoiding the pitfalls of reference-based evaluation. We argue that using reference-less
+thereby avoiding the pitfalls of reference-based evaluation. We believe that using reference-less
 measures in conjunction with reference-based measures in the training and development of GEC
 systems will better address the challenge of over-conservatism.
 
