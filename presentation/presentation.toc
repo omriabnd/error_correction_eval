@@ -1,0 +1,19 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{The task}{3}{0}{1}
+\beamer@sectionintoc {2}{Over conservatism}{6}{0}{2}
+\beamer@sectionintoc {3}{Reference based measures - (RBM)s}{11}{0}{3}
+\beamer@subsectionintoc {3}{1}{Background and motivation}{12}{0}{3}
+\beamer@subsectionintoc {3}{2}{Corrections as distribution}{16}{0}{3}
+\beamer@subsectionintoc {3}{3}{RBMs under estimation as a function of $M$}{19}{0}{3}
+\beamer@sectionintoc {4}{Reference-less semantic measure}{22}{0}{4}
+\beamer@sectionintoc {5}{Motivations}{32}{1}{5}
+\beamer@sectionintoc {6}{Data}{37}{1}{6}
+\beamer@sectionintoc {7}{Grammatical error correction approaches}{39}{1}{7}
+\beamer@subsectionintoc {7}{1}{Classifier}{40}{1}{7}
+\beamer@subsectionintoc {7}{2}{Machine Translation}{42}{1}{7}
+\beamer@sectionintoc {8}{Evaluation}{48}{1}{8}
+\beamer@subsectionintoc {8}{1}{Naive}{49}{1}{8}
+\beamer@subsectionintoc {8}{2}{$M^2$-scorer}{53}{1}{8}
+\beamer@subsectionintoc {8}{3}{I-measure}{55}{1}{8}
+\beamer@subsectionintoc {8}{4}{GLEU}{63}{1}{8}
+\beamer@subsectionintoc {8}{5}{reference-less}{66}{1}{8}

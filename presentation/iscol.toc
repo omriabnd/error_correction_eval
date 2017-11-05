@@ -1,0 +1,8 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{The task}{3}{0}{1}
+\beamer@sectionintoc {2}{General performance on the task - Over conservatism}{6}{0}{2}
+\beamer@sectionintoc {3}{Evaluation measures - Reference based measures (RBM)s}{8}{0}{3}
+\beamer@subsectionintoc {3}{1}{Background and motivation}{9}{0}{3}
+\beamer@subsectionintoc {3}{2}{Corrections as distribution}{14}{0}{3}
+\beamer@subsectionintoc {3}{3}{RBMs under estimation as a function of $M$}{14}{0}{3}
+\beamer@sectionintoc {4}{Reference-less semantic measure}{17}{0}{4}

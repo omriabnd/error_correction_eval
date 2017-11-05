@@ -1,0 +1,19 @@
+\BOOKMARK [2][]{Outline0.1}{The task}{}% 1
+\BOOKMARK [2][]{Outline0.2}{Over conservatism}{}% 2
+\BOOKMARK [2][]{Outline0.3}{Reference based measures - \(RBM\)s}{}% 3
+\BOOKMARK [3][]{Outline0.3.1.12}{Background and motivation}{Outline0.3}% 4
+\BOOKMARK [3][]{Outline0.3.2.16}{Corrections as distribution}{Outline0.3}% 5
+\BOOKMARK [3][]{Outline0.3.3.19}{RBMs under estimation as a function of M}{Outline0.3}% 6
+\BOOKMARK [2][]{Outline0.4}{Reference-less semantic measure}{}% 7
+\BOOKMARK [1][]{Outline1}{Appendix}{}% 8
+\BOOKMARK [2][]{Outline1.5}{Motivations}{Outline1}% 9
+\BOOKMARK [2][]{Outline1.6}{Data}{Outline1}% 10
+\BOOKMARK [2][]{Outline1.7}{Grammatical error correction approaches}{Outline1}% 11
+\BOOKMARK [3][]{Outline1.7.1.40}{Classifier}{Outline1.7}% 12
+\BOOKMARK [3][]{Outline1.7.2.42}{Machine Translation}{Outline1.7}% 13
+\BOOKMARK [2][]{Outline1.8}{Evaluation}{Outline1}% 14
+\BOOKMARK [3][]{Outline1.8.1.49}{Naive}{Outline1.8}% 15
+\BOOKMARK [3][]{Outline1.8.2.53}{M2-scorer}{Outline1.8}% 16
+\BOOKMARK [3][]{Outline1.8.3.55}{I-measure}{Outline1.8}% 17
+\BOOKMARK [3][]{Outline1.8.4.63}{GLEU}{Outline1.8}% 18
+\BOOKMARK [3][]{Outline1.8.5.66}{reference-less}{Outline1.8}% 19
