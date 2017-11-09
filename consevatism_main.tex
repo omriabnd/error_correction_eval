@@ -345,26 +345,20 @@ Validating this analysis empirically, we conduct an experiment to determine whet
 the number of references in training indeed reduces conservatism. There is no multiple-reference
 corpus available which is large enough for re-training a corrector. Hence, we take an oracle reranking approach
 as a simulation, and test whether the availability of increasingly more training references reduces its conservativeness.
-\lc{read until here}
-Concretely, given a set of sentences, each paired with $\mathcal{M}$ references, and given a corrector's $k$-best list, we define an oracle re-ranker that selects the highest
-scoring correction of the $k$-best list, according to a given evaluation measure.
+Concretely, given a set of sentences, each paired with $\mathcal{M}$ references; a measure and a corrector's $k$-best list, we define an oracle re-ranker that selects for each sentence the highest scoring correction.
 As a test case, we use the RoRo system, with $k=100$, and apply it to the 
 largest available LL corpus which is paired with a substantial amount of GEC references,
-namely the NUCLE-test corpus, which has 12 references \cite{bryant2015far}. We use
-the common $F$-score as an evaluation measure. 
+namely the NUCLE-test corpus. Using the common $F$-score as an evaluation measure. 
+We examine the conservativeness of the oracle reranker for different $\mathcal{M}$ values, averaging over 1312 samples of $\mathcal{M}$ references from the available set of $\mathcal{M}=12$ \cite{bryant2015far}.
 
-We examine the conservativeness of the oracle reranker for different $\mathcal{M}$ values, averaging
-over 1312 samples of $\mathcal{M}$ references from the available set of $\mathcal{M}=12$.
-\com{
-As this might be insightful to the way those M references are being used in practice at the training and test sets, we rerank over NUCLE references for M=1,2 and sample by random otherwise. Additionally we report the results with \newcite{bryant2015far} 10 references.}
 Our results show that word changes increase with $\mathcal{M}$ (Figure \ref{fig:reranking_word_change}). No significant difference is found in word order.
 %\footnote{As we only rerank individual sentences,
 %  there is clearly no change in the number of sentences split or concatenated.}
 This indicates that conservatism is indeed related to the number of references available
 to the learner.
 
-We do not see a reason why this reduction in conservatism may result from the setup itself. In fact, oracle reranking will not show these tendency if even one of our assumptions does not hold. For simplicity, lets assume we only consider a specific error and collapse the corrections in the $k$-best list to three: $S$ keeping the source untouched, $VC \subset Correct$ the valid corrections and invalid ones. Then, aided by table \ref{ta:oracle_expected_results} we see that if over-conservatism is due to systems' lack of ability, if most choices not to correct are valid and hence probable to be found in some of the references or if coverage is not a problem, then we would expect no effect in the experiment. 
-
+We do not see a reason why this reduction in conservatism may result from the setup itself. In fact, oracle reranking will not show this tendency if even one of our assumptions does not hold. For simplicity, lets assume we only consider a specific error and collapse the corrections in the $k$-best list to three: $S$ keeping the source untouched, $VC \subset Correct$ the valid corrections and invalid ones. Then, aided by table \ref{ta:oracle_expected_results} we see that if over-conservatism is due to systems' lack of ability, if most choices not to correct are valid and hence probable to be found in some of the references or if coverage is not a problem, then we would expect no conservatism reduction in the experiment. 
+%
 \begin{table}[h]
 	\vspace{-0.5cm}
 	\centering
@@ -372,59 +366,52 @@ We do not see a reason why this reduction in conservatism may result from the se
 	\singlespacing
 	\begin{tabular}{cc|cc}
 		& No VC & \multicolumn{2}{c}{VC exist in k-best list}                                                                                \\
-		& any S           & S is Correct                                                                              & S erroneous \\ \hline
+		& Any S           & S  Correct                                                                              & S Erroneous \\ \hline
 		\multicolumn{1}{c|}{Small $\mathcal{M}$} & 1          & \begin{tabular}[c]{@{}c@{}}$P\left(S, \neg VC\right) +$\\  $0.5 P\left(S, VC\right)$\end{tabular} & $P\left(VC\right)$    \\
 		\multicolumn{1}{c|}{Large $\mathcal{M}$} & 1          & 0.5                                                                                          & 0                  \\ \hline
 		\multicolumn{1}{c|}{Expected}            & No change  & \begin{tabular}[c]{@{}c@{}} Undefined\end{tabular}        & More changes 
 	\end{tabular}
-	\caption{The different expected results under different assumptions about the ability of correctors to correct, the need for correcting most of the errors, and the probability to cover the correction with small $\mathcal{M}$. The values represent the probabilities keeping the source. $P$ is the probability to be in $Y$. \label{ta:oracle_expected_results}}
-	\vspace{-0.9cm}
+	\caption{The expected results under different assumptions concerning the ability of correctors to correct, the need for correcting most of the errors, and the probability for high coverage with small $\mathcal{M}$. The values represent the probabilities keeping the source. $P$ is the probability to be in $Y$. \label{ta:oracle_expected_results}}
+	\vspace{-0.6cm}
 \end{table}
-
-%may in some cases result in additional conservatism, because, as more references are used, some of them may be more similar to the source, thus increasing conservatism. Also, measures tend to be based on the best match, so if due to a mistake or a permissive annotator the source is found in some references, like the case in \cite{bryant2015far}, then as $\mathcal{M}$ rises the probability to find the source as a reference rises and we would expect reranking to result in over-conservatism.
-
-%\com{Ideally, in order to validate this empirically, we should re-train correctors using multiple references, and re-examine their conservatism. However, corpora annotated with more than one correction are scarce. 
-%As a proof of concept, we simulate a re-ranking procedure over the corpora of \newcite{bryant2015far}, which provide additional 10 references for each of sentence in the NUCLE test set. In order to abstract away from implementation details and from artefacts that may result from the small dataset available, we explore an oracle re-ranking setting, where the correction with the best Micro $F$-score taken from the 100-best list of the RoRo state-of-the-art corrector (see \S 2) is selected. The $F$-score is computed with varying numbers of references ($\mathcal{M}$).}
-
-
+%
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=8cm]{words_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). \com{For $\mathcal{M}=1,2$ is over one and both NUCLE references respectively and higher $\mathcal{M}$ values are sampled by random from all the references, BN column represents the results by \newcite{bryant2015far}($\mathcal{M}=10$)} sentence references are randomly sampled  . The BN column represents the oracle reranking results against \newcite{bryant2015far} references ($\mathcal{M}=10$).
-		The figure shows that tuning against a larger number of references indeed reduces conservatism.
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+		In conclusion, tuning against additional references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
         }
 	\vspace{-0.5cm}
 \end{figure}
-
+%
  \subsection{Data}
 %
-Our analysis assumes that we have a reliable estimate for the distribution of corrections
+%Our analysis assumes that we have a reliable estimate for the distribution of corrections
 $\mathcal{D}_x$ of the source sentences we evaluate.
-Our experiments in the following section are run on a random sample of 52 sentences with a maximum length of 15 from the NUCLE test data.
-Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotations variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.
+The experiments in the following section are run on a random sample of 52 sentences with a maximum length of 15 from the NUCLE test data.
+Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.
 Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
 
-Crowdsourcing has proven effective in GEC evaluation \cite{madnani2011they,napoles2015ground} and in
-related tasks such as MT \cite{zaidan2011crowdsourcing,post2012constructing}\lc{do we really need to advocate using crowdsourcing?}. We thus use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source sentences, we elicited 50 corrections from Amazon Mechanical Turk workers.
+Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source sentences, we elicited 50 corrections from Amazon Mechanical Turk workers.
 %allowing for a reliable estimation of the distributions.
-Aiming to judge grammaticality rather than fluency, we asked the workers to
+Aiming to judge grammaticality rather than fluency, we instructed the workers to
 correct only when necessary, not for styling.
-4 sentences did not require any correction according to almost half the workers and were hence discarded.
+4 sentences required no correction according to almost half the workers and were hence discarded.
 %
 \subsection{Estimating Corrections' Distribution}\label{subsec:corrections_distribution}
 %
 We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
-We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm that
-estimates a multinomial distribution, in which the individual values do not matter, only the distribution of probabilities across values. {\sc UnseenEst} aims to minimize the ``earthmover distance'', between the estimated histogram and the histogram of the distribution. Intuitively, if histograms are piles of dirt, minimizing the amount of dirt moved times the distance by which it was moved.\footnote{An implementation of {\sc UnseenEst} can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}} 
+We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm to
+estimate a discrete distribution in which the individual values do not matter, only the probability of each value. {\sc UnseenEst} aims to minimize the ``earthmover distance'', between the estimated histogram and the histogram of the distribution. Intuitively, if histograms are piles of dirt, minimizing the amount of dirt moved times the distance by which it was moved.\footnote{An implementation of {\sc UnseenEst} can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}} 
 {\sc UnseenEst} was originally developed and thoroughly tested for assessing how many
-variants a gene might have, including undiscovered ones,
-and their relative frequencies.
+variants a gene might have, including undiscovered ones, and their relative frequencies.
 This is a similar setting to the one tackled here.
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{All data we collected, along with the estimated
   distributions can be found in <to be disclosed upon publication>}
 
+\lc{read until here}
 According to the estimates, most LL sentences have a large number of
 corrections with low probability accounting for the bulk of the probability mass
 and a rather small number of frequent corrections.
