@@ -411,15 +411,12 @@ Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{All data we collected, along with the estimated
   distributions can be found in <to be disclosed upon publication>}
 
-\lc{read until here}
 According to the estimates, most LL sentences have a large number of
-corrections with low probability accounting for the bulk of the probability mass
+infrequent corrections accounting for the bulk of the probability mass
 and a rather small number of frequent corrections.
 %The estimated distributions tend to have steps, with many corrections with the same (low) frequency.
-Table \ref{tab:corrections_dist} presents the mean number of different corrections with frequency at least
-$\gamma$ (for different $\gamma$ values), and their total probability mass.
-For instance, 74.34 corrections account for 75\% of the total probability mass of the corrections, each
-occurring with a frequency of 0.1\% or higher.
+Table \ref{tab:corrections_dist} presents the mean number of different corrections with frequency at least $\gamma$ (for different $\gamma$ values), and their total probability mass.
+For instance, 74.34 corrections account for 75\% of the total probability mass of the corrections, each occurring with a frequency of 0.1\% or higher.
 
 \begin{table}[h!]
 	\vspace{-0.5cm}
@@ -447,14 +444,11 @@ occurring with a frequency of 0.1\% or higher.
 \end{table}
 
 The overwhelming number of rare corrections raises the question of whether these can be regarded as noise.
-To test this we conducted another crowdsourcing experiment, where 3 annotators were asked to
-judge whether a correction produced in the first experiment, is indeed a valid correction.
-Figure \ref{fig:validity_judgements} presents the
-frequency in which annotators judged a correction to be valid, where corrections are grouped by the number of times they appear in the data.
+To test this we conducted another crowdsourcing experiment, where 3 annotators were asked to judge whether a correction produced in the first experiment, is indeed a valid correction.
+Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are grouped by the number of times they appear in the data.
 
-Results show that the original frequency of the correction has little effect on how often it was deemed
-valid, where even the rarest corrections were judged valid 78\% of the times.
-
+Results show that the empirical frequency of a correction has little effect on how often it was deemed valid, where even the rarest corrections were judged valid 78\% of the times.
+\lc{perhaps move to the appendix}
 \begin{figure}[h!]
 	\vspace{-.3cm}
 	\includegraphics[width=8cm]{IAA_confirmation_frequency}
@@ -488,9 +482,8 @@ we define $C$'s accuracy to be
   \end{myequation}
 \end{small}
 
-Note that $C$'s accuracy is, in fact, an estimate of $C$'s probability to produce
-a valid correction for a sentence, or $C$'s {\it true accuracy}. Formally:
-
+Note that $C$'s accuracy is, in fact, an estimate of $C$'s {\it true accuracy}, the probability to produce a valid correction for a sentence. Formally:
+\lc{read until here}
  \begin{small}
    \centering
    \vspace{-0.2cm}
@@ -748,12 +741,38 @@ is not necessarily an upper bound, as an over-conservative corrector may surpass
 
 \section{monolingual translation}\label{sec:simplification}
 In the above sections we examined the distribution of corrections that leads to low coverage and in turn may lead to the conservatism bias. We also had indications GED share a similar fate although to a lesser extent. In this section we replicate the main experiments from above for simplification with similar results. The replication suggests this bias is not a GEC specific phenomenon. Instead, it seems that monolingual translation tasks such as GED, GEC and simplification all suffer from this bias to different extent.
-Even if not termed this way or put under the spotlight, over-conservatism is a known problem in simplification, having too little additions, deletions and substitution of words, shifts of word sequences\cite{zhang2017sentence} and word edit distance \cite{narayan2015unsupervised}. 
-We used \newcite{Xu-EtAl:2016:TACL} corpus and following their procedure sent 50 sentences for crowdsourcing as above.
-results\lc{create results}
-We also tested oracle reranking using SARI a somewhat precision oriented measure that is widely used. as a measure with 100-best list of moses based simplification system and 12-best of a neural based one, showing a tendency towards conservatism as the number of references is lower. For example neural system with $\mathcal{M}=1$ chose not to correct 7 sentences and made one edit to 60 of them while the one with $\mathcal{M}=8$ 3 and 31 respectively. In the same manner the Moses system with $\mathcal{M}=8$ has more sentences with $X$ or more corrections for every $X>1$. Graphs showing the improvement in word order and word changes can be found in Appendix \lc{add graphs}.
+Even if not termed this way or put under the spotlight, over-conservatism is a known problem in simplification, having too little additions, deletions and substitution of words, shifts of word sequences \cite{zhang2017sentence} and word edit distance \cite{narayan2015unsupervised}. 
+We used \newcite{Xu-EtAl:2016:TACL} corpus and following their procedure sent 47 sentences for crowdsourcing as above, with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 sentences respectively occurring only once and none reoccurring more than 6 times, implying variant numbers are indeed greater than our sample as estimated.
+The results in table \ref{tab:simplifications_dist} show simplification tends to have even more variants than GEC. 
+results of sari coverage\lc{create results} 
+We also tested oracle reranking using SARI a widely used, somewhat precision oriented, measure. Two $k$-best list were used, moses based system ($k=100$) and a neural based one ($k=12$), both showing a tendency towards conservatism as the number of references is lower. For example, the neural system with $\mathcal{M}=1$ chose not to correct 7 sentences and made one edit to 60 of them while the one with $\mathcal{M}=8$ 3 and 31 respectively. In the same manner, for any number of changes $X$, the Moses system with $\mathcal{M}=8$ has more sentences with at least $X$ corrections. Graphs showing the improvement in word order and word changes can be found in Appendix \lc{add graphs}.
 
 Our hypothesis is encouraged by the fact that improvement in this aspect came together with the use of a new corpus containing references for tuning\cite{Xu-EtAl:2016:TACL} and even more improvement with a semantic approach that can abstract over the references.
+
+\begin{table}[h!]
+	\vspace{-0.5cm}
+	\centering
+	\small
+	\singlespacing
+	\begin{tabular}{c|c|c|c|c|}
+		%\cline{2-5} 
+		& \multicolumn{4}{c|}{Frequency Threshold ($\gamma$)}\\ 
+		%\cline{2-5} 
+		& \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0.001} & \multicolumn{1}{c}{0.01} & \multicolumn{1}{c|}{0.1}
+		\\
+		\hline
+		Variants & 2636.29 & 111.19 & 4.68 & 0.13
+		\\
+		Mass & 1 & 0.42 & 0.14 & 0.02\\
+		\hline
+	\end{tabular}
+	\caption{\label{tab:simplifications_dist}
+		Estimating the distribution of simplifications $\mathcal{D}_x$.
+		The table presents the mean number of simplifications per sentence with probability of more than
+		$\gamma$ (top row), as well as their total probability mass (bottom row).
+	}
+	\vspace{-0.3cm}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Semantic Faithfulness Measure}\label{sec:Semantics}
