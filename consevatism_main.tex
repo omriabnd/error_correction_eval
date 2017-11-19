@@ -530,8 +530,8 @@ Hence the bias $b_\mathcal{M}$ (Equation \ref{eq:bias}) can be re-written as
 \end{myequation*}
 \end{small}
 
-We will henceforth assume that $C$ is perfect (i.e., its true accuracy $Pr\left(C(x) \in Correct_x\right)$ is 1).
-Note that assuming any other value for $C$'s true accuracy
+We will henceforth assume that $C$ is perfect (i.e., its {\it true accuracy} is 1).
+Note that assuming any other value for $C$'s {\it true accuracy}
 would simply scale $b_\mathcal{M}$ by that accuracy.
 Similarly, assuming only a fraction $p$ of the sentences require correction scales $b_\mathcal{M}$ by $p$.
 %
@@ -590,7 +590,7 @@ in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
   \vspace{-0.5cm}
 \end{figure}
 
-Figure \ref{fig:accuracy_vals} presents the expected accuracy values for our perfect
+Figure \ref{fig:accuracy_vals} presents the expected accuracy values for a perfect
 corrector (i.e., 1-$\hat{b}_\mathcal{M}$) for different  $\mathcal{M}$ values. 
 Results show that even for $\mathcal{M}$ values which are much larger than those normally used (e.g., $\mathcal{M}=20$),
 the expected accuracy is only about 0.5. As $\mathcal{M}$ increases, the contribution of each additional correction diminishes sharply (the slope is about 0.004 around $\mathcal{M}=20$).
@@ -599,12 +599,11 @@ We also experiment with a more relaxed measure, {\it Exact Index Match}, which i
 Formally, two corrections $c$ and $c'$ over a source sentence $x$ match if for their word alignments with the source (computed as above) $a:\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c\right|,Null\}$
 and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that $c_{a\left(i\right)} \neq x_{i} \Leftrightarrow c'_{a'\left(i\right)} \neq x_{i}$, where $c_{Null}=c'_{Null}$.
 
-Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case
-for different values of $\mathcal{M}$, which indicate that while scores of a perfect corrector are somewhat higher, still with $\mathcal{M}=10$, it is 0.54.
+Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case. Results indicate that while a perfect corrector's scores are somewhat higher, they are still 0.54 with $\mathcal{M}=10$.
 As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
 
 The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}.\footnote{An implementation of this and other methods and the estimated density functions will be released upon publication.}
-
+\lc{until here}
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
 the $F_\alpha$-score is standard when reporting system performance (and consequently in hyper-parameter tuning and development). \lc{Do we really need to elaborate on F score history in GEC?}
@@ -740,7 +739,8 @@ does not address over-conservatism, it only scales the original measure. Moreove
 is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in score.
 
 \section{monolingual translation}\label{sec:simplification}
-In the above sections we examined the distribution of corrections that leads to low coverage and in turn may lead to the conservatism bias. We also had indications GED share a similar fate although to a lesser extent. In this section we replicate the main experiments from above for simplification with similar results. The replication suggests this bias is not a GEC specific phenomenon. Instead, it seems that monolingual translation tasks such as GED, GEC and simplification all suffer from this bias to different extent.
+In the above sections we examined the distribution of corrections that leads to low coverage and in turn may lead to the conservatism bias. We also had indications GED share a similar fate although to a lesser extent. In this section we replicate the main experiments from above for simplification with similar results. The replication suggests this bias is not a GEC specific phenomenon. Instead, it seems that monolingual translation tasks such as GEC and simplification all suffer from this bias to different extent.
+
 Even if not termed this way or put under the spotlight, over-conservatism is a known problem in simplification, having too little additions, deletions and substitution of words, shifts of word sequences \cite{zhang2017sentence} and word edit distance \cite{narayan2015unsupervised}. 
 We used \newcite{Xu-EtAl:2016:TACL} corpus and following their procedure sent 47 sentences for crowdsourcing as above, with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 sentences respectively occurring only once and none reoccurring more than 6 times, implying variant numbers are indeed greater than our sample as estimated.
 The results in table \ref{tab:simplifications_dist} show simplification tends to have even more variants than GEC. 
