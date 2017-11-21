@@ -728,19 +728,17 @@ does not address over-conservatism, it only scales the original measure. Moreove
 is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in score.
 
 \section{monolingual translation}\label{sec:simplification}
-In the above sections we examined the distribution of corrections that leads to low coverage and in turn may lead to the over-conservatism bias. We also had indications GED share a similar fate, although to a lesser extent. In this section we annalyize simplification in the above way, with similar results. The replication suggests this bias is not a GEC specific phenomenon. Instead, it seems that monolingual translation tasks such as GEC, simplification and others such as compression all suffer from this bias to different extent.
+In the above sections we examined the distribution of corrections that leads to low coverage and in turn may lead to the over-conservatism bias. We also had indications GED share a similar fate, although to a lesser extent. In this section we analyze simplification in the above way, with similar results. The replication suggests this bias is not a GEC specific phenomenon. Instead, it seems that monolingual translation tasks such as GEC, simplification and others such as compression all suffer from this bias to some extent.
 
 Even if not termed this way or put under the spotlight, over-conservatism is a known problem in simplification, having too little additions, deletions and substitution of words, shifts of word sequences \cite{zhang2017sentence} and word edit distance \cite{narayan2015unsupervised}. 
-We used \newcite{Xu-EtAl:2016:TACL} corpus and following their procedure sent 47 sentences for crowdsourcing as above, with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, implying variant numbers are indeed greater than our sample as estimated.
+We used \newcite{Xu-EtAl:2016:TACL} corpus and following their procedure sent 47 sentences for crowdsourcing as above, with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim variant numbers are vast, much more even than the 50 we sampled.
 The results in table \ref{tab:simplifications_dist} show simplification tends to have even more variants than GEC. 
-\lc{until here}
-\lc{create results} 
-Next we turn to assess the effect of $\mathcal{M}$ on SARI \cite{Xu-EtAl:2016:TACL} a sophisticated and widely used, somewhat precision oriented, measure. SARI considers all the references, unlike Accuracy and $F$-score that max over them. This increases the score for combining parts of the references, but also leads to an unintuitive situation in which guessing a reference is not enough to achieve full score. This, if intended, may come from the underlying assumption that references are imperfect. If so, reference tendencies, as the one we investigate, are all the more relevant - gold standard is practically an aggregation of references. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable. Perfect addition consists of all additions suggested at least by one of the reference, and it is impossible to get full score on deleting and keeping, quality of such a change is weighted by the amount of references agreeing on it, and as we showed, references don't tend to. \lc{perhaps too long, perhaps not clear enough. toned down, enough?} For that reason we report in Figure \lc{add here} the results of SARI for a lucky perfect system, one that guessed one of the references, and MAX-SARI the results for the maximum SARI score for a choice of reference. We see that SARI's combining of references indeed reduces the coverage problem, but also that the score of perfect systems \textbf{drop} with the number of reference. All suffer heavily from the coverage problem \lc{example}.
-We also tested oracle reranking using SARI on $k$-best of a neural based system ($k=12$) observing that it becomes less conservative. For example, with $\mathcal{M}=1$ 50 sentences were not changed while with $\mathcal{M}=8$ 30 were, exactly like the gold standard. Another test with moses($k=100$) based system showed the inverse result, we attribute this to SARI's behaviour, repeating the reranking with MAX-SARI showed reduced conservatism with both systems.
+Next we turn to assess the effect of $\mathcal{M}$ on SARI \cite{Xu-EtAl:2016:TACL} a sophisticated and widely used, somewhat precision oriented, measure. SARI considers all the references, unlike Accuracy and $F$-score that max over them. This may attribute score to combination of references, but also leads to an unintuitive situation in which guessing a reference is not enough to achieve full score. This, if intended, may come from the underlying assumption that references are imperfect. If so, reference tendencies and distribution, are all the more relevant - gold standard is practically an aggregation of references. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable. Perfect addition consists of all additions suggested at least by one reference, and it is impossible to get full score on other types of changes, gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to. \lc{perhaps too long, perhaps not clear enough.} For that reason we report in Figure \lc{add here} the results of SARI for a lucky perfect system, one that guessed one of the references, and MAX-SARI the results for the maximum SARI score for a choice of  a reference. We see that unlike MAX-SARI, SARI's combining of references under-assess perfect systems regardless of $\mathcal{M}$. Morover, the score of lucky systems  \textbf{drop} with the number of reference. 
+We also tested oracle reranking (see \lc{add graphs}) using SARI on $k$-best of a neural based system ($k=12$) observing that it becomes less conservative. For example, with $\mathcal{M}=1$ 50 sentences were not changed while with $\mathcal{M}=8$ 30 were, exactly like the gold standard. Another test with moses($k=100$) based system showed the inverse result, we attribute this to SARI's behaviour, repeating the reranking with MAX-SARI showed reduced conservatism with both systems.
 %We also tested oracle reranking using SARI. Two $k$-best list were used, simple moses based system ($k=100$) and a neural based one ($k=12$), while the first shows an inverse tendency, the second becomes less conservative. For example, for any number of changes $X$, the Moses system with $\mathcal{M}=1$ has more sentences with at least $X$ corrections compared to reranking with $\mathcal{M}=1$. We attribute this to lack valid corrections combined with SARI's behaviour. Conversely, the neural system with $\mathcal{M}=1$ chose not to correct 50 sentences while the one with $\mathcal{M}=8$ 30, exactly like the gold standard. 
-Graphs showing the improvement in word order and word changes can be found in Appendix \lc{add graphs}.
 
-Our hypothesis is encouraged by the fact that reduction in conservatism came together with the use of the new corpus containing references for tuning and most prominent change came with a semantic approach that can abstract over the references \cite{zhang2017sentence}.
+ The relevance of coverage to conservatism is further encouraged by the fact that reduction in simplification conservatism came together with the use of the new corpus introducing references for tuning and a more prominent change came with a semantic approach that can abstract over the references \cite{zhang2017sentence}.
+ In our opinion, the above results attest to the need in considering coverage of evaluation procedures.
 
 \begin{table}[h!]
 	\vspace{-0.5cm}
@@ -768,23 +766,18 @@ Our hypothesis is encouraged by the fact that reduction in conservatism came tog
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Semantic Faithfulness Measure}\label{sec:Semantics}
+\section{Coping with the bias}\label{sec:Semantics}
+Through the experiments above we saw that additional reference and a choice of adequate measures to utilize them may reduce coverage problems and the induces over-conservatism.
 
 In another work \footnote{citation will be given in camera ready as not to disclose anonymity} under those proceedings, we propose a measure that eschews the use
-of reference corrections, instead measuring the semantic faithfulness of the proposed
+of reference in GEC, instead measuring the semantic faithfulness of the proposed
 correction to the source.
 Concretely, we propose to measure the semantic similarity of the source and the proposed correction
-through the graph similarity of their semantic representations.
-Such a measure has to be complemented with a GED procedure, as it only captures faithfulness, the extent to which
+through the graph similarity of their semantic representations (UCCA \cite{abend2013universal}).
+The measure is complemented with a RLM GED \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, as it only captures faithfulness, the extent to which
 the meaning of the source is preserved in the correction,
-and not its grammaticality.
-See \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
-for a proposal of a complementary GED RLM.
 
-As a test case, we use the UCCA scheme as a semantic representation \cite{abend2013universal},
-motivated by its recent use in semantic MT evaluation \cite{birch2016hume} and by appealing linguistic properties See \cite{birch2016hume} for discussion.
-
-\lc{I think the next paragraph is unnecessary, but unsure}
+\lc{I think the next paragraphs are unnecessary, but unsure}
 We conduct two experiments supporting the feasibility of our approach.
 We show that semantic annotation can be consistently applied to LL,
 through IAA experiments and that a perfect corrector scores high on this measure.
@@ -795,18 +788,16 @@ The combination of the grammaticality and semantic measures are suggested as a w
 
 \section{Conclusion}
 
-This paper addresses the shortcomings of existing RBMs in GEC.
-We present evidence that state of the art correctors suffer from over-conservatism and
+This paper addresses the shortcomings of existing RBMs in monolingual translation.
+We present evidence that state of the art systems suffer from over-conservatism and
 argue that this over-conservatism results from training them against measures that
-not only more harshly penalize over-correction than under-correction,
-but also often penalize correctors for proposing perfectly valid corrections.
-In fact, our results indicate that systems are often more likely to be penalized for a valid correction
-than to receive credit for it, due to the small number of references taken into account.
+not only more harshly penalize over-change than under-change,
+but also often penalize for proposing perfectly valid translations.
+In fact, systems are often more likely to be penalized for a valid change than to receive credit for it, due to the small number of references taken into account.
 
 Estimating the distribution of valid corrections for a sentence, we find
 that increasing the number of references is beneficial only up to a point, after which
-the heavy tail of the corrections distribution entails only minor improvements to the coverage
-with each additional reference.
+the heavy tail of the corrections distribution entails only minor improvements to the coverage with each additional reference.
 
 We thus propose a measure for the semantic faithfulness of the correction to the source,
 thereby avoiding the pitfalls of RBMs. We believe that using RLMs in conjunction with RBMs in the training and development of GEC systems will better address the challenge of over-conservatism.
@@ -832,7 +823,7 @@ thereby avoiding the pitfalls of RBMs. We believe that using RLMs in conjunction
 %and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment
 %but also as a feature for correctors. 
 %
-
+\lc{Suggest to delete this too:}
 Future work will assess the relative importance, ascribed by users of GEC systems,
 to different evaluation criteria of the output.
 Specifically, we will explore to what extent users are
