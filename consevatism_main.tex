@@ -129,8 +129,8 @@
 % is a challenging research field, which interfaces with many
 %other areas of linguistics and NLP. The field
 
-Evaluation in Monolingual Translation in general and in Grammatical Error Correction (GEC) has received much attention over the
-years \cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground}\oa{add refs from other tasks}, and
+Evaluation in Monolingual Translation\cite{xu2015problems,inderjeet2009summarization} and in particular in Grammatical Error Correction (GEC) \cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground} has received much attention over the
+years, and
 has gained notoriety for being difficult, in part due to the many valid outputs an input sentence may have \cite{chodorow2012problems}.
 In this paper we focus on GEC evaluation, but replicate our experiments on Text Simplification as well to provide further evidence to our claims.
 
@@ -144,10 +144,9 @@ In this paper we focus on GEC evaluation, but replicate our experiments on Text 
 An important criterion in the evaluation of GEC systems is their faithfulness to the meaning of the source. 
 In fact, it has been argued that many would prefer a somewhat cumbersome or even mildly ungrammatical 
 correction over one that alters the meaning of the source \cite{brockett2006correcting}.
-Consequently, annotators are often instructed to be conservative when compiling gold standard corrections for the task
-(e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
-There were different a ttempts in evaluation procedures to formally capture this precision/recall asymmetry,
-such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{dahlmeier2012better} and the 
+Consequently, annotators are often instructed to be conservative when compiling gold standard corrections (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
+There were different attempts in evaluation procedures to formally capture this precision/recall asymmetry,
+such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{ng2014conll} and the 
 choices of weights in I-measure \cite{felice2015towards}.
 
 However, penalizing over-correction more harshly than under-correction during development and training, 
@@ -170,15 +169,14 @@ We then consider two representative reference-based measures (henceforth, {\it R
 assessing the validity of a proposed correction relative to a reference set, 
 and characterize the distribution of their scores as a function of $\mathcal{M}$. 
 Our results show that both measures substantially under-estimate the true performance of
-the correctors. Moreover, they show that increasing $\mathcal{M}$ alleviates the incurred bias, 
-but only to an extent. Indeed, it seems that a reliable estimation of the RBMs would
+the correctors. Moreover, they show that increasing $\mathcal{M}$ alleviates the incurred bias, but only to an extent. Indeed, it seems that a reliable estimation of the RBMs would
 require a prohibitively large $\mathcal{M}$.
 
-In order to corobarate our findings, and noting that a similar line of argumentation is applicable to other monolingual translation tasks as well, 
+In order to corroborate our findings, and noting that a similar line of argumentation is applicable to other monolingual translation tasks as well, 
 we conduct similar experiments on Text Simplification (TS) (\S\ref{sec:simplification}).
 These experiments yield similar results: (1) current TS systems tend to be much more conservative than the human references;
-(2) the distribution of valid references for a given sentence is dispersed across a huge number of references; (3) current RBMs for TS
-severely under-estimate human performance; (4) increasing $\mathcal{M}$ alleviates this over-conservatism, but up to a point.
+(2) the distribution of valid references for a given sentence is dispersed across a vast number of references; (3) current RBMs for TS
+severely under-estimate human performance; (4) increasing $\mathcal{M}$ with a proper measure alleviates this over-conservatism, but up to a point.
 
 We conclude by discussing how recent advances in semantic parsing can be leveraged to construct semantic reference-less measures that 
 may serve as an alternative to RBMs (\S\ref{sec:referenceless}). 
