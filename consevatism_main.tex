@@ -270,17 +270,19 @@ $\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exa
 
 Third, we report how many source sentences were split and how many concatenated by the reference and the correctors.
 
-\begin{figure}
+\begin{figure*}
 	\vspace{-0.8cm}
   \centering
-  \begin{subfigure}[]{0.45\textwidth}
+  \begin{subfigure}[]{0.6\columnwidth}
     \includegraphics[width = \textwidth]{words_differences_heat}
   \end{subfigure}
-  \begin{subfigure}[]{0.45\textwidth}
+  \hfill
+  \begin{subfigure}[]{0.6\columnwidth}
     \includegraphics[width = \textwidth]{aligned}
   \end{subfigure}
-  \begin{subfigure}[]{0.45\textwidth}
-    \includegraphics[width = \textwidth]{spearman_ecdf}
+  \hfill
+  \begin{subfigure}[]{0.6\columnwidth}
+    \includegraphics[width = \columnwidth]{spearman_ecdf}
   \end{subfigure}
   \caption{\label{fig:over-conservatism}
     The prevalence of changes correctors' outputs and in the NUCLE reference.
@@ -293,7 +295,7 @@ Third, we report how many source sentences were split and how many concatenated 
     Under all measures, the gold standard references make substantially more changes to the source sentences than any of the correctors,in some cases an order of magnitude more.
   }
 \vspace{-0.8cm}
-\end{figure}
+\end{figure*}
 
 \paragraph{Results.}
 % presents the outcome of the three measures. 
@@ -433,7 +435,7 @@ No significant difference is found for word order.
 %
 \begin{figure}
 	\vspace{-1em}
-	\includegraphics[width=8cm]{words_differences_hist_reranking}
+	\includegraphics[width=0.9\columnwidth]{words_differences_hist_reranking}
 	\caption{\lc{move figure to appendix?}The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
 		In conclusion, tuning against additional references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
@@ -628,7 +630,7 @@ in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
 
 \begin{figure}
 	\vspace{-1em}
-  \includegraphics[width=8cm]{noSig_repeat_1000_accuracy}
+  \includegraphics[width=0.9\columnwidth]{noSig_repeat_1000_accuracy}
   \caption{Accuracy and Exact Index Match values for a perfect corrector (y-axis)
     as a function of the number of references $\mathcal{M}$ (x-axis).
     %Each data point is paired with a confidence interval ($p=.95$).     
@@ -692,7 +694,7 @@ is only 0.42 with $\mathcal{M}=2$.
 Moreover, the saturation effect observed for accuracy is even more pronounced in this setting.
 
 \begin{figure}
-	\includegraphics[width=8cm]{$F_{0.5}$_Ms_significance}
+	\includegraphics[width=0.9\columnwidth]{$F_{0.5}$_Ms_significance}
 	\caption{
 		$F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $\mathcal{M}$ (x-axis).
 		Each data point is paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
@@ -717,7 +719,7 @@ to compute the confidence interval of different correctors with the current NUCL
 test data ($\mathcal{M}=2$).
 
 \begin{figure}
-  \includegraphics[width=8cm]{$F_{0.5}$_significance}
+  \includegraphics[width=0.9\columnwidth]{$F_{0.5}$_significance}
   \caption{$F_{0.5}$ values with $\mathcal{M}=2$ for different correctors, including confidence interval ($p=.95$).
     The left-most column (``source'') presents the $F$-score of a corrector that doesn't make any
     changes to the source sentences. In red is human performance.
@@ -917,7 +919,7 @@ for a high number of references.
 \section{Additional figures}
 \begin{figure}[h!]
 	\vspace{-.3cm}
-	\includegraphics[width=8cm]{IAA_confirmation_frequency}
+	\includegraphics[width=0.9\columnwidth]{IAA_confirmation_frequency}
 	\caption{The mean frequency ($y$-axis) in which a correction that was produced
 		a given number of times ($x$-axis), was judged to be valid.
 		} \label{fig:validity_judgements}
