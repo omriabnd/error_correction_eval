@@ -599,21 +599,20 @@ Similarly, assuming only a fraction $p$ of the sentences require correction scal
 We estimate $b_\mathcal{M}$ empirically using its empirical mean on our experimental corpus:
 
 \begin{small}
-	\vspace{-1em}
   \begin{myequation*}
     \hat{b}_\mathcal{M} = 1 - \frac{1}{N}\sum_{i=1}^N P_{Y \sim \mathcal{D}_i^\mathcal{M}, y \sim \mathcal{D}_i}\left(y \in Y\right).
   \end{myequation*}
 \end{small}
 
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_\mathcal{M}$ 
-for any size of $Y_i$($=\mathcal{M}$). 
+for any size of $Y_i$ ($\mathcal{M}$). 
 However, as this is highly computationally demanding, we estimate it using
 sampling. Specifically, for every $\mathcal{M} = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$.
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
-in order to simulate a case where reference corrections are collected by a single
-annotator, and are thus not repeated. We find similar trends with a faster increase
-in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
+%in order to simulate a case where reference corrections are collected by a single
+%annotator, and not repeated. We 
+and find similar trends with a faster increase in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
 
 %
 %The resulting estimates for $p_i$ 
@@ -645,43 +644,39 @@ in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
 
 Figure \ref{fig:accuracy_vals} presents the expected accuracy values for a perfect
 corrector (i.e., 1-$\hat{b}_\mathcal{M}$) for different  $\mathcal{M}$ values. 
-Results show that even for $\mathcal{M}$ values which are much larger than those normally used (e.g., $\mathcal{M}=20$),
-the expected accuracy is only about 0.5. As $\mathcal{M}$ increases, the contribution of each additional correction diminishes sharply (the slope is about 0.004 around $\mathcal{M}=20$).
+Results show that even for $\mathcal{M}$ values which are much larger than the standard (e.g., $\mathcal{M}=20$),
+the expected accuracy is only about 0.5. As $\mathcal{M}$ increases, the contribution of each additional correction 
+diminishes sharply (the slope is about 0.004 around $\mathcal{M}=20$).
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive to the identity of the changed words and not to what they were changed to. 
 Formally, two corrections $c$ and $c'$ over a source sentence $x$ match if for their word alignments with the source (computed as above) $a:\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c\right|,Null\}$
 and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that $c_{a\left(i\right)} \neq x_{i} \Leftrightarrow c'_{a'\left(i\right)} \neq x_{i}$, where $c_{Null}=c'_{Null}$.
+Results, while somewhat higher, are still only 0.54 with $\mathcal{M}=10$. (Figure \ref{fig:accuracy_vals})
+%As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
 
-Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case. Results indicate that while a perfect corrector's scores are somewhat higher, they are still 0.54 with $\mathcal{M}=10$.
-As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
-
-The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}.\footnote{An implementation of this and other methods and the estimated density functions will be released upon publication.}
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
-$F_\alpha$-score is standard when reporting system performance (and consequently in hyper-parameter tuning and development). \lc{Do we really need to elaborate on F score history in GEC?}
-Computing $F$-score for GEC is not at all straightforward.
+$F_\alpha$-score is standard for evaluating system performance.\lc{Do we really need to elaborate on F score history in GEC? OA: I think it's fine as is}
+%Computing $F$-score for GEC is not at all straightforward.
 The score is computed in terms of {\it edit} matches between a correction and the references, where edits are sub-string replacements to the source.
 The HOO shared task used an earlier version of $F$-score, which required that the proposed corrections include edits explicitly.
 Later on, relieving correctors from the need to produce edits, $F$-score was redefined optimistically, maximizing over all possible annotations that generate the correction from the source.\footnote{Since our crowdsourced corrections
 	do not include an explicit annotation of edits, we produce edits heuristically.}
 $\mathcal{M}^2$ \cite{dahlmeier2012better} is the standard $F$-score computing tool for GEC.
 
-The complexity of the measure prohibits an analytic approach \cite{yeh2000more}
+The complexity of the measure prohibits an analytic approach \cite{yeh2000more}.
 We instead use bootstrapping to estimate the bias incurred by not being able to exhaustively enumerate the set of valid corrections.
-%In short, bootstrapping methods sample with repetition from the empirical
-%distribution of the observed data to estimate properties (e.g. confidence-interval)
-%of the statistic (e.g. $F$-score) over the distribution. 
 As with accuracy, in order to avoid confounding our results with system-specific biases,
 we assume the evaluated corrector is perfect and sample its corrections from the human distribution of corrections $\mathcal{D}_x$.
 
 Concretely, given a value for $\mathcal{M}$ and for $N$, we uniformly sample from our experimental corpus source sentences $x_1,...,x_N$, and $\mathcal{M}$ corrections for each $Y_1,...,Y_N$ (with replacement).
-Setting a realistic value for $N$ in our experiments is important for obtaining comparable results to those obtained on the NUCLE corpus (see below), 
-as the expected value of $F$-score may depend on $N$ (unlike Accuracy, it is not additive).
-In accordance with the NUCLE's test set, we set $N=1312$ and assume that 136 of the sentences require no correction.
-The latter reduces the overall bias by their frequency in the corpus.
+Setting a realistic value for $N$ in our experiments is important for obtaining comparable results to those obtained on the NUCLE corpus (see \S\ref{sec:real_world}),
+as the expected value of $F$-score depends on $N$ and the number of sentences that do not need correction ($N_{cor}$).
+Following the statistics of NUCLE's test set, we set $N=1312$ and $N_{cor}=136$.
+%The latter reduces the overall bias by their frequency in the corpus.
 
-The bootstrapping procedure is carried out by the accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
+Bootstrapping is carried out by the accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
 We also report confidence intervals ($p=.95$), computed using the same procedure.\footnote{We use the Python scikits.bootstrap implementation.}
 %
 %For each sentence which had at least one error according to the NUCLE gold standard
@@ -691,13 +686,11 @@ We also report confidence intervals ($p=.95$), computed using the same procedure
 %variability in different choices of corrections while approximating the reduction of variability
 %of a big $N$ by consisting of $N$ sentences overall.
 
-% our results
-% presents the results of this procedure, which
-The results of this procedure (Figure \ref{fig:F_Ms}) further indicate the inadequacy of commonly used
-$\mathcal{M}$ values for training and development (1 or 2) for obtaining a reliable estimation of a corrector's performance.
-For instance, the $F_{0.5}$-score for our perfect corrector, whose true $F$-score is 1,
-is only 0.42 with $\mathcal{M}=2$.
-Moreover, the saturation effect observed for accuracy is even more pronounced in this setting.
+Results (Figure \ref{fig:F_Ms}) again show the inadequacy of commonly used
+$\mathcal{M}$ values for training and development (1 or 2) for obtaining a reliable estimate
+of system performance.
+For instance, the $F_{0.5}$-score for our perfect corrector is only 0.42 with $\mathcal{M}=2$.
+The saturation effect observed for accuracy is even more pronounced in this setting.
 
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{$F_{0.5}$_Ms_significance}
@@ -712,12 +705,12 @@ Moreover, the saturation effect observed for accuracy is even more pronounced in
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
 
-The bootstrapping method for computing the significance of the $F$-score can also
-be useful for assessing the significance of the differences in correctors' performance
+The bootstrapping method for computing the significance of the $F$-score (\S\ref{subsec:Assessment-values}) 
+can also be used for assessing the significance of the differences in correctors' performance
 reported in the literature.
-We report results with the bootstrapping protocol (\S \ref{subsec:Assessment-values})
-to compute the confidence interval of different correctors with the current NUCLE
+We compute confidence intervals of different correctors on the NUCLE
 test data ($\mathcal{M}=2$).
+ %report results %with the bootstrapping protocol 
 
 \begin{figure}
   \includegraphics[width=0.9\columnwidth]{$F_{0.5}$_significance}
@@ -728,8 +721,8 @@ test data ($\mathcal{M}=2$).
 \vspace{-0.5cm}
 \end{figure}
 
-Our results (Figure \ref{fig:F_correctors}) present a mixed picture: some
-of the differences between previously reported $F$-scores are indeed significant and some are not.
+Results (Figure \ref{fig:F_correctors}) present mixed trends: some
+differences between previously reported $F$-scores are indeed significant and some are not.
 For example, the best performing corrector is significantly better than all but the second corrector.
 %
 %Nevertheless, it seems that $\mathcal{M}=2$ value taken in NUCLE is sufficiently high
@@ -750,7 +743,9 @@ For example, the best performing corrector is significantly better than all but 
 %
 
 Our results show that the number of corrections needed for reliable RBMs may be prohibitively large in practice.
-The results further suggest that there are hundreds of valid corrections with low probability, whose total probability mass is substantial. RBMs such as accuracy and $F$-score thus show diminishing returns from increasing the value of $\mathcal{M}$ over values of about 10.
+An average sentence has hundreds or more valid low-probability corrections, whose total probability mass is substantial. 
+RBMs such as accuracy and $F$-score thus show diminishing returns from increasing the value of $\mathcal{M}$ over values of about 10.
+
 %
 %All these findings suggest that it is too costly to increase $\mathcal{M}$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $\mathcal{M}=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
 %
@@ -766,17 +761,19 @@ The results further suggest that there are hundreds of valid corrections with lo
 %the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we bring supporting data and
 %leave the decision to the reader. 
 
-Returning to condition (\ref{eq:reward}-\S \ref{subsec:motivating_analysis}), we find that the coverage (which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $\mathcal{M}=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that condition (\ref{eq:reward}) often holds in practice, incentivizing over-conservatism.
+Returning to condition (\ref{eq:reward}) from \S\ref{subsec:motivating_analysis}, we find that coverage (equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $\mathcal{M}=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that condition (\ref{eq:reward}) often holds in practice, incentivizing over-conservatism.
 
-Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $\mathcal{M}=2$, we find that their scores are comparable, where RoRo and JMGR, in fact, surpass a perfect corrector's $F$-score.
-While it is possible that these correctors outperform the perfect corrector by learning how to correct a sentence in the same way as one of the NUCLE annotators did, we deem it unlikely, as our results (\S\ref{sec:formal_conservatism}) show that the output of these systems considerably diverges from NUCLE's references.
-A more likely possibility is that these systems' high performance relative to a perfect corrector's is due to these correctors having learned to predict when not to correct.
+Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $\mathcal{M}=2$, we find that their scores are comparable, where RoRo and JMGR surpass a perfect corrector's $F$-score.
+While it is possible that these correctors performed this feat by learning not only how to correct, but also how to correspond to the writing style 
+of one of NUCLE's annotators, this seems unlikely given that our conservatism analysis (\S\ref{sec:formal_conservatism}) showed that these systems considerably underpredict
+edits relative to NUCLE's references.
+A more likely explanation is that these correctors having learned to predict when not to correct.
 
 % Two recent RBMS have been proposed. One is {\sc I-measure} \cite{felice2015towards}, which introduces novel features to GEC evaluation, such as distinguishing different quality levels of ungrammatical corrections (e.g., some improve the quality of the source, while others degrade it), and restricting edits to only consist of single words, rather than phrases. The other is GLEU \cite{napoles2015ground}, an adaptation of BLEU that was shown to correlate well with human rankings. 
-Two recent RBMS have been proposed, {\sc I-measure} \cite{felice2015towards} and GLEU \cite{napoles2015ground}
-We expect our findings, that RBMs substantially under-estimate the performance of correctors, to generalize to these RBMs, as they all
-apply string similarity measures relative to a fairly small number of references.
-These measures thus address orthogonal gaps in GEC evaluation from the ones presented here.
+The recently proposed {\sc I-measure} \cite{felice2015towards} and GLEU \cite{napoles2015ground} measures do not address
+the coverage issue raised here, as they too apply string similarity measures relative to a fairly small number of references.
+%We expect our findings, that RBMs substantially under-estimate the performance of correctors, to generalize to these RBMs, as they all
+%These measures thus address orthogonal gaps in GEC evaluation from the ones presented here.
 Following the proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over grammaticality in reference corrections, only compounds this problem, as it results in a larger number of valid corrections.
 
 The $F$-score coverage experiment echo the results of \newcite{bryant2015far},
