@@ -28,7 +28,7 @@
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
 \newcommand{\@emptybiblabel}[1]{}
 %\makeatother
-\usepackage[hidelinks]{hyperref}
+\usepackage[draft,hidelinks]{hyperref}
 
 
 \usepackage{naaclhlt2018}
@@ -36,6 +36,7 @@
 \newcommand{\com}[1]{}
 %\newcommand{\oa\part{title}}[1]{}
 %\newcommand{\lc}[1]{}
+%\newcommand{\oa}[1]{}
 \newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\oamod}[1]{{\color{red}#1}}
 \newcommand{\lc}[1]{\footnote{\color{blue}LC: #1}}
@@ -81,8 +82,8 @@
   corrections for a given sentence. This results in undue penalization of valid outputs,
   thus disincentivizing correctors to make changes.
   Our results are replicated on Text Simplification, supporting our claims.
-  Finally, we show that increasing the number of references only partially addresses this problem,
-  and conclude by arguing for the use of reference-less measures as an alternative.
+  Finally, we show that increasing the number of references only partially addresses this gap,
+  stressing the importance of developing alternative reference-less measures.
 \end{abstract}
 
 \section{Introduction}
@@ -129,7 +130,7 @@
 % is a challenging research field, which interfaces with many
 %other areas of linguistics and NLP. The field
 
-Evaluation in Monolingual Translation\cite{xu2015problems,inderjeet2009summarization} and in particular in Grammatical Error Correction (GEC) \cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground} has received much attention over the
+Evaluation in Monolingual Translation \cite{xu2015problems,inderjeet2009summarization} and in particular in Grammatical Error Correction (GEC) \cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground} has received much attention over the 
 years, and
 has gained notoriety for being difficult, in part due to the many valid outputs an input sentence may have \cite{chodorow2012problems}.
 In this paper we focus on GEC evaluation, but replicate our experiments on Text Simplification as well to provide further evidence to our claims.
@@ -152,7 +153,8 @@ choices of weights in I-measure \cite{felice2015towards}.
 However, penalizing over-correction more harshly than under-correction during development and training, 
 may lead to reluctance of correctors to make any changes (henceforth, {\it over-conservatism}).
 Using only one or two reference corrections, the common practice in GEC, compounds this problem, 
-as correctors are not only harshly penalized for making incorrect changes, but are often penalized for making correct changes not found in the reference.
+as correctors are not only harshly penalized for making incorrect changes, but are often penalized
+for making correct changes not found in the reference.
 
 Indeed, we show that current state of the art systems present over-conservatism.
 Evaluating the output of 15 recent correctors, we find they all
@@ -169,18 +171,20 @@ We then consider two representative reference-based measures (henceforth, {\it R
 assessing the validity of a proposed correction relative to a reference set, 
 and characterize the distribution of their scores as a function of $\mathcal{M}$. 
 Our results show that both measures substantially under-estimate the true performance of
-the correctors. Moreover, they show that increasing $\mathcal{M}$ alleviates the incurred bias, but only to an extent. Indeed, it seems that a reliable estimation of the RBMs would
+the correctors. They also show that increasing $\mathcal{M}$ alleviates the incurred bias, 
+but only to an extent. Indeed, it seems that a reliable estimation of the RBMs would
 require a prohibitively large $\mathcal{M}$.
 
-
-In order to corroborate our findings, and noting that a similar line of argumentation is applicable to other monolingual translation tasks as well, 
-we conduct similar experiments on Text Simplification (TS) (\S\ref{sec:simplification}).
-These experiments yield similar results: (1) current TS systems tend to be much more conservative than the human references;
-(2) the distribution of valid references for a given sentence is dispersed across a vast number of references; (3) current RBMs for TS
-severely under-estimate human performance; (4) increasing $\mathcal{M}$ with a proper measure alleviates this over-conservatism, but up to a point.
+In order to corroborate our findings, we apply a 
+similar line of experiments to Text Simplification (TS),
+and observe that: (1) the distribution of valid references for a given sentence is dispersed across a vast number of references; 
+(2) common measures for TS severely under-estimate human performance; 
+(3) increasing $\mathcal{M}$ with a proper measure alleviates this over-conservatism, but up to a point.
+Indeed, over-conservatism has been reported by a number of recent works on TS, further supporting our claim.
 
 We conclude by discussing how recent advances in semantic parsing can be leveraged to construct semantic reference-less measures that 
-may serve as an alternative to RBMs (\S\ref{sec:referenceless}). 
+may serve as an alternative to RBMs (\S\ref{sec:conclusion}). 
+
 %Specifically, we introduce in another paper sent to this conference GEC RLM to assess the extent to which
 %a correction faithfully represents the semantics of the source, by their semantic structures similarity(\S \ref{sec:Semantics}).
 %This approach can be combined with RLM based on grammatical error detection(GED), as proposed by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
@@ -299,7 +303,7 @@ Third, we report how many source sentences were split and how many concatenated 
 \paragraph{Results.}
 % presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
-Results (Figure \ref{fig:over-conservatism}) show that reference corrections change considerably more source sentences than any of the correctors, and within each changed sentence both change and reorder more words, often an order of magnitude more. For example, there are  36 reference sentences with 6 word changes, where the most sentences with 6 word changes by any corrector is 5.
+Results (Figure \ref{fig:over-conservatism}) show that references change considerably more source sentences than any corrector, and within each changed sentence both change and reorder more words, often an order of magnitude more. For example, there are 36 reference sentences with 6 word changes, where the most sentences with 6 word changes by any corrector is 5.
 Similar amount of correction is observed on the references of the TreeBank of Learner English \cite{yannakoudakis2011new}.
 %While $89.6\%$ of NUCLE sentences need corrections,
 %The prevalence of FCE consists only of ungrammatical sentences.
@@ -440,25 +444,29 @@ No significant difference is found for word order.
 	\vspace{-0.5cm}
 \end{figure}
 %
- \subsection{Data}
+\subsection{Estimating Corrections' Distribution}\label{subsec:corrections_distribution}
 %
-%Our analysis assumes that we have a reliable estimate for the distribution of corrections
+\paragraph{Data.}
+Our analysis assumes that we have a reliable estimate for the distribution of corrections
 $\mathcal{D}_x$ of the source sentences we evaluate.
 The experiments in the following section are run on a random sample of 52 sentences with a maximum length of 15 from the NUCLE test data.
-Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.
+Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation 
+variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.
 Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
 
-Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source sentences, we elicited 50 corrections from Amazon Mechanical Turk workers.
-%allowing for a reliable estimation of the distributions.
+Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, 
+we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source sentences, 
+we elicited 50 corrections from Amazon Mechanical Turk workers.
 Aiming to judge grammaticality rather than fluency, we instructed the workers to
 correct only when necessary, not for styling.
 4 sentences required no correction according to almost half the workers and were hence discarded.
-%
-\subsection{Estimating Corrections' Distribution}\label{subsec:corrections_distribution}
-%
+
 We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm to
-estimate a discrete distribution in which the individual values do not matter, only the probability of each value. {\sc UnseenEst} aims to minimize the ``earthmover distance'', between the estimated histogram and the histogram of the distribution. Intuitively, if histograms are piles of dirt, minimizing the amount of dirt moved times the distance by which it was moved.\footnote{An implementation of {\sc UnseenEst} can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}} 
+estimate a discrete distribution in which the individual values do not matter, only the probability of each value. 
+{\sc UnseenEst} aims to minimize the ``earthmover distance'', between the estimated histogram and the histogram of the distribution. 
+Intuitively, if histograms are piles of dirt, minimizing the amount of dirt moved times the distance by 
+which it was moved.\footnote{An implementation of {\sc UnseenEst} can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}} 
 {\sc UnseenEst} was originally developed and thoroughly tested for assessing how many
 variants a gene might have, including undiscovered ones, and their relative frequencies.
 This is a similar setting to the one tackled here.
@@ -466,7 +474,7 @@ Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{All data we collected, along with the estimated
   distributions can be found in <to be disclosed upon publication>}
 
-According to the estimates, most LL sentences have a large number of
+According to the estimates, most input sentences have a large number of
 infrequent corrections accounting for the bulk of the probability mass
 and a rather small number of frequent corrections.
 %The estimated distributions tend to have steps, with many corrections with the same (low) frequency.
@@ -498,11 +506,10 @@ For instance, 74.34 corrections account for 75\% of the total probability mass o
   \vspace{-0.3cm}
 \end{table}
 
-The overwhelming number of rare corrections raises the question of whether these can be regarded as noise.
+The high number of rare corrections raises the question of whether these can be regarded as noise.
 To test this we conducted another crowdsourcing experiment, where 3 annotators were asked to judge whether a correction produced in the first experiment, is indeed a valid correction.
-Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are grouped by the number of times they appear in the data.
-
-Results show that the empirical frequency of a correction has little effect on how often it was deemed valid, where even the rarest corrections were judged valid 78\% of the times.
+Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are binned by the number of workers who generated them.
+Results indicate that frequency has little effect on how often it was deemed valid, where even the rarest corrections were judged valid 78\% of the times.
 
 \subsection{Under-estimation as a function of $\mathcal{M}$} \label{subsec:Assessment-values}
 In the previous section we presented an empirical assessment of the corrections distribution of a sentence. We turn to estimating the resulting bias, i.e., the under-estimation of RBMs, for different $\mathcal{M}$ values. 
@@ -514,7 +521,7 @@ Sentence-level accuracy is the percentage of corrections that
 exactly match one of the references.
 Accuracy is a basic, interpretable measure, used in GEC by, e.g., \newcite{rozovskaya2010annotating}.
 It is also closely related to the 0-1 loss function commonly used
-for training statistical correctors \cite{chodorow2012problems,rozovskaya2013joint}. 
+for training in GEC \cite{chodorow2012problems,rozovskaya2013joint}. 
 
 Formally, given test sentences $X=\{x_1,\ldots,x_N\}$,
 their references $Y_1,\ldots,Y_N$, and a corrector $C$,
@@ -529,12 +536,12 @@ we define $C$'s accuracy to be
 \end{small}
 
 Note that $C$'s accuracy is, in fact, an estimate of $C$'s {\it true accuracy}, the probability to produce a valid correction for a sentence. Formally:
+
  \begin{small}
    \centering
-   \vspace{-0.2cm}
-   \begin{myequation*}
+       \begin{myequation}
      TrueAcc\left(C\right) = P_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right).
-   \end{myequation*}
+   \end{myequation}
    \vspace{-0.15cm}
  \end{small}
 %
@@ -545,7 +552,7 @@ Note that $C$'s accuracy is, in fact, an estimate of $C$'s {\it true accuracy}, 
 The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $\mathcal{M}$ references
 is then
 
-\vspace{-0.6cm}
+\vspace{-0.2cm}
 \begin{small}
   \centering
   \begin{flalign}
@@ -560,15 +567,14 @@ is then
 We observe that the bias, denoted $b_\mathcal{M}$, is not affected by $N$, only by $\mathcal{M}$.
 As $\mathcal{M}$ grows, $Y$ approximates $Correct_x$ better, and $b_\mathcal{M}$ tends to 0.
 
-In order to gain insight into the evaluation measure and the GEC task
-(and not the idiosyncrasies of specific systems), we consider an idealized learner,
-which, when correct, produces a valid correction with the same
+In order to abstract away from the idiosyncrasies of specific systems,
+we consider an idealized learner, which, when correct, produces a valid correction with the same
 distribution as a human annotator (i.e., according to $\mathcal{D}_x$).
 Formally, we assume that, if $C(x) \in Correct_x$ then $C(x) \sim \mathcal{D}_x$.
-Hence the bias $b_\mathcal{M}$ (Equation \ref{eq:bias}) can be re-written as
+Hence the bias $b_\mathcal{M}$ (Eq. \ref{eq:bias}) can be re-written as
 
 \begin{small}
-	\vspace{-0.2cm}
+	\vspace{-0.1cm}
 \begin{myequation*}
   \centering
   P(C(x) \in Correct_x) \cdot (1 - P_{Y \sim \mathcal{D}_i^\mathcal{M},y\sim \mathcal{D}_x}(y \in Y)).
@@ -592,21 +598,21 @@ Similarly, assuming only a fraction $p$ of the sentences require correction scal
 We estimate $b_\mathcal{M}$ empirically using its empirical mean on our experimental corpus:
 
 \begin{small}
-	\vspace{-1em}
   \begin{myequation*}
     \hat{b}_\mathcal{M} = 1 - \frac{1}{N}\sum_{i=1}^N P_{Y \sim \mathcal{D}_i^\mathcal{M}, y \sim \mathcal{D}_i}\left(y \in Y\right).
   \end{myequation*}
 \end{small}
 
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_\mathcal{M}$ 
-for any size of $Y_i$($=\mathcal{M}$). 
+for any size of $Y_i$ ($\mathcal{M}$). 
 However, as this is highly computationally demanding, we estimate it using
-sampling. Specifically, for every $\mathcal{M} = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$.
+sampling. Specifically, for every $\mathcal{M} = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we calculate the accuracy distribution and expectation (see \ref{ap:poibin}).
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
-in order to simulate a case where reference corrections are collected by a single
-annotator, and are thus not repeated. We find similar trends with a faster increase
-in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
+%in order to simulate a case where reference corrections are collected by a single
+%annotator, and not repeated. We 
+and find similar trends with a faster increase in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
+
 %
 %The resulting estimates for $p_i$ 
 %define the estimate for the distribution of $Acc(C;X,Y)$.
@@ -637,43 +643,39 @@ in accuracy reaching over $0.47$ with $\mathcal{M}=10$.
 
 Figure \ref{fig:accuracy_vals} presents the expected accuracy values for a perfect
 corrector (i.e., 1-$\hat{b}_\mathcal{M}$) for different  $\mathcal{M}$ values. 
-Results show that even for $\mathcal{M}$ values which are much larger than those normally used (e.g., $\mathcal{M}=20$),
-the expected accuracy is only about 0.5. As $\mathcal{M}$ increases, the contribution of each additional correction diminishes sharply (the slope is about 0.004 around $\mathcal{M}=20$).
+Results show that even for $\mathcal{M}$ values which are much larger than the standard (e.g., $\mathcal{M}=20$),
+the expected accuracy is only about 0.5. As $\mathcal{M}$ increases, the contribution of each additional correction 
+diminishes sharply (the slope is about 0.004 around $\mathcal{M}=20$).
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive to the identity of the changed words and not to what they were changed to. 
 Formally, two corrections $c$ and $c'$ over a source sentence $x$ match if for their word alignments with the source (computed as above) $a:\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c\right|,Null\}$
 and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that $c_{a\left(i\right)} \neq x_{i} \Leftrightarrow c'_{a'\left(i\right)} \neq x_{i}$, where $c_{Null}=c'_{Null}$.
+Results, while somewhat higher, are still only 0.54 with $\mathcal{M}=10$. (Figure \ref{fig:accuracy_vals})
+%As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
 
-Figure \ref{fig:accuracy_vals} also presents the expected accuracy in this case. Results indicate that while a perfect corrector's scores are somewhat higher, they are still 0.54 with $\mathcal{M}=10$.
-As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
-
-The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using {\sc UnseenEst}'s estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}.\footnote{An implementation of this and other methods and the estimated density functions will be released upon publication.}
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
-$F_\alpha$-score is standard when reporting system performance (and consequently in hyper-parameter tuning and development). \lc{Do we really need to elaborate on F score history in GEC?}
-Computing $F$-score for GEC is not at all straightforward.
+$F_\alpha$-score is standard for evaluating system performance.\lc{Do we really need to elaborate on F score history in GEC? OA: I think it's fine as is}
+%Computing $F$-score for GEC is not at all straightforward.
 The score is computed in terms of {\it edit} matches between a correction and the references, where edits are sub-string replacements to the source.
 The HOO shared task used an earlier version of $F$-score, which required that the proposed corrections include edits explicitly.
 Later on, relieving correctors from the need to produce edits, $F$-score was redefined optimistically, maximizing over all possible annotations that generate the correction from the source.\footnote{Since our crowdsourced corrections
 	do not include an explicit annotation of edits, we produce edits heuristically.}
 $\mathcal{M}^2$ \cite{dahlmeier2012better} is the standard $F$-score computing tool for GEC.
 
-The complexity of the measure prohibits an analytic approach \cite{yeh2000more}
+The complexity of the measure prohibits an analytic approach \cite{yeh2000more}.
 We instead use bootstrapping to estimate the bias incurred by not being able to exhaustively enumerate the set of valid corrections.
-%In short, bootstrapping methods sample with repetition from the empirical
-%distribution of the observed data to estimate properties (e.g. confidence-interval)
-%of the statistic (e.g. $F$-score) over the distribution. 
 As with accuracy, in order to avoid confounding our results with system-specific biases,
 we assume the evaluated corrector is perfect and sample its corrections from the human distribution of corrections $\mathcal{D}_x$.
 
 Concretely, given a value for $\mathcal{M}$ and for $N$, we uniformly sample from our experimental corpus source sentences $x_1,...,x_N$, and $\mathcal{M}$ corrections for each $Y_1,...,Y_N$ (with replacement).
-Setting a realistic value for $N$ in our experiments is important for obtaining comparable results to those obtained on the NUCLE corpus (see below), 
-as the expected value of $F$-score may depend on $N$ (unlike Accuracy, it is not additive).
-In accordance with the NUCLE's test set, we set $N=1312$ and assume that 136 of the sentences require no correction.
-The latter reduces the overall bias by their frequency in the corpus.
+Setting a realistic value for $N$ in our experiments is important for obtaining comparable results to those obtained on the NUCLE corpus (see \S\ref{sec:real_world}),
+as the expected value of $F$-score depends on $N$ and the number of sentences that do not need correction ($N_{cor}$).
+Following the statistics of NUCLE's test set, we set $N=1312$ and $N_{cor}=136$.
+%The latter reduces the overall bias by their frequency in the corpus.
 
-The bootstrapping procedure is carried out by the accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
+Bootstrapping is carried out by the accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
 We also report confidence intervals ($p=.95$), computed using the same procedure.\footnote{We use the Python scikits.bootstrap implementation.}
 %
 %For each sentence which had at least one error according to the NUCLE gold standard
@@ -683,37 +685,31 @@ We also report confidence intervals ($p=.95$), computed using the same procedure
 %variability in different choices of corrections while approximating the reduction of variability
 %of a big $N$ by consisting of $N$ sentences overall.
 
-% our results
-Figure \ref{fig:F_Ms} presents the results of this procedure, which
-further indicate the insufficiency of commonly used $\mathcal{M}$ values for training and development (1 or 2) for obtaining a reliable estimation of a corrector's performance.
-For instance, the $F_{0.5}$-score for our perfect corrector, whose true $F$-score is 1,
-is only 0.42 with $\mathcal{M}=2$.
-Moreover, the saturation effect observed for accuracy is even more pronounced in this setting.
+Results (Figure \ref{fig:F_Ms}) again show the inadequacy of commonly used
+$\mathcal{M}$ values for training and development (1 or 2) for obtaining a reliable estimate
+of system performance.
+For instance, the $F_{0.5}$-score for our perfect corrector is only 0.42 with $\mathcal{M}=2$.
+The saturation effect observed for accuracy is even more pronounced in this setting.
 
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{$F_{0.5}$_Ms_significance}
 	\caption{
-		$F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $\mathcal{M}$ (x-axis).
-		Each data point is paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
+	  $F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $\mathcal{M}$ (x-axis).
+	  Each data point is paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
 	\vspace{-0.5cm}
 \end{figure}
 
-The $F$-score coverage experiment echo the results of \newcite{bryant2015far},
-who also compared the $F$-score of a human correction against an increasing number of references. The paper differs from the experiments reported in this section, in that it does not attempt to estimate the distribution of corrections, and evaluates solely $F$-score measure. Most importantly, its focus lies on test scenario and hence it fails to address the problems for system development.
 
-%
-%\paragraph{}
-%While our experiments focus on the accuracy and $F$-score measures, we expect
-%our results to generalize to other RBMs (see Section \ref{sec:prev_work}).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
-The bootstrapping method for computing the significance of the $F$-score can also
-be useful for assessing the significance of the differences in correctors' performance
+
+The bootstrapping method for computing the significance of the $F$-score (\S\ref{subsec:Assessment-values}) 
+can also be used for assessing the significance of the differences in correctors' performance
 reported in the literature.
-We report results with the bootstrapping protocol (\S \ref{subsec:Assessment-values})
-to compute the confidence interval of different correctors with the current NUCLE
+We compute confidence intervals of different correctors on the NUCLE
 test data ($\mathcal{M}=2$).
+ %report results %with the bootstrapping protocol 
 
 \begin{figure}
   \includegraphics[width=0.9\columnwidth]{$F_{0.5}$_significance}
@@ -724,8 +720,8 @@ test data ($\mathcal{M}=2$).
 \vspace{-0.5cm}
 \end{figure}
 
-Our results (Figure \ref{fig:F_correctors}) present a mixed picture: some
-of the differences between previously reported $F$-scores are indeed significant and some are not.
+Results (Figure \ref{fig:F_correctors}) present mixed trends: some
+differences between previously reported $F$-scores are indeed significant and some are not.
 For example, the best performing corrector is significantly better than all but the second corrector.
 %
 %Nevertheless, it seems that $\mathcal{M}=2$ value taken in NUCLE is sufficiently high
@@ -746,7 +742,9 @@ For example, the best performing corrector is significantly better than all but 
 %
 
 Our results show that the number of corrections needed for reliable RBMs may be prohibitively large in practice.
-The results further suggest that there are hundreds of valid corrections with low probability, whose total probability mass is substantial. RBMs such as accuracy and $F$-score thus show diminishing returns from increasing the value of $\mathcal{M}$ over values of about 10.
+An average sentence has hundreds or more valid low-probability corrections, whose total probability mass is substantial. 
+RBMs such as accuracy and $F$-score thus increase very slowly with $\mathcal{M}$ over values of about 10.
+
 %
 %All these findings suggest that it is too costly to increase $\mathcal{M}$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $\mathcal{M}=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
 %
@@ -762,49 +760,84 @@ The results further suggest that there are hundreds of valid corrections with lo
 %the mean value as well, as discussed in \ref{subsec:Assessment-values}. Thus, we bring supporting data and
 %leave the decision to the reader. 
 
-Returning to condition (\ref{eq:reward}-\S \ref{subsec:motivating_analysis}), we find that the coverage (which is equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $\mathcal{M}=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that condition (\ref{eq:reward}) often holds in practice, incentivizing over-conservatism.
+Returning to condition (\ref{eq:reward}) from \S\ref{subsec:motivating_analysis}, we find that coverage (equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $\mathcal{M}=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that (\ref{eq:reward}) often holds in practice, which may account for the observed over-conservatism.
 
-Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $\mathcal{M}=2$, we find that their scores are comparable, where RoRo and JMGR, in fact, surpass a perfect corrector's $F$-score.
-While it is possible that these correctors outperform the perfect corrector by learning how to correct a sentence in the same way as one of the NUCLE annotators did, we deem it unlikely, as our results (\S\ref{sec:formal_conservatism}) show that the output of these systems considerably diverges from NUCLE's references.
-A more likely possibility is that these systems' high performance relative to a perfect corrector's is due to these correctors having learned to predict when not to correct.
+Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $\mathcal{M}=2$, we find that their scores are comparable, where RoRo and JMGR surpass a perfect corrector's $F$-score.
+While it is possible that these correctors performed this feat by learning not only how to correct, but also how to correspond to the writing style of one of NUCLE's annotators, this seems unlikely given our previous results that these systems substantially under-predict edits relative to NUCLE's references (\S\ref{sec:formal_conservatism}). 
+More likely is that these correctors have learned to predict when not to correct.
 
 % Two recent RBMS have been proposed. One is {\sc I-measure} \cite{felice2015towards}, which introduces novel features to GEC evaluation, such as distinguishing different quality levels of ungrammatical corrections (e.g., some improve the quality of the source, while others degrade it), and restricting edits to only consist of single words, rather than phrases. The other is GLEU \cite{napoles2015ground}, an adaptation of BLEU that was shown to correlate well with human rankings. 
-Two recent RBMS have been proposed, {\sc I-measure} \cite{felice2015towards} and GLEU \cite{napoles2015ground}
-We expect our findings, that RBMs substantially under-estimate the performance of correctors, to generalize to these RBMs, as they all
-apply string similarity measures relative to a fairly small number of references.
-These measures thus address orthogonal gaps in GEC evaluation from the ones presented here.
+The recently proposed {\sc I-measure} \cite{felice2015towards} and GLEU \cite{napoles2015ground} measures do not address
+the coverage issue raised here, as they too apply string similarity measures relative to a fairly small number of references.
+%We expect our findings, that RBMs substantially under-estimate the performance of correctors, to generalize to these RBMs, as they all
+%These measures thus address orthogonal gaps in GEC evaluation from the ones presented here.
 Following the proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over grammaticality in reference corrections, only compounds this problem, as it results in a larger number of valid corrections.
 
-%Also, changing from grammatical corrections to fluency ones results in more possible corrections, and consequently a larger bias.
-\lc{we repeat that to emphasize, right? I removed it from the introduction, it seems like too much focus on something that seems like a smaller criticism than before (they did not do it for simplification, for other measures, for dev and train, failed to miss what we see etc.) should it still occur twice in the paper? if not perhaps remove is from the f score paragraph and combine here.}
-Finally, note that addressing under-estimation by comparing to
-a human expected score (perfect corrector) with the same $\mathcal{M}$ \cite{bryant2015far},
-does not address over-conservatism, it only scales the original measure. Moreover, as seen above, a human correction's score
-is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in score.
+The $F$-score coverage experiment echo the results of \newcite{bryant2015far},
+who also compared the $F$-score of a human correction against an increasing number of references.
+However, their suggestion to normalize the score
+with the score of a human corrector cannot address the gaps discussed here,
+as it has no effect on the training and tuning phases.
+Moreover, such normaliztion may be disadvantageous given that some systems already surpass human performance,
+indicating that the addressing the biases incurred by limited coverage is not only a matter of scale.
 
-\oa{where to put this?}
-	Our findings echo the results of \newcite{bryant2015far}, who study the effect of $\mathcal{M}$ on $F$-score, but the additional results in this paper suggests that their solution is still lacking. 
+
+%Also, changing from grammatical corrections to fluency ones results in more possible corrections, and consequently a larger bias.
+%\lc{we repeat that to emphasize, right? I removed it from the introduction, it seems like too much focus on something that seems like a smaller criticism than before (they did not do it for simplification, for other measures, for dev and train, failed to miss what we see etc.) should it still occur twice in the paper? if not perhaps remove is from the f score paragraph and combine here.}
+%Finally, note that addressing under-estimation by comparing to
+%a human expected score (perfect corrector) with the same $\mathcal{M}$ \cite{bryant2015far},
+%does not address over-conservatism, it only scales the original measure. Moreover, as seen above, a human correction's score
+%is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in score.
+
+%\oa{where to put this?}
+%	Our findings echo the results of \newcite{bryant2015far}, who study the effect of $\mathcal{M}$ on $F$-score, but the additional results in this paper suggests that their solution is still lacking. 
 	%who study the effect of $\mathcal{M}$ on $F$-score, the most commonly used measure for GEC.
-	Their work focused on obtaining a more reliable estimate of correctors' performance and proposed to do so by normalizing corrector's estimated performance with the performance of a human corrector.
 %Our findings echo the results of \newcite{bryant2015far}, who study the effect of $\mathcal{M}$ on $F$-score, the most commonly used measure for GEC. Their work focused on obtaining a more reliable estimate of correctors' performance and proposed to do so by normalizing corrector's estimated performance with the performance of a human corrector.
-However, while such normalization may yield more realistic performance estimates,
-it has no effect on the training and tuning of correctors. Moreover, we show that it already yields above perfect score for a system that hardly corrects.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%5
-\section{monolingual translation}\label{sec:simplification}
-In the above sections we examined the distribution of corrections that leads to low coverage and in turn may lead to the over-conservatism bias. We also had indications GED share a similar fate, although to a lesser extent. In this section we analyze simplification in the above way, with similar results. The replication suggests this bias is not a GEC specific phenomenon. Instead, it seems that monolingual translation tasks such as GEC, simplification and others such as compression all suffer from this bias to some extent.
+\section{Similar Effects on Simplification}\label{sec:simplification}
 
-Even if not termed this way or put under the spotlight, over-conservatism is a known problem in simplification, having too little additions, deletions and substitution of words, shifts of word sequences \cite{zhang2017sentence} and word edit distance \cite{narayan2015unsupervised}. 
-We used \newcite{Xu-EtAl:2016:TACL} corpus and following their procedure sent 47 sentences for crowdsourcing as above, with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim variant numbers are vast, much more even than the 50 we sampled.
-The results in table \ref{tab:simplifications_dist} show simplification tends to have even more variants than GEC. 
-Next we turn to assess the effect of $\mathcal{M}$ on SARI \cite{Xu-EtAl:2016:TACL} a sophisticated and widely used, somewhat precision oriented, measure. SARI considers all the references, unlike Accuracy and $F$-score that max over them. This may attribute score to combination of references, but also leads to an unintuitive situation in which guessing a reference is not enough to achieve full score. This, if intended, may come from the underlying assumption that references are imperfect. If so, reference tendencies and distribution, are all the more relevant - gold standard is practically an aggregation of references. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable. Perfect addition consists of all additions suggested at least by one reference, and it is impossible to get full score on other types of changes, gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to. \lc{perhaps too long, perhaps not clear enough.} For that reason we report in Figure \lc{add here} the results of SARI for a lucky perfect system, one that guessed one of the references, and MAX-SARI the results for the maximum SARI score for a choice of  a reference. We see that unlike MAX-SARI, SARI's combining of references under-assess perfect systems regardless of $\mathcal{M}$. Morover, the score of lucky systems  \textbf{drop} with the number of reference. 
-We also tested oracle reranking (see \lc{add graphs}) using SARI on $k$-best of a neural based system ($k=12$) observing that it becomes less conservative. For example, with $\mathcal{M}=1$ 50 sentences were not changed while with $\mathcal{M}=8$ 30 were, exactly like the gold standard. Another test with moses($k=100$) based system showed the inverse result, we attribute this to SARI's behaviour, repeating the reranking with MAX-SARI showed reduced conservatism with both systems.
+%In \S\ref{} and \ref{} we estimated the distribution of corrections that leads to low coverage and in turn may lead to the over-conservatism bias. We also had indications GED share a similar fate, although to a lesser extent. 
+We now turn to replicating our experiments on Text Simplification (TS). From a formal point of view, evaluation of the tasks is quite similar. The output often bears much similarity to the input, including zero or more edits. Reference-based measures are the standard for TS evaluation,
+much like they are in GEC.
+
+Our experiments on TS demonstrate that the trends described in \S\ref{sec:formal_conservatism} recur in this setting as well. 
+In fact, the prevalence of over-conservatism for TS has already been shown by previous work, 
+which reported that TS systems tend to perform too little word additions, deletions,
+substitutions, and shifts of word sequences \cite{zhang2017sentence} 
+and tend to have a low edit distance from the source \cite{narayan2015unsupervised});
+Our experiments show that low reference coverage may account for this conservatism. Concretely, we show that
+(1) the distribution of valid references for a given sentence is highly dispersed; (2) common evaluation measures suffer from 
+low coverage, taking SARI as an example RBM for TS;  
+(3) the reduction in over-conservatism following oracle re-ranking with an increasing number of references.
+
+We crowd-sourced 50 reference simplifications for 47 sentences, using the corpus and the annotation protocol presented by \newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate their distribution.
+%with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim variant numbers are vast, much more even than the 50 we sampled.
+The results in table \ref{tab:simplifications_dist} show that the expected number of references is even greater for TS. 
+Next we turn to assess the effect of $\mathcal{M}$ on SARI \cite{Xu-EtAl:2016:TACL}, a recently proposed but already widely-used measure. Most RBMs, Accuracy, $F$-score or BLEU maximize over the multiple references, unlike SARI that combines them. This may support an implicit combination of references, but it also leads to an unintuitive situation in which a simplification which is identical to a reference does not receive a perfect score. A more in-depth analysis of SARI's handling of multiple references can be found in Appendix \ref{ap:sari-assum}.
+In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $\mathcal{M}=1$, and for $\mathcal{M}>1$ is defined as the maximum over all references of their single-reference SARI score.
+
+Figure \lc{add here} presents the coverage of SARI and MAX-SARI of a perfect TS system that selects a random correction
+from the estimated distribution of corrections using the same bootstrapping protocol as in \S\ref{subsec:corrections_distribution}.
+We also include the SARI score of a ``lucky perfect'' system, the randomly selects one of the given references (the MAX-SARI score for such a system is 1). Results show that SARI has a coverage of about $0.45$, and that this score is largely independent of $\mathcal{M}$.
+The score of predicting one of the available references drops with the number of reference, indicating that SARI scores are not comparable
+for comparing between evaluations with different $\mathcal{M}$ values. 
+
+We therefore restrict our oracle re-ranking experiments to MAX-SARI. We conduct re-ranking experiments on the $k$-best
+lists of two systems, one with Moses \cite{elior2017summarization} with $k=100$, and one with a neural model \cite{nisioi2017exploring} with $k=12$. Our results
+indeed show that conservatism decreases with $k$ on both settings. 
+For example on the least conservative, the neural model, with $\mathcal{M}=1$ 50 sentences were not changed, while only 29 remained the same 
+with $\mathcal{M}=8$. See Appendix \ref{ap:simp-rerank} for further details.
+
+In light of these results, we expect these trends to generalize to any RBM that takes the source into account, and compares the changes made to it in the references and the system output. This includes most measures for monolingual translation, excluding multilingual originated ones.
+
+%The relation between coverage to conservatism in TS is further supported by 
+%the fact that reduction in simplification conservatism came together with the use of the new corpus introducing references for tuning and a %more prominent change came with a semantic approach that can abstract over the references \cite{zhang2017sentence}.
+%In our opinion, the above results attest to the need in considering coverage of evaluation procedures.
+
 %We also tested oracle reranking using SARI. Two $k$-best list were used, simple moses based system ($k=100$) and a neural based one ($k=12$), while the first shows an inverse tendency, the second becomes less conservative. For example, for any number of changes $X$, the Moses system with $\mathcal{M}=1$ has more sentences with at least $X$ corrections compared to reranking with $\mathcal{M}=1$. We attribute this to lack valid corrections combined with SARI's behaviour. Conversely, the neural system with $\mathcal{M}=1$ chose not to correct 50 sentences while the one with $\mathcal{M}=8$ 30, exactly like the gold standard. 
-
- The relevance of coverage to conservatism is further encouraged by the fact that reduction in simplification conservatism came together with the use of the new corpus introducing references for tuning and a more prominent change came with a semantic approach that can abstract over the references \cite{zhang2017sentence}.
- In our opinion, the above results attest to the need in considering coverage of evaluation procedures.
 
 \begin{table}[h!]
 	\vspace{-0.5cm}
@@ -832,41 +865,35 @@ We also tested oracle reranking (see \lc{add graphs}) using SARI on $k$-best of 
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Coping with the bias}\label{sec:referenceless}
-Through the experiments above we saw that additional reference and a choice of adequate measures to utilize them may reduce coverage problems and the induces over-conservatism.
+\section{Conclusion}\label{sec:conclusion}
 
-In another work \footnote{citation will be given in camera ready as not to disclose anonymity} under those proceedings, we propose a measure that eschews the use
-of reference in GEC, instead measuring the semantic faithfulness of the proposed
-correction to the source.
-Concretely, we propose to measure the semantic similarity of the source and the proposed correction
-through the graph similarity of their semantic representations (UCCA \cite{abend2013universal}).
-The measure is complemented with a RLM GED \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, as it only captures faithfulness, the extent to which
-the meaning of the source is preserved in the correction,
-
-\lc{I think the next paragraphs are unnecessary, but unsure}
-We conduct two experiments supporting the feasibility of our approach.
-We show that semantic annotation can be consistently applied to LL,
-through IAA experiments and that a perfect corrector scores high on this measure.
-We conclude by showing that the measure is sensitive to changes in meaning, by comparing
-the semantic structures of the source to corrections of fairly poor quality.
-
-The combination of the grammaticality and semantic measures are suggested as a way to tackle the heavy bias towards conservatism as it does not rely on references at all. 
-
-\section{Conclusion}
-
-This paper addresses the shortcomings of existing RBMs in monolingual translation.
+This paper addresses the shortcomings of existing RBMs in GEC.
 We present evidence that state of the art systems suffer from over-conservatism and
-argue that this over-conservatism results from training them against measures that
-not only more harshly penalize over-change than under-change,
-but also often penalize for proposing perfectly valid translations.
-In fact, systems are often more likely to be penalized for a valid change than to receive credit for it, due to the small number of references taken into account.
+argue that this over-conservatism results from training and tuning them against measures that
+not only more harshly penalize undue corrections over under-correction,
+but also often penalize perfectly valid outputs.
+In fact, systems are often more likely to be penalized for a valid change than 
+to receive credit for it, due to the small number of references taken into account.
+Moreover, our results suggest that the coverage-conservatism relation is not specific to
+GEC, and indicate that all monolingual translation systems may suffer from this bias.
+
+Our oracle re-ranking experiments suggest that incorporating additional references into the training and tuning
+protocol may reduce over-conservatism. 
+As we are not aware of corpora with multiple references which are large enough to train GEC systems,
+we are currently working on generating such corpora semi-automatically, in order to support the development of
+methods for reducing over-conservatism by increasing the number of references.
 
 Estimating the distribution of valid corrections for a sentence, we find
 that increasing the number of references is beneficial only up to a point, after which
-the heavy tail of the corrections distribution entails only minor improvements to the coverage with each additional reference.
-
-We thus propose a measure for the semantic faithfulness of the correction to the source,
-thereby avoiding the pitfalls of RBMs. We believe that using RLMs in conjunction with RBMs in the training and development of GEC systems will better address the challenge of over-conservatism.
+the heavy tail of the corrections distribution entails only minor improvements to 
+the coverage with each additional reference.
+In order to address this bias, it seems necessary to develop evaluation measures that
+transcend above $n$-gram overlap, ans perform a deeper analysis of the text in question
+A step in this direction has been made by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, who proposed
+a reference-less measure of the grammaticality of the output, using Grammatical Error Detection systems.
+In a recent work\footnote{Paper under review. Hidden to preserve anonymity.}, we propose a complementary
+measure that measures the semantic faithfulness of the output to the source, forming a combined
+semantic measure that bypasses the pitfalls of low coverage.
 
 
 %
@@ -889,16 +916,17 @@ thereby avoiding the pitfalls of RBMs. We believe that using RLMs in conjunction
 %and it all suggests that it might be beneficial to incorporate faithfulness not only for assessment
 %but also as a feature for correctors. 
 %
-\lc{Suggest to delete this too:}
-Future work will assess the relative importance, ascribed by users of GEC systems,
-to different evaluation criteria of the output.
-Specifically, we will explore to what extent users are
-tolerant to changes in the sentence structure, i.e.,
-violation of conservatism, relative to their tolerance to changes in the sentence's meaning,
-i.e., violation of faithfulness.
-A better understanding of how these interact
-may lead to improved semantic evaluation, that will alleviate the need
-for a high number of references.
+
+%\lc{Suggest to delete this too:}
+%Future work will assess the relative importance, ascribed by users of GEC systems,
+%to different evaluation criteria of the output.
+%Specifically, we will explore to what extent users are
+%tolerant to changes in the sentence structure, i.e.,
+%violation of conservatism, relative to their tolerance to changes in the sentence's meaning,
+%i.e., violation of faithfulness.
+%%A better understanding of how these interact
+%may lead to improved semantic evaluation, that will alleviate the need
+%for a high number of references.
 
 
 \bibliographystyle{acl_natbib}
@@ -906,6 +934,15 @@ for a high number of references.
 
 \pagebreak
 \appendix
+\section{Accuracy - Poisson Binomial Distribution}\label{ap:poibin}
+The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using our estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}. An implementation of this and other methods for efficiently computing and approximating Poisson Binomial Distributions and the estimated density functions will be released upon publication.
+
+\section{SARI aggregation of references}\label{ap:sari-assum}
+Unlike most RBMs, SARI aggregates all references together in its score.
+This, if intended, may come from the underlying assumption that references are imperfect. 
+If so, reference tendencies and distribution, are all the more relevant - gold standard is practically an aggregation of references and not individual one. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable.
+SARI is the average of 3 scores, addition, deletion and keep, each behaves differently. Perfect addition consists of all additions suggested at least by one reference, and it is practically impossible to get full score on the other types of changes, the gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to.
+
 \section{Systems tested}\label{ap:abbr}
  Adam Mickiewicz University (AMU),
  University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
@@ -922,7 +959,35 @@ for a high number of references.
 		} \label{fig:validity_judgements}
 		\vspace{-0.3cm}
 		\end{figure}
-
+\subsection{Simplification reranking}\label{ap:simp-rerank}
+\begin{figure}
+	\includegraphics[width=0.9\columnwidth]{nisioi_max_words_differences_hist}
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+		In conclusion, tuning against additional references indeed reduces conservatism.
+		\label{fig:reranking_word_change}
+}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=0.9\columnwidth]{moses_sari_words_differences_hist}
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+	In conclusion, tuning against additional references indeed reduces conservatism.
+	\label{fig:reranking_word_change}
+}
+\end{figure}
+\begin{figure}
+\includegraphics[width=0.9\columnwidth]{nisioi_sari_words_differences_hist}
+\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+	In conclusion, tuning against additional references indeed reduces conservatism.
+	\label{fig:reranking_word_change}
+}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=0.9\columnwidth]{moses_max_words_differences_hist}
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+		In conclusion, tuning against additional references indeed reduces conservatism.
+		\label{fig:reranking_word_change}
+	}
+\end{figure}
 \section{Annotated paragraphs}
 \begin{table}[hb]
 	\centering
