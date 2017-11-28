@@ -172,6 +172,7 @@ Our results show that both measures substantially under-estimate the true perfor
 the correctors. Moreover, they show that increasing $\mathcal{M}$ alleviates the incurred bias, but only to an extent. Indeed, it seems that a reliable estimation of the RBMs would
 require a prohibitively large $\mathcal{M}$.
 
+
 In order to corroborate our findings, and noting that a similar line of argumentation is applicable to other monolingual translation tasks as well, 
 we conduct similar experiments on Text Simplification (TS) (\S\ref{sec:simplification}).
 These experiments yield similar results: (1) current TS systems tend to be much more conservative than the human references;
@@ -215,7 +216,7 @@ may serve as an alternative to RBMs (\S\ref{sec:referenceless}).
 %{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
 
 \paragraph{Notation.}
-We assume each input sentence $x$ has a set of valid corrections $Correct_x$,
+We assume each ungrammatical sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
 for $y \in Correct_x$ is the probability a human annotator would correct $x$ as $y$.
 
@@ -382,20 +383,18 @@ namely the NUCLE test corpus. We use the standard $F$-score as the evaluation me
 examining the conservativeness of the oracle re-ranker for different $\mathcal{M}$ values, averaging over 1312 samples of 
 $\mathcal{M}$ references from the available set of twelve references provided by \citet{bryant2015far}.
 
-In order to see why a reduction in conservatism with an increase in $\mathcal{M}$ in this experiment is an indication
-that tuning against a small (low coverage) set of references yields over-conservatism, assume we have a input sentence
+In order to see why a reduction in conservatism with an increase in $\mathcal{M}$ indicates
+that tuning against a small set of references (low coverage) yields over-conservatism, assume we have an input sentence
 with some sub-string $e$. 
-There are three cases: (1) $e$ is an error, (2) $e$ is valid but there are valid references that alter it, (3) $e$ is valid and no 
-valid references alter it. Case (3) can be ignored as oracle re-ranking does not have any effect in this case.
+There are three cases: (1) $e$ is an error, (2) $e$ is valid but there are valid references that alter it, (3) $e$ alone is valid. Case (3) can be ignored as oracle re-ranking does not have any effect in this case.
 %In cases (1) and (2), denote the set of valid corrections of $e$ as $E$.
-The corrections in the $k$-best list can then be partitioned to: (1) those that keep $e$ as it is; 
-(2) those that invalidly alter $e$; and (3) those that validly alter $e$ (denote with $L_{val}$). 
+The corrections in the $k$-best list can then be partitioned to: (a) those that keep $e$ as it is; 
+(b) those that invalidly alter $e$; and (c) those that validly alter $e$ (denote with $L_{val}$). 
 
 Table \ref{ta:oracle_expected_results} presents the probability that $e$ will be altered in the different cases.
 The analysis shows that conservatism is likely to decrease with $\mathcal{M}$ only
   in the case where $e$ contained an error and the $k$-best list contains a valid correction of it.
-Where both references that keep $e$ as it is and alter $e$ are included in the reference
-set, we assume not changing $e$ is selected by the re-ranker. 
+Whenever the reference allows both keeping $e$ altering $e$, the re-ranker conservatively selects keeping $e$ as it is. 
 %the only case where oracle re-ranking is expected to increase the number of changes
 %is where both $e$ is an error and the $k$-best list contains valid corrections of $e$ ($L_{val} \neq \emptyset$).
 
@@ -416,11 +415,11 @@ No significant difference is found for word order.
 		\multicolumn{1}{c|}{Outcome}            & same  & $\uparrow$ conservatism        & $\downarrow$ conservatism
 	\end{tabular}
 	\caption{\label{ta:oracle_expected_results}
-	The expected effect on conservatism following oracle re-ranking in the different cases.
-	Values represent the probability of altering $e$. 
-	$P_Y(\overline{e}, L_{val})$ is the probability that the reference that keeps $e$ is not selected in the reference set ($Y$) and references
-	from $L_{val}$ (that alter $e$) are selected in the reference set. Similarly, $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the
-	$k$-best list is selected in $Y$. 
+	Oracle re-ranking expected effect on conservatism.
+	Values represent the probability of altering $e$. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the
+	$k$-best list is selected in the reference set $Y$,
+	$P_Y(\overline{e}, L_{val})$ is the probability that, in addition, the reference that keeps $e$ is not selected.
+	% in the reference set ($Y$) and references from $L_{val}$ (that alter $e$) are selected in the reference set.. 
 	%Cases include the case where the $k$-best list contains/not contains valid corrections of $e$,
 	%and the cases where keeping $e$ is valid/not valid. 
 	}
