@@ -77,14 +77,14 @@
   we find that state-of-the-art systems make substantially fewer 
   changes to the source sentences than needed. 
   Analyzing the distribution of valid outputs for a given sentence,   
-  we show that this over-conservatism likely stems from
-  the inability of a handful of references to account for the full variation of valid
-  corrections for a given sentence. This results in undue penalization of valid outputs,
+  we show indications that this over-conservatism stems from
+  the inability of a handful of references to account for the many valid
+  corrections a sentence may have. This results in undue penalization of valid outputs,
   thus disincentivizing correctors to make changes.
-  Our results are replicated on Text Simplification, supporting our claims.
-  Finally, we show that increasing the number of references only partially addresses this gap,
+  Increasing the number of references only partially addresses this gap,
   stressing the importance of developing alternative reference-less measures.
-\end{abstract}
+	Our results are replicated on text simplification, supporting our claims.
+  \end{abstract}
 
 \section{Introduction}
 
@@ -131,10 +131,9 @@
 %other areas of linguistics and NLP. The field
 
 Evaluation in Monolingual Translation \cite{xu2015problems,inderjeet2009summarization} and in particular in Grammatical Error Correction (GEC) \cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground} has received much attention over the 
-years, and
-has gained notoriety for being difficult, in part due to the many valid outputs an input sentence may have \cite{chodorow2012problems}.
-In this paper we focus on GEC evaluation, but replicate our experiments on Text Simplification as well to provide further evidence to our claims.
-
+years, and has gained notoriety for its difficulty, due in part to the non-uniqueness of reference corrections \cite{chodorow2012problems}.
+%In this paper we focus on GEC evaluation, but replicate our experiments on 
+%text simplification as well to provide further evidence to our claims.
 %Within GEC, considerable effort has been placed on evaluation
 %\cite{tetreault2008native,madnani2011they,felice2015towards,napoles2015ground},
 %a notoriously difficult challenge, in part due to the many valid corrections a learner's language (LL) sentence may have \cite{chodorow2012problems}. 
