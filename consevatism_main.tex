@@ -172,7 +172,7 @@ and characterize the distribution of their scores as a function of $\mathcal{M}$
 Our results show that both measures substantially under-estimate the true performance of
 the correctors. They also show that increasing $\mathcal{M}$ alleviates the incurred bias, 
 and reduces over-conservatism, but only to an extent. 
-Indeed, it seems that a reliable estimation of the RBMs would require a very large $\mathcal{M}$.
+Indeed, it seems that a reliable estimation of the RBMs would require a considerable $\mathcal{M}$.
 
 In order to corroborate our findings, we apply a 
 similar line of experiments to Text Simplification (TS),
@@ -181,10 +181,8 @@ and observe that: (1) the distribution of valid references for a given sentence 
 (3) increasing $\mathcal{M}$ with a proper measure alleviates this over-conservatism, but up to a point.
 Indeed, over-conservatism has been reported by a number of recent works on TS.%, further supporting our claim.
 
-We conclude that tuning and training correctors against a larger number of valid corrections
-is likely reduce over-conservatism.
-However, as increasing $\mathcal{M}$ shows diminishing returns, a compelling alternative is to leverage
-recent advances in semantic parsing to define semantic reference-less measures that will supplement RBMs (\S\ref{sec:conclusion}). 
+We conclude that developing, tuning and training correctors against a larger number of valid corrections is likely reduce over-conservatism.
+However, as increasing $\mathcal{M}$ shows diminishing returns, a compelling alternative is to leverage recent advances in semantic parsing to define semantic reference-less measures that will supplement RBMs (\S\ref{sec:conclusion}). 
 
 %Specifically, we introduce in another paper sent to this conference GEC RLM to assess the extent to which
 %a correction faithfully represents the semantics of the source, by their semantic structures similarity(\S \ref{sec:Semantics}).
@@ -512,7 +510,7 @@ To test this we conducted another crowdsourcing experiment, where 3 annotators w
 %Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are binned by the number of workers who generated them.
 We plot the validity of the correction against its frequency, finding that frequency has little effect,
 where even the rarest corrections were judged valid 78\% of the times.
-(details in Appendix \ref{})
+(details in Appendix \ref{ap:validity_judgements})
 
 \subsection{Under-estimation as a function of $\mathcal{M}$} \label{subsec:Assessment-values}
 In the previous section we presented an empirical assessment of the corrections distribution of a sentence. We turn to estimating the resulting bias, i.e., the under-estimation of RBMs, for different $\mathcal{M}$ values. 
@@ -745,7 +743,7 @@ For example, the best performing corrector is significantly better than all but 
 
 We have shown that the number of corrections needed for reliable RBMs is exceedingly high.
 An average sentence has hundreds or more valid low-probability corrections, whose total probability mass is substantial. 
-RBMs such as accuracy and $F$-score thus increase very slowly with $\mathcal{M}$ over values of about 10.
+RBMs such as accuracy and $F$-score thus increase slowly with $\mathcal{M}$ over values of about 10.
 
 %
 %All these findings suggest that it is too costly to increase $\mathcal{M}$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $\mathcal{M}=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
@@ -802,18 +800,18 @@ indicating that the addressing the biases incurred by limited coverage is not on
 \section{Similar Effects on Simplification}\label{sec:simplification}
 
 We now turn to replicating our experiments on Text Simplification (TS). From a formal point of view, evaluation of the tasks is similar:
-the output is obtained by making zero or more edits to the source. Reference-based measures are the standard for TS evaluation,
+the output is obtained by making zero or more edits to the source. RBMs are the standard for TS evaluation,
 much like they are in GEC.
 
 Our experiments on TS demonstrate that the trends described in \S\ref{sec:formal_conservatism} recur in this setting as well. 
 In fact, the prevalence of over-conservatism for TS has already been shown by previous work, 
-which reported that TS systems tend to perform too fre word additions, deletions,
+which reported that TS systems tend to perform too few word additions, deletions,
 substitutions, and shifts of word sequences \cite{zhang2017sentence} 
 and tend to have a low edit distance from the source \cite{narayan2015unsupervised}.
 Our experiments show that low reference coverage may account for this conservatism. Concretely, we show that
 (1) the distribution of valid references for a given sentence is highly dispersed; 
 (2) common evaluation measures suffer from low coverage, taking SARI \cite{Xu-EtAl:2016:TACL} 
-as an example RBM (similar trends are obtained with Accuracy)\oa{verify}; 
+as an example RBM (similar trends are obtained with Accuracy); 
 (3) over-conservatism decreases with $\mathcal{M}$ in an oracle re-ranking experiment.
 
 We crowd-sourced 50 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
@@ -827,7 +825,7 @@ This may support an implicit combination of references, but it also leads to an 
 which is identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
 references. A more in-depth analysis of SARI's handling of multiple references can be found in Appendix \ref{ap:sari-assum}.
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $\mathcal{M}=1$, 
-and for $\mathcal{M}>1$ is defined as the maximum over all references of their single-reference SARI score.
+and is defined as the maximum single-reference SARI score.
 
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{lucky,max,paper_Ms_significance}
@@ -891,12 +889,12 @@ with $\mathcal{M}=8$. See Appendix \ref{ap:simp-rerank} for further details.
 
 This paper addresses the shortcomings of existing RBMs in GEC.
 We present evidence that state of the art systems suffer from over-conservatism and
-argue that this over-conservatism results from training and tuning them against measures that
+argue that this over-conservatism results from developing, training and tuning them against measures that
 not only more harshly penalize undue corrections over under-correction,
 but also often penalize perfectly valid outputs.
 In fact, systems are often more likely to be penalized for a valid change than 
 to receive credit for it, due to the small number of references taken into account.
-Moreover, who show that a coverage-conservatism relation is not confined to
+Moreover, we show that a coverage-conservatism relation is not confined to
 GEC, and may be applicable to monolingual translation in general.
 
 Oracle re-ranking experiments suggest that incorporating additional references into the training and tuning
@@ -972,12 +970,13 @@ SARI is the average of 3 scores, addition, deletion and keep, each behaves diffe
  Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
  University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[Char]{xie2016neural}.
 \section{Additional figures}
+\subsection{Validity}\label{ap:validity_judgements}
 \begin{figure}[h!]
 	\vspace{-.3cm}
 	\includegraphics[width=0.9\columnwidth]{IAA_confirmation_frequency}
 	\caption{The mean frequency ($y$-axis) in which a correction that was produced
 		a given number of times ($x$-axis), was judged to be valid.
-		} \label{fig:validity_judgements}
+		 \label{fig:validity_judgements}}
 		\vspace{-0.3cm}
 		\end{figure}
 \subsection{Simplification reranking}\label{ap:simp-rerank}
