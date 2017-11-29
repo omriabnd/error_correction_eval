@@ -29,7 +29,7 @@
 \newcommand{\@emptybiblabel}[1]{}
 %\makeatother
 \usepackage[draft,hidelinks]{hyperref}
-
+\setlength{\parskip}{-.05em}
 
 \usepackage{naaclhlt2018}
 \graphicspath{{./plots/}}
@@ -84,7 +84,7 @@
   Increasing the reference number only partially addresses this gap,
   which stresses the importance of developing alternative reference-less measures.
 	Results are replicated on text simplification, supporting our claim.
-  \end{abstract}
+\end{abstract}
 
 \section{Introduction}
 
@@ -310,7 +310,6 @@ Similar amount of correction is observed on the references of the TreeBank of Le
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.1cm}
 \section{Coverage and Conservatism in RBMs}\label{sec:increase-reference}
 %
 In this section we argue that the observed over-conservatism of correctors likely stems
@@ -825,7 +824,7 @@ This may support an implicit combination of references, but it also leads to an 
 which is identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
 references. A more in-depth analysis of SARI's handling of multiple references can be found in Appendix \ref{ap:sari-assum}.
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $\mathcal{M}=1$, 
-and is defined as the maximum single-reference SARI score.
+and is defined as the maximum single-reference SARI score for $\mathcal{M}>1$.
 
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{lucky,max,paper_Ms_significance}
