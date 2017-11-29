@@ -436,7 +436,7 @@ No significant difference is found for word order.
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=0.9\columnwidth]{words_differences_hist_reranking}
-	\caption{\lc{move figure to appendix?}The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $\mathcal{M}$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
 		In conclusion, tuning against additional references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
         }
@@ -699,7 +699,6 @@ The saturation effect observed for accuracy is even more pronounced in this sett
 \end{figure}
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
 
@@ -817,8 +816,14 @@ We crowd-sourced 50 reference simplifications for 47 sentences, using the corpus
 The results in table \ref{tab:simplifications_dist} show that the expected number of references is even greater for TS. 
 Next we turn to assess the effect of $\mathcal{M}$ on SARI \cite{Xu-EtAl:2016:TACL}, a recently proposed but already widely-used measure. Most RBMs, Accuracy, $F$-score or BLEU maximize over the multiple references, unlike SARI that combines them. This may support an implicit combination of references, but it also leads to an unintuitive situation in which a simplification which is identical to a reference does not receive a perfect score. A more in-depth analysis of SARI's handling of multiple references can be found in Appendix \ref{ap:sari-assum}.
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $\mathcal{M}=1$, and for $\mathcal{M}>1$ is defined as the maximum over all references of their single-reference SARI score.
-
-Figure \lc{add here} presents the coverage of SARI and MAX-SARI of a perfect TS system that selects a random correction
+\begin{figure}
+	\includegraphics[width=0.9\columnwidth]{lucky,max,paper_Ms_significance}
+	\caption{
+		SARI and MAX-SARI values for a perfect corrector and SARI values for a lucky perfect corrector (y-axis) as a function of the number of references $\mathcal{M}$ (x-axis).
+		Each data point is paired with a confidence interval ($p=.95$).\label{fig:SARI_Ms}}
+	\vspace{-0.5cm}
+\end{figure}
+Figure \ref{fig:SARI_Ms} presents the coverage of SARI and MAX-SARI of a perfect TS system that selects a random correction
 from the estimated distribution of corrections using the same bootstrapping protocol as in \S\ref{subsec:corrections_distribution}.
 We also include the SARI score of a ``lucky perfect'' system, the randomly selects one of the given references (the MAX-SARI score for such a system is 1). Results show that SARI has a coverage of about $0.45$, and that this score is largely independent of $\mathcal{M}$.
 The score of predicting one of the available references drops with the number of reference, indicating that SARI scores are not comparable
