@@ -151,8 +151,7 @@ choices of weights in I-measure \cite{felice2015towards}.
 
 However, penalizing over-correction more harshly than under-correction during development and training, 
 may lead to reluctance of correctors to make any changes (henceforth, {\it over-conservatism}).
-Using only one or two reference corrections, the common practice in GEC, compounds this problem, 
-as correctors are not only harshly penalized for making incorrect changes, but are often penalized
+Using only one or two reference corrections, the common practice in GEC, compounds this problem. Correctors are not only harshly penalized for making incorrect changes, but are often penalized
 for making correct changes not found in the reference.
 
 Indeed, we show that state-of-the-art correctors present over-conservatism.
@@ -288,10 +287,10 @@ Third, we report how many source sentences were split and how many concatenated 
   \end{subfigure}
   \caption{\label{fig:over-conservatism}
     The prevalence of changes correctors' outputs and in the NUCLE reference.
-    The top figure presents the amount of sentences (heat) for each amount of word changes
+    The left figure presents the amount of sentences (heat) for each amount of word changes
     (x-axis; measured by {\sc WordChange}) done by the outputs and the reference (y-axis).
     The middle figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (colored columns).
-    The bottom figure presents the percentage of sentence pairs (y-axis) where the
+    The right figure presents the percentage of sentence pairs (y-axis) where the
     Spearman $\rho$ values do not exceed a certain threshold (x-axis).
     See Appendix \ref{ap:abbr} for a legend of the correctors.
     Under all measures, the gold standard references make substantially more changes to the source sentences than any of the correctors,in some cases an order of magnitude more.
@@ -324,7 +323,7 @@ to address over-conservatism a prohibitively large $\mathcal{M}$ would be requir
 \paragraph{Theoretical Analysis.}
 The connection between coverage and over-conservatism requires some explanation.
 We abstract away from the details of the learning model and assume that correctors attempt to maximize an objective function, 
-over some training or development data. For simplicity, we assume that maximization is carried out by iterating 
+over some training or development data. For simplicity, we assume maximization is achieved by iterating 
 over the samples, as with the Perceptron or SGD.
 
 Assume the corrector is faced with a phrase which it predicts to be ungrammatical. 
@@ -332,7 +331,7 @@ Assume $p_{detect}$ is the probability that this prediction is correct, and that
 $p_{correct}$ is the probability it is able to predict
 a valid correction for this phrase (including correctly identifying it as erroneous).
 Finally, assume the corrector is evaluated
-against $\mathcal{M}$ references for which the coverage is $p_{coverage}$,
+against $\mathcal{M}$ references for which $p_{coverage}$ is the coverage,
 namely the probability that
 a valid correction will be found among $\mathcal{M}$ randomly sampled references.
 
@@ -577,7 +576,7 @@ Hence the bias $b_\mathcal{M}$ (Eq. \ref{eq:bias}) can be re-written as
 	\vspace{-0.1cm}
 \begin{myequation*}
   \centering
-  P(C(x) \in Correct_x) \cdot (1 - P_{Y \sim \mathcal{D}_i^\mathcal{M},y\sim \mathcal{D}_x}(y \in Y)).
+  P(C(x) \in Correct_x) \cdot (1 - P_{Y \sim \mathcal{D}_x^\mathcal{M},y\sim \mathcal{D}_x}(y \in Y)).
 \end{myequation*}
 \end{small}
 
@@ -662,7 +661,7 @@ The score is computed in terms of {\it edit} matches between a correction and th
 The HOO shared task used an earlier version of $F$-score, which required that the proposed corrections include edits explicitly.
 Later on, relieving correctors from the need to produce edits, $F$-score was redefined optimistically, maximizing over all possible annotations that generate the correction from the source.\footnote{Since our crowdsourced corrections
 	do not include an explicit annotation of edits, we produce edits heuristically.}
-$\mathcal{M}^2$ \cite{dahlmeier2012better} is the standard $F$-score computing tool for GEC.
+$M^2$ \cite{dahlmeier2012better} is the standard $F$-score computing tool for GEC.
 
 The complexity of the measure prohibits an analytic approach \cite{yeh2000more}.
 We instead use bootstrapping to estimate the bias incurred by not being able to exhaustively enumerate the set of valid corrections.
@@ -766,8 +765,8 @@ While it is possible that these correctors performed this feat by learning not o
 More likely is that these correctors have learned to predict when not to correct.
 
 % Two recent RBMS have been proposed. One is {\sc I-measure} \cite{felice2015towards}, which introduces novel features to GEC evaluation, such as distinguishing different quality levels of ungrammatical corrections (e.g., some improve the quality of the source, while others degrade it), and restricting edits to only consist of single words, rather than phrases. The other is GLEU \cite{napoles2015ground}, an adaptation of BLEU that was shown to correlate well with human rankings. 
-The recently proposed {\sc I-measure} \cite{felice2015towards} and GLEU \cite{napoles2015ground} measures do not address
-the coverage issue raised here, as they too apply string similarity measures relative to a fairly small number of references.
+The recently proposed GLEU \cite{napoles2015ground} measure do not address
+the coverage issue raised here, as it applies string similarity measures relative to a fairly small number of references.\textcolor{red}{ {\sc I-measure} \cite{felice2015towards} recognize that coverage might be a problem, and reduce the penalty for suspicious cases in a constant way, without considering the actual coverage. Hence, there is no balance between encouraging mistakes and punishing valid corrections.}
 %We expect our findings, that RBMs substantially under-estimate the performance of correctors, to generalize to these RBMs, as they all
 %These measures thus address orthogonal gaps in GEC evaluation from the ones presented here.
 Following the proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over grammaticality in reference corrections, only compounds this problem, as it results in a larger number of valid corrections.
@@ -819,8 +818,8 @@ We crowd-sourced 50 reference simplifications for 47 sentences, using the corpus
 The results in table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
 
 Assessing the effect of $\mathcal{M}$ on SARI, we find that SARI diverges from most RBMs (such as Accuracy, $F$-score or BLEU) 
-in that its multi-reference version is not a maximimum over the single-reference scores, but some combination of them.
-This may support an implicit combination of references, but it also leads to an unintuitive situation in which an output
+in that its multi-reference version is not a maximum over the single-reference scores, but some combination of them.
+This may support an implicit combination of references, but it also leads to an unintuitive situation: an output
 which is identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
 references. A more in-depth analysis of SARI's handling of multiple references can be found in Appendix \ref{ap:sari-assum}.
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $\mathcal{M}=1$, 
@@ -906,7 +905,7 @@ Estimating the distribution of valid corrections for a sentence, we find
 that increasing the number of references is beneficial only up to a point, after which
 coverage improves only marginally with each additional reference.
 In order to address these grave coverage issues, it seems necessary to develop evaluation measures that
-transcend above $n$-gram overlap, ans perform a deeper analysis of the text in question.
+transcend above $n$-gram overlap, and perform a deeper analysis of the text in question.
 A step towards this goal has been made by \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, who proposed
 a reference-less measure of the grammaticality of the output, using Grammatical Error Detection systems.
 In a recent work,\footnote{Paper under review. Undisclosed to preserve anonymity.} we propose a complementary
