@@ -59,7 +59,6 @@
 
 
 \begin{document}
-%\lc{On the low score of lucky perfect monolingual translation systems}\lc{On the low score of lucky perfect monolingual translation systems and the high score of conservative ones}
 \title{Reference Coverage and Conservatism in Grammatical Error Correction}
 %\author{
 %  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
@@ -183,10 +182,14 @@ and observe that: (1) the distribution of valid references for a given sentence 
 (3) increasing $M$ with a proper measure alleviates this over-conservatism, but up to a point.
 Indeed, over-conservatism has been reported by a number of recent works on TS.%, further supporting our claim.
 
-We conclude that developing, tuning and training correctors against a larger number of valid corrections is likely reduce over-conservatism.
+We conclude that developing, tuning and training correctors against a larger number of valid corrections is likely to reduce over-conservatism.
 However, as increasing $M$ shows diminishing returns, a compelling alternative
 is to leverage recent advances in semantic parsing to define semantic
 measures that will supplement RBMs (\S\ref{sec:conclusion}). 
+
+\textcolor{red}{
+%To put the discussion in a different light, 
+Reframing the discussion, RBMs are often validated by their correlation with human judgments and an accurate estimate of the systems' true performance is deemed less important. However, our results show that developing correctors to improve such under-estimating measures leads to systematic biases.}
 
 %Specifically, we introduce in another paper sent to this conference GEC RLM to assess the extent to which
 %a correction faithfully represents the semantics of the source, by their semantic structures similarity(\S \ref{sec:Semantics}).
@@ -255,7 +258,6 @@ relative to their prevalence in the NUCLE references (one annotator was arbitrar
 selected for the figures). 
 %\newcite{bryant2015far} noticed that the NUCLE references are more conservative than 
 %the ones they collected, which implies that our results may even underestimate the level of conservatism relative to other references.
-%\lc{it seems so technical I wonder if it is still relevant} 
 To focus the evaluation on meaningful changes, all non-alphanumeric characters were 
 excluded, both within tokens or as tokens of their own.
 
@@ -277,28 +279,28 @@ $\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exa
 Third, we report how many source sentences were split and how many concatenated by the reference and the correctors.
 
 \begin{figure*}
-	\vspace{-0.8cm}
+  \vspace{-0.8cm}
   \centering
   \begin{subfigure}[]{0.6\columnwidth}
     \includegraphics[width = \textwidth]{words_differences_heat}
   \end{subfigure}
   \hfill
   \begin{subfigure}[]{0.6\columnwidth}
-    \includegraphics[width = \textwidth]{aligned}
+    \includegraphics[width = \columnwidth]{spearman_ecdf}
   \end{subfigure}
   \hfill
   \begin{subfigure}[]{0.6\columnwidth}
-    \includegraphics[width = \columnwidth]{spearman_ecdf}
+   	\includegraphics[width = \textwidth]{aligned}
   \end{subfigure}
   \caption{\label{fig:over-conservatism}
     The prevalence of changes correctors' outputs and in the NUCLE reference.
     The left figure presents the amount of sentences (heat) for each amount of word changes
     (x-axis; measured by {\sc WordChange}) done by the outputs and the reference (y-axis).
-    The middle figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (colored columns).
-    The right figure presents the percentage of sentence pairs (y-axis) where the
+    The middle figure presents the percentage of sentence pairs (y-axis) where the
     Spearman $\rho$ values do not exceed a certain threshold (x-axis).
+    The right figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (colored columns).
     See Appendix \ref{ap:abbr} for a legend of the correctors.
-    Under all measures, the gold standard references make substantially more changes to the source sentences than any of the correctors,in some cases an order of magnitude more.
+    Under all measures, the gold standard references make substantially more changes to the source sentences than any of the correctors, in some cases an order of magnitude more.
   }
 \vspace{-0.4cm}
 \end{figure*}
@@ -394,10 +396,9 @@ $M$ references from the available set of twelve references provided by \citet{br
 In order to see why decreased conservatism with an increase in $M$ indicates
 that tuning against a small set of references (low coverage) yields over-conservatism, 
 assume an input sentence with some sub-string $e$. 
-There are three cases: (1) $e$ is an error, (2) $e$ is valid but there are valid references that alter it, (3) $e$ is uniquely valid. Case (3) can be ignored as oracle re-ranking does not have any effect in this case.
+There are three cases: (1) $e$ is an error, (2) $e$ is valid but there are valid references that alter it, (3) $e$ is uniquely valid. In case (3) oracle re-ranking has no effect and can be ignored.
 %In cases (1) and (2), denote the set of valid corrections of $e$ as $E$.
-The corrections in the $k$-best list can then be partitioned to: (a) those that keep $e$ as it is; 
-(b) those that invalidly alter $e$; and (c) those that validly alter $e$ (denote with $L_{val}$). 
+The corrections in the $k$-best list can then be partitioned to: those that keep $e$ as it is; those that invalidly alter $e$; and those that validly alter $e$. 
 
 Table \ref{ta:oracle_expected_results} presents the probability that $e$ will be altered in the different cases.
 Analysis shows that conservatism is likely to decrease with $M$ only
@@ -424,12 +425,12 @@ No significant difference is found for word order.
 	\end{tabular}
 	\caption{\label{ta:oracle_expected_results}
 	Oracle re-ranking expected effect on conservatism.
-	Values represent the probability of altering $e$. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the
-	$k$-best list is selected in the reference set $Y$,
-	$P_Y(\overline{e}, L_{val})$ is the probability that, in addition, the reference that keeps $e$ is not selected.
+	Values represent the probability of altering $e$. $L_{val}$ is the valid alterations in the $k$-best list. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the list is also in the reference set $Y$,
+	$P_Y(\overline{e}, L_{val})$ is the probability that, in addition, the reference that keeps $e$ is not in $Y$.
 	% in the reference set ($Y$) and references from $L_{val}$ (that alter $e$) are selected in the reference set.. 
 	%Cases include the case where the $k$-best list contains/not contains valid corrections of $e$,
-	%and the cases where keeping $e$ is valid/not valid. 
+	%and the cases where keeping $e$ is valid/not valid.
+	\vspace{-0.5cm}
 	}
   %Results under different assumptions concerning the ability of correctors to correct, the need for correcting most of the errors, 
 	%and the probability for high coverage with small $M$. 
@@ -440,8 +441,8 @@ No significant difference is found for word order.
 %
 \begin{figure}
 	\vspace{-1em}
-	\includegraphics[width=0.9\columnwidth]{words_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis), following oracle reranking with different $M$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+	\includegraphics[width=0.9\columnwidth]{words_relative_differences_hist_reranking}
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) relative to reranking with $M=1$, following oracle reranking with different $M$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
 		In conclusion, tuning against additional references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
         }
@@ -451,21 +452,11 @@ No significant difference is found for word order.
 \subsection{Estimating Corrections' Distribution}\label{subsec:corrections_distribution}
 %
 \paragraph{Data.}
-Our analysis assumes a reliable estimate for the distribution of corrections
-$\mathcal{D}_x$ of the source sentences we evaluate.
-The experiments in the following section are run on a random sample of 52 sentences with a maximum length of 15 from the NUCLE test data.
-Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation 
-variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.
-Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
-
-Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, 
-we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$. Specifically, for each of the 52 source sentences, 
-we elicited 50 corrections from Amazon Mechanical Turk workers.
-Aiming to judge grammaticality rather than fluency, we instructed the workers to
-correct only when necessary, not for styling.
-4 sentences required no correction according to almost half the workers and were hence discarded.
-
-We begin by estimating $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
+In this section we tackle the fundamental question of how do corrections behave. We estimate the number of corrections per sentence, and their histogram.
+The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data. Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, 
+we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$ (see Appendix \ref{ap:crowd} for details).
+Aiming to judge grammaticality rather than fluency, we instructed the workers to correct only when necessary, not for styling.
+We begin by estimating the histogram of $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm to
 estimate a discrete distribution in which the individual values do not matter, only the probability of each value. 
 {\sc UnseenEst} aims to minimize the ``earthmover distance'', between the estimated histogram and the histogram of the distribution. 
@@ -637,15 +628,33 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 %variable is a sum of Bernoulli variables with different success probabilities.} We also assume our corrector is always 
 %correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
 
-\begin{figure}
+\begin{figure*}
 	\vspace{-1em}
-  \includegraphics[width=0.9\columnwidth]{noSig_repeat_1000_accuracy}
-  \caption{Accuracy and Exact Index Match values for a perfect corrector (y-axis)
-    as a function of the number of references $M$ (x-axis).
-    %Each data point is paired with a confidence interval ($p=.95$).     
-  } \label{fig:accuracy_vals}
-  \vspace{-0.5cm}
-\end{figure}
+	\centering
+	\begin{subfigure}[]{0.65\columnwidth}
+		\centering
+		\includegraphics[width=\textwidth]{noSig_repeat_1000_accuracy}
+		\caption{Analysis of Accuracy and Exact Index Match.
+			%Each data point is paired with a confidence interval ($p=.95$).     
+		} \label{fig:accuracy_vals}
+	\end{subfigure}
+	\hfil
+	\begin{subfigure}[]{0.65\columnwidth}
+		\centering
+		\includegraphics[width=\textwidth]{$F_{0.5}$_Ms_significance}
+		\caption{Empirical results for $F_{0.5}$. Paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
+	\end{subfigure}
+	\hfil
+	\begin{subfigure}[]{0.65\columnwidth}
+		\centering
+		\includegraphics[width=\textwidth]{lucky,max,sari_Ms_significance}
+		\caption{
+			Empirical results for SARI and MAX-SARI and SARI for a ``lucky perfect'' corrector. Paired with a confidence interval ($p=.95$).\label{fig:SARI_Ms}}
+	\end{subfigure}
+	\caption{Measure values for a perfect corrector (y-axis)
+		as a function of the number of references $M$ (x-axis).}
+	\vspace{-0.5cm}
+\end{figure*}
 
 Figure \ref{fig:accuracy_vals} presents the expected accuracy values for a perfect
 corrector (i.e., 1-$\hat{b}_M$) for different  $M$ values. 
@@ -658,7 +667,6 @@ Formally, two corrections $c$ and $c'$ over a source sentence $x$ match if for t
 and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it holds that $c_{a\left(i\right)} \neq x_{i} \Leftrightarrow c'_{a'\left(i\right)} \neq x_{i}$, where $c_{Null}=c'_{Null}$.
 Results, while somewhat higher, are still only 0.54 with $M=10$. (Figure \ref{fig:accuracy_vals})
 %As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
-
 
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
@@ -696,16 +704,6 @@ $M$ values for training and development (1 or 2) for obtaining a reliable estima
 of system performance.
 For instance, the $F_{0.5}$-score for our perfect corrector is only 0.42 with $M=2$.
 The saturation effect observed for accuracy is even more pronounced in this setting.
-
-\begin{figure}
-	\includegraphics[width=0.9\columnwidth]{$F_{0.5}$_Ms_significance}
-	\caption{
-	  $F_{0.5}$ values for a perfect corrector (y-axis) as a function of the number of references $M$ (x-axis).
-	  Each data point is paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
-	\vspace{-0.5cm}
-\end{figure}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
 
@@ -819,9 +817,9 @@ Our experiments show that low reference coverage may account for this conservati
 as an example RBM (similar trends are obtained with Accuracy); 
 (3) over-conservatism decreases with $M$ in an oracle re-ranking experiment.
 
-We crowd-sourced 50 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
-\newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$.
-%with one of them having 100 annotations and one 150, totaling 2500 annotations. The two latter have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim variant numbers are vast, much more even than the 50 we sampled.
+We crowd-sourced 2500 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
+\newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$ (Appendix \ref{ap:crowd} for details).
+
 The results in table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
 
 Assessing the effect of $M$ on SARI, we find that SARI diverges from most RBMs (such as Accuracy, $F$-score or BLEU) 
@@ -832,6 +830,7 @@ references. A more in-depth analysis of SARI's handling of multiple references c
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $M=1$, 
 and is defined as the maximum single-reference SARI score for $M>1$.
 
+\com{
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{lucky,max,sari_Ms_significance}
 	\caption{
@@ -839,7 +838,7 @@ and is defined as the maximum single-reference SARI score for $M>1$.
 		Each data point is paired with a confidence interval ($p=.95$).\label{fig:SARI_Ms}}
 	\vspace{-0.5cm}
 \end{figure}
-
+}
 Figure \ref{fig:SARI_Ms} presents the coverage of SARI and MAX-SARI of a perfect TS system that selects a random correction
 from the estimated distribution of corrections using the same bootstrapping protocol as in \S\ref{subsec:corrections_distribution}.
 We also include the SARI score of a ``lucky perfect'' system, that randomly selects one of 
@@ -974,6 +973,30 @@ SARI is the average of 3 scores, addition, deletion and keep, each behaves diffe
  National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
  Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
  University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[Char]{xie2016neural}.
+
+\section{Collected references}\label{ap:crowd}
+\subsection{Grammatical Error Correction}
+\lc{add examples for system and correction and gold}
+52 sentences with a maximum length of 15 were collected from the NUCLE test corpus \cite{dahlmeier2013building}. 
+For each of the 52 source sentences, 
+we elicited 50 corrections from Amazon Mechanical Turk workers.
+Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
+4 sentences required no correction according to almost half the workers and were hence discarded.
+Common methods based on agreement such as Fleiss's kappa or test questions as the problem we deal with is exactly the low agreement of valid corrections.
+4 workers were rejected due to suspicious answers. such were workers that most or all of their work changed nothing except non-alphanumeric characters and were the only ones to keep several source sentences unchanged. 
+
+\begin{figure}[htb]
+	\includegraphics[width=0.9\columnwidth]{correction_task}
+	\caption{Template for a grammatical error correction annotation task} 
+\end{figure}
+\section{simplification}
+In a similar procedure to the GEC, we acquired text simplifications of \newcite{Xu-EtAl:2016:TACL} corpus. The guidelines were as similar to the ones reported in \newcite{Xu-EtAl:2016:TACL} as possible. 
+Overall we sent 47 sentences with one of them having 100 annotations and one 150, the rest have 50 simplifications each. The first two have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim that variant numbers are vast, much more even than the 50 we sampled.
+No worker was rejected, several methods to find suspicious answers failed to retrieve anything.
+\begin{figure}[htb]
+	\includegraphics[width=0.9\columnwidth]{simplification_task}
+	\caption{Template for a simplification annotation task} 
+\end{figure}
 \section{Additional figures}
 \subsection{Validity}\label{ap:validity_judgements}
 \begin{figure}[h!]
