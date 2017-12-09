@@ -75,14 +75,15 @@
   However, whereas such conservatism is desirable to some extent,
   we find that state-of-the-art systems substantially under-predict
   changes to the source. 
-  An analysis of the distribution of valid corrections for a sentence,   
+  An analysis of the distribution of valid corrections for a sentence
   indicates that this over-conservatism stems from
-  the inability of a handful of references to represent the entire space of valid
+  the inability of a handful of references to approximate the entire
+  space of valid
   corrections. This results in undue penalization of valid outputs,
   thus disincentivizing correctors to make changes.
   Increasing the reference number only partially addresses this gap,
   which stresses the importance of developing alternative measures.
-  Results are replicated on text simplification, supporting our claim.
+  Results are replicated on text simplification, supporting our claims.
 \end{abstract}
 
 \section{Introduction}
@@ -129,7 +130,7 @@
 % is a challenging research field, which interfaces with many
 %other areas of linguistics and NLP. The field
 
-Evaluation in Monolingual Translation \cite{xu2015problems,inderjeet2009summarization} and
+Evaluation in monolingual translation \cite{xu2015problems,inderjeet2009summarization} and
 in particular in Grammatical Error Correction (GEC)
 \cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground}
 has received much attention over the years, and has gained notoriety for its difficulty,
@@ -147,7 +148,7 @@ An important criterion in GEC evaluation is faithfulness to the the source.
 In fact, it has been argued that many would prefer a somewhat cumbersome or even mildly ungrammatical 
 correction over one that alters the meaning of the source \cite{brockett2006correcting}.
 Consequently, annotators are often instructed to be conservative when compiling gold standard corrections (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
-There were different attempts in evaluation procedures to formally capture this precision/recall asymmetry,
+Several evaluation procedures have attempted to formally capture this precision/recall asymmetry,
 such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{ng2014conll} and the 
 choices of weights in I-measure \cite{felice2015towards}.
 
@@ -182,10 +183,11 @@ similar line of experiments to Text Simplification (TS),
 and observe that: (1) the distribution of valid references for a given sentence is dispersed across a vast number of references; 
 (2) common measures for TS dramatically under-estimate performance; 
 (3) increasing $M$ with a proper measure alleviates this over-conservatism.
-Indeed, over-conservatism has been reported by a number of recent works on TS.%, further supporting our claim.
+Indeed, over-conservatism has been reported by a number of recent works on TS.
 
-\textcolor{red}{
-On a concluding note: RBMs are often validated by their correlation with human judgments and an accurate estimate of the systems' true performance is deemed less important. However, our results show that developing correctors to improve such under-estimating measures leads to systematic biases.}
+A concluding note:
+RBMs are often validated by their correlation with human judgments, while the measures' absolute score is deemed as less important. We show that the caveats of using low reference coverage are not a matter of scale.
+Rather, low coverage leads to systematic biases, which has a neagative effect on system performance.
 
 %Specifically, we introduce in another paper sent to this conference GEC RLM to assess the extent to which
 %a correction faithfully represents the semantics of the source, by their semantic structures similarity(\S \ref{sec:Semantics}).
@@ -214,18 +216,19 @@ On a concluding note: RBMs are often validated by their correlation with human j
 	\centering
 	\small
 	\singlespacing
-	\begin{tabular}{lp{4cm}}
+	\begin{tabular}{l|p{4cm}}
 		Corrector & Sentence \\
-		\hline 
-		Origin + (others) & This is especially to people who are overseas. \\ 
+		\hline
+		Source & This is especially to people who are overseas. \\
+                \hline 
 		CHAR, UMC, JMGR & This is especially \textbf{for} people who are overseas. \\ 
 		IPN & This is especially to \textbf{peoples} who are overseas. \\ 
 		CUUI &  This is especially to \textbf{the} people who are overseas. \\ 
 		\hline
-		NUCLEA & This is especially \textbf{true for} people who are overseas.\\
-		NUCLEB & This is especially \textbf{relevant} to people who are overseas.
+		NUCLE$_A$ & This is especially \textbf{true for} people who are overseas.\\
+		NUCLE$_B$ & This is especially \textbf{relevant} to people who are overseas.
 	\end{tabular}
-	\caption{Example for a sentence and proposed corrections by different systems and by the two NUCLE annotators. No system produces a new word as needed, while the two NUCLE human annotators choose to correct in different ways.}
+	\caption{\label{tab:nucle_example} Example for a sentence and proposed corrections by different systems (top part) and by the two NUCLE annotators (bottom part). Systems not mentioned in the table retain the source. No system produces a new word as needed. The two references differ in their corrections.} 
 	\vspace{-0.5cm}
 \end{table} 
 %The field of GEC was always thriving or conservatism in its corrections, with the prominent example of using
@@ -264,9 +267,11 @@ containing 1414 essays and 50 test essays, each of about 500 words.
 
 We evaluate all participating systems in the CoNLL 2014 shared task,
 in addition to three of the best performing systems on this dataset,
-a hybrid corrector \cite{rozovskaya2016grammatical}, a phrase based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
+a hybrid corrector \cite{rozovskaya2016grammatical},
+a phrase based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
 and a neural network corrector \cite{xie2016neural}.
-See Appendix \ref{ap:abbr} for system names and abbreviations. 
+Appendix \ref{ap:abbr} lists system names and abbreviations.
+See Table \ref{tab:nucle_example} for an example sentence.
 
 We compare the prevalence of changes made to the source by the correctors,
 relative to their prevalence in the NUCLE references (one annotator was arbitrarily 
@@ -457,7 +462,8 @@ No significant difference is found for word order.
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=0.9\columnwidth]{words_relative_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) relative to reranking with $M=1$, following oracle reranking with different $M$ values (column colors). All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) following oracle reranking with different $M$ values (column colors), where the amount for $M=1$ are subtracted from them.
+          All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
 		In conclusion, tuning against additional references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
         }
@@ -618,7 +624,7 @@ We estimate $b_M$ empirically using its empirical mean on our experimental corpu
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_M$ 
 for any size of $Y_i$ ($M$). 
 However, as this is highly computationally demanding, we estimate it using
-sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we calculate the accuracy distribution and expectation (see \ref{ap:poibin}).
+sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we calculate the accuracy distribution and expectation (see Appendix \ref{ap:poibin}).
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
 %in order to simulate a case where reference corrections are collected by a single
@@ -705,7 +711,7 @@ Following the statistics of NUCLE's test set, we set $N=1312$ and $N_{cor}=136$.
 %The latter reduces the overall bias by their frequency in the corpus.
 
 Bootstrapping is carried out by the accelerated bootstrap procedure \cite{efron1987better}, with 1000 iterations.
-We also report confidence intervals ($p=.95$), computed using the same procedure.\footnote{We use the Python scikits.bootstrap implementation.}
+We also report confidence intervals ($p=.95$), computed using the same procedure.%\footnote{We use the Python scikits.bootstrap implementation.}
 %
 %For each sentence which had at least one error according to the NUCLE gold standard
 %we sample $M$ sentences uniformly from the
@@ -785,18 +791,24 @@ While it is possible that these correctors performed this feat by learning not o
 More likely is that these correctors have learned to predict when not to correct.
 
 % Two recent RBMS have been proposed. One is {\sc I-measure} \cite{felice2015towards}, which introduces novel features to GEC evaluation, such as distinguishing different quality levels of ungrammatical corrections (e.g., some improve the quality of the source, while others degrade it), and restricting edits to only consist of single words, rather than phrases. The other is GLEU \cite{napoles2015ground}, an adaptation of BLEU that was shown to correlate well with human rankings. 
-The recently proposed GLEU \cite{napoles2015ground} measure do not address
-the coverage issue raised here, as it applies string similarity measures relative to a fairly small number of references.\textcolor{red}{ {\sc I-measure} \cite{felice2015towards} recognize that coverage might be a problem, and reduce the penalty for suspicious cases in a constant way, without considering the actual coverage. Hence, there is no balance between encouraging mistakes and punishing valid corrections.}
-%We expect our findings, that RBMs substantially under-estimate the performance of correctors, to generalize to these RBMs, as they all
-%These measures thus address orthogonal gaps in GEC evaluation from the ones presented here.
-Following the proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over grammaticality in reference corrections, only compounds this problem, as it results in a larger number of valid corrections.
+The recently proposed GLEU \cite{napoles2015ground} measure does not address
+the coverage issue raised here, as it applies string similarity measures relative to a fairly small
+number of references. {\sc I-measure} \cite{felice2015towards} does recognize the problem of
+low coverage, and reduces the penalty for cases where the source, reference and output all differ.
+However, this makes the measure both less sensitive to invalid differences from the reference
+and valid differences from the reference, and does not take $M$ or the coverage into account in
+the computation. Our discussion suggests that integrating coverage estimates into the measure
+may be fruitful.
+%Hence, there is no balance between overlooking mistakes and punishing valid corrections.
+The proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over grammaticality in reference corrections, only compounds this problem, as it results in a larger number of valid corrections.
 
 The $F$-score coverage experiment echo the results of \newcite{bryant2015far},
 who also compared the $F$-score of a human correction against an increasing number of references.
 However, their suggestion to normalize the score
 with the score of a human corrector cannot address the gaps discussed here,
 as it has no effect on the training and tuning phases.
-Moreover, such normaliztion may be disadvantageous given that some systems already surpass human performance,
+Moreover, such normaliztion may be disadvantageous given that some systems already
+surpass human performance,
 indicating that the addressing the biases incurred by limited coverage is not only a matter of scale.
 
 
@@ -834,8 +846,7 @@ as an example RBM (similar trends are obtained with Accuracy);
 
 We crowd-sourced 2500 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
 \newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$ (Appendix \ref{ap:crowd} for details).
-
-The results in table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
+The results in Table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
 
 Assessing the effect of $M$ on SARI, we find that SARI diverges from most RBMs (such as Accuracy, $F$-score or BLEU) 
 in that its multi-reference version is not a maximum over the single-reference scores, but some combination of them.
@@ -975,11 +986,27 @@ In a recent work,\footnote{Paper under review. Undisclosed to preserve anonymity
 \section{Accuracy - Poisson Binomial Distribution}\label{ap:poibin}
 The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using our estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}. An implementation of this and other methods for efficiently computing and approximating Poisson Binomial Distributions and the estimated density functions will be released upon publication.
 
-\section{SARI aggregation of references}\label{ap:sari-assum}
-Unlike most RBMs, SARI aggregates all references together in its score.
-This, if intended, may come from the underlying assumption that references are imperfect. 
-If so, reference tendencies and distribution, are all the more relevant - gold standard is practically an aggregation of references and not individual one. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable.
-SARI is the average of 3 scores, addition, deletion and keep, each behaves differently. Perfect addition consists of all additions suggested at least by one reference, and it is practically impossible to get full score on the other types of changes, the gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to.
+\section{SARI with Multiple references}\label{ap:sari-assum}
+Most RBMs define their multi-reference score to be the maximum score the
+output attains against any single one reference.
+SARI takes a different approach and combines multiple references to yield its score, 
+possibly in order to compensate for the necessarily limited coverage of the available
+references. This yields non-monotonic behavior of SARI with respect to increasing
+the number of references, which makes the biases incurred by low coverage less predictable,
+but not less significant.
+For instance, a set of diverse set of references would span a large space of possible
+combinations, making SARI more permissive. A set of references of the same size, which only differ little
+from one another would yield a more conservative SARI score.
+
+%If so, reference tendencies and distribution, are all the more relevant -- 
+%gold standard is practically an aggregation of references and not individual one. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable.
+SARI is defined as the average of 3 scores, based on how well the system output kept the words it should keep,
+deleted the words it should delete, and added the words it should add (all with respect to the reference).
+Each of these scores behaves differently when increasing the number of references.
+\oa{I commented out a part here. Explain what it takes to get a perfect addition score,
+deletion score and keep score.}
+%For instance, a perfect recall for addition can only be obtained if all additions suggested by any reference are added, 
+%it is practically impossible to get full score on the other types of changes, the gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to.
 
 \section{Systems tested}\label{ap:abbr}
  Adam Mickiewicz University (AMU),
@@ -1004,10 +1031,15 @@ Common methods based on agreement such as Fleiss's kappa or test questions as th
 	\includegraphics[width=0.9\columnwidth]{correction_task}
 	\caption{Template for a grammatical error correction annotation task} 
 \end{figure}
-\section{simplification}
-In a similar procedure to the GEC, we acquired text simplifications of \newcite{Xu-EtAl:2016:TACL} corpus. The guidelines were as similar to the ones reported in \newcite{Xu-EtAl:2016:TACL} as possible. 
-Overall we sent 47 sentences with one of them having 100 annotations and one 150, the rest have 50 simplifications each. The first two have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim that variant numbers are vast, much more even than the 50 we sampled.
-No worker was rejected, several methods to find suspicious answers failed to retrieve anything.
+\section{Simplification}
+In order to perform our simplification experiments, 
+we collected additional references for sentences from the corpus presented in \newcite{Xu-EtAl:2016:TACL}, using Amazon
+Mechanical Turk with similar annotation guidelines to those used by Xu et al. 
+Overall we collect 50 references for 45, and 100 and 150 references for two more sentences.
+The latter two have 70 and 126 references that occur only once and none reoccurring more than 6 times, 
+supporting the claim that the size of the space of valid references for TS is huge.
+Standard worker rejection techniques were used, but no worker had to be rejected.
+
 \begin{figure}[htb]
 	\includegraphics[width=0.9\columnwidth]{simplification_task}
 	\caption{Template for a simplification annotation task} 
@@ -1029,7 +1061,7 @@ No worker was rejected, several methods to find suspicious answers failed to ret
 \end{figure}
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{moses_sari_words_differences_hist}
-	\caption{Reranking results with \newcite{elior2017summarization} and  SARI}
+	\caption{Reranking results with Moses and SARI}
 
 \end{figure}
 \begin{figure}
@@ -1039,7 +1071,7 @@ No worker was rejected, several methods to find suspicious answers failed to ret
 \end{figure}
 \begin{figure}
 	\includegraphics[width=0.9\columnwidth]{moses_max_words_differences_hist}
-		\caption{Reranking results with \newcite{elior2017summarization} and MAX-SARI}
+		\caption{Reranking results with Moses and MAX-SARI}
 	
 \end{figure}
 
