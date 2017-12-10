@@ -170,15 +170,15 @@ We first assess the effect of increasing the number of references (henceforth, $
 the undue penalization of valid corrections (\S \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence, arriving 
 at an estimate of over 1000 corrections, even for fairly short sentences.
-We then consider two representative reference-based measures (henceforth, {\it RBMs}) for
-assessing the validity of a proposed correction relative to a reference set, 
+We then consider two representative reference-based measures (henceforth, {\it RBMs}) to
+assess the validity of a proposed correction relative to a reference set, 
 and characterize the distribution of their scores as a function of $M$. 
 Our results show that both measures substantially under-estimate the true performance of
 the correctors. They also show that increasing $M$ alleviates the incurred bias, 
 and reduces over-conservatism. All this suggests developing, tuning and training correctors against a larger number of valid corrections is likely to reduce over-conservatism.
 However, as increasing $M$ shows diminishing returns, a compelling alternative
 is to leverage recent advances in semantic parsing to define semantic
-measures that will supplement RBMs (\S\ref{sec:conclusion}). 
+measures to supplement RBMs (\S\ref{sec:conclusion}). 
 
 In order to corroborate our findings, we apply a 
 similar line of experiments to Text Simplification (TS),
@@ -479,7 +479,7 @@ No significant difference is found for word order.
 \paragraph{Data.}
 In this section we tackle the fundamental question of how do corrections behave. We estimate the number of corrections per sentence, and their histogram.
 The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data. Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, 
-we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$ (see Supplementary  \ref{ap:crowd} for details).
+we use crowdsourcing to obtain a sample from $\mathcal{D}_x$ (see Supplementary  \ref{ap:crowd} for details).
 Aiming to judge grammaticality rather than fluency, we instructed the workers to correct only when necessary, not for styling.
 We begin by estimating the histogram of $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm to
@@ -659,7 +659,7 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{noSig_repeat_1000_accuracy}
-		\caption{Analysis of Accuracy and Exact Index Match.
+		\caption{Accuracy and Exact Index Match.
 			%Each data point is paired with a confidence interval ($p=.95$).     
 		} \label{fig:accuracy_vals}
 	\end{subfigure}
@@ -667,17 +667,18 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{$F_{0.5}$_Ms_significance}
-		\caption{Empirical results for $F_{0.5}$. Paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
+		\caption{$F_{0.5}$\label{fig:F_Ms}}
 	\end{subfigure}
 	\hfil
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{lucky,max,sari_Ms_significance}
 		\caption{
-			Empirical results for SARI and MAX-SARI and SARI for a ``lucky perfect'' corrector. Paired with a confidence interval ($p=.95$).\label{fig:SARI_Ms}}
+			lucky\textbackslash perfect SARI and MAX-SARI\label{fig:SARI_Ms}}
 	\end{subfigure}
-	\caption{Measure values for a perfect corrector (y-axis)
-		as a function of the number of references $M$ (x-axis).}
+	\vspace{-0.2cm}
+	\caption{Analysis (left) and empirical experiments (mid, right) to measure values for a perfect corrector (y-axis)
+		as a function of the number of references $M$ (x-axis).For empirical experiments points are paired with a confidence interval ($p=.95$).}
 	\vspace{-0.5cm}
 \end{figure*}
 
@@ -841,8 +842,8 @@ Our experiments on TS demonstrate that the trends described in \S\ref{sec:formal
 In fact, the prevalence of over-conservatism for TS has already been shown by previous work\cite{alvamanchego-EtAl:2017:I17-1}, 
 which reported that TS systems tend to perform too few word additions, deletions,
 substitutions, and shifts of word sequences \cite{zhang2017sentence} 
-and tend to have a low edit distance from the source \cite{narayan2015unsupervised}.
-Our experiments show that low reference coverage may account for this conservatism. Concretely, we show that
+and to have a low edit distance from the source \cite{narayan2015unsupervised}.
+Our experiments show low reference coverage may account for this conservatism. Concretely, we show that
 (1) the distribution of valid references for a given sentence is highly dispersed; 
 (2) common evaluation measures suffer from low coverage, taking SARI \cite{Xu-EtAl:2016:TACL} 
 as an example RBM (similar trends are obtained with Accuracy); 
@@ -850,13 +851,12 @@ as an example RBM (similar trends are obtained with Accuracy);
 
 We crowd-sourced 2500 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
 \newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$ (Supplementary  \ref{ap:crowd} for details).
-The results in Table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
+Table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
 
 Assessing the effect of $M$ on SARI, we find that SARI diverges from most RBMs (such as Accuracy, $F$-score or BLEU) 
 in that its multi-reference version is not a maximum over the single-reference scores, but some combination of them.
-This may support an implicit combination of references, but it also leads to an unintuitive situation: an output
-which is identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
-references. A more in-depth analysis of SARI's handling of multiple references can be found in Supplementary  \ref{ap:sari-assum}.
+This may support an implicit combination of references, but it also leads to an unintuitive situation: an output identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
+references. A more in-depth analysis of SARI's handling of multiple references is found in Supplementary \ref{ap:sari-assum}.
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $M=1$, 
 and is defined as the maximum single-reference SARI score for $M>1$.
 
