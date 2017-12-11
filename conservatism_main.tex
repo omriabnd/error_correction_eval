@@ -478,7 +478,9 @@ No significant difference is found for word order.
 	\vspace{-0.5cm}
 \end{figure}
 %
+	\vspace{-0.1cm}
 \subsection{Estimating Corrections' Distribution}\label{subsec:corrections_distribution}
+	\vspace{-0.1cm}
 %
 \paragraph{Data.}
 In this section we tackle the fundamental question of how do corrections behave. We estimate the number of corrections per sentence, and their histogram.
@@ -535,7 +537,7 @@ To test this we conducted another crowdsourcing experiment, where 3 annotators w
 %Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are binned by the number of workers who generated them.
 We plot the validity of the correction against its frequency, finding that frequency has little effect,
 where even the rarest corrections were judged valid 78\% of the time.
-(details in Supplementary  \ref{ap:validity_judgements})
+(details in Appendix \ref{ap:validity_judgements})
 
 \subsection{Under-estimation as a function of $M$} \label{subsec:Assessment-values}
 In the previous section we presented an empirical assessment of the corrections distribution of a sentence. We turn to estimating the resulting bias, i.e., the under-estimation of RBMs, for different $M$ values. 
@@ -698,6 +700,7 @@ and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it
 Results, while somewhat higher, are still only 0.54 with $M=10$. (Figure \ref{fig:accuracy_vals})
 %As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
 
+	\vspace{-0.1cm}
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
 $F_\alpha$-score is standard for evaluating system performance.%\lc{Do we really need to elaborate on F score history in GEC? OA: I think it's fine as is}
@@ -735,7 +738,9 @@ of system performance.
 For instance, the $F_{0.5}$-score for our perfect corrector is only 0.42 with $M=2$.
 The saturation effect observed for accuracy is even more pronounced in this setting.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\vspace{-0.1cm}
 \subsection{Significance of Real-World Correctors}\label{sec:real_world}
+	\vspace{-0.1cm}
 
 The bootstrapping method for computing the significance of the $F$-score (\S\ref{subsec:Assessment-values}) 
 can also be used for assessing the significance of the differences in correctors' performance
@@ -760,7 +765,9 @@ For example, the best performing corrector is significantly better than all but 
 %Nevertheless, it seems that $M=2$ value taken in NUCLE is sufficiently high
 %to generally obtain statistically significant ranking of the different correctors.
 
+	\vspace{-0.1cm}
 \subsection{Discussion}\label{subsec:mult_discussion}
+	\vspace{-0.1cm}
 % -- we saw that we have dramatic under-estimation
 % -- but is this a problem? for instance, in the last section we saw we can get statistical significance between systems by increasing
 %    N even with a low $M$
@@ -925,7 +932,9 @@ with $M=8$. See Supplementary  \ref{ap:simp-rerank} for further details.
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\vspace{-0.1cm}
 \section{Conclusion}\label{sec:conclusion}
+	\vspace{-0.1cm}
 
 This paper addresses the shortcomings of existing RBMs in GEC.
 We present evidence that state of the art systems suffer from over-conservatism and
@@ -941,31 +950,27 @@ Estimating the distribution of valid corrections for a sentence, we find
 that increasing $M$ is beneficial up to a point, after which
 coverage improves only marginally with each additional reference.
 In order to address these grave coverage issues, it seems necessary to
-develop evaluation measures that transcend above $n$-gram overlap, and
-perform a deeper analysis of the text in question, for instance by comparing
-the semantics of the reference and the source to the output (cf. \cite{lo2011meant}).
+develop evaluation measures that transcend $n$-gram overlap, and
+use a deeper analysis tools, for instance by comparing
+the semantics of the reference and the source to the output \cite[cf.][]{lo2011meant}.
+
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 has made progress towards this goal in proposing a reference-less grammaticality measure,
-using Grammatical Error Detection systems.
+using Grammatical Error Detection tools.
 In a recent work,\footnote{Paper under review. Undisclosed to preserve anonymity.} we propose a complementary measure that measures the semantic faithfulness of the output to the source, in order to form a combined semantic measure that bypasses the pitfalls of low coverage.
 
 The paper makes two methodological contributions to the GEC evaluation literature. First,
 it proposes a methodology for evaluating evaluation measures by the scores they assign a perfect corrector.
-Second, we present a methodology for applying the UnseenEst technique, which to our knowledge hasn't been used
-before in NLP, for assessing the distribution of target corrections. Our findings demonstrate how such
-methodolical tools can provide insight as to the biases of existing systems and evaluation measures.
+Second, it presents a statistical methodology for assessing the distribution of target corrections. 
+Our findings demonstrate how these tools can help characterizing the biases of existing systems and evaluation measures.
 
 A concluding note: RBMs are often validated by their correlation with human judgments, while the measures' absolute score is deemed as less important. 
-We show that the caveats of using low reference coverage are not a matter of scale.
-Rather, low coverage leads to systematic biases, which has a neagative effect on system performance.
-
-Our oracle re-ranking experiments suggest that incorporating additional references into the training and tuning protocol may reduce over-conservatism. 
+We show that the caveats of using low reference coverage are not a matter of scale, but rather that
+low coverage leads to systematic biases, which have a neagative effect on system performance.
+Our oracle re-ranking experiments suggest that incorporating additional references into the training and tuning protocol may alleviate this problem. 
 As no corpus with multiple references is large enough to train GEC systems,
 we are currently pursuing the semi-automatic generation of such corpora, in order to dvelop methods
-for training GEC systems with multiple references, thereby reducing over-conservatism.
-
-
-
+for training GEC systems with multiple references, thereby overcoming over-conservatism.
 
 
 %
