@@ -31,7 +31,7 @@
 \newcommand{\@emptybiblabel}[1]{}
 %\makeatother
 \usepackage[draft,hidelinks]{hyperref}
-\setlength{\parskip}{-.05em}
+\setlength{\parskip}{-.2em}
 
 \usepackage{naaclhlt2018}
 \graphicspath{{./plots/}}
@@ -186,11 +186,6 @@ and observe that: (1) the distribution of valid references for a given sentence 
 (3) increasing $M$ with a proper measure alleviates this over-conservatism.
 Indeed, over-conservatism has been reported by a number of recent works on TS.
 
-An important contribution made here was the methodology of evaluating evaluation measures by the scores of perfect correctors and the techniques to assess the distribution of target corrections. We show the importance and ease of use of those for two monolingual tasks.
-
-A concluding note:
-RBMs are often validated by their correlation with human judgments, while the measures' absolute score is deemed as less important. We show that the caveats of using low reference coverage are not a matter of scale.
-Rather, low coverage leads to systematic biases, which has a neagative effect on system performance.
 
 %Specifically, we introduce in another paper sent to this conference GEC RLM to assess the extent to which
 %a correction faithfully represents the semantics of the source, by their semantic structures similarity(\S \ref{sec:Semantics}).
@@ -930,11 +925,6 @@ to receive credit for it, due to the small number of references taken into accou
 Moreover, we show that a coverage-conservatism relation is not confined to
 GEC, and may be applicable to monolingual translation in general.
 
-Oracle re-ranking experiments suggest that incorporating additional references into the training and tuning protocol may reduce over-conservatism. 
-As no corpus with multiple references is large enough to train GEC systems,
-we are currently pursuing the semi-automatic generation of such corpora, in order to dvelop methods
-for training GEC systems with multiple references, thereby reducing over-conservatism.
-
 Estimating the distribution of valid corrections for a sentence, we find
 that increasing $M$ is beneficial up to a point, after which
 coverage improves only marginally with each additional reference.
@@ -946,6 +936,24 @@ the semantics of the reference and the source to the output (cf. \cite{lo2011mea
 has made progress towards this goal in proposing a reference-less grammaticality measure,
 using Grammatical Error Detection systems.
 In a recent work,\footnote{Paper under review. Undisclosed to preserve anonymity.} we propose a complementary measure that measures the semantic faithfulness of the output to the source, in order to form a combined semantic measure that bypasses the pitfalls of low coverage.
+
+The paper makes two methodological contributions to the GEC evaluation literature. First,
+it proposes a methodology for evaluating evaluation measures by the scores they assign a perfect corrector.
+Second, we present a methodology for applying the UnseenEst technique, which to our knowledge hasn't been used
+before in NLP, for assessing the distribution of target corrections. Our findings demonstrate how such
+methodolical tools can provide insight as to the biases of existing systems and evaluation measures.
+
+A concluding note: RBMs are often validated by their correlation with human judgments, while the measures' absolute score is deemed as less important. 
+We show that the caveats of using low reference coverage are not a matter of scale.
+Rather, low coverage leads to systematic biases, which has a neagative effect on system performance.
+
+Our oracle re-ranking experiments suggest that incorporating additional references into the training and tuning protocol may reduce over-conservatism. 
+As no corpus with multiple references is large enough to train GEC systems,
+we are currently pursuing the semi-automatic generation of such corpora, in order to dvelop methods
+for training GEC systems with multiple references, thereby reducing over-conservatism.
+
+
+
 
 
 %
@@ -984,7 +992,6 @@ In a recent work,\footnote{Paper under review. Undisclosed to preserve anonymity
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
 
-\pagebreak
 
 
 \end{document}
