@@ -31,7 +31,7 @@
 \newcommand{\@emptybiblabel}[1]{}
 %\makeatother
 \usepackage[draft,hidelinks]{hyperref}
-\setlength{\parskip}{-.2em}
+%\setlength{\parskip}{-.em}
 
 \usepackage{naaclhlt2018}
 \graphicspath{{./plots/}}
@@ -83,9 +83,9 @@
   space of valid
   corrections. This results in undue penalization of valid outputs,
   thus disincentivizing correctors to make changes.
-  Increasing the reference number only partially addresses this gap,
+  Increasing the  number of references only partially addresses this gap,
   which stresses the importance of developing alternative measures.
-  Results are replicated on text simplification, supporting our claims.
+  A replication of the results on text simplification further supports our claims.
 \end{abstract}
 
 \section{Introduction}
@@ -147,23 +147,24 @@ due in part to the non-uniqueness of reference corrections \cite{chodorow2012pro
 %findings are general and apply to various monolingual translation tasks.
 
 An important criterion in GEC evaluation is faithfulness to the the source. 
-In fact, it has been argued that many would prefer a somewhat cumbersome or even mildly ungrammatical 
-correction over one that alters the meaning of the source \cite{brockett2006correcting}.
-Consequently, annotators are often instructed to be conservative when compiling gold standard corrections (e.g., in the Treebank of Learner English \cite{nicholls2003cambridge}).
+In fact, some argue that a somewhat cumbersome or even mildly ungrammatical 
+correction if preferable over one that alters the meaning of the source \cite{brockett2006correcting}.
+Consequently, annotators are often instructed to be conservative when compiling gold standard corrections \cite[e.g.,][]{nicholls2003cambridge}.
 Several evaluation procedures have attempted to formally capture this precision/recall asymmetry,
 such as the standardized use of $F_{0.5}$ over $F_{1}$ \cite{ng2014conll} and the 
 choices of weights in I-measure \cite{felice2015towards}.
 
 However, penalizing over-correction more harshly than under-correction during development and training, 
 may lead to reluctance of correctors to make any changes (henceforth, {\it over-conservatism}).
-Using only one or two reference corrections, the common practice in GEC, compounds this problem. Correctors are not only harshly penalized for making incorrect changes, but are often penalized
+Using only one or two reference corrections, the common practice in GEC, compounds this problem,
+ as correctors are not only harshly penalized for making incorrect changes, but are often penalized
 for making correct changes not found in the reference.
 
 Indeed, we show that state-of-the-art correctors present over-conservatism.
 Evaluating the output of 15 recent correctors, we find they all
 substantially under-predict corrections relative to the already conservative references
 (\S\ref{sec:formal_conservatism}).
-As the differences in the prevalence of changes in the outputs and in the references are often an order of magnitude large, this gap is probably undesirable (\S\ref{sec:increase-reference}).
+Differences in the prevalence of changes in the outputs and in the references are often an order of magnitude large, and are unlikely to be desirable (\S\ref{sec:increase-reference}).
 
 We first assess the effect of increasing the number of references (henceforth, $M$) on 
 the undue penalization of valid corrections (\S \ref{sec:increase-reference}).
@@ -180,7 +181,7 @@ is to leverage recent advances in semantic parsing to define semantic
 measures to supplement RBMs (\S\ref{sec:conclusion}). 
 
 In order to corroborate our findings, we apply a 
-similar line of experiments to Text Simplification (TS),
+similar line of experiments to Text Simplification (TS) (\S\ref{sec:simplification}),
 and observe that: (1) the distribution of valid references for a given sentence is dispersed across a vast number of references; 
 (2) common measures for TS dramatically under-estimate performance; 
 (3) increasing $M$ with a proper measure alleviates this over-conservatism.
@@ -208,7 +209,10 @@ Indeed, over-conservatism has been reported by a number of recent works on TS.
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-.1cm}
 \section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
+\vspace{-.1cm}
+
 \begin{table}
 	\vspace{-0.5cm}
 	\centering
@@ -241,6 +245,7 @@ Indeed, over-conservatism has been reported by a number of recent works on TS.
 %suffer from over-conservatism: they tend to make too few changes to the source, relative to human correctors.
 %{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
 
+\vspace{-.1cm}
 \paragraph{Notation.}
 We assume each ungrammatical sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
@@ -257,6 +262,7 @@ A corrector $C$ is a function from input sentences to proposed corrections (stri
 An evaluation measure is a function $f\colon X \times Y \times C\to \mathbb{R}$. We use the term ``true measure'' to refer to a measure's output where the references include all possible corrections, 
 i.e., $\forall i\colon Y_i=Correct_i$.
 
+\vspace{-.2cm}
 \paragraph{Experimental Setup.}\label{par:experimental_setup}
 We conduct all experiments on the NUCLE test dataset \cite{dahlmeier2013building},
 the de facto standard in GEC.
@@ -279,6 +285,7 @@ selected for the figures).
 To focus the evaluation on meaningful changes, all non-alphanumeric characters were 
 excluded, both within tokens or as tokens of their own.
 
+\vspace{-.2cm}
 \paragraph{Measures of Conservatism.}
 We consider three types of divergences between the source and the reference.
 First, we measure the extent to which \emph{words} were changed: altered, deleted or added.
@@ -323,6 +330,7 @@ Third, we report how many source sentences were split and how many concatenated 
 \vspace{-0.4cm}
 \end{figure*}
 
+\vspace{-.2cm}
 \paragraph{Results.}
 % presents the outcome of the three measures. 
 %In \ref{fig:split} the amount of sentences each corrector has done is presented. In \ref{fig:words_changed} the accumulated sum of sentences by the words changed in each sentence of each of the correctors is presented. In \ref{fig:rho} the cumulative probability distribution of rho values out of all the sentences.
@@ -335,7 +343,9 @@ Similar amount of correction is observed on the references of the TreeBank of Le
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-.1cm}
 \section{Coverage and Conservatism in RBMs}\label{sec:increase-reference}
+\vspace{-.1cm}
 %
 In this section we argue that the observed over-conservatism of correctors likely stems
 from them being developed to optimize RBMs that suffer from low-coverage.
@@ -826,7 +836,9 @@ indicating that the addressing the biases incurred by limited coverage is not on
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%5
+\vspace{-.1cm}
 \section{Similar Effects on Simplification}\label{sec:simplification}
+\vspace{-.1cm}
 
 We now turn to replicating our experiments on Text Simplification (TS). From a formal point of view, evaluation of the tasks is similar:
 the output is obtained by making zero or more edits to the source. RBMs are the standard for TS evaluation,
