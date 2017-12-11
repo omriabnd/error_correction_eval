@@ -24,6 +24,8 @@
 \usepackage{bbm}
 \usepackage{booktabs}
 
+\usepackage{xr}
+\externaldocument[]{conservatism_supplementary}
 \makeatletter
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
 \newcommand{\@emptybiblabel}[1]{}
@@ -167,15 +169,15 @@ We first assess the effect of increasing the number of references (henceforth, $
 the undue penalization of valid corrections (\S \ref{sec:increase-reference}).
 We start by estimating the number and frequency distribution of the valid corrections per sentence, arriving 
 at an estimate of over 1000 corrections, even for fairly short sentences.
-We then consider two representative reference-based measures (henceforth, {\it RBMs}) for
-assessing the validity of a proposed correction relative to a reference set, 
+We then consider two representative reference-based measures (henceforth, {\it RBMs}) to
+assess the validity of a proposed correction relative to a reference set, 
 and characterize the distribution of their scores as a function of $M$. 
 Our results show that both measures substantially under-estimate the true performance of
 the correctors. They also show that increasing $M$ alleviates the incurred bias, 
 and reduces over-conservatism. All this suggests developing, tuning and training correctors against a larger number of valid corrections is likely to reduce over-conservatism.
 However, as increasing $M$ shows diminishing returns, a compelling alternative
 is to leverage recent advances in semantic parsing to define semantic
-measures that will supplement RBMs (\S\ref{sec:conclusion}). 
+measures to supplement RBMs (\S\ref{sec:conclusion}). 
 
 In order to corroborate our findings, we apply a 
 similar line of experiments to Text Simplification (TS),
@@ -183,6 +185,8 @@ and observe that: (1) the distribution of valid references for a given sentence 
 (2) common measures for TS dramatically under-estimate performance; 
 (3) increasing $M$ with a proper measure alleviates this over-conservatism.
 Indeed, over-conservatism has been reported by a number of recent works on TS.
+
+An important contribution made here was the methodology of evaluating evaluation measures by the scores of perfect correctors and the techniques to assess the distribution of target corrections. We show the importance and ease of use of those for two monolingual tasks.
 
 A concluding note:
 RBMs are often validated by their correlation with human judgments, while the measures' absolute score is deemed as less important. We show that the caveats of using low reference coverage are not a matter of scale.
@@ -269,7 +273,7 @@ in addition to three of the best performing systems on this dataset,
 a hybrid corrector \cite{rozovskaya2016grammatical},
 a phrase based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
 and a neural network corrector \cite{xie2016neural}.
-Appendix \ref{ap:abbr} lists system names and abbreviations.
+Supplementary  \ref{ap:abbr} lists system names and abbreviations.
 See Table \ref{tab:nucle_example} for an example sentence.
 
 We compare the prevalence of changes made to the source by the correctors,
@@ -318,7 +322,7 @@ Third, we report how many source sentences were split and how many concatenated 
     The middle figure presents the percentage of sentence pairs (y-axis) where the
     Spearman $\rho$ values do not exceed a certain threshold (x-axis).
     The right figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (colored columns).
-    See Appendix \ref{ap:abbr} for a legend of the correctors.
+    See Supplementary  \ref{ap:abbr} for a legend of the correctors.
     Under all measures, the gold standard references make substantially more changes to the source sentences than any of the correctors, in some cases an order of magnitude more.
   }
 \vspace{-0.4cm}
@@ -474,7 +478,7 @@ No significant difference is found for word order.
 \paragraph{Data.}
 In this section we tackle the fundamental question of how do corrections behave. We estimate the number of corrections per sentence, and their histogram.
 The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data. Through the length restriction we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, 
-we use crowdsourcing for obtaining a sample from $\mathcal{D}_x$ (see Appendix \ref{ap:crowd} for details).
+we use crowdsourcing to obtain a sample from $\mathcal{D}_x$ (see Supplementary  \ref{ap:crowd} for details).
 Aiming to judge grammaticality rather than fluency, we instructed the workers to correct only when necessary, not for styling.
 We begin by estimating the histogram of $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm to
@@ -526,7 +530,7 @@ To test this we conducted another crowdsourcing experiment, where 3 annotators w
 %Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are binned by the number of workers who generated them.
 We plot the validity of the correction against its frequency, finding that frequency has little effect,
 where even the rarest corrections were judged valid 78\% of the time.
-(details in Appendix \ref{ap:validity_judgements})
+(details in Supplementary  \ref{ap:validity_judgements})
 
 \subsection{Under-estimation as a function of $M$} \label{subsec:Assessment-values}
 In the previous section we presented an empirical assessment of the corrections distribution of a sentence. We turn to estimating the resulting bias, i.e., the under-estimation of RBMs, for different $M$ values. 
@@ -623,7 +627,7 @@ We estimate $b_M$ empirically using its empirical mean on our experimental corpu
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_M$ 
 for any size of $Y_i$ ($M$). 
 However, as this is highly computationally demanding, we estimate it using
-sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we calculate the accuracy distribution and expectation (see Appendix \ref{ap:poibin}).
+sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we calculate the accuracy distribution and expectation (see Supplementary  \ref{ap:poibin}).
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
 %in order to simulate a case where reference corrections are collected by a single
@@ -654,7 +658,7 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{noSig_repeat_1000_accuracy}
-		\caption{Analysis of Accuracy and Exact Index Match.
+		\caption{Accuracy and Exact Index Match.
 			%Each data point is paired with a confidence interval ($p=.95$).     
 		} \label{fig:accuracy_vals}
 	\end{subfigure}
@@ -662,17 +666,18 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{$F_{0.5}$_Ms_significance}
-		\caption{Empirical results for $F_{0.5}$. Paired with a confidence interval ($p=.95$).\label{fig:F_Ms}}
+		\caption{$F_{0.5}$\label{fig:F_Ms}}
 	\end{subfigure}
 	\hfil
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{lucky,max,sari_Ms_significance}
 		\caption{
-			Empirical results for SARI and MAX-SARI and SARI for a ``lucky perfect'' corrector. Paired with a confidence interval ($p=.95$).\label{fig:SARI_Ms}}
+			lucky\textbackslash perfect SARI and MAX-SARI\label{fig:SARI_Ms}}
 	\end{subfigure}
-	\caption{Measure values for a perfect corrector (y-axis)
-		as a function of the number of references $M$ (x-axis).}
+	\vspace{-0.2cm}
+	\caption{Analysis (left) and empirical experiments (mid, right) to measure values for a perfect corrector (y-axis)
+		as a function of the number of references $M$ (x-axis).For empirical experiments points are paired with a confidence interval ($p=.95$).}
 	\vspace{-0.5cm}
 \end{figure*}
 
@@ -833,25 +838,24 @@ the output is obtained by making zero or more edits to the source. RBMs are the 
 much like they are in GEC.
 
 Our experiments on TS demonstrate that the trends described in \S\ref{sec:formal_conservatism} recur in this setting as well. 
-In fact, the prevalence of over-conservatism for TS has already been shown by previous work, 
+In fact, the prevalence of over-conservatism for TS has already been shown by previous work\cite{alvamanchego-EtAl:2017:I17-1}, 
 which reported that TS systems tend to perform too few word additions, deletions,
 substitutions, and shifts of word sequences \cite{zhang2017sentence} 
-and tend to have a low edit distance from the source \cite{narayan2015unsupervised}.
-Our experiments show that low reference coverage may account for this conservatism. Concretely, we show that
+and to have a low edit distance from the source \cite{narayan2015unsupervised}.
+Our experiments show low reference coverage may account for this conservatism. Concretely, we show that
 (1) the distribution of valid references for a given sentence is highly dispersed; 
 (2) common evaluation measures suffer from low coverage, taking SARI \cite{Xu-EtAl:2016:TACL} 
 as an example RBM (similar trends are obtained with Accuracy); 
 (3) over-conservatism decreases with $M$ in an oracle re-ranking experiment.
 
 We crowd-sourced 2500 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
-\newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$ (Appendix \ref{ap:crowd} for details).
-The results in Table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
+\newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$ (Supplementary  \ref{ap:crowd} for details).
+Table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
 
 Assessing the effect of $M$ on SARI, we find that SARI diverges from most RBMs (such as Accuracy, $F$-score or BLEU) 
 in that its multi-reference version is not a maximum over the single-reference scores, but some combination of them.
-This may support an implicit combination of references, but it also leads to an unintuitive situation: an output
-which is identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
-references. A more in-depth analysis of SARI's handling of multiple references can be found in Appendix \ref{ap:sari-assum}.
+This may support an implicit combination of references, but it also leads to an unintuitive situation: an output identical to a reference does not receive a perfect score, but rather it depends how similar it is to the other
+references. A more in-depth analysis of SARI's handling of multiple references is found in Supplementary \ref{ap:sari-assum}.
 In order to conform to the common practice, we further report the measure MAX-SARI, which coincides with SARI on $M=1$, 
 and is defined as the maximum single-reference SARI score for $M>1$.
 
@@ -877,7 +881,7 @@ lists in two settings: with Moses \cite{koehn2007koehn}
 $k=100$, and one with a neural model \cite{nisioi2017exploring} with $k=12$. 
 Our results indeed show that conservatism decreases with $M$ on both settings. 
 For example on the least conservative, the neural model, with $M=1$ 50 sentences were not changed, while only 29 remained the same 
-with $M=8$. See Appendix \ref{ap:simp-rerank} for further details.
+with $M=8$. See Supplementary  \ref{ap:simp-rerank} for further details.
 
 %The results suggest that similar trends may hold for other monolingual translation tasks, at least to the extent that their RBMs take the source into account.
 %, and compares the changes made to it in the references and the system output. This includes most measures for monolingual translation, excluding multilingual originated ones.
@@ -981,107 +985,6 @@ In a recent work,\footnote{Paper under review. Undisclosed to preserve anonymity
 \bibliography{propose}
 
 \pagebreak
-\appendix
-\section{Accuracy - Poisson Binomial Distribution}\label{ap:poibin}
-The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From Equation \ref{eq:acc_def} we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using our estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}. An implementation of this and other methods for efficiently computing and approximating Poisson Binomial Distributions and the estimated density functions will be released upon publication.
 
-\section{SARI aggregation of references}\label{ap:sari-assum}
-Unlike most RBMs, SARI aggregates all references together in its score.
-This, if intended, may come from the underlying assumption that references are imperfect. 
-If so, reference tendencies and distribution, are all the more relevant - gold standard is practically an aggregation of references and not individual one. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable.
-SARI is the average of 3 scores, addition, deletion and keep, each behaves differently. Perfect addition consists of all additions suggested at least by one reference, and it is practically impossible to get full score on the other types of changes, the gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to.
-
-\section{Systems tested}\label{ap:abbr}
- Adam Mickiewicz University (AMU),
- University of Cambridge (CAMB), Columbia University and the University of Illinois at Urbana-Champaign (CUUI),
- Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (IPN),
- National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
- Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
- University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[Char]{xie2016neural}.
-
-\section{Collected references}\label{ap:crowd}
-\subsection{Grammatical Error Correction}
-\lc{add examples for system and correction and gold}
-52 sentences with a maximum length of 15 were collected from the NUCLE test corpus \cite{dahlmeier2013building}. 
-For each of the 52 source sentences, 
-we elicited 50 corrections from Amazon Mechanical Turk workers.
-Sentences with less than 6 words were discarded, as they were mostly a result of sentence segmentation errors.
-4 sentences required no correction according to almost half the workers and were hence discarded.
-Common methods based on agreement such as Fleiss's kappa or test questions as the problem we deal with is exactly the low agreement of valid corrections.
-4 workers were rejected due to suspicious answers. such were workers that most or all of their work changed nothing except non-alphanumeric characters and were the only ones to keep several source sentences unchanged. 
-
-\begin{figure}[htb]
-	\includegraphics[width=0.9\columnwidth]{correction_task}
-	\caption{Template for a grammatical error correction annotation task} 
-\end{figure}
-\section{simplification}
-In a similar procedure to the GEC, we acquired text simplifications of \newcite{Xu-EtAl:2016:TACL} corpus. The guidelines were as similar to the ones reported in \newcite{Xu-EtAl:2016:TACL} as possible. 
-Overall we sent 47 sentences with one of them having 100 annotations and one 150, the rest have 50 simplifications each. The first two have 70, 126 simplifications respectively occurring only once and none reoccurring more than 6 times, supporting the claim that variant numbers are vast, much more even than the 50 we sampled.
-No worker was rejected, several methods to find suspicious answers failed to retrieve anything.
-\begin{figure}[htb]
-	\includegraphics[width=0.9\columnwidth]{simplification_task}
-	\caption{Template for a simplification annotation task} 
-\end{figure}
-\section{Additional figures}
-\subsection{Validity}\label{ap:validity_judgements}
-\begin{figure}[h!]
-	\vspace{-.3cm}
-	\includegraphics[width=0.9\columnwidth]{IAA_confirmation_frequency}
-	\caption{The mean frequency ($y$-axis) in which a correction that was produced
-		a given number of times ($x$-axis), was judged to be valid.
-		 \label{fig:validity_judgements}}
-		\vspace{-0.3cm}
-		\end{figure}
-\subsection{Simplification reranking}\label{ap:simp-rerank}
-\begin{figure}
-	\includegraphics[width=0.9\columnwidth]{nisioi_max_words_differences_hist}
-	\caption{Reranking results with \newcite{nisioi2017exploring} and MAX-SARI}
-\end{figure}
-\begin{figure}
-	\includegraphics[width=0.9\columnwidth]{moses_sari_words_differences_hist}
-	\caption{Reranking results with \newcite{elior2017summarization} and  SARI}
-
-\end{figure}
-\begin{figure}
-\includegraphics[width=0.9\columnwidth]{nisioi_sari_words_differences_hist}
-	\caption{Reranking results with \newcite{nisioi2017exploring} and SARI}
-
-\end{figure}
-\begin{figure}
-	\includegraphics[width=0.9\columnwidth]{moses_max_words_differences_hist}
-		\caption{Reranking results with \newcite{elior2017summarization} and MAX-SARI}
-	
-\end{figure}
-
-\com{
-\section{Annotated paragraphs}
-\begin{table}[hb]
-	\centering
-	\begin{tabular}{lll}
-		Annotator-id & NUCLE-id & type      \\
-		1         & 2  & corrected \\
-		2         & 2  & corrected \\
-		1         & 2  & learner   \\
-		2         & 2  & learner   \\
-		1         & 3  & corrected \\
-		2         & 3  & corrected \\
-		1         & 3  & learner   \\
-		2         & 3  & learner   \\
-		1         & 5  & corrected \\
-		2         & 5  & corrected \\
-		1         & 5  & learner   \\
-		2         & 5  & learner   \\
-		1         & 6  & learner   \\
-		2         & 6  & learner   \\
-		2         & 7  & corrected \\
-		2         & 7  & learner   \\
-		1         & 8  & corrected \\
-		1         & 8  & learner   \\
-		1         & 10 & corrected \\
-		1         & 10 & learner  
-	\end{tabular}
-	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
-\end{table}
-}
 
 \end{document}
