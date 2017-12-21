@@ -1,4 +1,4 @@
-\documentclass[letterpaper, 11pt]{article}
+\documentclass[a4paper, 11pt]{article}
 %\usepackage[round]{natbib}
 
 \usepackage{mathtools}
@@ -409,7 +409,7 @@ where $\alpha$ is the ratio between the penalty for introducing a wrong correcti
 Validating this analysis empirically, we conduct an experiment to determine whether increasing
 the number of references in training indeed reduces conservatism. There is no 
 corpus available with multiple references which is large enough for re-training a corrector. 
-Instead, we simulate such a setting with an oracle reranking approach and test whether the 
+Instead, we simulate such a setting with an oracle reranking approach, and test whether the 
 availability of increasingly more training references reduces a corrector's conservativeness.
 
 Concretely, given a set of sentences, each paired with $M$ references, a measure and a 
@@ -482,7 +482,7 @@ No significant difference is found for word order.
 	\vspace{-0.1cm}
 %
 \paragraph{Data.}
-In this section, we tackle the fundamental question of how do corrections behave. We estimate the number of corrections per sentence and their histogram.
+In this section, we tackle the fundamental question of how do corrections behave. We estimate the number of corrections per sentence, and their histogram.
 The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data. Through the length restriction, we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$.Proven to be effective in GEC \cite{madnani2011they} and related tasks such as MT \cite{zaidan2011crowdsourcing, post2012constructing}, 
 we use crowdsourcing to obtain a sample from $\mathcal{D}_x$ (see Appendix  \ref{ap:crowd} for details).
 Aiming to judge grammaticality rather than fluency, we instructed the workers to correct only when necessary, not for styling.
@@ -780,9 +780,9 @@ For example, the best performing corrector is significantly better than all but 
 %    we hypothesize that this is the reason.
 %
 
-We have shown that the number of corrections needed for reliable RBMs is exceedingly high.
+We have shown the number of corrections needed for reliable RBMs is exceedingly high.
 An average sentence has hundreds or more valid low-probability corrections, whose total probability mass is substantial. 
-RBMs such as accuracy and $F$-score thus increase slowly with $M$ over values of about 10.
+RBMs such as accuracy and $F$-score thus increase slowly with $M$ over 10.
 
 %
 %All these findings suggest that it is too costly to increase $M$ in development data to the extent asymmetric evaluation will not lead to over-conservatism. The exact index match analysis also suggests $M=1,2$ coverage is also low for detection. When detection is separate from correction this might result in over-conservatism. 
@@ -853,8 +853,8 @@ much like they are in GEC.
 Our experiments on TS demonstrate that the trends described in \S\ref{sec:formal_conservatism} recur in this setting as well. 
 In fact, the prevalence of over-conservatism for TS has already been shown by previous work\cite{alvamanchego-EtAl:2017:I17-1}, 
 which reported that TS systems tend to perform too few word additions, deletions,
-substitutions, and shifts of word sequences \cite{zhang2017sentence} 
-and to have a low edit distance from the source \cite{narayan2015unsupervised}.
+substitutions, and shifts of word sequences \cite{zhang-lapata:2017:EMNLP2017} 
+and to have a low edit distance from the source \cite{narayan-gardent:2016:INLG}.
 Our experiments show low reference coverage may account for this conservatism. Concretely, we show that
 (1) the distribution of valid references for a given sentence is highly dispersed; 
 (2) common evaluation measures suffer from low coverage, taking SARI \cite{Xu-EtAl:2016:TACL} 
@@ -885,7 +885,7 @@ Figure \ref{fig:SARI_Ms} presents the coverage of SARI and MAX-SARI of a perfect
 from the estimated distribution of corrections using the same bootstrapping protocol as in \S\ref{subsec:corrections_distribution}.
 We also include the SARI score of a ``lucky perfect'' system, that randomly selects one of 
 the given references (the MAX-SARI score for such a system is 1). 
-Results show that SARI has a coverage of about $0.45$ and that this score is largely independent of $M$.
+Results show that SARI has a coverage of about $0.45$, and that this score is largely independent of $M$.
 The score of predicting one of the available references drops with the number of references, indicating that SARI scores may not be comparable
 across different $M$ values. 
 
@@ -900,7 +900,7 @@ with $M=8$. See Appendix  \ref{ap:simp-rerank} for further details.
 %, and compares the changes made to it in the references and the system output. This includes most measures for monolingual translation, excluding multilingual originated ones.
 
 %The relation between coverage to conservatism in TS is further supported by 
-%the fact that reduction in simplification conservatism came together with the use of the new corpus introducing references for tuning and a %more prominent change came with a semantic approach that can abstract over the references \cite{zhang2017sentence}.
+%the fact that reduction in simplification conservatism came together with the use of the new corpus introducing references for tuning and a %more prominent change came with a semantic approach that can abstract over the references \cite{zhang-lapata:2017:EMNLP2017}.
 %In our opinion, the above results attest to the need in considering coverage of evaluation procedures.
 
 %We also tested oracle reranking using SARI. Two $k$-best list were used, simple moses based system ($k=100$) and a neural based one ($k=12$), while the first shows an inverse tendency, the second becomes less conservative. For example, for any number of changes $X$, the Moses system with $M=1$ has more sentences with at least $X$ corrections compared to reranking with $M=1$. We attribute this to lack valid corrections combined with SARI's behaviour. Conversely, the neural system with $M=1$ chose not to correct 50 sentences while the one with $M=8$ 30, exactly like the gold standard. 
@@ -927,7 +927,7 @@ with $M=8$. See Appendix  \ref{ap:simp-rerank} for further details.
 		The table presents the mean number of simplifications per sentence with probability of more than
 		$\gamma$ (top row), as well as their total probability mass (bottom row).
 	}
-	\vspace{-0.3cm}
+	\vspace{-0.5cm}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
