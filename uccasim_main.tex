@@ -71,7 +71,7 @@
 \begin{abstract}
   We propose {\sc USim}, a semantic measure for Grammatical Error Correction (GEC)
   that measures the semantic faithfulness of the output to the source,
-  thereby complementing existing reference-less measures for measuring the output's grammaticality.
+  thereby complementing existing reference-less measures (RLMs) for measuring the output's grammaticality.
   {\sc USim} operates by comparing the semantic symbolic structure of the source and the correction,
 	without relying on manually-curated references.
   Our experiments establish the validity of {\sc USim},
@@ -92,30 +92,29 @@ research field, much due to the difficulty in integrating
 different types of rewriting operations into a single measure, and the vast number of valid outputs
 \cite{tetreault2008native,madnani2011they,chodorow2012problems,bryant2015far}.
 These difficulties, as well as the idiosyncrasies of GEC have recently motivated
-a number of proposals for new, improved reference-based GEC measures \cite{felice2015towards,napoles2015ground,dahlmeier2012better}\oa{there are also others, no? also, don't they need to be sorted by year of publication?}, as well as the compilation of multiple references for each input.
+a number of proposals for new, improved reference-based measures (RBMs)  \cite{dahlmeier2012better,felice2015towards,napoles2015ground}.
 
-Nevertheless, the size and heterogeneity of the space of valid outputs for a sentence often prohibits
+Nevertheless, the size and heterogeneity of the space of valid outputs per sentence often prohibits
 obtaining a reference set that covers this space well, thereby limiting the applicability
-of reference-based measures \cite{bryant2015far}.
-To address this we propose a semantic reference-less measure, {\sc USim}.
+of RBMs \cite{bryant2015far}.
+To address this we propose a semantic RLM, {\sc USim}.
 {\sc USim} operates by measuring the graph distance between the semantic
 representations of the source and the output.
 
-Our proposal complements the reference-less measure proposed recently by 
-\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, which uses grammatical error detection
-techniques to assess the grammaticality of the output.
+Our proposal complements the RLM proposed recently by 
+\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, which uses grammatical error detection techniques to assess the grammaticality of the output.
 A similar decomposition of output quality to its adequacy (similar to faithfulness)
-and fluency (related to grammaticality), has been used in machine translation (MT)
+and fluency (related to grammaticality), has been used in machine translation(MT)
 evaluation \cite[e.g.,][]{banchs2015adequacy}.
 
-As a test case, we use the UCCA scheme as a semantic representation \cite{abend2013universal},
+As a test case, we use UCCA semantic representation \cite{abend2013universal},
 motivated by its recent use in semantic MT evaluation \cite{birch2016hume}.
-However, the measure can be easily adapted to use other semantic schemes, such as AMR \cite{}.
+However, the measure can be easily adapted to use other semantic schemes, e.g. AMR \cite{banarescu-EtAl:2013:LAW7-ID}.
 
-{\sc USim} is conceptually related to reference-less measures developed
-for machine translation
+{\sc USim} is conceptually related to RLMs developed
+for MT
 \cite{reeder2006measuring,albrecht2007regression,specia2009estimating,specia2010machine}.
-Notably, XMEANT \cite{lo2014xmeant} compares the source sentence to the output
+Notably, XMEANT \cite{lo2014xmeant} compares the source to the output
 in terms of their semantic role labeling structures.
 Our use of UCCA is motivated by its wider coverage of predicate types, as opposed to 
 MEANT's focus on verbal argument structures, and its subsequent preservation
@@ -132,24 +131,22 @@ See \cite{birch2016hume} for a more elaborate comparison.
 
 %Semantic annotation schemes are also gaining support and proven to be useful for many tasks in general\lc{have preference on what to cite?} and specifically for evaluation \cite{birch2016hume}. One desired feature of semantic annotation is its robustness to modifications that do not change the meaning such as paraphrasing \cite{abend2013universal}, and translation \cite{sulem2015conceptual}.
 
-We conduct experiments to confirm the validity of {\sc USim}.
-Specifically, we show that 
-(1) UCCA can be consistently and automatically applied to learner language, 
+We conduct experiments to confirm the {\sc USim} validity.
+Specifically, we show
+(1) UCCA can be consistently and automatically applied to learner language (LL), 
 (2) {\sc USim} is not prone to unduly penalize valid corrections, and 
 (3) {\sc USim} assigns a lower score to corrections of poor quality.
-Our experiments also indicate that UCCA parsing technology is already sufficiently mature for
-an automatic variant of {\sc USim} to provide reliable results.
-
+Our experiments also indicate that UCCA parsing technology is already sufficiently mature for an automatic variant of {\sc USim} to provide reliable results.
+\vspace{-.6cm}
 
 \section{Background}
-
+\vspace{-.3cm}
 \paragraph{Structural Annotation of Learner Language.}
 While linguistic theories propose that each learner makes consistent use of syntax 
 \cite{huebner1985system,tarone1983variability}, this use may not conform to the syntax of the learned language, 
-or of any other known language. This entails difficulties in defining syntactic annotation for learner language, 
-as, on the face of it, the language of each learner has to be annotated in its own terms.
+or of any other known language. This entails difficulties in defining syntactic annotation for LL, as the syntax annotated differs for each learner.
 
-Syntactic schemes for learner language annotate syntactically erroneous sentences in different ways.
+Syntactic schemes for LL annotate syntactically erroneous sentences in different ways.
 \newcite{berzak2016universal} and \newcite{ragheb2012defining} annotate according 
 to the syntax used by the learner, even if this use is not grammatical.
 Such annotation may be unreliable as a source of semantic information, 
@@ -160,11 +157,11 @@ This has also been the tradition in works on parser robustness
 variety of different syntactic structures that can be used to express a similar meaning. 
 
 In this paper, we use semantic annotation to structurally
-represent learner language text. Semantic structures are faithful to the intended
+represent LL text. Semantic structures are faithful to the intended
 meaning of the sentence, and not to its formal realization, and thus face
 fewer conflicts where the syntactic structure used diverges from
 the one intended. We are not aware of any previous attempts to semantically
-annotate learner language text.
+annotate LL text.
 
 
 \paragraph{The UCCA Scheme.}\label{sec:ucca}
@@ -196,116 +193,11 @@ which are interpreted in a broad sense,
 and include locations, destinations and complement clauses,
 and {\it Adverbials}, such manner descriptions.
 
-
-
-%The two major dimensions for the evaluation of GEC output is their grammaticaility
-%and their semantic faithfulness to the source.\oa{add reference}
-%A reference-less approach to the complementary aspect of the evaluation, namely grammaticality,
-%has been tackled using Grammatical Error Detection \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
-
-%In this section we present the {\sc USim} measure for capturing faithfulness
-%through the graph similarity of the UCCA representations of the source and the output.
-
-
-%As semantic structures represent an abstraction over different realizations
-%of a similar meaning,  In fact, $M$ plays no role in this approach, as the measure
-%is defined not relative to a refernce but relative to the source sentence.
-%
-%as LL consists of many grammatical mistakes that makes syntactic
-%analysis ill-defined for the task. We show evidence that this is the case, by having
-%two annotators annotate a sub-corpus from the NUCLE dataset, and by measuring their
-%inter-annotator agreement.
-%%%Second, we ask whether corrections for a sentence indeed need to be faithful to the source. We seek to answer this question by measuring
-%the semantic similarity between the source and the reference. We show support for an affirmative answer to this question 
-%by annotating the references provided for the NUCLE dataset,
-%and detecting high semantic similarity between the corresponding sentences on both sides. 
-%
-%\subsection{Background}
-%
-%Reliable assessment by a gold standard might be hard to obtain (see
-%\ref{sec:increase-reference}), and human annotation for each output
-%is great \cite{madnani2011they} but costly, especially considering the 
-%development process. Under these conditions,
-%%given a reliable semantic annotation we can enhance the reliability of our assessment. A simple way to do it is to somehow account in the assessment score for semantic changes. 
-%Another, more ambitious way to do that might be to decouple the meaning
-%from the structure. We propose a broad idea for a reduction from grammatical
-%error detection and a comparable semantics annotation to grammatical
-%error correction assessment. Lets assume we have both a reliable error
-%detection tool and a good way to measure semantic changes. Then, we
-%can transform assessment to a 3 steps assessment. 
-%Step one, detect errors in the original text. Assess the amount of needed corrections, and the percentage of which that were changed.
-%Step two, assess how much did the semantics change.
-% Give a negative score for changing semantics.
-%Last step, use
-%the error detection again to assess how many errors exist in the correction
-%output, whether uncorrected by the corrector or new errors presented
-%by the correction process itself. 
-%
-%This assessment was partially inspired by the WAS evaluation scheme \cite{chodorow2012problems},
-%in short it states we should account in the assessment for 5 types,
-%not only the True\textbackslash{}False Positive\textbackslash{}Negative
-%but also for the case where the annotation calls for a correction,
-%and the corrector did a correction, but one that is unlike the annotation's
-%one. With the proposed assessment we can measure how many of the corrections
-%were corrected correctly (First + Second), and how many errors do
-%we have eventually (Third) and combine them to get something similar
-%to the Precision Recall that is widely used. We can also account for
-%the places where the error was detected and check if it was corrected
-%in a way that makes it grammatical and did not change semantics, the
-%fifth type. We do that without getting a human to confirm this is
-%indeed a correction.
-%
-%This system would be even more informative than the current one. Allowing assessment of
-%what subtask exactly did the corrector fail to perform. Answering questions
-%like: was the corrector too conservative and did not make enough corrections?
-%Was it making changes in the right places but not correcting grammar successfully?
-% as the corrector correcting grammar but changing things
-%it was not supposed to? etc.
-%
-%Semantic structures were used for LL tasks \cite{king2013shallow}, but so far not to GEC. Some syntactic representations were suggested for this task, and as they are popular for structural representation we devote the next subsection to discuss them. Specifically we explain, why, apart from not being based on semantics, syntactic representation is not a good fit for LL and in particular not for enhancing the evaluation without enlarging reference number.
-%
-
-%semantically similar sentences, formulated by different learners, may use considerably different structures
-
-
-%
-%Syntactic representation is very popular and useful in many NLP tasks 
-%\cite{mesfar2007named,ng2002improving,zollmann2006syntax}.
-%Thus, one thought that comes to mind is to use grammar annotation 
-%for learner language.
-%While not useless, grammatical approach is not well
-%defined, and unclear both practically and theoretically.
-
-
-%
-%For the different experiments 20 paragraphs were annotated, a table with the full
-%information can be found in the appendix \ref{tab:annotated-paragraphs}.Overall, 2 learner language
-%and 2 corrected paragraphs were annotated by both annotators, 9 parallel paragraphs were
-%annotated by the same annotator and 6 by different annotators.
-%
-%We see that as enough to be a proof that UCCA can be applied to learner language, especially considering those numbers
-%are a bit higher than the IAA originally reported
-%for native English .
-%We explain the rise in agreement by the fact that the guidelines and
-%procedures were refined since UCCA was first introduced and not to
-%superiority of UCCA for annotating learner language. A similar F1
-%score for IAA (0.849) over corrected paragraphs
-%suggests the same.
-%
-%At least theoretically, semantics are well defined even on ungrammatical
-%text. With the right tools we might capture at least some of the semantics
-%of sentences and use them for the same purposes of grammatical annotation.
-%In this work we will use Universal Conceptual Cognitive
-%Annotation (UCCA)\cite{abend2013universal}, we will show that practically
-%there are semantic annotation schemes that can be used for the purposes discussed.
-%
-%
-
 \section{Semantic Faithfulness Measures}\label{sec:Semantics}
 
 We start by defining a simplified measure that compares two UCCA annotations over the 
 same set of tokens, which is used to measure inter-annotator agreement (IAA). We then
-procede to defining {\sc USim}, which compares two UCCA structures
+proceed to defining {\sc USim}, which compares two UCCA structures
 over alignable but different sets of tokens.\oa{please add a diagram}
 
 
@@ -328,9 +220,9 @@ correction $G_c$ do not share the same set of leaves.
 %measure than the upper bound suggested by \cite{sulem2015conceptual} for
 %comparing two parallel texts in different languages, while keeping
 %the essence of comparing how many of the aligned nodes conserve meaning and tag. For that we may think for a moment on GEC as
-%translation from learner language to Proper English, and a good translation
+%translation from LL to Proper English, and a good translation
 %would be a translation which keeps the meaning but has the syntax
-%of English. Considering that, just like in translation, we can align words from the learner language to the corresponding words in English
+%of English. Considering that, just like in translation, we can align words from the LL to the corresponding words in English
 %and keep record of how many of those nodes kept their labels.
 %
 %As comparing labels is trivial, and done before us. We should focus on how we propose to align nodes. 
@@ -352,7 +244,7 @@ the same yield.
 In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
 (tokens) in $V_s$ and $V_c$.
 We cast alignment as a weighted bipartite graph matching problem. Edge weights are assigned to be the edit distances between the tokens.
-We note that aligning words in GEC (and other monolingual translation tasks) is much simpler than in machine translation,
+We note that aligning words in GEC (and other monolingual translation tasks) is much simpler than in MT,
 as most of the words are unchanged, deleted fully, added, or changed slightly.
 Denote the resulting leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
 We now extend $A_l$ to define the node alignment $A$, aligning each non-leaf $v \in V_s$
@@ -449,7 +341,7 @@ $N$ is the total number of sentence pairs.
 
 We conduct four types of experiments to validate the feasibility of our approach.
 First, we show that semantic annotation can be consistently applied to 
-learner language, through inter annotator agreement (IAA) experiments.
+LL, through inter annotator agreement (IAA) experiments.
 Second, we show that a valid corrector scores high on this measure.
 Third, we show an automatic UCCA parser can reliably replace human annotation in {\sc USim}.
 Fourth, we show that {\sc USim} is sensitive to changes in meaning, 
@@ -457,7 +349,7 @@ by comparing the semantic structures of the source to corrections of fairly poor
 
 
 \paragraph{Experimental Setup.}
-We train two UCCA annotators by annotating both learner language and standard English
+We train two UCCA annotators by annotating both LL and standard English
 passages, until a high enough agreement has been reached (a total of 6 hours of training).
 Training passages are excluded from the evaluation.
 We use UCCA's annotation
@@ -470,8 +362,7 @@ and compute their agreement.
 In order to measure the faithfulness score for a valid correction,
 we annotate both the source
 and the manually corrected versions of 6 essays,
-some\oa{instead of ``some'' write how many}
-of which were annotated by both annotators.
+3 of which were annotated by both annotators.
 
 \paragraph{The Faithfulness of Valid Corrections.}
 We obtain an IAA {\it DAG $F$-score} of 0.845
@@ -479,8 +370,8 @@ We obtain an IAA {\it DAG $F$-score} of 0.845
 is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
 As another point of comparison, we doubly annotate 3 corrected
 NUCLE \cite{dahlmeier2013building} passages, obtaining a similar IAA.
-These results suggest that annotating learner language with UCCA does not degrade IAA, 
-and can be applied as consistently to learner language as to standard English.
+These results suggest that annotating LL with UCCA does not degrade IAA, 
+and can be applied as consistently to LL as to standard English.
 
 Table \ref{tab:Distances} (left-hand side) presents the {\sc USim} scores obtained by comparing 
 the NUCLE references and the source, or equivalently the score of a valid correction.
@@ -547,14 +438,14 @@ TUPA is used in its biLSTM model, trained on the UCCA English Wikipedia corpus.
 We obtain a {\sc USim} score of 0.7 between the parses of the reference
 correction and the source, which is comparable to the parser's reported
 performance (0.73 in-domain, 0.68 out-of-domain), despite not performing any
-domain adaptation to learner language. 
+domain adaptation to LL. 
 That is, the UCCA parses of the source and the correction are roughly as similar to each
 other, as they are to their gold standard parse, which indicates 
 that semantic parsing technology is already sufficiently mature to
 be applied to evaluation measures, such as USim.
 Results also suggest an improvement in parsing performance may further improve these scores.
 
-%We note that the parser was not trained again in order to capture learner language. Still, the amount of agreement is more or less the score the parser gets.
+%We note that the parser was not trained again in order to capture LL. Still, the amount of agreement is more or less the score the parser gets.
 
 \com{
 \begin{table}
@@ -599,11 +490,8 @@ These distinctions are widely regarded as fundamental in the NLP and linguistic 
 
 In order to empirically validate this claim, we present an experiment which shows that corrections
 of a fairly low quality indeed receive a much lower USim faithfulness score.
-As the state-of-the-art systems are over-conservative,
-they rarely alter the source sentences sufficiently to yield semantically unfaithful outputs,
-and are hence not useful for our purposes.\footnote{We demonstrate this in a paper currently under review.
-  Due to the same reason, available human judgments of corrections produced by these systems are not
-  applicable for evaluating {\sc USim}.}
+Current state-of-the-art systems rarely alter the source sentences enough to yield semantically unfaithful outputs.\footnote{We demonstrate this in a paper currently under review.}
+Consequently, human rankings of the quality of their outputs is not determined by their semantic faithfulness, rendering them not useful for validating {\sc USim}.
 We instead experiment on 5 partially trained correctors, trained and evaluated on the
 JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
 
@@ -611,7 +499,7 @@ JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
 Low faithfulness results are expected, as these outputs include major changes,
 sometimes deleting full phrases from the output or changing every other word in the sentence.
 Indeed, the automatic USim measure obtained scores of 0.32-0.39 for 4 of the systems, and 0.19
-for the system that obtained the lowest GLUE\oa{add ref} score.
+for the system that obtained the lowest GLUE\cite{napoles2015ground} score.
 For completeness, we ran {\sc USim} on the 4 references provided for each
 source by JFLEG and obtained scores of 0.72-0.78.
 
@@ -655,8 +543,7 @@ it still obtains a higher {\sc USim} score.
 \section{Conclusion}
 
 We propose a measure for the semantic faithfulness of the correction to the source,
-thereby avoiding the pitfalls of reference-based evaluation. We believe that using reference-less
-measures in conjunction with reference-based measures in the training and development of GEC
+thereby avoiding the pitfalls of reference-based evaluation. We believe that using RBMs in conjunction with RBMs in the training and development of GEC
 systems will better address the challenge of over-conservatism, and the 
 high costs of acquiring many references.
 
