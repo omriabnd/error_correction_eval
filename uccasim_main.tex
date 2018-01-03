@@ -185,7 +185,7 @@ The edges bear one or more categories, indicating the role of
 the sub-unit in the relation that the parent represents.
 
 UCCA views the text as a collection of {\it Scenes} and relations between them.
-A Scene, the most basic notion of this layer, describes a movement, 
+A Scene describes a movement, 
 an action or a state which is persistent in time.
 Every Scene contains one main relation, 
 zero or more {\it Participants}, 
@@ -200,7 +200,6 @@ same set of tokens, which is used to measure inter-annotator agreement (IAA). We
 proceed to defining {\sc USim}, which compares two UCCA structures
 over alignable but different sets of tokens.\oa{please add a diagram}
 
-
 \paragraph{IAA Measure.} We define a similarity measure over UCCA annotations 
 $G_1$ and $G_2$ that share their set of leaves (tokens) $W$.
 For a node $v$ in $G_1$ or $G_2$, define its yield $yield(v) \subseteq W$ as its
@@ -210,12 +209,11 @@ if $yield(u_1) = yield(u_2)$ and they have the same label.
 Labeled precision and recall are defined by dividing the number of matching edges
 in $G_1$ and $G_2$ by $|E_1|$ and $|E_2|$ respectively.
 {\it DAG $F$-score} is their harmonic mean.
-The measure collapses to the common parsing $F$-score if $G_1$ and $G_2$ are trees.
+The measure collapses to the common parsing $F$-score if $G_1, G_2$ are trees.
 
 \paragraph{The {\sc USim} Measure.} Computing a faithfulness
 measure is slightly more involved, as the source sentence graph $G_s$ and its
 correction $G_c$ do not share the same set of leaves.
-
 %Giving a more accurate
 %measure than the upper bound suggested by \cite{sulem2015conceptual} for
 %comparing two parallel texts in different languages, while keeping
@@ -258,7 +256,7 @@ with the node $u \in V_c$ that maximizes
  \vspace{-0.1cm}
 \end{small}
 
-We exclude from $A$ pairs $v,u$ such that $w(v,u)=0$.
+We exclude from $A$ zero weighted pairs.
 The resulting $F$-score measure, using the resulting $A$ is called UCCA Similarity ({\sc USim}).
 As the resulting alignment may differ when aligning nodes from $V_c$ to $V_s$
 and the other way around, we report the resulting $F$-score in both directions.
@@ -277,7 +275,7 @@ in order to obtain comparable IAA scores, we report IAA using {\sc USim} as well
 %this computation again reduces to DAG $F$-score.
 
 For completeness, we replicate the protocol used by \newcite{sulem2015conceptual}
-for comparing the UCCA annotations of  standard English-French translations, which we call
+for comparing the UCCA annotations of standard English-French translations, which we call
 Distributional Similarity ({\sc DistSim}).
 For a given UCCA label $l$, $c_i(l)$ is the number of $l$-labeled UCCA edges
 in the i-th source sentence, and $d_i(l)$ is the number of $l$-labeled UCCA edges
@@ -370,8 +368,8 @@ We obtain an IAA {\it DAG $F$-score} of 0.845
 is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
 As another point of comparison, we doubly annotate 3 corrected
 NUCLE \cite{dahlmeier2013building} passages, obtaining a similar IAA.
-These results suggest that annotating LL with UCCA does not degrade IAA, 
-and can be applied as consistently to LL as to standard English.
+These results suggest UCCA annotating LL does not degrade IAA, 
+it can be applied as consistently to LL as to standard English.
 
 Table \ref{tab:Distances} (left-hand side) presents the {\sc USim} scores obtained by comparing 
 the NUCLE references and the source, or equivalently the score of a valid correction.
@@ -491,7 +489,7 @@ These distinctions are widely regarded as fundamental in the NLP and linguistic 
 In order to empirically validate this claim, we present an experiment which shows that corrections
 of a fairly low quality indeed receive a much lower USim faithfulness score.
 Current state-of-the-art systems rarely alter the source sentences enough to yield semantically unfaithful outputs.\footnote{We demonstrate this in a paper currently under review.}
-Consequently, human rankings of the quality of their outputs is not determined by their semantic faithfulness, rendering them not useful for validating {\sc USim}.
+Consequently, their human rankings are	 not determined by their semantic faithfulness, rendering them not useful for validating {\sc USim}.
 We instead experiment on 5 partially trained correctors, trained and evaluated on the
 JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
 
