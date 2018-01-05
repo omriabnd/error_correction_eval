@@ -14,13 +14,15 @@
 \usepackage{graphicx}
 \usepackage[T1]{fontenc}
 \usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{positioning}
 \usepackage{url}
 \usepackage{pgfplotstable}
 \usepackage{titlesec}
 \usepackage{color}
 \usepackage{lipsum,adjustbox}
 \usepackage[font={small}]{caption}
-\usetikzlibrary{positioning}
+
 \usepackage{bbm}
 
 \makeatletter
@@ -192,13 +194,92 @@ zero or more {\it Participants},
 which are interpreted in a broad sense, 
 and include locations, destinations and complement clauses,
 and {\it Adverbials}, such manner descriptions.
-
+\com{
+\begin{figure}[t]
+				\begin{tikzpicture}[sibling distance=10mm, level distance=10mm, ->,
+				every node/.append style={midway},
+				every circle node/.append style={fill=black}]
+				{
+					\node (Source) [circle] {}
+					child {node (He) {He} edge from parent node[left] {\scriptsize A}
+					}
+					child {node (gave) {gve} edge from parent node[right] {\scriptsize A}}
+					child {node (an apple) [circle] {}
+						{
+							child {node (an) {an} edge from parent node[left] {\scriptsize E}}
+							child {node (apple){apple} edge from parent node[right] {\scriptsize C}}
+						} edge from parent node[right] {\scriptsize P} }
+					;}
+					\end{tikzpicture}
+		\end{figure}}
 \section{Semantic Faithfulness Measures}\label{sec:Semantics}
+\begin{figure}[t]
+		\hspace{-1.3cm}
+		\begin{subfigure}{1.1\columnwidth}
+			\vspace{-0.2cm}
+			\parbox{.8\columnwidth}{\hspace{1cm}
+				\scalebox{.9}{
+					\begin{tikzpicture}[sibling distance=1mm, level distance=10mm,
+					every node/.append style={midway},
+					every circle node/.append style={fill=black}]
+					\begin{scope}[frontier/.style={distance from root=20mm}, ->]
+					\Tree [.\node [circle] (rootu) {};
+					\edge node [auto=right]{\scriptsize A}; \node (Heu) {He};
+					\edge node[auto=right down]{\scriptsize P}; \node (gve) {gve};
+					\edge node[auto=right]{\scriptsize A};
+					[.\node [circle](an appleu) {};
+						\edge node[auto=right]{\scriptsize E}; \node (anu) {an};
+						\edge node[auto=left]{\scriptsize C}; \node (appleu) {apple};
+					]
+					\edge node[auto=right]{\scriptsize A};
+					[.\node [circle](for john) {};
+					\edge node[auto=right]{\scriptsize R};\node (for) {for};
+					\edge node[auto=left]{\scriptsize C}; \node (john) {john};
+					]]
+					\end{scope}
+					\begin{scope}[yshift=-4.5cm,grow'=up, frontier/.style={distance from root=15mm}, ->]
+					\Tree [.\node [circle] (rootd) {};
+					\edge node [auto=left]{\scriptsize A}; \node (Hed) {He};
+					\edge node[auto=right]{\scriptsize P}; \node (gave) {gave};
+					\edge node[auto=right]{\scriptsize A};\node (John) {John};
+					\edge node[auto=right]{\scriptsize A};
+					[.\node [circle] (an appled) {};
+					\edge node[auto=left]{\scriptsize E}; \node (and) {an};
+					\edge node[auto=right]{\scriptsize C}; \node (appled) {apple};
+					]
+]
+					\end{scope}
+					\begin{scope}[dashed]
+					\draw (Heu) -- (Hed);
+					\draw (gve) -- (gave);
+					\draw (John) -- (john);
+					\draw (anu) -- (and);
+					\draw (appleu) -- (appled);
+					\end{scope}
+					\end{tikzpicture}
+				}}
+				\parbox{.1\columnwidth}{
+					\vspace{2cm}
+					\begin{adjustbox}{width=.3\columnwidth,margin=1pt,frame}
+						\begin{tabular}{ll}
+							A & participant \\
+							H & linked scene \\
+							R & relator \\
+							C & center \\
+							E & elaborator \\
+						\end{tabular}
+					\end{adjustbox}
+				}
+			\end{subfigure}
 
+				\caption{\label{fig:example}
+					Ucca structures of a learner language (up) and correction (down) including word alignments (dashed).
+				}
+			\end{figure}
 We start by defining a simplified measure that compares two UCCA annotations over the 
 same set of tokens, which is used to measure inter-annotator agreement (IAA). We then
 proceed to defining {\sc USim}, which compares two UCCA structures
-over alignable but different sets of tokens.\oa{please add a diagram}
+over alignable but different sets of tokens.
 
 \paragraph{IAA Measure.} We define a similarity measure over UCCA annotations 
 $G_1$ and $G_2$ that share their set of leaves (tokens) $W$.
