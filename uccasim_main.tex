@@ -111,7 +111,7 @@ evaluation \cite[e.g.,][]{banchs2015adequacy}.
 
 As a test case, we use UCCA semantic representation \cite{abend2013universal},
 motivated by its recent use in semantic MT evaluation \cite{birch2016hume}.
-However, the measure can be easily adapted to use other semantic schemes, e.g. AMR \cite{banarescu-EtAl:2013:LAW7-ID}.
+However, the measure can be easily adapted to use other semantic schemes, e.g., AMR \cite{banarescu-EtAl:2013:LAW7-ID}.
 
 {\sc USim} is conceptually related to RLMs developed
 for MT
@@ -142,7 +142,8 @@ Our experiments also indicate that UCCA parsing technology is already sufficient
 \vspace{-.6cm}
 
 \section{Background}
-\vspace{-.3cm}
+\vspace{-.1cm}
+
 \paragraph{Structural Annotation of Learner Language.}
 While linguistic theories propose that each learner makes consistent use of syntax 
 \cite{huebner1985system,tarone1983variability}, this use may not conform to the syntax of the learned language, 
@@ -165,7 +166,7 @@ fewer conflicts where the syntactic structure used diverges from
 the one intended. We are not aware of any previous attempts to semantically
 annotate LL text.
 
-
+\vspace{-.2cm}
 \paragraph{The UCCA Scheme.}\label{sec:ucca}
 UCCA is a semantic annotation scheme that builds on
 typological and cognitive linguistic theories.
@@ -273,7 +274,7 @@ and {\it Adverbials}, such manner descriptions.
 			\end{subfigure}
 
 				\caption{\label{fig:example}
-					Ucca structures of a learner language (up) and correction (down) including word alignments (dashed). On the edges are labels and numbers aligned to (top) or indexes (bottom). Precision is 0.78 Recall is 1.0.
+					Ucca structures of a learner language (top) and correction (bottom) including word alignments (dashed). On the edges are labels and numbers aligned to (top) or indexes (bottom). Precision is 0.78 Recall is 1.0.
 				}
 			\end{figure}
 We start by defining a simplified measure that compares two UCCA annotations over the 
@@ -313,12 +314,14 @@ correction $G_c$ do not share the same set of leaves.
 %based on first aligning the words in order to give order to the DAG and then comparing the structure in one way or another.
 %
 We assume a (possibly partial, possibly many-to-1) alignment between $G_s$ and $G_c$,
-$A \subset V_s \times V_c$. An edge $(v_1,v_2) \in E_c$ is said to match an edge
+$A \subset V_s \times V_c$. See Figure \ref{fig:example}. 
+
+An edge $(v_1,v_2) \in E_c$ is said to match an edge
 $(u_1,u_2) \in E_s$ if they have the same label and $(v_2,u_2) \in A$. Recall (Precision)
 is defined as the ratio of edges in $E_s$ ($E_c$) that have a match in $E_c$ ($E_s$) respectively, and
 $F$-score is their harmonic mean. We note that this measure collapses to the
 {\it DAG $F$-score} if $A$ includes all pairs of nodes in $E_s$ and $E_c$ that have
-the same yield.
+the same yield. 
 
 In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
 (tokens) in $V_s$ and $V_c$.
@@ -330,11 +333,11 @@ We now extend $A_l$ to define the node alignment $A$, aligning each non-leaf $v 
 with the node $u \in V_c$ that maximizes
 
 \begin{small}
-	\vspace{-0.1cm}
+	\vspace{0.1cm}
  \begin{myequation*}
   w\left(v,u\right) = \frac{\vert A_l \cap \left(yield\left(u\right) \times yield\left(v\right)\right)\vert}{\vert yield\left(u\right) \vert}.
  \end{myequation*}
- \vspace{-0.1cm}
+ \vspace{0.1cm}
 \end{small}
 
 We exclude from $A$ zero weighted pairs.
@@ -415,7 +418,7 @@ $N$ is the total number of sentence pairs.
 %while controlling semantic conservatism. Thus, focusing on what users - and hence we - are more interested in.
 %
 %
-
+\vspace{-.2cm}
 \section{Experiments}
 
 We conduct four types of experiments to validate the feasibility of our approach.
@@ -554,7 +557,7 @@ Results also suggest an improvement in parsing performance may further improve t
           well with the automatic parsing, around the parser reported accuracy and standard English.}
 \end{table}
 }
-
+\vspace{-.2cm}
 \paragraph{Sensitivity to Unfaithfulness.}
 
 We have shown that UCCA is insensitive to differences between a source sentence
