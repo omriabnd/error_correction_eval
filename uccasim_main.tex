@@ -224,28 +224,28 @@ and {\it Adverbials}, such manner descriptions.
 					every circle node/.append style={fill=black}]
 					\begin{scope}[frontier/.style={distance from root=20mm}, ->]
 					\Tree [.\node [circle] (rootu) {};
-					\edge node [auto=right]{\scriptsize A}; \node (Heu) {He};
-					\edge node[auto=right down]{\scriptsize P}; \node (gve) {gve};
-					\edge node[auto=right]{\scriptsize A};
+					\edge node [auto=right]{\scriptsize A,1}; \node (Heu) {He};
+					\edge node[auto=right down]{\scriptsize P,2}; \node (gve) {gve};
+					\edge node[auto=right]{\scriptsize A,4};
 					[.\node [circle](an appleu) {};
-						\edge node[auto=right]{\scriptsize E}; \node (anu) {an};
-						\edge node[auto=left]{\scriptsize C}; \node (appleu) {apple};
+						\edge node[auto=right]{\scriptsize E,5}; \node (anu) {an};
+						\edge node[auto=left]{\scriptsize C,6}; \node (appleu) {apple};
 					]
-					\edge node[auto=right]{\scriptsize A};
+					\edge node[auto=right]{\scriptsize A,3};
 					[.\node [circle](for john) {};
-					\edge node[auto=right]{\scriptsize R};\node (for) {for};
-					\edge node[auto=left]{\scriptsize C}; \node (john) {john};
+					\edge node[auto=right]{\scriptsize R,Empty};\node (for) {for};
+					\edge node[auto=left]{\scriptsize C,3}; \node (john) {john};
 					]]
 					\end{scope}
 					\begin{scope}[yshift=-4.5cm,grow'=up, frontier/.style={distance from root=15mm}, ->]
 					\Tree [.\node [circle] (rootd) {};
-					\edge node [auto=left]{\scriptsize A}; \node (Hed) {He};
-					\edge node[auto=right]{\scriptsize P}; \node (gave) {gave};
-					\edge node[auto=right]{\scriptsize A};\node (John) {John};
-					\edge node[auto=right]{\scriptsize A};
+					\edge node [auto=left]{\scriptsize A,1}; \node (Hed) {He};
+					\edge node[auto=right]{\scriptsize P,2}; \node (gave) {gave};
+					\edge node[auto=right]{\scriptsize A,3};\node (John) {John};
+					\edge node[auto=right]{\scriptsize A,4};
 					[.\node [circle] (an appled) {};
-					\edge node[auto=left]{\scriptsize E}; \node (and) {an};
-					\edge node[auto=right]{\scriptsize C}; \node (appled) {apple};
+					\edge node[auto=left]{\scriptsize E,5}; \node (and) {an};
+					\edge node[auto=right]{\scriptsize C,6}; \node (appled) {apple};
 					]
 ]
 					\end{scope}
@@ -273,7 +273,7 @@ and {\it Adverbials}, such manner descriptions.
 			\end{subfigure}
 
 				\caption{\label{fig:example}
-					Ucca structures of a learner language (up) and correction (down) including word alignments (dashed).
+					Ucca structures of a learner language (up) and correction (down) including word alignments (dashed). On the edges are labels and numbers aligned to (top) or indexes (bottom). Precision is 0.78 Recall is 1.0.
 				}
 			\end{figure}
 We start by defining a simplified measure that compares two UCCA annotations over the 
@@ -308,7 +308,7 @@ correction $G_c$ do not share the same set of leaves.
 %First, note that comparison should not be at
 %the token level, as we want to allow tokens to be corrected - replaced or removed -
 %as long as the higher structures convey the same meaning. We thus
-%prune the labels above the leaves, the tokens of the sentence. To
+%prune the s above the leaves, the tokens of the sentence. To
 %define an alignment of the nodes, we suggest some possible ways, all
 %based on first aligning the words in order to give order to the DAG and then comparing the structure in one way or another.
 %
