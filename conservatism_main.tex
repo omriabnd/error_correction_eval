@@ -96,9 +96,9 @@
 	has received much attention over the years, and has gained notoriety for its difficulty,
 	due in part to the non-uniqueness of reference corrections \cite{chodorow2012problems}.
 	
-	\citet{bryant2015far} showed inter-annotator agreement is low, and hence the score of a perfect corrector (a human) is lower than 1, what we call ICB. As a result they propose a new measure Ratio Scoring(RS) which scales $M^2$ measure\cite{dahlmeier2012better}, by the perfect score. In section \ref{sec:increase-reference} we delve deeper into the analysis of RBM scores. We assess the distribution of corrections per sentence,\lc{what kind of new methodologies do we suggest and at which part should it appear? Refering to https://docs.google.com/document/d/1-Cdy9NHlh3RQhjMTjUuIIdQe17JSxh7AtDJs31loYSc/edit} finding a short sentence is likely to huve about 1000 valid corrections. We also assess the effect of increasing the number of references (henceforth, $M$) over $M^2$-score and RS as well as on 0-1 loss and GLEU, finding diminishing returns. While we present (\S \ref{sec:real_world}) the methodology to report confidence bounds for correctors' performance we show some of them already surpass human performance in the task.
+	\citet{bryant2015far} showed inter-annotator agreement is low, and hence the score of a perfect corrector (a human) is lower than 1, what we call ICB. As a result they propose a new measure Ratio Scoring (RS) which scales $M^2$ measure \cite{dahlmeier2012better}, by the perfect score. In section \ref{sec:increase-reference} we delve deeper into the analysis of RBM scores. We assess the distribution of corrections per sentence,\lc{what kind of new methodologies do we suggest and at which part should it appear? Refering to https://docs.google.com/document/d/1-Cdy9NHlh3RQhjMTjUuIIdQe17JSxh7AtDJs31loYSc/edit} finding a short sentence is likely to have about 1000 valid corrections. We also assess the effect of increasing the number of references (henceforth, $M$) over $M^2$-score and RS as well as on 0-1 loss and GLEU, finding diminishing returns. While we present (\S \ref{sec:real_world}) the methodology to report confidence bounds for correctors' performance we show some of them already surpass human performance in the task.
 	
-	In section \ref{sec:formal_conservatism} we discuss why, given the aforementioned high system performance, ICB is not solved by RS. We show analytical and empirical results supporting the claim that ICB results in correctors avoiding corrections even when they have high probability of correcting well, or have the correction in a $k$-best list. This is because RBMs in general and more severely precision oriented ones penalize valid corrections. Furthermore, we are the first to show that 15 current correctors including the supposedly better than human ones hardly correct at all, which we presume is at least partially due to the biases.
+	In section \ref{sec:formal_conservatism} we discuss why, given the aforementioned high system performance, ICB is not solved by RS. We show analytical and empirical results supporting the claim that ICB results in correctors avoiding corrections even when they have high probability of correcting well, or have a valid correction in a $k$-best list. This is because RBMs in general and more severely precision oriented ones penalize valid corrections. Furthermore, we are the first to show that 15 current correctors including the supposedly better than human ones hardly correct at all, which we presume is at least partially due to the biases.
 	
 	In conclusion, we state RBMs correlate well with system-level human judgments \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016} but the scale also matters when developing systems and we hence propose to also report perfect system score for new measures.
 
@@ -140,7 +140,7 @@ In order to corroborate our findings, we apply a
 similar line of experiments to Text Simplification (TS) (\S\ref{sec:simplification}),
 and observe that: (1) the distribution of valid references for a given sentence is dispersed across a vast number of references; 
 (2) common measures for TS dramatically under-estimate performance; 
-(3) increasing $M$ with a proper measure alleviates this over-conservatism.
+(3) increasing $M$ with a proper measure alleviates this over-conservatism\lc{I think we should rephrase, lets call over-conservatism only the strictly wrong conservatism (e.g. choosing a wrong sentence from k best list) and refer to very conservative systems that are presumably over conservative}.
 Indeed, over-conservatism has been reported by a number of recent works on TS.
 
 
@@ -265,7 +265,7 @@ where even the rarest corrections were judged valid 78\% of the time.
 (details in Appendix \ref{ap:validity_judgements})
 
 \subsection{Under-estimation as a function of $M$} \label{subsec:Assessment-values}
-In the previous section, we presented an empirical assessment of the corrections distribution of a sentence. We turn to estimating the resulting bias, i.e., the under-estimation of RBMs, for different $M$ values. 
+In the previous section, we presented an empirical assessment of the corrections distribution of a sentence. We turn to estimating the resulting bias, i.e.,RBMs' ICB, for different $M$ values. 
 We discuss two similarity measures: sentence-level accuracy
 (or ``Exact Match'') and the GEC $F$-score.
 
