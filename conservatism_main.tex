@@ -585,7 +585,6 @@ number of references. We do not replicate the results ocer {\sc I-measure} \cite
 %does not address over-conservatism, it only scales the original measure. Moreover, as seen above, a human correction's score
 %is not necessarily an upper bound, as an over-conservative corrector may surpass a perfect corrector in score.
 
-%\oa{where to put this?}
 %	Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$ on $F$-score, but the additional results in this paper suggests that their solution is still lacking. 
 	%who study the effect of $M$ on $F$-score, the most commonly used measure for GEC.
 %Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$ on $F$-score, the most commonly used measure for GEC. Their work focused on obtaining a more reliable estimate of correctors' performance and proposed to do so by normalizing corrector's estimated performance with the performance of a human corrector.
@@ -606,12 +605,8 @@ From now on we would tend to the other question.
 \section{Implications of the ICB}\label{sec:formal_conservatism}
 \vspace{-.1cm}
 
-In this section we argue that the observed over-conservatism of correctors likely stems from them being developed to optimize RBMs that suffer from low-coverage.\oa{word this like in the introduction; refer to both sub-sections}
-We present a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}). We then continue with an assessment of the distribution of corrections for a given sentence (\S \ref{subsec:corrections_distribution})
-and the effect of $M$ on commonly used RBMs (\S \ref{subsec:Assessment-values}).
-We discuss the implications of our results, concluding that for current RBMs  
-to address over-conservatism a prohibitively large $M$ would be required (\S \ref{subsec:mult_discussion}).
->>>>>>> 07ae0f44bbb89d6af27c937555dd5dcf8bec16bb
+In this section we argue that there is no incentive to create systems that can correct types of errors that suffer from ICB, on the contrary, there is an incentive not to.
+Through a motivating analysis we show low-coverage incentivizes under-prediction (\S \ref{subsec:motivating_analysis}), and show that modern correctors, which were shown to outscore humans are astonishingly conservative, suggesting the connection we show is worth solving.
 
 
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
@@ -832,13 +827,17 @@ Results (Figure \ref{fig:over-conservatism}) show that human editors make consid
 For example, there are 36 reference sentences with 6 word changes, where the most sentences with 6 word changes by any corrector is 5.
 A similar amount of correction is observed on the references of the TreeBank of Learner English \cite{yannakoudakis2011new}.
 
+\paragraph{Types.}
+To wrap up the state of current correctors we analyze under-prediction per type using \citet{bryant-felice-briscoe:2017:Long} data. As a measure of overall conservatism tendency we look at the ratio between the mean number of corrections by the correctors and the references' one (see Appendix \ref{ap:types}). Assuming error types that consider an open class of corrections (e.g. add a missing verb) will have lower coverage we look at the conservatism of those error types. We find the split of 0.5 ratio splits between those types and closed class types almost perfectly. Punctuation errors are an unexpected exception, found to have a high conservatism of 0.2.
+Surprisingly, we find that the frequency of the error is unable to explain which correction is under-predicted (Pearson \textbf{-}0.29 P=0.16).
+
 \subsection{discussion}
 Returning to condition (\ref{eq:reward}) from \S\ref{subsec:motivating_analysis}, we find that coverage (equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $M=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that (\ref{eq:reward}) often holds in practice, which may account for the observed over-conservatism. Another evidence that systematic penalties do occur in GEC can be seen in \citet{our corpus} work that found corrections of some edit types are penalized on average.
 
 Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $M=2$, we find that their scores are comparable, where RoRo and JMGR surpass a perfect corrector's $F$-score.
 While it is possible that these correctors performed this feat by learning not only how to correct, but also how to correspond to the writing style of one of NUCLE's annotators, this seems unlikely given our previous results that these systems substantially under-predict edits relative to NUCLE's references (\S\ref{sec:formal_conservatism}). 
 More likely is that these correctors have learned to predict when not to correct.
-\lc{should we add here a discussion of correlation to human judgments? should it be in a new subsection? section? paragraph in the discussion? we are out of limits anyway}
+\lc{should we add here a discussion of correlation to human judgments? should it be in a new subsection? section? paragraph in the discussion? we are out of space anyway}
 %While $89.6\%$ of NUCLE sentences need corrections,
 %The prevalence of FCE consists only of ungrammatical sentences.
 %As expected, FCE is a bit less conservative than NUCLE by our measures.
