@@ -110,12 +110,9 @@
   systems can out-score humans. 
   Indeed, in Section \ref{} we show that some existing systems outperform humans on $M^2$, while making few changes to the output.
   
-  We hypothesize that the development of GEC systems against low coverage RBMs has biased systems to under-predict changes to the input,
-  where many possible changes are valid, only some of which will be covered by the reference set.
-  We provide several indications that this is the case. First, we find that GEC systems are over-conservative,
-  often predicting an order of magnitude less changes to the input than a human annotator does. 
-  Second, using oracle re-ranking experiments, we find that increasing the number of references alleviates this effect.
-  Third, we find that the under-prediction of changes is more expressed in edit types that have more variation in their valid corrections.
+  We thus argue that the development of GEC systems against low coverage RBMs has provided no incentive for systems to predict changes to the input, in cases where many possible changes are valid, as necessarily only some of them are covered by the reference set. We provide several empirical evidence to this effect. First, we find that GEC systems under-correct, often predicting an order of magnitude less changes to the input than a human annotator does.
+  Second, we find that the under-prediction of changes is more expressed in edit types that have more variation in their valid corrections.
+  Third, using oracle re-ranking experiments, we find that increasing the number of references alleviates this effect.
     
   In Section \ref{sec:increase-reference} we study the potential gain from increasing the number of available references,
   by assessing the distribution of corrections per sentence.
@@ -606,16 +603,18 @@ The proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over gr
 From now on we would tend to the other question.
 
 \vspace{-.1cm}
-\section{Over-Conservativism in GEC Systems}\label{sec:formal_conservatism}
+\section{Implications of the ICB}\label{sec:formal_conservatism}
 \vspace{-.1cm}
-\subsection{Motivating Analysis}\label{subsec:motivating_analysis}
-%
-In this section we argue that the observed over-conservatism of correctors likely stems
-from them being developed to optimize RBMs that suffer from low-coverage.
+
+In this section we argue that the observed over-conservatism of correctors likely stems from them being developed to optimize RBMs that suffer from low-coverage.\oa{word this like in the introduction; refer to both sub-sections}
 We present a motivating analysis of the relation between low-coverage and over-conservatism (\S \ref{subsec:motivating_analysis}). We then continue with an assessment of the distribution of corrections for a given sentence (\S \ref{subsec:corrections_distribution})
 and the effect of $M$ on commonly used RBMs (\S \ref{subsec:Assessment-values}).
 We discuss the implications of our results, concluding that for current RBMs  
 to address over-conservatism a prohibitively large $M$ would be required (\S \ref{subsec:mult_discussion}).
+
+
+\subsection{Motivating Analysis}\label{subsec:motivating_analysis}
+%
 
 \paragraph{Theoretical Analysis.}
 The connection between coverage and over-conservatism requires some explanation.
@@ -769,8 +768,10 @@ No significant difference is found for word order.
 %We demonstrate that current correctors
 %suffer from over-conservatism: they tend to make too few changes to the source, relative to human correctors.
 %{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
+
 \vspace{-.2cm}
-\paragraph{Measures of Conservatism.}
+\subsection{Prevalance Study of Corrections}
+
 We now move to compare the prevalence of changes made to the source by the correctors,
 relative to their prevalence in the NUCLE references (one annotator was arbitrarily 
 selected for the figures). 
