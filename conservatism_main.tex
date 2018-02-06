@@ -83,8 +83,8 @@
     Consequently, existing systems can obtain comparable or
 		superior performance compared to humans, by making few albeit targeted 
 		changes to the input.
-		We further find that overcoming ICB by increasing the number of reference is unfeasible, 
-		due to long-tail distribution of valid corrections for a sentence.
+		Moreover, overcoming ICB by increasing the number of reference is unfeasible, 
+		due to the long-tailed distribution of valid corrections for a sentence.
 		Similar effects on Text Simplification further support our claims.
 	\end{abstract}
 	
@@ -94,51 +94,57 @@
 	in particular in GEC
 	\cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground}
 	has received much attention over the years, and has gained notoriety for its difficulty,
-	due in part to the non-uniqueness of reference corrections \cite{chodorow2012problems}.
-	A number of proposals for GEC are currently discussed in the literature, most of which are reference-based measures (RBM), including
-	the $M^2$ measure, which is the de-facto standard, but also others such as GLEU and I-measure \cite{felice2015towards,napoles2015ground}.
+	due in part to the heterogenity of reference corrections \cite{chodorow2012problems}.
+	Most common evaluation measures for GEC are reference-based measures (RBM), including
+  $M^2$ \cite{dahlmeier2012better}, which is the de-facto standard, GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}.
 	
   The Inadequate Coverage Bias (ICB) was previously discussed by \citet{bryant2015far}, who showed that inter-annotator agreement in producing references is low, 
-  and concluded that reference-based measures (RBMs) under-estimate the performance of GEC systems.
-  To address this, they proposed a new measure, Ratio Scoring (RS), which scales the common $M^2$ measure \cite{dahlmeier2012better}, 
-  by the inter-annotator agreement, which can be construed as the score assigned to a perfect (human) corrector. 
+  and concluded that RBMs under-estimate the performance of GEC systems.
+  To address this, they proposed a new measure, Ratio Scoring (RS), which re-scales $M^2$ 
+  by the inter-annotator agreement (i.e., the score of a human corrector), interpreted as an upper bound.
 
-  In this paper we revisit the ICB, and show that it has much graver effects than previously considered. First, while we agree with \citet{bryant2015far} that a
-  perfect corrector should receive a score of 1, we show that the ICB does not consist in uniformly under-estimating performance by a constant factor, but
-  rather that some correction policies are less prone to under-estimation. Concretely, we show that by only correcting errors where few possible
-  corrections are valid, and refraining from correcting other cases, systems can outperform humans in RBMs. Indeed, we show that some existing systems outperform
-  humans in the common $M^2$ measure, while making few changes to the output.\oa{add section references}
+  In this paper we revisit the ICB, and show that it has much graver effects than previously discussed. First, while we agree with \citet{bryant2015far} that a
+  perfect corrector should receive a perfect score, we show that the bias does not merely scales system performance by a constant factor, but
+  rather that some correction policies are less prone to be biased against. 
+  Concretely, we show that by only correcting errors where only few possible corrections are valid, and avoiding to correct others, 
+  systems can out-score humans. 
+  Indeed, in Section \ref{} we show that some existing systems outperform humans on $M^2$, while making few changes to the output.
   
-  We hypothesize that the development of GEC systems against a small number of references has resulted in a bias towards under-prediction of changes to the input
-  where many possible corrections are valid. We provide several indications that this may be the case. First, we find that GEC systems are over-conservative,
-  often predicting an order of magnitude less changes to the input than a human annotator does. Second, using oracle re-ranking experiments,
-  we find that by increasing the number of references alleviates this under-prediction.
-  Third, we find that the distribution of changes to the input made by examined systems tends more towards edit types that have a greater number of valid references.
-      
+  We hypothesize that the development of GEC systems against low coverage RBMs has biased systems to under-predict changes to the input,
+  where many possible changes are valid, only some of which will be covered by the reference set.
+  We provide several indications that this is the case. First, we find that GEC systems are over-conservative,
+  often predicting an order of magnitude less changes to the input than a human annotator does. 
+  Second, using oracle re-ranking experiments, we find that increasing the number of references alleviates this effect.
+  Third, we find that the under-prediction of changes is more expressed in edit types that have more variation in their valid corrections.
+    
   In Section \ref{sec:increase-reference} we study the potential gain from increasing the number of available references,
   by assessing the distribution of corrections per sentence.
   %\lc{what kind of new methodologies do we suggest and at 
   %which part should it appear? Refering to https://docs.google.com/document/d/1-Cdy9NHlh3RQhjMTjUuIIdQe17JSxh7AtDJs31loYSc/edit} 
   Our estimates yield that a fairly short sentence has about 1000 valid corrections on average, and that the distribution is long-tailed. 
   We also assess the effect of increasing the number of references (henceforth, $M$) on the score of a perfect corrector (i.e., the inter-annotator agreement) 
-  using the $M^2$ measure, RS, as well as on 0-1 loss and GLEU, finding diminishing returns. We conclude that ICB using current RBMs cannot be addressed by
-  simply increasing $M$.
+  using the $M^2$ measure, RS, as well as on 0-1 loss and GLEU, finding diminishing returns. We conclude that the ICB cannot be overcome simply by
+  increasing $M$.
 
   In order to corroborate our findings, we apply a 
   similar line of experiments to Text Simplification (TS) (\S\ref{sec:simplification}),
   and observe that: (1) the distribution of valid references for a given sentence is dispersed across a vast number of references; 
   (2) common measures for TS dramatically under-estimate performance; 
-  (3) increasing $M$ with a proper measure alleviates this over-conservatism\lc{I think we should rephrase, lets call over-conservatism only the strictly 
-  wrong conservatism (e.g. choosing a wrong sentence  
-  from k best list) and refer to very conservative systems that are presumably over conservative}.
-  Indeed, over-conservatism has been reported by a number of recent works on TS.
+  (3) increasing $M$ with a proper measure alleviates this under-prediction.
+  %\lc{I think we should rephrase, lets call over-conservatism only the strictly 
+  %wrong conservatism (e.g. choosing a wrong sentence  
+  %from k best list) and refer to very conservative systems that are presumably over conservative}.
+  %Indeed, over-conservatism has been reported by a number of recent works on TS.
 
-  In recap, we find that the limited reference coverge in RBMs yields consistent biases in GEC evaluation, and consequently in 
-  the GEC systems developed to optimize these biases. We further argue that these biases cannot be overcome by re-scaling nor by increasing the number
-  of references in any feasible range. We note that the consistent biases in system performance also jeoperdize
-  the reliability of human ranking experiments as a method for determining the validity of RBMs, since if systems are similarly biased, their
-  system outputs is not representative of the space of valid system outputs.
-  In Section \ref{}, we discuss paths for addressing these difficulties.
+  In recap, we find that the ICB in RBMs yields consistent biases in GEC evaluation, and consequently
+  in systems developed to optimize such measures. 
+  These biases cannot be overcome by re-scaling nor by increasing the number of references in any feasible range. 
+  We note that these biases also jeoperdize the reliability of human ranking experiments as a method for determining 
+  the validity of RBMs, as rankings are taken over outputs of systems with similar biases, that are in turn rewarded by RBMs.
+  
+  %  since if systems are similarly biased, their
+  %  system outputs is not representative of the space of valid system outputs.
+  %  In Section \ref{}, we discuss paths for addressing these difficulties.
   
   
   %While we present 
