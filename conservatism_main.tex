@@ -1052,8 +1052,8 @@ Our findings demonstrate how these tools can help characterize the biases of exi
 
 We note that the ICB further jeopardizes the reliability of common validation experiments for RBMs,
 that assess the correlation between human and measure rankings of system outputs.
-Indeed, if examined outputs share consistent biases, and if these biases are rewarded by the measures, 
-the resulting correlation may be unrealistically high.
+Indeed, if outputs all under-correct, correlation studies will not be affected by whether an RBM is sensitive to under-correction. Therefore, RBMs tendency to reward such a policy will not be detected by such correlation experiments.
+
 
 Our results underscore the importance of developing alternative evaluation measures that transcend $n$-gram overlap, 
 and use deeper analysis tools, for instance by comparing
