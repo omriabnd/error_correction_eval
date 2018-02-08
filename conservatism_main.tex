@@ -141,7 +141,7 @@
   increasing $M$ in any feasible range. 
   The ICB further jeopardizes the reliability of common validation experiments for RBMs,
   that assess the correlation between human and measure rankings of system outputs.
-  Indeed, if examined outputs share consistent biases, and if these biases are rewarded by the measures, 
+  Indeed, if system outputs under-correct in a consistent pattern, and if this under-correction is not penalized by the measures, 
   the resulting correlation may be unrealistically high.
   
   
@@ -858,23 +858,22 @@ No significant difference is found for word order.
 \subsection{Under-correction by Edit Types}
 
 In this section we study the prevalance of under-correction according to edit types, finding that open-class types of errors
-(such as replacing a word with another word) are more starkly under-corrected, than more closed class corrections.
-These results further support our claim that ICB disincentivizes correcting errors where diverse corrections are possible, 
-and that this may have adverse effects on GEC performance.
+(such as replacing a word with another word) are more starkly under-corrected, than closed-class corrections.
+Evaluating with low coverage RBMs does not incentivize systems to address open-class errors (in fact, it disincentivizes them to). Therefore, even if ICB is not the cause for this effect, current evaluation procedures will perpetuate it.
 
 We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each correction in the output of all CoNLL 2014 
-systems on the NUCLE test set.\oa{is this correct?}
-As a measure of under-prediction tendency, we look at the ratio between the mean number of corrections 
-producted by the systems and by the references. 
-We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each
-type the system attempted to correct. 
+systems on the NUCLE test set.
+As a measure of under-correction tendency, we take the ratio between the mean
+ number of corrections 
+produced by the systems and by the references. 
+We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each type the systems attempted to correct. 
 
-We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly corrections that are usually
-uniquely defined. For instance, the top quarter of error types includes orthographical errors, pluarity inflection of nouns, 
-adjective inflections to superlative or comparative forms and determiner selection. The bottom quarter includes categories such as 
-verb selection, noun selection, particle/preposition selection, pronoun selection, and the type {\sc OTHER}, which is a residual category for error types.
-The only potential exception to this regularity is the punctuation selection type, which is under under-predicted in a ratio of 0.2, which places
-it in the lower quarter. See Appendix \ref{ap:types} for the complete results.
+We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly closed-class types. 
+Concretely, the top quarter of error types consists of orthographical errors, 
+pluarity inflection of nouns, 
+adjective inflections to superlative or comparative forms and determiner selection. The bottom quarter includes the categories 
+verb selection, noun selection, particle/preposition selection, pronoun selection, and the type {\sc OTHER}, which is a residual category.
+The only exception to this regularity is the punctuation selection type, which is found in the lower quarter. See Appendix \ref{ap:types} for the complete results.
 
 We note that it is not the case that more frequent error types are the least under-predicted, as error type frequency
 is even slightly negatively correlated with the under-correction ratio (Pearson \textbf{-}0.29 P=0.16).
