@@ -38,8 +38,8 @@
 \newcommand{\com}[1]{}
 %\newcommand{\oa\part{title}}[1]{}
 %\newcommand{\lc}[1]{}
-%\newcommand{\oa}[1]{}
-\newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
+\newcommand{\oa}[1]{}
+%\newcommand{\oa}[1]{\footnote{\color{red}OA: #1}}
 \newcommand{\oamod}[1]{{\color{red}#1}}
 \newcommand{\lc}[1]{\footnote{\color{blue}LC: #1}}
 \newcommand{\lcmod}[1]{{\color{blue}#1}}
@@ -87,8 +87,10 @@
 		due to the long-tailed distribution of valid corrections for a sentence.
 		Similar effects on Text Simplification further support our claims.
 	\end{abstract}
-	
+
+	\vspace{-.2cm}
 	\section{Introduction}
+	\vspace{-.2cm}
 	
 	Evaluation in monolingual translation \cite{xu2015problems,inderjeet2009summarization} and
 	in particular in GEC
@@ -96,41 +98,45 @@
 	has received much attention over the years, and has gained notoriety for its difficulty,
 	due in part to the heterogeneity of the space of valid corrections \cite{chodorow2012problems}.
 	Most common evaluation measures for GEC are reference-based measures (RBM), including
-  $M^2$ \cite{dahlmeier2012better}, which is the de-facto standard, GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}.
+  $M^2$ \cite{dahlmeier2012better}, which is the de-facto standard, GLEU \cite{napoles2015ground} 
+  and I-measure \cite{felice2015towards}.
 	
-  The Inadequate Coverage Bias (ICB) was previously discussed by \citet{bryant2015far}, who showed that inter-annotator agreement in producing references is low, 
+  The Inadequate Coverage Bias (ICB) was previously discussed by \citet{bryant2015far}, 
+  who showed that inter-annotator agreement in producing references is low, 
   and concluded that RBMs under-estimate the performance of GEC systems.
-  To address this, they proposed a new measure, Ratio Scoring (RS), which re-scales $M^2$ 
+  To address this, they proposed a new measure, Ratio Scoring, which re-scales $M^2$ 
   by the inter-annotator agreement (i.e., the score of a human corrector), interpreted as an upper bound.
 
-  In this paper we revisit the ICB, and show it has more far-reaching implications than previously discussed. First, while we agree with \citet{bryant2015far} that a
-  perfect corrector should receive a perfect score, we show that ICB does not merely scales system performance by a constant factor, but
+  In this paper we revisit the ICB, and show it has more far-reaching implications than previously discussed. 
+  First, while we agree with \citet{bryant2015far} that a human correction should receive a perfect score, 
+  we show that ICB does not merely scale system performance by a constant factor, but
   rather that some correction policies are less prone to be biased against. 
   Concretely, we show that by only correcting errors where only few possible corrections are valid, and avoiding to correct others, 
   systems can outperform humans. 
-  Indeed, in Section \ref{sec:real_world} we show that some existing systems outperform humans on $M^2$, applying much less changes to the source.
+  Indeed, in Section \ref{sec:real_world} we show that some existing systems outperform humans on $M^2$ and GLEU, 
+  while only applying few changes to the source.
   
   We thus argue that the development of GEC systems against low coverage RBMs disincentivize systems from making changes to the source 
-  in cases where many possible changes are valid, as necessarily only some of them are covered by the reference set. 
-  We support our claim in three ways. 
-  First, we find that GEC systems under-correct, often predicting an order of magnitude less changes to the input than a human annotator does.
-  Second, we find that the under-prediction of changes is more expressed in edit types that have more variation in their valid corrections.
-  Third, using oracle re-ranking experiments, we find that increasing the number of references alleviates this effect.\oa{add references to relevant sections}
+  in cases where many possible corrections are valid, as necessarily only some of them are covered by the reference set. 
+  We support our claim by showing
+  (1) that existing GEC systems under-correct, often performing an order of magnitude less corrections than a human does (\S\ref{subsec:under-correction});
+  (2) that increasing the number of references alleviates under-correction (\S\ref{subsec:reranking});
+  and (3) that under-correction is more expressed in error types that are more varied in their valid corrections (\S\ref{subsec:by_types}).
 
-  Recent work has also attempted to address ICB by increasing the number of references (henceforth, $M$) \cite{}.
-  In Section \ref{sec:increase-reference} we study the potential gain from increasing $M$,
-  by assessing the distribution of corrections per sentence, and find this approach to be lacking, due
-  to the vast number of valid corrections per sentence and their long-tailed distribution.
+  Recent work has also attempted to address ICB by increasing the number of references (henceforth, $M$) \cite{}.\oa{missing ref}
+  In Section \ref{sec:increase-reference} we estimate the distribution of corrections per sentence, 
+  and find that increasing $M$ is unlikely to overcome ICB, due
+  to the vast number of valid corrections for a sentence and their long-tailed distribution.
   Indeed, even short sentences have over 1000 valid corrections on average. 
-  We also assess the effect of increasing the number of references (henceforth, $M$) on the score of a perfect corrector (i.e., the inter-annotator agreement) 
+  We also assess the effect of increasing the number of references (henceforth, $M$) on 
+  the score of a perfect corrector (i.e., the inter-annotator agreement) 
   using $M^2$, accuracy and GLEU, finding diminishing returns. 
-  %We conclude that the ICB cannot be overcome simply by increasing $M$.
 
   In order to corroborate our findings, we apply a 
   similar line of experiments to Text Simplification (TS) (\S\ref{sec:simplification}),
-  and observe that: (1) the distribution of valid references for a given sentence is long-tailed as well; 
+  finding similar trends: (1) the distribution of valid simplifications for a given sentence is long-tailed; 
   (2) common measures for TS dramatically under-estimate performance; 
-  (3) oracle re-ranking with additional references alleviates this under-prediction.
+  (3) additional references alleviates this under-prediction.
   %\lc{I think we should rephrase, lets call over-conservatism only the strictly 
   %wrong conservatism (e.g. choosing a wrong sentence  
   %from k best list) and refer to very conservative systems that are presumably over conservative}.
@@ -139,10 +145,10 @@
   To recap, we find that the ICB in RBMs yields consistent biases in GEC evaluation, and consequently
   in systems developed to optimize such measures, and that these biases cannot be overcome by re-scaling or
   increasing $M$ in any feasible range. 
-  The ICB further jeopardizes the reliability of common validation experiments for RBMs,
-  that assess the correlation between human and measure rankings of system outputs.
-  Indeed, if system outputs under-correct in a consistent pattern, and if this under-correction is not penalized by the measures, 
-  the resulting correlation may be unrealistically high.
+  We conclude by discussing issues with existing metric validation methodology, and outlining 
+  paths for future advancement (\S\ref{sec:conclusion}).
+  
+
   
   
   %While we present 
@@ -206,14 +212,20 @@
 %to abstract away from some of the formal variation between different valid corrections.
 %
 %
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.1cm}
+\vspace{-.2cm}
 \section{Coverage in RBMs}\label{sec:increase-reference}
 \vspace{-.1cm}
 
-We begin by formulating a methodology for studying the distribution of valid corrections for a sentence, and the effect it
-has on RBMs.
-We then proceed to discuss the relation between the references and the behaviour of RBMs.
+We begin by formulating a methodology for studying the distribution of valid 
+corrections for a sentence (\S\ref{subsec:corrections_distribution}), 
+and then turn to assessing the effect inadequate 
+coverage has on common RBMs (\S\ref{subsec:Assessment-values}). 
+Finally, we compare human and systems' performance with common RBMs (\S\ref{sec:real_world}).
+\oa{legends in figure 1 are really small}
+
+%We then proceed to discuss the relation between  references and the behaviour of RBMs.
 %To open the discussion we put forward an analysis of some of GEC fundamental properties. 
 %We create a methodology and estimate the distribution of valid corrections allowing for better understanding of the task we face when trying to correct corrections. 
 
@@ -259,7 +271,7 @@ We turn to estimating the number of corrections per sentence, and their histogra
 The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data. Through the length restriction, we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in an unreliable estimation for $\mathcal{D}_x$. 
 
 Proven effective in GEC and related tasks such as MT \cite{zaidan2011crowdsourcing,madnani2011they,post2012constructing}, 
-we use crowdsourcing to obtain a sample from $\mathcal{D}_x$ (see Appendix  \ref{ap:crowd}).
+we use crowdsourcing to sample from $\mathcal{D}_x$ (see Appendix  \ref{ap:crowd}).
 Aiming to judge grammaticality rather than fluency, we instructed the workers to correct only when necessary, not for styling.
 We begin by estimating the histogram of $\mathcal{D}_x$ for each sentence, using the crowdsourced corrections.
 We use {\sc UnseenEst} \cite{zou2015quantifying}, a non-parametric algorithm to
@@ -272,7 +284,6 @@ variants a gene might have, including undiscovered ones, a setting similar to th
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{An implementation of {\sc UnseenEst}, the data we collected and the estimated
 distributions can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}.}
-
 
 Our estimates show that most input sentences have a large number of
 infrequent corrections accounting for the bulk of the probability mass
@@ -364,10 +375,10 @@ is then
     &\label{eq:bias} \left(1 - P\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right) &
   \end{flalign}
 \end{small}
-\vspace{-1.5em}
+\vspace{-1em}
 
 We observe that the bias, denoted $b_M$, is not affected by $N$, only by $M$.
-As $M$ grows, $Y$ approximates better $Correct_x$, and $b_M$ tends to 0.
+As $M$ grows, $Y$  better approximates $Correct_x$, and $b_M$ tends to 0.
 
 In order to abstract away from the idiosyncrasies of specific systems,
 we consider an idealized learner, which, when correct, produces a valid correction with the same
@@ -382,6 +393,7 @@ Hence the bias $b_M$ (Eq. \ref{eq:bias}) can be re-written as
   P(C(x) \in Correct_x) \cdot (1 - P_{Y \sim \mathcal{D}_x^{M},y\sim \mathcal{D}_x}(y \in Y)).
 \end{myequation*}
 \end{small}
+\vspace{-.5em}
 
 We will henceforth assume that $C$ is perfect (i.e., its {\it true accuracy} is 1).
 Note that assuming any other value for $C$'s {\it true accuracy}
@@ -462,11 +474,11 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 	\vspace{-0.5cm}
 \end{figure*}
 
-Figure \ref{fig:accuracy_vals} presents the expected accuracy values for a perfect
-corrector (i.e., 1-$\hat{b}_M$) for different  $M$ values. 
+Figure \ref{fig:accuracy_vals} presents the expected accuracy of a perfect
+corrector (i.e., 1-$\hat{b}_M$) for different  $M$s. 
 Results show that even for $M$ values which are much larger than the standard (e.g., $M=20$),
 the expected accuracy is only about 0.5. As $M$ increases, the contribution of each additional correction 
-diminishes sharply (the slope is about 0.004 around $M=20$).
+diminishes sharply (the slope is 0.004 for $M=20$).
 
 We also experiment with a more relaxed measure, {\it Exact Index Match}, which is only sensitive to the identity of the changed words and not to what they were changed to. 
 Formally, two corrections $c$ and $c'$ over a source sentence $x$ match if for their word alignments with the source (computed as above) $a:\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c\right|,Null\}$
@@ -475,14 +487,14 @@ Results, while somewhat higher, are still only 0.54 with $M=10$. (Figure \ref{fi
 %As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
 
 	\vspace{-0.1cm}
-\paragraph{$F$-Score.}\oa{add GLEU here, and say why we don't use I-measure}
+\paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
 $F_\alpha$-score is standard for evaluating system performance.
 The score is computed in terms of {\it edit} matches between a correction and the references, where edits are sub-string replacements to the source.
 The HOO shared task used an earlier version of $F$-score, which required that the proposed corrections include edits explicitly.
 Later on, relieving correctors from the need to produce edits, $F$-score was redefined optimistically, maximizing over all possible annotations that generate the correction from the source.\footnote{Since our crowdsourced corrections
 	do not include an explicit annotation of edits, we produce edits heuristically.}
-$M^2$ \cite{dahlmeier2012better} is the standard $F$-score computing tool for GEC.
+$M^2$ \cite{dahlmeier2012better} is the standard $F$-score scorer for GEC.
 
 The complexity of the measure prohibits an analytic approach \cite{yeh2000more}.
 We instead use bootstrapping to estimate the bias incurred by not being able to exhaustively enumerate the set of valid corrections.
@@ -511,9 +523,14 @@ of system performance.
 For instance, the $F_{0.5}$-score for our perfect corrector is only 0.42 with $M=2$.
 The saturation effect observed for accuracy is even more pronounced in this setting.
 
+\paragraph{GLEU.} We compute the score of a perfect corrector according to the GLEU
+measure, using the same bootstrap procedure we used for $F$-score. Results (Figure \ref{})
+show similar trends.
 %The recently proposed GLEU \cite{napoles2015ground} measure does not address
 %the coverage issue raised here, as it applies string similarity measures relative to a fairly small
 %number of references. 
+
+\paragraph{}
 We do not conduct similar experiments with {\sc I-measure},
 as its run-time complexity grows exponentially with the number of references (due to
 the way it mixes references), which renders it prohibitively costly for our methodology
@@ -543,6 +560,13 @@ test data ($M=2$).
 Results (Figure \ref{fig:F_correctors}) present mixed trends: some
 differences between previously reported $F$-scores are indeed significant and some are not.
 For example, the best performing corrector is significantly better than all but the second corrector.
+
+Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing 
+them to the $F$-score of a perfect corrector with $M=2$,\oa{why M=2? is this because that was used in CoNLL?}
+we find that their scores are comparable, where the systems RoRo and JMGR surpass a perfect corrector's $F$-score.
+Similar experiments conducted with GLEU show that these two systems obtain comparable or superior performance to humans
+on this measure as well.
+
 %
 %Nevertheless, it seems that $M=2$ value taken in NUCLE is sufficiently high
 %to generally obtain statistically significant ranking of the different correctors.
@@ -550,6 +574,7 @@ For example, the best performing corrector is significantly better than all but 
 	\vspace{-0.1cm}
 \subsection{Discussion}\label{subsec:mult_discussion}
 	\vspace{-0.1cm}
+	
 % -- we saw that we have dramatic under-estimation
 % -- but is this a problem? for instance, in the last section we saw we can get statistical significance between systems by increasing
 %    N even with a low $M$
@@ -604,17 +629,17 @@ For example, the best performing corrector is significantly better than all but 
 	%who study the effect of $M$ on $F$-score, the most commonly used measure for GEC.
 %Our findings echo the results of \newcite{bryant2015far}, who study the effect of $M$ on $F$-score, the most commonly used measure for GEC. Their work focused on obtaining a more reliable estimate of correctors' performance and proposed to do so by normalizing corrector's estimated performance with the performance of a human corrector.
 
-In this section we have established that that (1) as correctors can surpass human performance on RBMs, re-scaling cannot
-be used to overcome the ICB, and (2) as the distribution of valid corrections is long-tailed, 
+In this section we have established that (1) as correctors can surpass human performance on RBMs, re-scaling cannot
+be used to overcome the ICB, and that (2) as the distribution of valid corrections is long-tailed, 
 the number of references needed for reliable RBMs in exceedingly high.
 Indeed, an average sentence has hundreds or more valid low-probability corrections, whose 
-total probability mass is substantial. RBMs such as accuracy and $F$-score thus increase slowly with $M$ over 5. 
-The exact index match analysis also suggests that similar effects may be applicable in Grammatical Error Detection.
+total probability mass is substantial. %RBMs such as accuracy and $F$-score thus increase slowly with $M$ over 5. 
+Our analysis with Exact Index Match suggests that similar effects are applicable in Grammatical Error Detection as well.
 The proposal of \newcite{sakaguchi2016reassessing}, to emphasize fluency over grammaticality in reference corrections, 
 only compounds this problem, as it results in a larger number of valid corrections.
 
-These results suggest that alternative methods that do not apply string similarity between the source and the references 
-may be more effective in addressing ICB. 
+%These results suggest that alternative methods that do not apply string similarity between the source and the references 
+%may be more effective in addressing ICB. 
 %In recent ongoing work we suggest\lc{[perhaps needs to be anonymized if the Usim would be published by then]} USim \citet{us} a reference-less evaluation measure which by definition does not suffer from this biases.
 
 
@@ -624,11 +649,11 @@ may be more effective in addressing ICB.
 
 In this section we demonstrate the adverse effects of ICB not only to the reliability of RBMs, but to the performance of GEC systems.
 We argue that evaluation with inadequate reference coverage incentivizes systems to under-correct,
-and to target errors, which only have few valid corrections.
+and to mostly target errors that have few valid corrections.
 We first show that low coverage can lead to under-correction (\S\ref{subsec:motivating_analysis}),
-then show that modern correctors make far fewer corrections to the source, compared to humans (\S\ref{}).
-In \S\ref{} we show that increasing the number of references can alleviate this effect.
-Finally, we show that open-class error types are more likely to be under-corrected, than closed-class ones (\S\ref{}).
+then show that modern correctors make far fewer corrections to the source, compared to humans (\S\ref{subsec:under-correction}).
+\S\ref{subsec:reranking} shows that increasing the number of references can alleviate this effect.
+Finally, \S\ref{subsec:by_types} shows that open-class error types are more likely to be under-corrected, than closed-class ones.
 
 \vspace{-.1cm}
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
@@ -644,9 +669,9 @@ Assume $p_{detect}$ is the probability that this prediction is correct, and that
 $p_{correct}$ is the probability it is able to predict
 a valid correction for this phrase (including correctly identifying it as erroneous).
 Finally, assume the corrector is evaluated
-against $M$ references for which the coverage is $p_{coverage}$,
-namely the probability that
-a valid correction will be found among $M$ randomly sampled references.
+against $M$ references with coverage $p_{coverage}$
+(the probability that
+a valid correction will be found among $M$ randomly sampled references).
 
 We will now assume that the corrector may either choose to correct with the correction it finds 
 the most likely or not at all. If it chooses not to correct, its probability of being rewarded 
@@ -686,7 +711,7 @@ where $\alpha$ is the ratio between the penalty for introducing a wrong correcti
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{-.1cm}
-\subsection{Under-correction in GEC Systems}
+\subsection{Under-correction in GEC Systems}\label{subsec:under-correction}
 \vspace{-.1cm}
 
 In this section we compare the prevalence of changes made to the source by the correctors,
@@ -728,7 +753,7 @@ Third, we report how many source sentences were split and how many concatenated 
 		\includegraphics[width = \textwidth]{aligned}
 	\end{subfigure}
 	\caption{\label{fig:over-conservatism}
-		The prevalence of changes correctors' outputs and in the NUCLE reference.
+		The prevalence of changes in system outputs and in the NUCLE reference.
 		The left figure presents the number of sentences (heat) for each amount of word changes
 		(x-axis; measured by {\sc WordChange}) done by the outputs and the reference (y-axis).
 		The middle figure presents the percentage of sentence pairs (y-axis) where the
@@ -749,7 +774,7 @@ For example, there are 36 reference sentences with 6 word changes, where the hig
 A similar amount of corrections is observed on the references of the TreeBank of Learner English \cite{yannakoudakis2011new}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Higher $M$ Alleviates Under-correction}
+\subsection{Higher $M$ Alleviates Under-correction}\label{subsec:reranking}
 
 This section reports an experiment for determining whether increasing
 the number of references in training indeed reduces conservatism. There is no 
@@ -763,7 +788,7 @@ As a test case, we use the RoRo system with $k=100$, and apply it to the
 largest available language learner corpus which is paired with a substantial amount of GEC references,
 namely the NUCLE test corpus. We use the standard $F$-score as the evaluation measure,
 examining the conservativeness of the oracle re-ranker for different $M$ values, averaging over 1312 samples of 
-$M$ references from the available set of twelve references provided by \citet{bryant2015far}.
+$M$ references from the available set of ten references provided by \citet{bryant2015far}.
 
 In order to see why decreased conservatism with an increase in $M$ indicates
 that tuning against a small set of references (low coverage) yields over-conservatism, 
@@ -814,8 +839,9 @@ No significant difference is found for word order.
 \begin{figure}
 	\vspace{-1em}
 	\includegraphics[width=0.9\columnwidth]{words_relative_differences_hist_reranking}
-	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) following oracle reranking with different $M$ values (column colors), where the amount for $M=1$ are subtracted from them.
-		All references are randomly sampled except BN column that contains \newcite{bryant2015far} 10 references.
+	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) following oracle reranking with different $M$ values (column colors), 
+	where the amount for $M=1$ are subtracted from them.
+		All references are randomly sampled except the ``all'' column that contains all ten references.
 		In conclusion, tuning against additional references indeed reduces conservatism.
 		\label{fig:reranking_word_change}
 	}
@@ -855,7 +881,7 @@ No significant difference is found for word order.
 %{ \color{red} This is likely an indication of some hidden, cross-systems, widely spread  bias.}
 
 
-\subsection{Under-correction by Edit Types}
+\subsection{Under-correction by Error Types}\label{subsec:by_types}
 
 In this section we study the prevalance of under-correction according to edit types, finding that open-class types of errors
 (such as replacing a word with another word) are more starkly under-corrected, than closed-class corrections.
@@ -876,9 +902,9 @@ verb selection, noun selection, particle/preposition selection, pronoun selectio
 The only exception to this regularity is the punctuation selection type, which is found in the lower quarter. See Appendix \ref{ap:types} for the complete results.
 
 We note that it is not the case that more frequent error types are the least under-predicted, as error type frequency
-is even slightly negatively correlated with the under-correction ratio (Pearson \textbf{-}0.29 P=0.16).
-A possible explanation to this effect is thus the disincentive of GEC systems to correct error types, for which even correct
-prediction is unlikely to be rewarded due to ICB.
+is in fact slightly negatively correlated with the under-correction ratio ($\rho$=-0.29 p-value=0.16).
+A probable contributor to this effect is the disincentive of GEC systems to correct error types for which even valid
+corrections are unlikely to be rewarded due to ICB.
 
 
 
@@ -890,7 +916,7 @@ prediction is unlikely to be rewarded due to ICB.
 %\subsection{Discussion}
 
 %Returning to condition (\ref{eq:reward}) from \S\ref{subsec:motivating_analysis}, we find that coverage (equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $M=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that (\ref{eq:reward}) often holds in practice, which may account for the observed over-conservatism. 
-%Another evidence that systematic penalties do occur in GEC can be seen in \citet{our corpus} work that found corrections of some edit types are penalized on average.
+%Another evidence that systematic penalties do occur in GEC can be seen in \citet{our corpus} work that found corrections of some types are penalized on average.
 
 %Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $M=2$, we find that their scores are comparable, where RoRo and JMGR surpass a perfect corrector's $F$-score.
 %While it is possible that these correctors performed this feat by learning not only how to correct, but also how to correspond to the writing style of one of NUCLE's annotators, this seems unlikely given our previous results that these systems substantially under-predict edits relative to NUCLE's references (\S\ref{sec:formal_conservatism}). 
@@ -918,7 +944,7 @@ has already been shown by previous work \cite{alvamanchego-EtAl:2017:I17-1},
 which reported that TS systems tend to under-predict word additions, deletions,
 substitutions, and shifts of word sequences \cite{zhang-lapata:2017:EMNLP2017} 
 and to have low edit distance from the source \cite{narayan-gardent:2016:INLG}.
-Our experiments show that ICB may account for this under-correction. Concretely, we show that
+Our experiments show that ICB may account for this under-prediction. Concretely, we show that
 (1) the distribution of valid references for a given sentence is long-tailed; 
 (2) common evaluation measures suffer from ICB, taking SARI \cite{Xu-EtAl:2016:TACL} 
     as an example RBM (similar trends are obtained with Accuracy); 
@@ -926,7 +952,7 @@ Our experiments show that ICB may account for this under-correction. Concretely,
 
 We crowd-sourced 2500 reference simplifications for 47 sentences, using the corpus and the annotation protocol of 
 \newcite{Xu-EtAl:2016:TACL}, applying {\sc UnseenEst} to estimate $\mathcal{D}_x$ (Appendix  \ref{ap:crowd}).
-Table \ref{tab:simplifications_dist} show that the expected number of references is even greater in this setting. 
+Table \ref{tab:simplifications_dist} shows that the expected number of references is even greater in this setting. 
 
 Assessing the effect of $M$ on SARI, we find that SARI diverges from Accuracy and $F$-score
 in that its multi-reference version is not a maximum over the single-reference scores, but some combination of them.
@@ -956,9 +982,9 @@ across different $M$ values.
 
 We therefore restrict our oracle re-ranking experiments to MAX-SARI, conducting re-ranking experiments on $k$-best
 lists in two settings: with Moses \cite{koehn2007koehn} 
-$k=100$, and one with a neural model \cite{nisioi2017exploring} with $k=12$. 
+with $k=100$, and one with a neural model \cite{nisioi2017exploring} with $k=12$. 
 Our results indeed show that conservatism decreases with $M$ in both settings. 
-For example on the least conservative model, the neural one, with $M=1$ 50 sentences were not changed, while only 29 remained the same 
+For example, the least conservative model (the neural one) did not change 50 sentences with $M=1$, but only 29 weren't changed 
 with $M=8$. See Appendix \ref{ap:simp-rerank}.
 
 %The results suggest that similar trends may hold for other monolingual translation tasks, at least to the extent that their RBMs take the source into account.
@@ -1014,14 +1040,19 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 %that increasing $M$ is beneficial up to a point, after which
 %coverage improves only marginally with each additional reference.
 
-This paper argues that using a low-coverage reference set has adverse effects on the reliability
+We argue that using a low-coverage reference set has adverse effects on the reliability
 of reference-based evaluation in GEC and consequently on the incentives offered to GEC systems.
-It further argues that these effects can not be overcome by re-scaling or increasing the number of
+It further argues that these effects cannot be overcome by re-scaling or increasing the number of
 references in a feasible way. 
 The paper makes two methodological contributions to the GEC evaluation literature:
 (1) a methodology for evaluating evaluation measures by the scores they assign a perfect corrector using a bootstrapping procedure;
 (2) a methodology for assessing the distribution of valid corrections.
-Our findings demonstrate how these tools can help characterizing the biases of existing systems and evaluation measures.
+Our findings demonstrate how these tools can help characterize the biases of existing systems and evaluation measures.
+
+We note that the ICB further jeopardizes the reliability of common validation experiments for RBMs,
+that assess the correlation between human and measure rankings of system outputs.
+Indeed, if outputs all under-correct, correlation studies will not be affected by whether an RBM is sensitive to under-correction. Therefore, RBMs tendency to reward such a policy will not be detected by such correlation experiments.
+
 
 Our results underscore the importance of developing alternative evaluation measures that transcend $n$-gram overlap, 
 and use deeper analysis tools, for instance by comparing
