@@ -24,6 +24,7 @@
 \usepackage{bbm}
 \usepackage{booktabs}
 
+
 \usepackage{xr}
 \externaldocument[]{conservatism_supplementary}
 \makeatletter
@@ -83,7 +84,7 @@
     Consequently, existing systems can obtain comparable or
 		superior performance compared to humans, by making few but targeted 
 		changes to the input.
-		Moreover, overcoming ICB by increasing the number of reference is unfeasible, 
+		Moreover, overcoming ICB by increasing the number of references is unfeasible, 
 		due to the long-tailed distribution of valid corrections for a sentence.
 		Similar effects on Text Simplification further support our claims.
 	\end{abstract}
@@ -123,7 +124,7 @@
   (2) that increasing the number of references alleviates under-correction (\S\ref{subsec:reranking});
   and (3) that under-correction is more expressed in error types that are more varied in their valid corrections (\S\ref{subsec:by_types}).
 
-  Recent work has also attempted to address ICB by increasing the number of references (henceforth, $M$) \cite{}.\oa{missing ref}
+  Recent work has also attempted to address ICB by increasing the number of references (henceforth, $M$) \cite{bryant2015far}.
   In Section \ref{sec:increase-reference} we estimate the distribution of corrections per sentence, 
   and find that increasing $M$ is unlikely to overcome ICB, due
   to the vast number of valid corrections for a sentence and their long-tailed distribution.
@@ -459,7 +460,7 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
 		\includegraphics[width=\textwidth]{$F_{0.5}$_Ms_significance}
-		\caption{$F_{0.5}$\label{fig:F_Ms}}
+		\caption{$F_{0.5}$ and GLEU\label{fig:F_Ms}}
 	\end{subfigure}
 	\hfil
 	\begin{subfigure}[]{0.65\columnwidth}
@@ -523,12 +524,7 @@ of system performance.
 For instance, the $F_{0.5}$-score for our perfect corrector is only 0.42 with $M=2$.
 The saturation effect observed for accuracy is even more pronounced in this setting.
 
-\paragraph{GLEU.} We compute the score of a perfect corrector according to the GLEU
-measure, using the same bootstrap procedure we used for $F$-score. Results (Figure \ref{})
-show similar trends.
-%The recently proposed GLEU \cite{napoles2015ground} measure does not address
-%the coverage issue raised here, as it applies string similarity measures relative to a fairly small
-%number of references. 
+\paragraph{GLEU.} We repeat the procedure using the mean GLEU sentence score (Figure \ref{fig:F_Ms}), shown to correlate better with human judgments \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, results with the GLEU aggregated score are about $2\%$ higher with a similar plateau trend.
 
 \paragraph{}
 We do not conduct similar experiments with {\sc I-measure},
@@ -713,6 +709,26 @@ where $\alpha$ is the ratio between the penalty for introducing a wrong correcti
 \vspace{-.1cm}
 \subsection{Under-correction in GEC Systems}\label{subsec:under-correction}
 \vspace{-.1cm}
+\begin{table}
+	\vspace{-0.5cm}
+	\centering
+	\small
+	\singlespacing
+	\begin{tabular}{l|p{4cm}}
+		Corrector & Sentence \\
+		\hline
+		Source & This is especially to people who are overseas. \\
+		\hline 
+		CHAR, UMC, JMGR & This is especially \textbf{for} people who are overseas. \\ 
+		IPN & This is especially to \textbf{peoples} who are overseas. \\ 
+		CUUI &  This is especially to \textbf{the} people who are overseas. \\ 
+		\hline
+		NUCLE$_A$ & This is especially \textbf{true for} people who are overseas.\\
+		NUCLE$_B$ & This is especially \textbf{relevant} to people who are overseas.
+	\end{tabular}
+	\caption{\label{tab:nucle_example} Example for a sentence and proposed corrections by different systems (top part) and by the two NUCLE annotators (bottom part). Systems not mentioned in the table retain the source. No system produces a new word as needed. The two references differ in their corrections.} 
+	\vspace{-0.5cm}
+\end{table} 
 
 In this section we compare the prevalence of changes made to the source by the correctors,
 relative to their prevalence in the NUCLE references (one annotator was arbitrarily 
@@ -848,26 +864,6 @@ No significant difference is found for word order.
 	\vspace{-0.5cm}
 \end{figure}
 
-\begin{table}
-	\vspace{-0.5cm}
-	\centering
-	\small
-	\singlespacing
-	\begin{tabular}{l|p{4cm}}
-		Corrector & Sentence \\
-		\hline
-		Source & This is especially to people who are overseas. \\
-		\hline 
-		CHAR, UMC, JMGR & This is especially \textbf{for} people who are overseas. \\ 
-		IPN & This is especially to \textbf{peoples} who are overseas. \\ 
-		CUUI &  This is especially to \textbf{the} people who are overseas. \\ 
-		\hline
-		NUCLE$_A$ & This is especially \textbf{true for} people who are overseas.\\
-		NUCLE$_B$ & This is especially \textbf{relevant} to people who are overseas.
-	\end{tabular}
-	\caption{\label{tab:nucle_example} Example for a sentence and proposed corrections by different systems (top part) and by the two NUCLE annotators (bottom part). Systems not mentioned in the table retain the source. No system produces a new word as needed. The two references differ in their corrections.} 
-	\vspace{-0.5cm}
-\end{table} 
 %The field of GEC was always thriving or conservatism in its corrections, with the prominent example of using
 %$F_{0.5}$ emphasizing precision over recall(\cite{ng2014conll}). we wish to highlight the problem that
 %arises from pursuing this conservatism as done today.
