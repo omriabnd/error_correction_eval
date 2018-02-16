@@ -224,7 +224,6 @@ corrections for a sentence (\S\ref{subsec:corrections_distribution}),
 and then turn to assessing the effect inadequate 
 coverage has on common RBMs (\S\ref{subsec:Assessment-values}). 
 Finally, we compare human and system scores by common RBMs (\S\ref{sec:real_world}).
-\oa{legends in figure 1 are really small}
 
 %We then proceed to discuss the relation between  references and the behaviour of RBMs.
 %To open the discussion we put forward an analysis of some of GEC fundamental properties. 
@@ -260,7 +259,7 @@ in addition to three of the best performing systems on this dataset,
 a hybrid system \cite{rozovskaya2016grammatical},
 a phrase based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
 and a neural network system \cite{xie2016neural}.
-Appendix  \ref{ap:abbr} lists system names and abbreviations.\oa{re-order appendices}
+Appendix  \ref{ap:abbr} lists system names and abbreviations.
 
 %
 	\vspace{-0.1cm}
@@ -667,11 +666,11 @@ that systems attempt to maximize an objective function,
 over some training or development data. 
 We assume maximization is achieved by iterating over the samples, as with the Perceptron or SGD.
 
-Assume the system is faced with a phrase which it predicts to be ungrammatical. 
-Assume $p_{detect}$ is the probability that this prediction is correct, and that
+Assume the system is faced with a phrase it predicts to be ungrammatical. 
+Assume $p_{detect}$ is the probability this prediction is correct, and
 $p_{correct}$ is the probability it is able to predict
 a valid correction for this phrase (including correctly identifying it as erroneous).
-Finally, assume the system is evaluated
+Finally, assume evaluation is
 against $M$ references with coverage $p_{coverage}$
 (the probability that
 a valid correction will be found among $M$ randomly sampled references).
@@ -750,11 +749,11 @@ for an example.
 We consider three types of divergences between the source and the reference.
 First, we measure the extent to which \emph{words} were changed: altered, deleted or added.
 To do so, we compute word alignment between the source and the reference, casting it
-as a weighted bipartite matching problem. Edge weights are assigned to be the edit distances between the tokens.
-We note that aligning words in GEC is much simpler than in MT,
+as a weighted bipartite matching problem. Edge weights are assigned to be the token edit distances.
+Notably, aligning words in GEC is much simpler than in MT,
 as most of the words are unchanged, deleted fully, added, or changed slightly.
 Following word alignment, we define {\sc WordChange}
-as the number of unaligned words and aligned words that were changed in any way.
+as the number of aligned words and unaligned words changed.
 Second, we quantify word \emph{order} differences using
 Spearman's $\rho$ between the order of the words in the source sentence
 and the order of their corresponding-aligned words in the correction.
@@ -782,10 +781,10 @@ Third, we report how many source sentences were split and how many concatenated 
 		The middle figure presents the percentage of sentence pairs (y-axis) where the
 		Spearman $\rho$ values do not exceed a certain threshold (x-axis).
 		The right figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (coloured columns).
-		See Appendix  \ref{ap:abbr} for a legend of the systems.
+		See Appendix \ref{ap:abbr} for a legend of the systems.
 		Under all measures, the gold standard references make substantially more changes to the source sentences than any of the systems, in some cases an order of magnitude more.
 	}
-	\vspace{-0.4cm}
+	\vspace{-0.5cm}
 \end{figure*}
 
 \vspace{-.2cm}
@@ -892,9 +891,7 @@ Evaluating with low coverage RBMs does not incentivize systems to address open-c
 
 We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each correction in the output of all CoNLL 2014 
 systems on the NUCLE test set.
-As a measure of under-correction tendency, we take the ratio between the mean
- number of corrections 
-produced by the systems and by the references. 
+As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references. 
 We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each type the systems attempted to correct. 
 
 We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly closed-class types. 
@@ -909,25 +906,6 @@ Indeed, error type frequency is slightly negatively correlated with the under-co
 A more probable account of this effect is the disincentive of GEC systems to correct error types for which even valid
 corrections are unlikely to be rewarded.
 
-
-
-
-\oa{commented out section here}
-%\subsection{Discussion}
-
-%Returning to condition (\ref{eq:reward}) from \S\ref{subsec:motivating_analysis}, we find that coverage (equal to the accuracy depicted in Figure \ref{fig:accuracy_vals}) is lower than 0.5 for $M=2$ on average (for short sentences). For cases of non-trivial changes, we expect it might be even lower, suggesting that (\ref{eq:reward}) often holds in practice, which may account for the observed over-conservatism. 
-%Another evidence that systematic penalties do occur in GEC can be seen in \citet{our corpus} work that found corrections of some types are penalized on average.
-
-%Considering the $F$-score of the best-performing systems in Figure \ref{fig:F_correctors}, and comparing them to the $F$-score of a perfect corrector with $M=2$, we find that their scores are comparable, where RoRo and JMGR surpass a perfect corrector's $F$-score.
-%While it is possible that these correctors performed this feat by learning not only how to correct, but also how to correspond to the writing style of one of NUCLE's annotators, this seems unlikely given our previous results that these systems substantially under-predict edits relative to NUCLE's references (\S\ref{sec:formal_conservatism}). 
-%More likely is that these correctors have learned to predict when not to correct.
-%\lc{should we add here a discussion of correlation to human judgments? should it be in a new subsection? section? paragraph in the discussion? we are out of space anyway}
-%While $89.6\%$ of NUCLE sentences need corrections,
-%The prevalence of FCE consists only of ungrammatical sentences.
-%As expected, FCE is a bit less conservative than NUCLE by our measures.
-%
-%
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{-.1cm}
 \section{Similar Effects on Simplification}\label{sec:simplification}
@@ -939,12 +917,12 @@ the output is obtained by making zero or more edits to the source. RBMs are the 
 much like they are in GEC.
 
 Our experiments on TS demonstrate that similar trends recur in this setting as well. 
-The tendency of TS systems to under-predict changes to the source 
+TS systems tendency to under-predict changes to the source 
 has already been shown by previous work \cite{alvamanchego-EtAl:2017:I17-1}, 
-which reported that TS systems tend to under-predict word additions, deletions,
-substitutions, and shifts of word sequences \cite{zhang-lapata:2017:EMNLP2017} 
+which reported TS systems tend to under-predict word additions, deletions,
+substitutions, and sequences shifts\cite{zhang-lapata:2017:EMNLP2017} 
 and to have low edit distance from the source \cite{narayan-gardent:2016:INLG}.
-Our experiments show that LCB may account for this under-prediction. Concretely, we show that
+Our experiments show that LCB may account for this under-prediction. Concretely, we show
 (1) the distribution of valid references for a given sentence is long-tailed; 
 (2) common evaluation measures suffer from LCB, taking SARI \cite{Xu-EtAl:2016:TACL} 
     as an example RBM (similar trends are obtained with Accuracy); 
@@ -980,9 +958,9 @@ Results show that SARI has a coverage of about $0.45$, and that this score is la
 The score of predicting one of the available references drops with the number of references, indicating that SARI scores may not be comparable
 across different $M$ values. 
 
-We therefore restrict our oracle re-ranking experiments to MAX-SARI, conducting re-ranking experiments on $k$-best
-lists in two settings: with Moses \cite{koehn2007koehn} 
-with $k=100$, and with a neural model \cite{nisioi2017exploring} with $k=12$. 
+We therefore restrict oracle re-ranking experiments to MAX-SARI, conducting re-ranking experiments on $k$-best
+lists in two settings: Moses \cite{koehn2007koehn} 
+with $k=100$, and a neural model \cite{nisioi2017exploring} with $k=12$. 
 Our results indeed show that under-prediction is alleviated with $M$ in both settings. 
 For example, the least under-predicting model (the neural one) did not change 50 sentences with $M=1$, but only 29 weren't changed 
 with $M=8$. See Appendix \ref{ap:simp-rerank}.

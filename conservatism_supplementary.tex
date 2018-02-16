@@ -23,6 +23,7 @@
 \usepackage[font={small}]{caption}
 \usetikzlibrary{positioning}
 \usepackage{bbm}
+\usepackage{numprint}
 \usepackage{booktabs}
 
 \makeatletter
@@ -64,38 +65,7 @@
 %\maketitle
 
 \onecolumn
-\section*{\centering\Large Supplementary Material for ``Inherent Biases in Reference-based Evaluation for
-Grammatical Error Correction''}
-\section{Accuracy - Poisson Binomial Distribution}\label{ap:poibin}
-The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From the Equation 
-	
-	\begin{myequation}
-		Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^N \mathds{1}_{C(x_i) \in Y_i}.
-	\end{myequation}
-	
-\noindent
- we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using our estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}. An implementation of this and other methods for efficiently computing and approximating Poisson Binomial Distributions and the estimated density functions will be released upon publication.
 
-\section{SARI with Multiple references}\label{ap:sari-assum}
-Most RBMs define their multi-reference score to be the maximum score the
-output attains against any single one reference.
-SARI takes a different approach and combines multiple references to yield its score, 
-possibly in order to compensate for the necessarily limited coverage of the available
-references. This yields non-monotonic behavior of SARI with respect to increasing
-the number of references, which makes the biases incurred by low coverage less predictable,
-but not less significant.
-For instance, a set of diverse set of references would span a large space of possible
-combinations, making SARI more permissive. A set of references of the same size, which only differ little
-from one another would yield a more conservative SARI score.
-
-%If so, reference tendencies and distribution, are all the more relevant -- 
-%gold standard is practically an aggregation of references and not individual one. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable.
-SARI is defined as the average of 3 scores, based on how well the system output kept the words it should keep,
-deleted the words it should delete, and added the words it should add (all with respect to the reference).
-Each of these scores behaves differently when increasing the number of references.
-For a perfect recall for addition can only be obtained if all additions suggested by any reference are added. For a perfect precision for addition all additions should be found in at least one reference, acting similar to max operation. For a perfect precision on keeping all the references should keep all agree on keeping everything the system kept, and as we showed reference don't tend to agree on it. For a perfect recall the system should everything that at least one of the references chose to keep. Note, that the two terms together mean that for a perfect keep score a necessary condition is that all \textbf{references} should agree on what to keep. A perfect precision of deletion acts similarly to the one over keeping, but being precision oriented SARI ignores the deletion recall. Thus, a perfect deletion would be one to delete only words, and at least one, that all references agree on.
-%For instance, a perfect recall for addition can only be obtained if all additions suggested by any reference are added, 
-%it is practically impossible to get full score on the other types of changes, the gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to.
 
 \section{Systems tested}\label{ap:abbr}
 Adam Mickiewicz University (AMU),
@@ -104,6 +74,10 @@ Indian Institute of Technology, Bombay (IITB), Instituto Politecnico Nacional (I
 National Tsing Hua University (NTHU), Peking University (PKU), Pohang University of Science and Technology (POST),
 Research Institute for Artificial Intelligence, Romanian Academy (RAC), Shanghai Jiao Tong University (SJTU),
 University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]{rozovskaya2016grammatical}, \newcite[JMGR]{junczysdowmunt-grundkiewicz:2016:EMNLP2016} \newcite[Char]{xie2016neural}.
+
+\section*{\centering\Large Supplementary Material for ``Inherent Biases in Reference-based Evaluation for
+Grammatical Error Correction''}
+
 
 \section{Collected references}\label{ap:crowd}
 \subsection{Grammatical Error Correction}
@@ -163,7 +137,7 @@ University of Franche Comt\'{e} (UFC), University of Macau (UMC), \newcite[RoRo]
 		49                           & Relatives may have the same possibilities to have such kind of disease .              \\
 		50                           & Those who are related may have the same chances of acquiring certain diseases.       
 	\end{tabular}
-		\caption{An example of one of the learner language sentences with the highest number of different corrections. The origin sentence is on top.}
+	\caption{An example of one of the learner language sentences with the highest number of different corrections. The origin sentence is on top.}
 \end{table}
 52 sentences with a maximum length of 15 were collected from the NUCLE test corpus \cite{dahlmeier2013building}. 
 For each of the 52 source sentences, 
@@ -178,10 +152,93 @@ Common methods based on agreement such as Fleiss's kappa or test questions as th
 	\caption{Template for a grammatical error correction annotation task} 
 \end{figure}
 \FloatBarrier
-\section{Type conservatism and prevalence}\label{ap:types}
-Need to copy
+
+
+\section{Additional figures}
+\subsection{Validity}\label{ap:validity_judgements}
+\begin{figure}[h!]
+	\vspace{-.3cm}
+	\includegraphics[width=0.9\columnwidth]{IAA_confirmation_frequency}
+	\caption{The mean frequency ($y$-axis) in which a correction that was produced
+		a given number of times ($x$-axis), was judged to be valid.
+		\label{fig:validity_judgements}}
+	\vspace{-0.3cm}
+\end{figure}
 \FloatBarrier
-\section{Reference Crowdsourcing for Simplification}
+
+\section{Accuracy - Poisson Binomial Distribution}\label{ap:poibin}
+The analytic tools we have developed support the computation of the entire distribution of the accuracy, and not only its expected values. From the Equation 
+	
+	\begin{myequation}
+		Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^N \mathds{1}_{C(x_i) \in Y_i}.
+	\end{myequation}
+	
+\noindent
+ we see that Accuracy has a Poisson Binominal distribution (i.e., it is a sum of independent Bernoulli variables with different success probabilities), whose success probabilities are $P_{y,Y \sim \mathcal{D}_i}(y \in Y)$, which can be computed, as before, using our estimate for $\mathcal{D}_i$. Estimating the density function allows for the straightforward definition of significance tests for the measure, and can be performed efficiently \cite{hong2013computing}. An implementation of this and other methods for efficiently computing and approximating Poisson Binomial Distributions and the estimated density functions will be released upon publication.
+
+\section{Type conservatism and prevalence}\label{ap:types}
+
+\begin{table}[]
+	\npdecimalsign{.}
+	\nprounddigits{3}
+	\centering
+	\resizebox{0.3\textwidth}{!}{%
+		\begin{tabular}{@{}ln{5}{2}@{}}
+			\toprule
+			\multicolumn{1}{c}{TYPE}       & \multicolumn{1}{c}{CHANGE}       \\ \midrule
+			CONTR      & 0.9705882353 \\
+			NOUN:NUM   & 0.9545454545 \\
+			ORTH       & 0.8925       \\
+			ADJ:FORM   & 0.8101265823 \\
+			NOUN:INFL  & 0.7125       \\
+			DET        & 0.6724801812 \\
+			VERB:SVA   & 0.6434231379 \\
+			MORPH      & 0.6150712831 \\
+			VERB:FORM  & 0.5384615385 \\
+			SPELL      & 0.5373737374 \\
+			VERB:INFL  & 0.5          \\
+			ADJ        & 0.4596273292 \\
+			CONJ       & 0.4303797468 \\
+			ADV        & 0.416091954  \\
+			PREP       & 0.3343130051 \\
+			WO         & 0.3148148148 \\
+			NOUN:POSS  & 0.2904564315 \\
+			VERB:TENSE & 0.2887673956 \\
+			NOUN       & 0.2823240589 \\
+			PART       & 0.268        \\
+			PRON       & 0.2391033624 \\
+			PUNCT      & 0.2012539185 \\
+			OTHER      & 0.1736497941 \\
+			VERB       & 0.1509009009 \\ \bottomrule
+		\end{tabular}%
+	}
+	\caption{Number of mean corrections of systems divided by the number of corrections by references on NUCLE dataset\cite{dahlmeier2012better}. Data is based on \citet{bryant-felice-briscoe:2017:Long}.}
+\end{table}
+\FloatBarrier
+
+\section{SARI with Multiple references}\label{ap:sari-assum}
+Most RBMs define their multi-reference score to be the maximum score the
+output attains against any single one reference.
+SARI takes a different approach and combines multiple references to yield its score, 
+possibly in order to compensate for the necessarily limited coverage of the available
+references. This yields non-monotonic behavior of SARI with respect to increasing
+the number of references, which makes the biases incurred by low coverage less predictable,
+but not less significant.
+For instance, a set of diverse set of references would span a large space of possible
+combinations, making SARI more permissive. A set of references of the same size, which only differ little
+from one another would yield a more conservative SARI score.
+
+%If so, reference tendencies and distribution, are all the more relevant -- 
+%gold standard is practically an aggregation of references and not individual one. Albeit agreeable assumption, the gold standard as reflected in a translation that achieves full SARI score is yet far from agreeable.
+SARI is defined as the average of 3 scores, based on how well the system output kept the words it should keep,
+deleted the words it should delete, and added the words it should add (all with respect to the reference).
+Each of these scores behaves differently when increasing the number of references.
+For a perfect recall for addition can only be obtained if all additions suggested by any reference are added. For a perfect precision for addition all additions should be found in at least one reference, acting similar to max operation. For a perfect precision on keeping all the references should keep all agree on keeping everything the system kept, and as we showed reference don't tend to agree on it. For a perfect recall the system should everything that at least one of the references chose to keep. Note, that the two terms together mean that for a perfect keep score a necessary condition is that all \textbf{references} should agree on what to keep. A perfect precision of deletion acts similarly to the one over keeping, but being precision oriented SARI ignores the deletion recall. Thus, a perfect deletion would be one to delete only words, and at least one, that all references agree on.
+%For instance, a perfect recall for addition can only be obtained if all additions suggested by any reference are added, 
+%it is practically impossible to get full score on the other types of changes, the gained score is weighted by the amount of references agreeing on it, and as we showed, references don't tend to.
+
+
+\section{Reference Crowdsourcing for Simplification}\label{ap:simp-rerank}
 In order to perform our simplification experiments, 
 we collected additional references for sentences from the corpus presented in \newcite{Xu-EtAl:2016:TACL}, using Amazon
 Mechanical Turk with similar annotation guidelines to those used by Xu et al. 
@@ -195,18 +252,7 @@ Standard worker rejection techniques were used, but no worker had to be rejected
 	\caption{Template for a simplification annotation task} 
 \end{figure}
 \FloatBarrier
-\section{Additional figures}
-\subsection{Validity}\label{ap:validity_judgements}
-\begin{figure}[h!]
-	\vspace{-.3cm}
-	\includegraphics[width=0.9\columnwidth]{IAA_confirmation_frequency}
-	\caption{The mean frequency ($y$-axis) in which a correction that was produced
-		a given number of times ($x$-axis), was judged to be valid.
-		\label{fig:validity_judgements}}
-	\vspace{-0.3cm}
-\end{figure}
-\FloatBarrier
-\subsection{Simplification reranking}\label{ap:simp-rerank}
+\subsection{Simplification reranking}
 \begin{figure}[h!]
 	\includegraphics[width=0.9\columnwidth]{nisioi_max_words_differences_hist}
 	\caption{Reranking results with \newcite{nisioi2017exploring} and MAX-SARI}
@@ -228,7 +274,7 @@ Standard worker rejection techniques were used, but no worker had to be rejected
 \end{figure}
 \FloatBarrier
 \com{
-\section{Annotated paragraphs}
+	\section{Annotated paragraphs}
 	\begin{table}[hb]
 		\centering
 		\begin{tabular}{lll}
@@ -256,8 +302,10 @@ Standard worker rejection techniques were used, but no worker had to be rejected
 		\end{tabular}
 		\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
 	\end{table}
-	}
+}
 \FloatBarrier
+
+
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
