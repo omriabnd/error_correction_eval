@@ -78,14 +78,12 @@
 		  coverage bias} or LCB). This paper shows that overcoming LCB in
 		Grammatical Error Correction (GEC) evaluation cannot be attained by
 		re-scaling or by increasing the number of references in any feasible
-		range, contrary to previous suggestions.
+		range, contrary to previous suggestions. This is due to the long-tailed distribution of valid corrections for a sentence.
 		Concretely, we show that LCB incentivizes GEC systems to avoid
     correcting even when they can generate a valid correction. 
-    Consequently, existing systems can obtain comparable or
+    Consequently, existing systems obtain comparable or
 		superior performance compared to humans, by making few but targeted 
 		changes to the input.
-		Moreover, overcoming LCB by increasing the number of references is unfeasible, 
-		due to the long-tailed distribution of valid corrections for a sentence.
 		Similar effects on Text Simplification further support our claims.
 	\end{abstract}
 
@@ -112,16 +110,14 @@
   First, while we agree with \citet{bryant2015far} that a human correction should receive a perfect score, 
   we show that LCB does not merely scale system performance by a constant factor, but
   rather that some correction policies are less prone to be biased against. 
-  Concretely, we show that by only correcting closed class errors, where few possible corrections are valid, 
-  and avoiding correcting others, systems can outperform humans. 
-  Indeed, in Section \ref{sec:real_world} we show that some existing systems outperform humans on $M^2$ and GLEU, 
-  while only applying few changes to the source.
+  Concretely, we show that by only correcting closed class errors, where few possible corrections are valid, systems can outperform humans. 
+  Indeed, in Section \ref{sec:real_world} we show that some existing systems outperform humans on $M^2$ and GLEU, while only applying few changes to the source.
   
   We thus argue that the development of GEC systems against low coverage RBMs disincentivizes systems from making changes to the source 
-  in cases where many possible corrections are valid (open class errors), as necessarily only some of them are covered by the reference set. 
-  To support our claim we show (1) that existing GEC systems under-correct, often performing an order of magnitude less corrections than a human does (\S\ref{subsec:under-correction});
-  (2) that increasing the number of references alleviates under-correction (\S\ref{subsec:reranking});
-  and (3) that under-correction is more expressed in error types that are more varied in their valid corrections (\S\ref{subsec:by_types}).
+  in cases where there are plentiful valid corrections (open class errors), as necessarily only some of them are covered by the reference set. 
+  To support our claim we show (1) existing GEC systems under-correct, often performing an order of magnitude less corrections than a human does (\S\ref{subsec:under-correction});
+  (2) increasing the number of references alleviates under-correction (\S\ref{subsec:reranking});
+  and (3) under-correction is more expressed in error types that are more varied in their valid corrections (\S\ref{subsec:by_types}).
   
   Recent work has also attempted to address LCB by increasing the number of references 
   (henceforth, $M$) \cite{bryant2015far,sakaguchi2016reassessing}.
@@ -249,8 +245,7 @@ i.e., $\forall i\colon Y_i=Correct_i$.
 
 \vspace{-.2cm}
 \paragraph{Experimental Setup.}\label{par:experimental_setup}
-We conduct all experiments on the NUCLE test dataset \cite{dahlmeier2013building},
-the de facto standard in GEC.
+We conduct all experiments on the NUCLE test dataset \cite{dahlmeier2013building}.
 NUCLE is a parallel corpus of essays written by language learners and their corrected versions,
 containing 1414 essays and 50 test essays, each of about 500 words.
 
@@ -492,11 +487,11 @@ Results, while somewhat higher, are still only 0.54 with $M=10$. (Figure \ref{fi
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
 $F_\alpha$-score is standard for evaluating system performance.
-The score is computed in terms of {\it edit} matches between a correction and the references, where edits are sub-string replacements to the source.
+The score is computed in terms of {\it edit} overlap between edits that constitute a correction and ones that constitute a reference, where edits are sub-string replacements to the source.
 %The HOO shared task used an earlier version of $F$-score, which required that the proposed corrections include edits explicitly.
 %Later on, relieving correctors from the need to produce edits, 
 We use the standard $M^2$ scorer \cite{dahlmeier2012better}, which defines edits optimistically, maximizing over all possible annotations that generate the correction 
-from the source. Since our crowdsourced corrections are annotated for edits, we produce edits heuristically.
+from the source. Since our crowdsourced corrections are not annotated for edits, we produce edits to the reference heuristically.
 %$M^2$  is the standard $F$-score scorer for GEC.
 
 The complexity of the measure prohibits an analytic approach \cite{yeh2000more}.
