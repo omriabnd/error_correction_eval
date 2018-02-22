@@ -281,7 +281,7 @@ and {\it Adverbials}, such manner descriptions.
 				\caption{\label{fig:example}
 					UCCA structures of a learner language (top) and correction (bottom) including word alignments (dashed). On the edges are labels and numbers aligned to (top) or indexes (bottom). Precision is $\frac{7}{9}$ Recall is $\frac{7}{7}$.
 				}
-				\vspace{-0.5cm}
+				\vspace{-0.6cm}
 			\end{figure}
 We start by defining a simplified measure that compares two UCCA annotations over the 
 same set of tokens, which is used to measure inter-annotator agreement (IAA). We then
@@ -340,11 +340,12 @@ Denote the resulting leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
 We now extend $A_l$ to define the node alignment $A$, aligning each non-leaf $v \in V_s$
 with the node $u \in V_c$ that maximizes
 
+ \vspace{0.1cm}
 \begin{small}
  \begin{myequation*}
   w\left(v,u\right) = \frac{\vert A_l \cap \left(yield\left(u\right) \times yield\left(v\right)\right)\vert}{\vert yield\left(u\right) \vert}.
  \end{myequation*}
- \vspace{-0.15cm}
+ \vspace{-0.1cm}
 \end{small}
 
 \noindent
@@ -430,15 +431,15 @@ $N$ is the total number of sentence pairs.
 \vspace{-.2cm}
 
 
-We conduct four types of experiments to validate the feasibility of our approach. Showing:
+We conduct four types of experiments to validate {\sc USim}, showing:
 (1) semantic annotation can be consistently applied to 
-LL, through inter-annotator agreement (IAA) experiments.
-(2) a valid corrector scores high on this measure.
-(3) an automatic UCCA parser can reliably replace human annotation for {\sc USim}.
+LL, through inter-annotator agreement (IAA) experiments;
+(2) a valid corrector scores high on {\sc USim};
+(3) an automatic UCCA parser can reliably replace human annotation for {\sc USim};
 (4) {\sc USim} is sensitive to changes in meaning, 
 by comparing the semantic structures of the source to corrections of fairly poor quality.
 
-\vspace{-.2cm}
+\vspace{-.3cm}
 \paragraph{Experimental Setup.}
 We train 2 UCCA annotators by annotating both LL and standard English
 passages, until a high enough agreement has been reached (6 training hours).
@@ -454,7 +455,7 @@ we annotate both the source
 and the manually corrected versions of 6 essays,
 3 of which were annotated by both annotators.
 
-\vspace{-.2cm}
+\vspace{-.3cm}
 \paragraph{The Faithfulness of Valid Corrections.}
 We obtain an IAA {\it DAG $F$-score} of 0.845
 (Precision 0.834, Recall 0.857), which
@@ -472,15 +473,24 @@ and a setting where they are annotated by different ones.
 As an upper bound on the score of a valid corrector (using different annotators),
 we also report the {\sc USim} IAA on source sentences. 
 
-\textcolor{red}{
-We also checked the sensibility of USim to different edit types. For each NUCLE sentence and set of edits, we sample an order in which the edits are applied sequentially and select the source randomly to be one of the resulting sentences. We then compared the difference in {\sc USim} before and after applying each edit and averaged those differences by the applied edit type. We find that the difference are $<10^{-5}$ for most of the types, where only "unclear meaning" obtains obtains a positive delta (0.033).% The diff is 0.0327868852 if it matters
-}
 Our results indicate that a valid correction obtains a score comparable
 to the IAA, which indicates that {\sc USim} is indeed
 insensitive to the surface divergence between a source sentence and its valid corrections.
 Finally, we compute the {\sc DistSim} measure
 between the source and reference sentences (Table \ref{tab:Distances}, right-hand side),
 obtaining similar results to those obtained by \newcite{sulem2015conceptual}.
+
+To provide another perspective on {\sc USim}'s insensitivity to valid corrections,
+we examined the measure's sensitivity to different edit types. For each NUCLE sentence and set of edits (replacements of sub-strings 
+that contain an error with corrected ones), we sample an order in which edits are applied.
+We select the source randomly to be one of the resulting sentences. 
+We then compare the difference in {\sc USim} before and after applying each edit, and average these differences 
+by the applied edit type. 
+We find that the difference are neglible ($<10^{-5}$) for most of the types, 
+where only correcting the ``unclear meaning'' type changes {\sc USim}'s score (the difference is +0.033).
+% The diff is 0.0327868852 if it matters
+
+
 
 \begin{table}
 	\vspace{-0.5cm}
@@ -515,8 +525,8 @@ obtaining similar results to those obtained by \newcite{sulem2015conceptual}.
     Rows indicate whether the same annotator annotated the source and reference or not.
     For comparison, the IAA row is the IAA computed using {\sc USim}.
     Results show that the valid corrector's faithfulness is comparable with IAA.
-    SAR15 are the results reported by Sulem et al. on English-French
-    translations, which are comparable to ours.}
+    SAR15 are reported by Sulem et al. on English-French
+    translations; similarity is comparable to ours.}
 \vspace{-0.6cm}
 \end{table}
 
@@ -590,13 +600,13 @@ Consequently, their human rankings are not determined by their semantic faithful
 We instead experiment with 5 partially trained correctors, trained and evaluated on the
 JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
 
-{\sc USim} was computed automatically for each system's output on 754 source sentences.
+{\sc USim} is computed automatically for each system's output on 754 source sentences.
 Low faithfulness results are expected, as these outputs include major changes,
-sometimes deleting full phrases from the output or changing every other word in the sentence.
-Indeed, the automatic USim measure obtained scores of 0.32-0.39 for 4 of the systems, and 0.19
-for the system that obtained the lowest GLUE\cite{napoles2015ground} score.
-For completeness, we ran {\sc USim} on the 4 references provided for each
-source by JFLEG and obtained scores of 0.72-0.78.
+sometimes deleting full phrases from the output or changing every other word.
+Indeed, automatic USim obtains scores of 0.32-0.39 for 4 of the systems, and 0.19
+for the system that obtained the lowest GLEU \cite{napoles2015ground} score.
+For completeness, we run {\sc USim} on the 4 references provided for each
+source by JFLEG and obtain scores of 0.72-0.78.
 
 Taken together, these results indicate that {\sc USim}, even in its automatic variant,
 is sensitive to semantic changes. Consider the example: 
@@ -635,9 +645,9 @@ it still obtains a higher {\sc USim} score.
 %will best match those of the references. Since it was introduced $M^2$ is the standard scorer for GEC.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.1cm}
+\vspace{-.2cm}
 \section{Conclusion}
-\vspace{-.1cm}
+\vspace{-.2cm}
 
 We propose a measure for the semantic faithfulness of the correction to the source,
 thereby avoiding the pitfalls of reference-based evaluation. We believe that using RBMs in conjunction with RBMs in the training and development of GEC
