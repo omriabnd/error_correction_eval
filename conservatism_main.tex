@@ -106,7 +106,7 @@
   To address this, they proposed a new measure, Ratio Scoring, which re-scales $M^2$ 
   by the inter-annotator agreement (i.e., the score of a human corrector), interpreted as an upper bound.
 
-  In this paper we revisit the LCB, and show it has more far-reaching implications than previously discussed. 
+  In this paper, we revisit the LCB, and show it has more far-reaching implications than previously discussed. 
   First, while we agree with \citet{bryant2015far} that a human correction should receive a perfect score, 
   we show that LCB does not merely scale system performance by a constant factor, but
   rather that some correction policies are less prone to be biased against. 
@@ -252,7 +252,7 @@ containing 1414 essays and 50 test essays, each of about 500 words.
 We evaluate all participating systems in the CoNLL 2014 shared task,
 in addition to three of the best performing systems on this dataset,
 a hybrid system \cite{rozovskaya2016grammatical},
-a phrase based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
+a phrase-based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
 and a neural network system \cite{xie2016neural}.
 Appendix  \ref{ap:abbr} lists system names and abbreviations.
 
@@ -880,7 +880,7 @@ No significant difference is found for word order.
 
 \subsection{Under-correction by Error Types}\label{subsec:by_types}
 
-In this section we study the prevalance of under-correction according to edit types, finding that open-class types of errors
+In this section we study the prevalence of under-correction according to edit types, finding that open-class types of errors
 (such as replacing a word with another word) are more starkly under-corrected, than closed-class errors.
 Evaluating with low coverage RBMs does not incentivize systems to address open-class errors (in fact, it disincentivizes them to). Therefore, even if LCB is not the cause for this trend, current evaluation procedures will perpetuate it.
 
@@ -932,7 +932,7 @@ in that its multi-reference version is not a maximum over the single-reference s
 This can potentially increase coverage, but it also leads to an unintuitive situation: an output 
 identical to a reference does not receive a perfect score, but rather the score depends on how similar the output is to the other
 references. A more in-depth analysis of SARI's handling of multiple references is found in Appendix \ref{ap:sari-assum}.
-In order to neurtralize this effect of SARI, we also report results with MAX-SARI, which coincides with SARI on $M=1$, 
+In order to neutralize this effect of SARI, we also report results with MAX-SARI, which coincides with SARI on $M=1$, 
 and is defined as the maximum single-reference SARI score for $M>1$.
 
 \com{
