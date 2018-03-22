@@ -479,16 +479,14 @@ Finally, we compute the {\sc DistSim} measure
 between the source and reference sentences (Table \ref{tab:Distances}, right-hand side),
 obtaining similar results to those obtained by \newcite{sulem2015conceptual}. \textcolor{red}{It suggests that on a coarse grained level, UCCA structures are as robust to grammatical error corrections as they are to translation from English to French, which was shown to be very robust, specifically more than syntactic representation \cite{sulem2015conceptual}}.
 
+\textcolor{red}{
 To provide another perspective on {\sc USim}'s insensitivity to valid corrections,
 we examined the measure's sensitivity to different edit types. For each NUCLE sentence and set of edits (replacements of sub-strings 
 that contain an error with corrected ones), we sample an order in which edits are applied.
 We select the source randomly to be one of the resulting sentences. 
 We then compare the difference in {\sc USim} before and after applying each edit, and average these differences 
 by the applied edit type. 
-We find that most correction types receive a positive score, i.e., {\sc USim} rewards this changes. The two most penalized errors types by {\sc USim} are ``unclear meaning'' changes and corrections that fit to no specific type (average score change of -0.038, -0.053 respectively).
-% The diff is 0.0327868852 if it matters
-
-
+We find that most correction types receive a positive score, i.e., {\sc USim} rewards this changes. The two most penalized errors types by {\sc USim} are ``unclear meaning'' changes and corrections that fit to no specific type (average score change of -0.038, -0.053 respectively).}
 
 \begin{table}
 	%\vspace{-0.5cm}
