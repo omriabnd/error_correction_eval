@@ -29,10 +29,12 @@
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
 \newcommand{\@emptybiblabel}[1]{}
 %\makeatother
-\usepackage[draft,	hidelinks]{hyperref}
+\usepackage[hidelinks]{hyperref}
 
-
+\usepackage[hyperref]{naaclhlt2018}
+\def\aclpaperid{***}
 \usepackage{naaclhlt2018}
+\aclfinalcopy
 \graphicspath{{./plots/}}
 \newcommand{\com}[1]{}
 %\newcommand{\oa\part{title}}[1]{}
@@ -43,31 +45,31 @@
 \newcommand{\lcmod}[1]{{\color{blue}#1}}
 
 \newenvironment{myequation}{
-  \vspace{-1em}
+
  \begin{equation}
 }{
  \end{equation}
- \vspace{-1.2em}
+
 }
 \newenvironment{myequation*}{
-	\vspace{-1em}
+
 	\begin{equation*}
 }{
 \end{equation*}
-\vspace{-1.2em}
+
 }
 
 
 \begin{document}
 
 \title{Reference-less Measure of Faithfulness for Grammatical Error Correction}
-%\author{
-%  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
-%  \textsuperscript{1}School of Computer Science and Engineering,
-%  \textsuperscript{2} Department of Cognitive Sciences \\
-%  The Hebrew University of Jerusalem \\
-%  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
-%}
+\author{
+  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
+  \textsuperscript{1} School of Computer Science and Engineering,
+  \textsuperscript{2} Department of Cognitive Sciences \\
+  The Hebrew University of Jerusalem \\
+  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
+}
 \maketitle
 
 \begin{abstract}
@@ -88,7 +90,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-\vspace{-.1cm}
+
 Evaluation in Monolingual Translation, and in Grammatical Error Correction (GEC) is a challenging
 research field, much due to the difficulty in integrating 
 different types of rewriting operations into a single measure, and the vast number of valid outputs
@@ -108,6 +110,8 @@ Our proposal complements the RLM proposed recently by
 A similar decomposition of output quality to its adequacy (similar to faithfulness)
 and fluency (related to grammaticality), has been used in machine translation (MT)
 evaluation \cite[e.g.,][]{banchs2015adequacy}.
+
+\textcolor{red}{Having a reliable RLM is beneficial in many ways. It is applicable across domains, it does not suffer from the biases occurring due to the references\lc{should we say anything about the other work?}, it is cheap to use and no resources are thrown when research develops, it is able to use linguistic, semantic and syntactic knowledge to aid the evaluation task and we believe it also has the potential of being a more reliable evaluation measure than RBMs given the right attention and development. Specifically, meaning preservation RLM is also cross-lingual and may prevent meaning changing output that is overfitted to other measures (such as one word output to get high precision, or always outputting the same sentence to receive full grammaticality score).\lc{Perhaps too many guesses and assumptions?} }
 
 As a test case, we use the UCCA semantic scheme \cite{abend2013universal},
 motivated by its recent use in semantic MT evaluation \cite{birch2016hume}.
@@ -139,9 +143,9 @@ Specifically, we show that
 (3) {\sc USim} assigns a lower score to corrections of poor quality.
 Our experiments also indicate that UCCA parsing technology is already sufficiently mature for an automatic variant of {\sc USim} to provide reliable results.
 
-\vspace{-.2cm}
+
 \section{Background}
-\vspace{-.2cm}
+
 
 \paragraph{LL Annotation.}
 While linguistic theories propose that each learner makes consistent use of syntax 
@@ -165,7 +169,7 @@ fewer conflicts where the syntactic structure used diverges from
 the one intended. We are not aware of any previous attempts to semantically
 annotate LL text.
 
-\vspace{-.2cm}
+
 \paragraph{The UCCA Scheme.}\label{sec:ucca}
 UCCA is a semantic annotation scheme that builds on
 typological and cognitive linguistic theories.
@@ -214,13 +218,12 @@ and {\it Adverbials}, such as manner descriptions.
 
 		\end{figure}}
 		
-\vspace{-.1cm}
+
 \section{Semantic Faithfulness Measures}\label{sec:Semantics}
-\vspace{-.1cm}
 \begin{figure}[t]
 		\hspace{-1.3cm}
 		\begin{subfigure}{1.1\columnwidth}
-			\vspace{-0.2cm}
+
 			\parbox{.8\columnwidth}{\hspace{1cm}
 				\scalebox{.9}{
 					\begin{tikzpicture}[sibling distance=1mm, level distance=7mm,
@@ -279,14 +282,14 @@ and {\it Adverbials}, such as manner descriptions.
 				\caption{\label{fig:example}
 					UCCA structures of a learner language (top) and correction (bottom) including word alignments (dashed). On the edges are labels and numbers aligned to (top) or indexes (bottom). Precision is $\frac{7}{9}$ Recall is $\frac{7}{7}$.
 				}
-				\vspace{-0.6cm}
+
 			\end{figure}
 We start by defining a simplified measure, used for inter-annotator agreement (IAA).
 The measure compares two UCCA annotations over the 
 same set of tokens. We then proceed to define {\sc USim}, which compares two UCCA structures
 over alignable but different sets of tokens.
 
-\vspace{-.2cm}
+
 \paragraph{IAA Measure.} We define a similarity measure over UCCA annotations 
 $G_1$ and $G_2$ that share their set of leaves (tokens) $W$.
 For a node $v$ in $G_1$ or $G_2$, define its yield $yield(v) \subseteq W$ as its
@@ -298,7 +301,7 @@ in $G_1$ and $G_2$ by $|E_1|$ and $|E_2|$ respectively.
 {\it DAG $F$-score} is their harmonic mean.
 The measure collapses to the common parsing $F$-score if $G_1, G_2$ are trees.
 
-\vspace{-.2cm}
+
 \paragraph{The {\sc USim} Measure.} Computing a faithfulness
 measure is slightly more involved, as the source sentence graph $G_s$ and its
 correction $G_c$ do not share the same set of leaves.
@@ -338,12 +341,12 @@ Denote the resulting leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
 We extend $A_l$ to define the node alignment $A$, aligning each non-leaf $v \in V_s$
 to the node $u \in V_c$ that maximizes
 
- \vspace{0.2cm}
+
 \begin{small}
  \begin{myequation*}
   w\left(v,u\right) = \frac{\vert A_l \cap \left(yield\left(u\right) \times yield\left(v\right)\right)\vert}{\vert yield\left(u\right) \vert}.
  \end{myequation*}
-% \vspace{-0.1cm}
+
 \end{small}
 
 \noindent
@@ -424,9 +427,8 @@ $N$ is the total number of sentence pairs.
 %while controlling semantic conservatism. Thus, focusing on what users - and hence we - are more interested in.
 %
 %
-\vspace{-.2cm}
+
 \section{Experiments}
-\vspace{-.2cm}
 
 
 We conduct four types of experiments to validate {\sc USim}, showing that:
@@ -436,7 +438,7 @@ We conduct four types of experiments to validate {\sc USim}, showing that:
 (4) {\sc USim} is sensitive to changes in meaning.
 %by comparing the semantic structures of the source to corrections of fairly poor quality.
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \paragraph{Experimental Setup.}
 We train two UCCA annotators by annotating both LL and standard English
 passages, until a high enough agreement is reached (6 training hours).
@@ -445,14 +447,14 @@ We use UCCA's annotation
 guidelines\footnote{\url{http://www.cs.huji.ac.il/~oabend/ucca.html}}
 without any adaptations.
 
-We experiment on 7 essays and their corrections, each comprising about 500 tokens (see appendix).
+We experiment on 7 essays and their corrections, each comprising about 500 tokens (see supplementary material).
 In order to measure IAA, we assigned 4 of these essays to both annotators.
 In order to measure the faithfulness score for a valid correction,
 we annotate both the source
 and the manually corrected versions of 6 essays,
 3 of which were annotated by both annotators.
 
-\vspace{-.3cm}
+%\vspace{-.3cm}
 \paragraph{The Faithfulness of Valid Corrections.}
 We obtain an IAA {\it DAG $F$-score} of 0.845
 (Precision 0.834, Recall 0.857), which
@@ -475,7 +477,7 @@ to the IAA, which indicates that {\sc USim} is indeed
 insensitive to the surface divergence between a source sentence and its valid corrections.
 Finally, we compute the {\sc DistSim} measure
 between the source and reference sentences (Table \ref{tab:Distances}, right-hand side),
-obtaining similar results to those obtained by \newcite{sulem2015conceptual}.
+obtaining similar results to those obtained by \newcite{sulem2015conceptual}. \textcolor{red}{It suggests that on a coarse grained level, UCCA structures are as robust to grammatical error corrections as they are to translation from English to French, which was shown to be very robust, specifically more than syntactic representation \cite{sulem2015conceptual}}.
 
 To provide another perspective on {\sc USim}'s insensitivity to valid corrections,
 we examined the measure's sensitivity to different edit types. For each NUCLE sentence and set of edits (replacements of sub-strings 
@@ -483,14 +485,13 @@ that contain an error with corrected ones), we sample an order in which edits ar
 We select the source randomly to be one of the resulting sentences. 
 We then compare the difference in {\sc USim} before and after applying each edit, and average these differences 
 by the applied edit type. 
-We find that differences are neglible ($<10^{-5}$) for most types, 
-where only correcting errors of type ``unclear meaning'' changes {\sc USim}'s score (the difference is +0.033).
+We find that most correction types receive a positive score, i.e., {\sc USim} rewards this changes. The two most penalized errors types by {\sc USim} are ``unclear meaning'' changes and corrections that fit to no specific type (average score change of -0.038, -0.053 respectively).
 % The diff is 0.0327868852 if it matters
 
 
 
 \begin{table}
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
   \small
   \centering
   \singlespacing
@@ -524,10 +525,10 @@ where only correcting errors of type ``unclear meaning'' changes {\sc USim}'s sc
     Results show that the valid corrector's faithfulness is comparable with IAA.
     SAR15 are reported by Sulem et al. on English-French
     translations; similarity is comparable to ours.}
-\vspace{-0.6cm}
+%\vspace{-0.6cm}
 \end{table}
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \paragraph{Automatic {\sc USim}.}
 
 We experiment with an automatic variant of {\sc USim}, where UCCA
@@ -541,7 +542,7 @@ correction and the source, which is comparable to the parser's reported
 performance (0.73 in-domain, 0.68 out-of-domain), despite not performing any
 domain adaptation to LL. 
 That is, the UCCA parses of the source and the correction are roughly as similar to each
-other as they are to their gold standard parse. This indicates 
+other as they are to their gold standard parse. This supports the hypothesis \lc{Originally it was written indicates, a thorough reviewer pointed out that had we not received the results it would indicate parsing is not mature, given our experiment it is more likely to be mature but it is not proving the claim.} 
 that semantic parsing technology is sufficiently mature to
 be applicable to {\sc USim}.
 Results also suggest an improvement in parsing performance may further improve these scores.
@@ -577,7 +578,7 @@ Results also suggest an improvement in parsing performance may further improve t
 \end{table}
 }
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \paragraph{Sensitivity to Unfaithfulness.}
 
 We have shown that UCCA is insensitive to differences between a source sentence
@@ -603,13 +604,13 @@ sometimes deleting full phrases from the output or changing every other word.
 Indeed, automatic {\sc USim} obtains scores of 0.32-0.39 for 4 of the systems, and 0.19
 for the system that obtains the lowest GLEU \cite{napoles2015ground} score.
 For completeness, we run {\sc USim} on the 4 references provided by JFLEG for each
-source  and obtain scores of 0.72-0.78.
+source and obtain scores of 0.72-0.78, \textcolor{red}{suggesting the domain change is not the reason for the low {\sc USim} score}.
 
 Taken together, these results indicate that {\sc USim}, even in its automatic variant,
 is sensitive to semantic changes. Consider the example: 
 
 \begin{table}[h!]
-	\vspace{-.3cm}
+	%\vspace{-.3cm}
   \centering
   \label{ex:sensitive}
   \begin{tabular}{p{0.2\columnwidth}p{0.73\columnwidth}}
@@ -618,7 +619,7 @@ is sensitive to semantic changes. Consider the example:
     Corrector & \small The good student must know how to understand and work hard to get on.     
   \end{tabular}
   
-  \vspace{-.3cm}
+  %\vspace{-.3cm}
 \end{table}
 
 {\sc USim} assigns the reference 0.71 and only 0.33 to the corrector.
@@ -643,13 +644,11 @@ it still obtains a higher {\sc USim} score.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\vspace{-.2cm}
 \section{Conclusion}
-\vspace{-.1cm}
 
 We propose a measure of semantic faithfulness of a correction to the source,
 thereby avoiding the pitfalls of reference-based evaluation. 
-We believe that using RBMs in conjunction with RLMs in the training and development of GEC
+We believe that using RLMs in conjunction with RBMs in the training and development of GEC
 systems will better address the challenge of over-conservatism, and the 
 high costs of acquiring many references.
 
