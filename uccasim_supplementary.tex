@@ -24,6 +24,7 @@
 \usetikzlibrary{positioning}
 \usepackage{bbm}
 \usepackage{booktabs}
+\usepackage{numprint}
 
 \makeatletter
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
@@ -95,6 +96,46 @@
 		\end{tabular}
 		\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
 	\end{table}
+
+\npdecimalsign{.}
+\nprounddigits{3}
+\begin{table}[]
+	\centering
+		\begin{tabular}{@{}ln{5}{2}l@{}}
+			\toprule
+			& \multicolumn{1}{l}{Average change}  & \multicolumn{1}{l}{Occurrences} \\ \midrule
+			Wtone    & 0.1861439688    & 28         \\
+			Mec      & 0.07307186292   & 731        \\
+			Wa       & 0.07235489879   & 2          \\
+			V0       & 0.06299936463   & 74         \\
+			Pref     & 0.05599492536   & 235        \\
+			Ssub     & 0.05578719858   & 89         \\
+			WOadv    & 0.02061675473   & 30         \\
+			Sfrag    & 0.01952410882   & 15         \\
+			Rloc-    & 0.01841189615   & 336        \\
+			ArtOrDet & 0.01672618109   & 893        \\
+			Vm       & 0.01642930822   & 92         \\
+			SVA      & 0.01565099167   & 270        \\
+			Wci      & -0.001632237447 & 869        \\
+			Trans    & -0.004670224979 & 192        \\
+			Srun     & -0.004856333151 & 30         \\
+			Vt       & -0.005917533634 & 286        \\
+			Prep     & -0.01062070433  & 634        \\
+			Pform    & -0.01241762832  & 76         \\
+			Vform    & -0.01523024009  & 250        \\
+			Npos     & -0.02472584516  & 54         \\
+			Wform    & -0.02806091938  & 192        \\
+			Nn       & -0.02863355141  & 479        \\
+			Um       & -0.03762075133  & 61         \\
+			Others   & -0.05341553854  & 93         \\
+			WOinc    & -0.08941563292  & 80         \\
+			Smod     & -0.0894551682   & 6          \\
+			Spar     & -0.1006425275   & 30         \\ \bottomrule
+		\end{tabular}%
+	
+	\caption{{\sc USim} average change in score for applying human corrections by edit types (abbreviations in \citet{dahlmeier2013building}). For completeness, the number of corrections considered from each type is reported in the rightmost column.\label{tab:MAEGE}}
+	
+\end{table}
 \FloatBarrier
 
 \bibliographystyle{acl_natbib}

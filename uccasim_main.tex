@@ -22,8 +22,12 @@
 \usepackage{color}
 \usepackage{lipsum,adjustbox}
 \usepackage[font={small}]{caption}
-
+\usepackage{booktabs}
+\usepackage{numprint}
 \usepackage{bbm}
+
+\usepackage{xr}
+\externaldocument[]{uccasim_supplementary}
 
 \makeatletter
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
@@ -440,14 +444,14 @@ We conduct four types of experiments to validate {\sc USim}, showing that:
 
 %\vspace{-.2cm}
 \paragraph{Experimental Setup.}
-We train two UCCA annotators by annotating both LL and standard English
+We train two UCCA annotators, the first author and a paid in-house annotator by annotating both LL and standard English
 passages, until a high enough agreement is reached (6 training hours).
 Training passages are excluded from the evaluation.
 We use UCCA's annotation
 guidelines\footnote{\url{http://www.cs.huji.ac.il/~oabend/ucca.html}}
 without any adaptations.
 
-We experiment on 7 essays and their corrections, each comprising about 500 tokens (see supplementary material).
+We experiment on 7 essays and their corrections, each comprising about 500 tokens (see supplementary material \ref{tab:annotated-paragraphs}).
 In order to measure IAA, we assigned 4 of these essays to both annotators.
 In order to measure the faithfulness score for a valid correction,
 we annotate both the source
@@ -478,53 +482,64 @@ insensitive to the surface divergence between a source sentence and its valid co
 Finally, we compute the {\sc DistSim} measure
 between the source and reference sentences (Table \ref{tab:Distances}, right-hand side),
 obtaining similar results to those obtained by \newcite{sulem2015conceptual}. \textcolor{red}{It suggests that on a coarse grained level, UCCA structures are as robust to grammatical error corrections as they are to translation from English to French, which was shown to be very robust, specifically more than syntactic representation \cite{sulem2015conceptual}}.
-
-\textcolor{red}{
-To provide another perspective on {\sc USim}'s insensitivity to valid corrections,
-we examined the measure's sensitivity to different edit types. For each NUCLE sentence and set of edits (replacements of sub-strings 
-that contain an error with corrected ones), we sample an order in which edits are applied.
-We select the source randomly to be one of the resulting sentences. 
-We then compare the difference in {\sc USim} before and after applying each edit, and average these differences 
-by the applied edit type. 
-We find that most correction types receive a positive score, i.e., {\sc USim} rewards this changes. The two most penalized errors types by {\sc USim} are ``unclear meaning'' changes and corrections that fit to no specific type (average score change of -0.038, -0.053 respectively).}
-
 \begin{table}
 	%\vspace{-0.5cm}
-  \small
-  \centering
-  \singlespacing
-  \begin{tabular}{c|c|c|c||c|c|}
-  	\cline{2-6} 
-  	& \multicolumn{3}{c||}{\sc USim} & \multicolumn{2}{c|}{\sc DistSim}\\ \cline{2-6}
-  	& s$\rightarrow$r & r$\rightarrow$s & Avg & A+D & Scene\
-    \\
-    \hline
-    Different & 0.85 & 0.83 & 0.84 & 0.96 & 0.93
-    \\
-    Same & 0.92 & 0.91 & 0.92 & 0.97 & 0.96
-    \\
-    \hline
-    \hline
-    IAA & 0.85 & 0.81 & 0.83 & - & -
-    \\
-    \hline
-    SAR15 & - & - & - & 0.95 & 0.96 \\
-    \hline
-  \end{tabular}
-  \caption{\label{tab:Distances}
-    The faithfulness of valid corrections.
-    The left-hand side presents {\sc USim},
-    where s$\rightarrow$r is the setting where alignment is computed from the source to the reference,
-    r$\rightarrow$s is the other way around, and Avg is their average.
-    The right-hand side presents {\sc DistSim} for the UCCA categories Participants and Adverbials
-    together (A+D), and for Scenes (Scene).
-    Rows indicate whether the same annotator annotated the source and reference or not.
-    For comparison, the IAA row is the IAA computed using {\sc USim}.
-    Results show that the valid corrector's faithfulness is comparable with IAA.
-    SAR15 are reported by Sulem et al. on English-French
-    translations; similarity is comparable to ours.}
-%\vspace{-0.6cm}
+	\small
+	\centering
+	\singlespacing
+	\begin{tabular}{c|c|c|c||c|c|}
+		\cline{2-6} 
+		& \multicolumn{3}{c||}{\sc USim} & \multicolumn{2}{c|}{\sc DistSim}\\ \cline{2-6}
+		& s$\rightarrow$r & r$\rightarrow$s & Avg & A+D & Scene\
+		\\
+		\hline
+		Different & 0.85 & 0.83 & 0.84 & 0.96 & 0.93
+		\\
+		Same & 0.92 & 0.91 & 0.92 & 0.97 & 0.96
+		\\
+		\hline
+		\hline
+		IAA & 0.85 & 0.81 & 0.83 & - & -
+		\\
+		\hline
+		SAR15 & - & - & - & 0.95 & 0.96 \\
+		\hline
+	\end{tabular}
+	\caption{\label{tab:Distances}
+		The faithfulness of valid corrections.
+		The left-hand side presents {\sc USim},
+		where s$\rightarrow$r is the setting where alignment is computed from the source to the reference,
+		r$\rightarrow$s is the other way around, and Avg is their average.
+		The right-hand side presents {\sc DistSim} for the UCCA categories Participants and Adverbials
+		together (A+D), and for Scenes (Scene).
+		Rows indicate whether the same annotator annotated the source and reference or not.
+		For comparison, the IAA row is the IAA computed using {\sc USim}.
+		Results show that the valid corrector's faithfulness is comparable with IAA.
+		SAR15 are reported by Sulem et al. on English-French
+		translations; similarity is comparable to ours.}
+	%\vspace{-0.6cm}
 \end{table}
+
+\paragraph{Type error analysis}
+\textcolor{red}{
+To provide another perspective on automated {\sc USim}'s behaviour,
+we examined the measure's sensitivity to different edit types, using a methodology from an ongoing work. For each NUCLE sentence and set of edits (replacements of sub-strings 
+that contain an error by corrected ones), we sample an order in which edits are applied.
+We select the source randomly to be one of the resulting sentences. 
+We then compare the difference in {\sc USim} before and after applying each edit, and average these differences by the applied edit type. 
+The hypothesis is that USim should on average score 0 any correction, as it is done by a human.
+We focus on the edit types with highest absolute values to better understand where does {\sc USim} fail (See table \ref{tab:MAEGE} in the supplementary material).}
+
+\textcolor{red}{We find that among the 5 most penalized error types by {\sc USim} are ``unclear meaning'' changes and corrections that fit to no specific type, which are corrections that may actually change the meaning of the original sentence. In the most penalized and most rewarded changes we see ''Dangling Modifier``, and ''Prenoun Reference`` and ''Word Tone`` errors respectively, one usually changes a word into a more complex structure and the other two the opposite, such changes alter the bottom (near the leaves) of the UCCA structure, perhaps a different similarity measure that focuses on the top of the DAG or a different annotation scheme might solve this sensitivity. Incorrect word order which is also highly rewarded is probably not suffering from the problem of UCCA structures being different as in the aforementioned errors, but from the failure of the parser to create the rare DAG structures that occur, perhaps training the parser with LL annotated data would solve this sensitivity.}
+	
+\textcolor{red}{Among the most rewarded changes we see some types of errors replacing rare or misconstructed words with English words (Acronym and Mechanical errors), we presume this is due to the parser's reliance on words, having no character level understanding. Thus, all misconstructed words fall into an out-of-domain category and can only be labeled by the context.}
+
+\textcolor{red}{Lastly, missing verb is shown to be highly rewarded, in UCCA annotation the missing verb should be added as an implicit unit, but as the current parser disregards implicit units it is no surprise that when corrections transforms an implicit unit into a proper word in the sentence the parser's output changes (and hence {\sc USim}).}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
 
 %\vspace{-.2cm}
 \paragraph{Automatic {\sc USim}.}
@@ -665,35 +680,4 @@ for a high number of references.
 \bibliography{propose}
 
 
-\com{
-\appendix
-\section{Annotated paragraphs}
-\begin{table}[]
-	\centering
-	\begin{tabular}{lll}
-		Annotator-id & NUCLE-id & type      \\
-		1         & 2  & corrected \\
-		2         & 2  & corrected \\
-		1         & 2  & learner   \\
-		2         & 2  & learner   \\
-		1         & 3  & corrected \\
-		2         & 3  & corrected \\
-		1         & 3  & learner   \\
-		2         & 3  & learner   \\
-		1         & 5  & corrected \\
-		2         & 5  & corrected \\
-		1         & 5  & learner   \\
-		2         & 5  & learner   \\
-		1         & 6  & learner   \\
-		2         & 6  & learner   \\
-		2         & 7  & corrected \\
-		2         & 7  & learner   \\
-		1         & 8  & corrected \\
-		1         & 8  & learner   \\
-		1         & 10 & corrected \\
-		1         & 10 & learner  
-	\end{tabular}
-	\caption{The list of paragraphs annotated, showing which annotator annotated it, which type of language is used in it and the corresponding id in the NUCLE corpus. Note that parallel paragraphs have the same id.\label{tab:annotated-paragraphs}}
-\end{table}
-}
 \end{document}
