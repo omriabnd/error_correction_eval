@@ -83,9 +83,9 @@
   {\sc USim} operates by comparing the semantic symbolic structure of the source and the correction,
 	without relying on manually-curated references.
   Our experiments establish the validity of {\sc USim},
-  by showing that the semantic structures can be consistently applied to ungrammatical text, that
-  valid corrections obtain a high {\sc USim} similarity score to the source, and that
-  invalid corrections obtain a lower score.\footnote{Code will be released upon publication.}
+  by showing that (1) semantic annotation can be consistently applied to ungrammatical text; (2)
+  valid corrections obtain a high {\sc USim} similarity score to the source; and (3)
+  invalid corrections obtain a lower score.\footnote{Our code is available in {\color{red} XXXX}.}
   %grammatical reference-less evaluation measure to
   %create a measure balancing between the goal of correcting grammatical mistakes and the goal of
   %conveying the original meaning.
@@ -95,11 +95,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-Evaluation in Monolingual Translation, and in Grammatical Error Correction (GEC) is a challenging
+Evaluation in Monolingual Translation, and particularly in Grammatical Error Correction (GEC) is a challenging
 research field, much due to the difficulty in integrating 
 different types of rewriting operations into a single measure, and the vast number of valid outputs
 \cite{tetreault2008native,madnani2011they,chodorow2012problems,bryant2015far}.
-These difficulties, have recently motivated
+These difficulties have recently motivated
 a number of proposals for new, improved reference-based measures (RBMs)  \cite{dahlmeier2012better,felice2015towards,napoles2015ground}.
 
 Nevertheless, the size and heterogeneity of the space of valid outputs per sentence often prohibits
@@ -108,17 +108,18 @@ of RBMs \cite{bryant2015far}.
 To address this we propose a semantic RLM, {\sc USim}, that
 operates by measuring the graph distance between the semantic
 representations of the source and the output.
+Reliable RLMs are appealing both in not relying on references, which are costly to collect, and in avoiding the biases incurred by selecting references that necessarily cannot exhaust the vast space of valid corrections.
 
-Our proposal complements the RLM proposed recently by 
+Our proposal complements the RLM proposed by 
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, which uses grammatical error detection techniques to assess the grammaticality of the output.
 A similar decomposition of output quality to its adequacy (similar to faithfulness)
 and fluency (related to grammaticality), has been used in machine translation (MT)
 evaluation \cite[e.g.,][]{banchs2015adequacy}.
-
-\textcolor{red}{Having a reliable RLM is beneficial in many ways. It is applicable across domains, it does not suffer from the biases occurring due to the references\lc{should we say anything about the other work?}, it is cheap to use and no resources are thrown when research develops, it is able to use linguistic, semantic and syntactic knowledge to aid the evaluation task and we believe it also has the potential of being a more reliable evaluation measure than RBMs given the right attention and development. Specifically, meaning preservation RLM is also cross-lingual and may prevent meaning changing output that is overfitted to other measures (such as one word output to get high precision, or always outputting the same sentence to receive full grammaticality score).\lc{Perhaps too many guesses and assumptions?} }
+\lc{should we say anything about the other work? OA: no}	
+%Specifically, meaning preservation RLM is also cross-lingual and may prevent meaning changing output that is over-fitted to other measures (such as one word output to get high precision, or always outputting the same sentence to receive full grammaticality score).\lc{Perhaps too many guesses and assumptions?} 
 
 As a test case, we use the UCCA semantic scheme \cite{abend2013universal},
-motivated by its recent use in semantic MT evaluation \cite{birch2016hume}.
+motivated by its recent use in semantic evaluation of MT \cite{birch2016hume} and text simplification \cite{Elior} systems.
 Nevertheless, {\sc USim} can be easily adapted to other semantic schemes, such as AMR \cite{banarescu-EtAl:2013:LAW7-ID}.
 {\sc USim} is conceptually related to RLMs developed
 for MT
@@ -145,21 +146,21 @@ Specifically, we show that
 (1) UCCA can be consistently and automatically applied to learner language (LL), 
 (2) {\sc USim} is not prone to unduly penalize valid corrections, and 
 (3) {\sc USim} assigns a lower score to corrections of poor quality.
-Our experiments also indicate that UCCA parsing technology is already sufficiently mature for an automatic variant of {\sc USim} to provide reliable results.
+Our experiments also indicate that UCCA parsing technology is already sufficiently mature for an automatic variant of {\sc USim} to provide reliable results.\oa{give section references for (1), (2), (3)}
 
 
 \section{Background}
 
 
 \paragraph{LL Annotation.}
-While linguistic theories propose that each learner makes consistent use of syntax 
+While linguistic theories\oa{all theories? some? many?} propose that each learner makes consistent use of syntax 
 \cite{huebner1985system,tarone1983variability}, this use may not conform to the syntax of the learned language, 
 or of any other known language. This entails difficulties in defining syntactic annotation for LL, as the annotated syntax differs between learners.
 
 Syntactic schemes for LL annotate syntactically erroneous sentences in different ways.
 \newcite{berzak2016universal} and \newcite{ragheb2012defining} annotate according 
 to the syntax used by the learner, even if this use is not grammatical.
-Such annotation may be unreliable as a source of semantic information, 
+Such annotation may be unreliable for measuring faithfulness, 
 as GEC systems aim to alter these erroneous syntactic structures.
 \newcite{nagataphrase} take the opposite approach, and remain faithful to the syntax intended by the learner.
 This has also been the tradition in works on parser robustness 
@@ -200,7 +201,7 @@ an action or a state which is persistent in time.
 Every Scene contains one main relation, 
 zero or more {\it Participants}, 
 interpreted in a broad sense to include locations, destinations and complement clauses,
-and {\it Adverbials}, such as manner descriptions.
+and {\it Adverbials}, such as manner or aspectual modifiers.
 
 \com{
 \begin{figure}[t]
@@ -338,7 +339,7 @@ the same yield. See Figure \ref{fig:example}.
 
 In order to define the alignment between $V_s$ and $V_c$, we begin by aligning the leaves
 (tokens) in $V_s$ and $V_c$.
-We cast alignment as a weighted bipartite graph matching problem. Edge weights are assigned to be the edit distances between the tokens.
+Alignment is cast as a weighted bipartite graph matching problem. Edge weights are assigned to be the edit distances between the tokens.
 We note that aligning words in GEC (and other monolingual translation tasks) is much simpler than in MT,
 as most of the words are unchanged, deleted fully, added, or changed slightly.
 Denote the resulting leaf alignment with $A_l \subset Leaves_s \times Leaves_c$.
@@ -442,6 +443,7 @@ We conduct four types of experiments to validate {\sc USim}, showing that:
 (4) {\sc USim} is sensitive to changes in meaning.
 %by comparing the semantic structures of the source to corrections of fairly poor quality.
 
+\oa{I suggest that we use sub-sections instead of paragraphs in this section; it's pretty long}
 %\vspace{-.2cm}
 \paragraph{Experimental Setup.}
 We train two UCCA annotators, the first author and a paid in-house annotator by annotating both LL and standard English
@@ -462,7 +464,7 @@ and the manually corrected versions of 6 essays,
 \paragraph{The Faithfulness of Valid Corrections.}
 We obtain an IAA {\it DAG $F$-score} of 0.845
 (Precision 0.834, Recall 0.857), which
-is comparable to the IAA reported for English Wikipedia texts by \cite{abend2013universal}.
+is comparable to the IAA reported for English Wikipedia texts by \citet{abend2013universal}.
 As another point of comparison, we doubly annotate 3 corrected
 NUCLE \cite{dahlmeier2013building} passages, obtaining a similar IAA.
 These results suggest that UCCA annotating LL does not degrade IAA:
@@ -481,7 +483,7 @@ to the IAA, which indicates that {\sc USim} is indeed
 insensitive to the surface divergence between a source sentence and its valid corrections.
 Finally, we compute the {\sc DistSim} measure
 between the source and reference sentences (Table \ref{tab:Distances}, right-hand side),
-obtaining similar results to those obtained by \newcite{sulem2015conceptual}. \textcolor{red}{It suggests that on a coarse grained level, UCCA structures are as robust to grammatical error corrections as they are to translation from English to French, which was shown to be very robust, specifically more than syntactic representation \cite{sulem2015conceptual}}.
+obtaining similar results to those obtained by \newcite{sulem2015conceptual}. \textcolor{red}{It suggests that on a coarse grained level, UCCA structures are as robust to grammatical error corrections as they are to translation from English to French, which was shown to be very robust, specifically more robust than syntactic representation \cite{sulem2015conceptual}}.
 \begin{table}
 	%\vspace{-0.5cm}
 	\small
@@ -520,21 +522,22 @@ obtaining similar results to those obtained by \newcite{sulem2015conceptual}. \t
 	%\vspace{-0.6cm}
 \end{table}
 
-\paragraph{Type error analysis}
+\paragraph{Sensitivity to Error Types}
 \textcolor{red}{
 To provide another perspective on automated {\sc USim}'s behaviour,
-we examined the measure's sensitivity to different edit types, using a methodology from an ongoing work. For each NUCLE sentence and set of edits (replacements of sub-strings 
-that contain an error by corrected ones), we sample an order in which edits are applied.
+we examined the measure's sensitivity to different error types, using a methodology from an ongoing work. 
+For each NUCLE sentence and set of edits (replacements of sub-strings that contain an error by corrected ones\oa{add example}), we sample an order in which edits are applied.
 We select the source randomly to be one of the resulting sentences. 
 We then compare the difference in {\sc USim} before and after applying each edit, and average these differences by the applied edit type. 
-The hypothesis is that USim should on average score 0 any correction, as it is done by a human.
-We focus on the edit types with highest absolute values to better understand where does {\sc USim} fail (See table \ref{tab:MAEGE} in the supplementary material).}
+We denote the average difference in {\sc USim} due to correction of errors of type $t$ with $\Delta_t$.
+The hypothesis is that $\Delta_t$ should be close to 0 for all $t$, as edits are manual and are thus assumed to be faithful.
+We focus on edit types with high $|\Delta_t|$ to better understand where {\sc USim} fails. See table \ref{tab:MAEGE} in the supplementary material for complete results.}
 
-\textcolor{red}{We find that among the 5 most penalized error types by {\sc USim} are ``unclear meaning'' changes and corrections that fit to no specific type, which are corrections that may actually change the meaning of the original sentence. In the most penalized and most rewarded changes we see ''Dangling Modifier``, and ''Prenoun Reference`` and ''Word Tone`` errors respectively, one usually changes a word into a more complex structure and the other two the opposite, such changes alter the bottom (near the leaves) of the UCCA structure, perhaps a different similarity measure that focuses on the top of the DAG or a different annotation scheme might solve this sensitivity. Incorrect word order which is also highly rewarded is probably not suffering from the problem of UCCA structures being different as in the aforementioned errors, but from the failure of the parser to create the rare DAG structures that occur, perhaps training the parser with LL annotated data would solve this sensitivity.}
+\textcolor{red}{We find that among the 5 most penalized error types by {\sc USim} are ``unclear meaning'' and corrections of type ``other'', that fit no specific type; these corrections may actually change the meaning of the original sentence. In the most penalized and most rewarded changes we see ''Dangling Modifier``, and ''Pronoun Reference`` and ''Word Tone`` errors, one usually changes a word into a more complex structure and the other two the opposite. Such changes alter the bottom (near the leaves) of the UCCA structure; a similarity measure that focuses on the top of the DAG, or uses a more abstract meaning representation may address this sensitivity. Corrections of incorrect word order is also highly rewarded (high $\Delta_t$), probably due to parser performance, as the UCCA structures themselves are not affected by word order; training the parser with LL annotated data may address this sensitivity.}
 	
-\textcolor{red}{Among the most rewarded changes we see some types of errors replacing rare or misconstructed words with English words (Acronym and Mechanical errors), we presume this is due to the parser's reliance on words, having no character level understanding. Thus, all misconstructed words fall into an out-of-domain category and can only be labeled by the context.}
+\textcolor{red}{Among the most rewarded changes we see errors of replacing rare or misconstructed words with proper English words (Acronym and Mechanical errors). We assume this is also due to parser performance, as TUPA has only extracts features over complete words, and has no character-level encoding at this point. Thus, all misconstructed words fall into an out-of-vocabulary category and can only be labeled by the context.}
 
-\textcolor{red}{Lastly, missing verb is shown to be highly rewarded, in UCCA annotation the missing verb should be added as an implicit unit, but as the current parser disregards implicit units it is no surprise that when corrections transforms an implicit unit into a proper word in the sentence the parser's output changes (and hence {\sc USim}).}
+\textcolor{red}{Lastly, adding a missing verb is shown to be highly rewarded. Under the UCCA guidelines, a missing verb should be annotated as an implicit unit, but as TUPA does not generate implicit units, it is not surprising that when corrections transforms an implicit unit into an explicit word, the parser's output changes (and hence {\sc USim}). Future improvements to TUPA may address this.}
 
 
 % Please add the following required packages to your document preamble:
@@ -544,6 +547,7 @@ We focus on the edit types with highest absolute values to better understand whe
 %\vspace{-.2cm}
 \paragraph{Automatic {\sc USim}.}
 
+\oa{shouldn't this sub-section come before the type-level analysis?}
 We experiment with an automatic variant of {\sc USim}, where UCCA
 structures are parsed automatically.
 We use the TUPA parser \cite{hershcovich2017transition} to generate UCCA structures,
@@ -555,7 +559,8 @@ correction and the source, which is comparable to the parser's reported
 performance (0.73 in-domain, 0.68 out-of-domain), despite not performing any
 domain adaptation to LL. 
 That is, the UCCA parses of the source and the correction are roughly as similar to each
-other as they are to their gold standard parse. This supports the hypothesis \lc{Originally it was written indicates, a thorough reviewer pointed out that had we not received the results it would indicate parsing is not mature, given our experiment it is more likely to be mature but it is not proving the claim.} 
+other as they are to their gold standard parse. This supports the hypothesis 
+%\lc{Originally it was written indicates, a thorough reviewer pointed out that had we not received the results it would indicate parsing is not mature, given our experiment it is more likely to be mature but it is not proving the claim.} 
 that semantic parsing technology is sufficiently mature to
 be applicable to {\sc USim}.
 Results also suggest an improvement in parsing performance may further improve these scores.
@@ -635,6 +640,7 @@ is sensitive to semantic changes. Consider the example:
   %\vspace{-.3cm}
 \end{table}
 
+\oa{we should be careful that this comes after the example; sometimes they get ordered differently}
 {\sc USim} assigns the reference 0.71 and only 0.33 to the corrector.
 Moreover, although the reference makes more word changes than the proposed correction,
 it still obtains a higher {\sc USim} score.
@@ -674,6 +680,13 @@ to the sentence's meaning, i.e., violation of faithfulness.
 A better understanding of how these interact
 may lead to improved semantic evaluation that will alleviate the need
 for a high number of references.
+
+\section*{Acknowledgments}
+
+This work was supported by the Israeli Science Foundation (ISF),
+as welll as by the HUJI Cyber Security Research Center in conjunction with the Israel
+National Cyber Bureau in the Prime Minister's Office.\oa{was there anyone who gave us comments on this? maybe we can thank
+Courtney and Joel for helpful discussions?}
 
 
 \bibliographystyle{acl_natbib}
