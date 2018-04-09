@@ -144,7 +144,7 @@ We conduct experiments to confirm {\sc USim}'s validity.
 Specifically, we show that
 (1) UCCA can be consistently and automatically applied to learner language (LL) (\S \ref{subsec:valid_faithfulness}), 
 (2) {\sc USim} is not prone to unduly penalize valid corrections (\S \ref{subsec:valid_faithfulness}), and 
-(3) {\sc USim} assigns a lower score to corrections of poor quality (\S \ref{subsec:sensitivity})).
+(3) {\sc USim} assigns a lower score to corrections of poor quality (\S \ref{subsec:sensitivity}).
 Our experiments also indicate that UCCA parsing technology is already sufficiently mature for an automatic variant of {\sc USim} to provide reliable results (\S \ref{subsec:automatic}).
 
 
@@ -458,7 +458,7 @@ we annotate both the source
 and the manually corrected versions of 6 essays,
 3 of which were annotated by both annotators.
 
-%\vspace{-.3cm}
+
 \subsection{The Faithfulness of Valid Corrections.}\label{subsec:valid_faithfulness}
 We obtain an IAA {\it DAG $F$-score} of 0.845
 (Precision 0.834, Recall 0.857), which
@@ -581,9 +581,9 @@ We denote the average difference in {\sc USim} due to correction of errors of ty
 The hypothesis is that $\Delta_t$ should be close to 0 for all $t$, as edits are manual and are thus assumed to be faithful.
 We focus on edit types with high $|\Delta_t|$ to better understand where {\sc USim} fails. See table \ref{tab:MAEGE} in the supplementary material for complete results.
 
-We find that among the 5 most penalized error types by {\sc USim} are ``unclear meaning'' and corrections of type ``other'', that fit no specific type; these corrections may actually change the meaning of the original sentence. In the most penalized and most rewarded changes we see ''Dangling Modifier``, and ''Pronoun Reference`` and ''Word Tone`` errors, one usually changes a word into a more complex structure and the other two the opposite. Such changes alter the bottom (near the leaves) of the UCCA structure; a similarity measure that focuses on the top of the DAG, or uses a more abstract meaning representation may address this sensitivity. Corrections of incorrect word order is also highly rewarded (high $\Delta_t$), probably due to parser performance, as the UCCA structures themselves are not affected by word order; training the parser with LL annotated data may address this sensitivity.
+We find that among the 5 most penalized error types by {\sc USim} are ``unclear meaning'' and corrections of type ``other'', that fit no specific type; these corrections may actually change the meaning of the original sentence. In the most penalized and most rewarded changes we see ''Dangling Modifier``, ''Pronoun Reference`` and ''Word Tone`` errors, the first usually changes a word into a more complex structure and the latter two the opposite. Such changes alter the lower levels of the UCCA structure (near the leaves); a similarity measure that focuses on the top of the DAG, or one that performs a better lexical semantic abstraction, may address this sensitivity. Corrections of incorrect word order are also highly rewarded (high $\Delta_t$), probably due to parser performance (the UCCA structures themselves are not affected by word order). Training the parser with LL annotated data may address this sensitivity.
 	
-Among the most rewarded changes we see errors of replacing rare or misconstructed words with proper English words (Acronym and Mechanical errors). We assume this is due to parser performance, as TUPA only extracts features over complete words, and has no character-level encoding at this point. Thus, all misconstructed words fall into an out-of-vocabulary category and can only be labeled by the context.
+Among the most rewarded changes we also see errors of replacing rare or misconstructed words with proper English words (Acronym and Mechanical errors). We assume this is due to parser performance, as TUPA only extracts features over complete words, and has no character-level encoding at this point. Thus, all misconstructed words fall into an out-of-vocabulary category and can only be labeled by the context.
 
 Lastly, adding a missing verb is shown to be highly rewarded. Under the UCCA guidelines, a missing verb should be annotated as an implicit unit, but as TUPA does not generate implicit units, it is not surprising that when corrections transforms an implicit unit into an explicit word, the parser's output changes (and hence {\sc USim}). Future improvements to TUPA may address this.
 
@@ -676,7 +676,7 @@ for a high number of references.
 This work was supported by the Israeli Science Foundation (ISF),
 as well as by the HUJI Cyber Security Research Center in conjunction with the Israel
 National Cyber Bureau in the Prime Minister's Office.
-We thank Joel Tetreault and Courtney Napoles for the helpful feedback and the help with obtaining the partially trained GEC system outputs.
+We thank Joel Tetreault and Courtney Napoles for helpful feedback and help with obtaining the partially trained GEC system outputs.
 
 
 \bibliographystyle{acl_natbib}
