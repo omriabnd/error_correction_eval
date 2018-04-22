@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass[a4paper]{article}
 %\usepackage[round]{natbib}
 
 \usepackage{mathtools}
@@ -31,7 +31,7 @@
 \newcommand{\@BIBLABEL}{\@emptybiblabel}
 \newcommand{\@emptybiblabel}[1]{}
 %\makeatother
-\usepackage[draft,hidelinks]{hyperref}
+\usepackage[hidelinks]{hyperref}
 %\setlength{\parskip}{-.em}
 
 \usepackage{acl2018}
@@ -59,17 +59,17 @@
 \end{equation*}
 \vspace{-1.2em}
 }
-
+\aclfinalcopy 
 
 \begin{document}
 \title{Inherent Biases in Reference-based Evaluation for \\ Grammatical Error Correction}
-%\author{
-%  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
-%  \textsuperscript{1}School of Computer Science and Engineering,
-%  \textsuperscript{2} Department of Cognitive Sciences \\
-%  The Hebrew University of Jerusalem \\
-%  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
-%}
+\author{
+  Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
+  \textsuperscript{1}School of Computer Science and Engineering,
+  \textsuperscript{2} Department of Cognitive Sciences \\
+  The Hebrew University of Jerusalem \\
+  \texttt{leshem.choshen@mail.huji.ac.il, oabend@cs.huji.ac.il}\\
+}
 \maketitle
 
 	\begin{abstract}
@@ -87,9 +87,9 @@
 		Similar effects on Text Simplification further support our claims.
 	\end{abstract}
 
-	\vspace{-.2cm}
+	%\vspace{-.2cm}
 	\section{Introduction}
-	\vspace{-.2cm}
+	%\vspace{-.2cm}
 	
 	Evaluation in monolingual translation \cite{xu2015problems,inderjeet2009summarization} and
 	in particular in GEC
@@ -211,9 +211,9 @@
 %
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \section{Coverage in RBMs}\label{sec:increase-reference}
-\vspace{-.1cm}
+%\vspace{-.1cm}
 
 We begin by formulating a methodology for studying the distribution of valid 
 corrections for a sentence (\S\ref{subsec:corrections_distribution}), 
@@ -225,7 +225,7 @@ Finally, we compare human and system scores by common RBMs (\S\ref{sec:real_worl
 %To open the discussion we put forward an analysis of some of GEC fundamental properties. 
 %We create a methodology and estimate the distribution of valid corrections allowing for better understanding of the task we face when trying to correct corrections. 
 
-\vspace{-.1cm}
+%\vspace{-.1cm}
 \paragraph{Notation.}
 We assume each ungrammatical sentence $x$ has a set of valid corrections $Correct_x$,
 and a discrete distribution $\mathcal{D}_x$ over them, where $P_{\mathcal{D}_x}(y)$
@@ -243,7 +243,7 @@ An evaluation measure is a function $f\colon X \times Y \times C\to \mathbb{R}$.
 ``true measure'' to refer to a measure's output where the reference set includes all valid corrections, 
 i.e., $\forall i\colon Y_i=Correct_i$.
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \paragraph{Experimental Setup.}\label{par:experimental_setup}
 We conduct all experiments on the NUCLE test dataset \cite{dahlmeier2013building}.
 NUCLE is a parallel corpus of essays written by language learners and their corrected versions,
@@ -257,9 +257,9 @@ and a neural network system \cite{xie2016neural}.
 Appendix  \ref{ap:abbr} lists system names and abbreviations.
 
 %
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 \subsection{Estimating the Corrections Distribution}\label{subsec:corrections_distribution}
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 %
 \paragraph{Data.}
 We turn to estimating the number of corrections per sentence, and their histogram.
@@ -278,7 +278,7 @@ variants a gene may have, including undiscovered ones, a setting similar to ours
 %This is a similar setting to the one tackled here.
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{An implementation of {\sc UnseenEst}, the data we collected and the estimated
-distributions can be found in <to be disclosed upon publication>\com{\href{https://github.com/borgr/unseenest}}.}
+distributions can be found in \url{https://github.com/borgr/unseenest}.}
 
 Our estimates show that most input sentences have a large number of
 infrequent corrections that account for much of the probability mass
@@ -288,7 +288,7 @@ Table \ref{tab:corrections_dist} presents the mean number of different correctio
 For instance, 74.34 corrections account for 75\% of the probability mass, each occurring with frequency $\geq$ 0.1\%.
 
 \begin{table}[h!]
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
   \centering
   \small
   \singlespacing
@@ -309,7 +309,7 @@ For instance, 74.34 corrections account for 75\% of the probability mass, each o
     The table presents the mean number of corrections per sentence with probability more than
     $\gamma$ (top row), as well as their total probability mass (bottom row).
   }
-  \vspace{-0.3cm}
+  %\vspace{-0.3cm}
 \end{table}
 
 The high number of rare corrections raises the question of whether these can be regarded as noise.
@@ -319,9 +319,9 @@ We plot the validity of corrections against their frequencies, finding that freq
 where even the rarest corrections are judged valid 78\% of the time.
 Details in Appendix \ref{ap:validity_judgements}.
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \subsection{Under-estimation as a Function of $M$} \label{subsec:Assessment-values}
-\vspace{-.15cm}
+%\vspace{-.15cm}
 
 After estimating the histogram of valid corrections for a sentence, we turn to estimating the resulting bias (LCB), for different $M$ values. 
 We study sentence-level accuracy, $F$-Score and GLEU.
@@ -338,7 +338,7 @@ their references $Y_1,\ldots,Y_N$ and a system $C$,
 we define $C$'s accuracy to be
 
 \begin{small}
-\vspace{-0.2cm}
+%\vspace{-0.2cm}
   \centering
   \begin{myequation}\label{eq:acc_def}
     Acc\left(C;X,Y\right) = \frac{1}{N} \sum_{i=1}^N \mathds{1}_{C(x_i) \in Y_i}.
@@ -352,7 +352,7 @@ Note that $C$'s accuracy is, in fact, an estimate of $C$'s {\it true accuracy}, 
        \begin{myequation}
      TrueAcc\left(C\right) = P_{x\sim{L}}\left(C\left(x\right)\in Correct_x\right).
    \end{myequation}
-   \vspace{-0.15cm}
+   %\vspace{-0.15cm}
  \end{small}
 %
 %We estimate $C$s quality by sampling a set of source sentences
@@ -362,7 +362,7 @@ Note that $C$'s accuracy is, in fact, an estimate of $C$'s {\it true accuracy}, 
 The bias of $Acc\left(C;X,Y\right)$ for a sample of $N$ sentences, each paired with $M$ references
 is then
 
-\vspace{-0.2cm}
+%\vspace{-0.2cm}
 \begin{small}
   \centering
   \begin{flalign}
@@ -372,7 +372,7 @@ is then
     &\label{eq:bias} \left(1 - P\left(C\left(x\right) \in Y \vert C\left(x\right) \in Correct_x\right) \right) &
   \end{flalign}
 \end{small}
-\vspace{-1em}
+%\vspace{-1em}
 
 We observe that the bias, denoted $b_M$, is not affected by $N$, only by $M$.
 As $M$ grows, $Y$  better approximates $Correct_x$, and $b_M$ tends to 0.
@@ -384,13 +384,13 @@ Formally, we assume that, if $C(x) \in Correct_x$ then $C(x) \sim \mathcal{D}_x$
 Hence the bias $b_M$ (Eq. \ref{eq:bias}) can be re-written as
 
 \begin{small}
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 \begin{myequation*}
   \centering
   P(C(x) \in Correct_x) \cdot (1 - P_{Y \sim \mathcal{D}_x^{M},y\sim \mathcal{D}_x}(y \in Y)).
 \end{myequation*}
 \end{small}
-\vspace{-.5em}
+%\vspace{-.5em}
 
 We will henceforth assume that $C$ is perfect (i.e., its {\it true accuracy} is 1).
 Note that assuming any other value for $C$'s {\it true accuracy}
@@ -443,7 +443,7 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 %correct (so $CP=1$), but as noted earlier any other value for $CP$ would only scale the results by $CP$.
 
 \begin{figure*}
-	\vspace{-1em}
+	%\vspace{-1em}
 	\centering
 	\begin{subfigure}[]{0.65\columnwidth}
 		\centering
@@ -465,10 +465,10 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 		\caption{
 			lucky\textbackslash perfect SARI and MAX-SARI\label{fig:SARI_Ms}}
 	\end{subfigure}
-	\vspace{-0.2cm}
+	%\vspace{-0.2cm}
 	\caption{Analysis (left) and empirical experiments (mid, right) to measure values for a perfect system (y-axis)
 		as a function of the number of references $M$ (x-axis). For bootstrapping experiments points are paired with a confidence interval ($p=.95$).}
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 \end{figure*}
 
 Figure \ref{fig:accuracy_vals} presents the expected accuracy of a perfect
@@ -483,7 +483,7 @@ and $a':\{1,...,\left|x\right|\} \rightarrow \{1,...,\left|c'\right|,Null\}$, it
 Results, while somewhat higher, are still only 0.54 with $M=10$. (Figure \ref{fig:accuracy_vals})
 %As Exact Index Match can be interpreted as an accuracy measure for GED, this indicates that GED evaluation suffers from similar difficulties.
 
-	\vspace{-0.2cm}
+	%\vspace{-0.2cm}
 \paragraph{$F$-Score.}
 While accuracy is commonly used as a loss function for training GEC systems,
 $F_\alpha$-score is standard for evaluating system performance.
@@ -520,7 +520,7 @@ $M$ values for reliably estimating system performance.
 For instance, the $F_{0.5}$-score for our perfect system is only 0.42 with $M=2$.
 The saturation effect, observed for accuracy, is even more pronounced in this setting.
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \paragraph{GLEU.} We repeat the procedure using the mean GLEU sentence score (Figure \ref{fig:F_Ms}), 
 which was shown to better correlate with human judgments than $M^2$ \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 Results are about $2\%$ higher than $M^2$'s with a similar saturation effect.
@@ -534,9 +534,9 @@ studies showed that it has a low correlation with human judgments \cite{sakaguch
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 \subsection{Human and System Performance}\label{sec:real_world}
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 
 The bootstrapping method for computing the significance of the $F$-score (\S\ref{subsec:Assessment-values}) 
 can also be used for assessing the significance of the differences in system performance reported in the literature.
@@ -550,7 +550,7 @@ test data ($M=2$).
     The left-most column (``source'') presents the $F$-score of a system that doesn't make any
     changes to the source sentences. In red is human performance.
     See \S \ref{par:experimental_setup} for a legend of the systems.\label{fig:F_correctors}}
-\vspace{-0.5cm}
+%\vspace{-0.5cm}
 \end{figure}
 
 Results (Figure \ref{fig:F_correctors}) present mixed trends: some
@@ -567,9 +567,9 @@ on this measure as well.
 %Nevertheless, it seems that $M=2$ value taken in NUCLE is sufficiently high
 %to generally obtain statistically significant ranking of the different correctors.
 
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 \subsection{Discussion}\label{subsec:mult_discussion}
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 	
 % -- we saw that we have dramatic under-estimation
 % -- but is this a problem? for instance, in the last section we saw we can get statistical significance between systems by increasing
@@ -639,9 +639,9 @@ only compounds this problem, as it results in a larger number of valid correctio
 %In recent ongoing work we suggest\lc{[perhaps needs to be anonymized if the Usim would be published by then]} USim \citet{us} a reference-less evaluation measure which by definition does not suffer from this biases.
 
 
-\vspace{-.1cm}
+%\vspace{-.1cm}
 \section{Implications of the LCB}\label{sec:formal_conservatism}
-\vspace{-.1cm}
+%\vspace{-.1cm}
 
 We discuss the adverse effects of LCB not only on the reliability of RBMs, but on the development
 of GEC systems.
@@ -652,9 +652,9 @@ then show that modern systems make far fewer corrections to the source, compared
 \S\ref{subsec:reranking} shows that increasing the number of references can alleviate this effect.
 \S\ref{subsec:by_types} shows that open-class errors are more likely to be under-corrected than closed-class ones.
 
-\vspace{-.1cm}
+%\vspace{-.1cm}
 \subsection{Motivating Analysis}\label{subsec:motivating_analysis}
-\vspace{-.1cm}
+%\vspace{-.1cm}
 
 For simplicity, we abstract away from the details of the learning model and assume 
 that systems attempt to maximize an objective function, 
@@ -676,13 +676,13 @@ the most likely or not at all. If it chooses not to correct, its probability of 
 of being rewarded is $p_{correct} \cdot p_{coverage}$.
 A system is disincentivized from altering the phrase in cases where:
 
-\vspace{.1cm}
+%\vspace{.1cm}
 \begin{small}
 	\begin{myequation}
 		\label{eq:reward}
 		p_{correct} \cdot p_{coverage} < 1-p_{detect} 
 	\end{myequation}
-	\vspace{-.1cm}
+	%\vspace{-.1cm}
 \end{small}
 
 
@@ -695,11 +695,11 @@ harshly than not correcting an ungrammatical sentence.
 In these cases, Condition (\ref{eq:reward}) should be written as
 
 \begin{small}
-	\vspace{-.1cm}
+	%\vspace{-.1cm}
 	\begin{myequation*}
 		p_{correct} \cdot p_{coverage} - \left(1-p_{correct} \cdot p_{coverage}\right) \alpha < 1-p_{detect} 
 	\end{myequation*}
-	\vspace{-.1cm}
+	%\vspace{-.1cm}
 \end{small}
 
 \noindent
@@ -707,11 +707,11 @@ where $\alpha$ is the ratio between the penalty for introducing a wrong correcti
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.1cm}
+%\vspace{-.1cm}
 \subsection{Under-correction in GEC Systems}\label{subsec:under-correction}
-\vspace{-.1cm}
+%\vspace{-.1cm}
 \begin{table}
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 	\centering
 	\small
 	\singlespacing
@@ -728,7 +728,7 @@ where $\alpha$ is the ratio between the penalty for introducing a wrong correcti
 		NUCLE$_B$ & This is especially \textbf{relevant} to people who are overseas.
 	\end{tabular}
 	\caption{\label{tab:nucle_example} Example for a sentence and proposed corrections by different systems (top part) and by the two NUCLE annotators (bottom part). Systems not mentioned in the table retain the source. No system produces a new word as needed. The two references differ in their corrections.} 
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 \end{table} 
 
 In this section we compare the prevalence of changes made to the source by the systems,
@@ -756,7 +756,7 @@ $\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exa
 Third, we report how many source sentences were split and how many concatenated by the reference and by the systems.
 
 \begin{figure*}
-	\vspace{-0.8cm}
+	%\vspace{-0.8cm}
 	\centering
 	\begin{subfigure}[]{0.6\columnwidth}
 		\includegraphics[width = \textwidth]{words_differences_heat}
@@ -779,10 +779,10 @@ Third, we report how many source sentences were split and how many concatenated 
 		See Appendix \ref{ap:abbr} for a legend of the systems.
 		Under all measures, the gold standard references make substantially more changes to the source sentences than any of the systems, in some cases an order of magnitude more.
 	}
-	\vspace{-0.35cm}
+	%\vspace{-0.35cm}
 \end{figure*}
 
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \paragraph{Results.} \hspace{-.5cm}
 Results (Figure \ref{fig:over-conservatism}) show that humans make considerably more changes than systems according to all measures of under-correction, 
 both in terms of the number of sentences modified and the number of modifications within them. Differences are often an order of magnitude large.
@@ -790,7 +790,7 @@ For example, 36 reference sentences include 6 word changes, where the maximal nu
 We find similar trends on the references of the TreeBank of Learner English \cite{yannakoudakis2011new}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.2cm}
+%\vspace{-.2cm}
 \subsection{Higher $M$ Alleviates Under-correction}\label{subsec:reranking}
 
 This section reports an experiment for determining whether increasing
@@ -827,7 +827,7 @@ indicating that low coverage may play a role in the observed tendency of GEC sys
 No significant difference is found for word order.
 
 \begin{table}[t]
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 	\centering
 	\small
 	\singlespacing
@@ -845,7 +845,7 @@ No significant difference is found for word order.
 		% in the reference set ($Y$) and references from $L_{val}$ (that alter $e$) are selected in the reference set.. 
 		%Cases include the case where the $k$-best list contains/not contains valid corrections of $e$,
 		%and the cases where keeping $e$ is valid/not valid.
-		\vspace{-0.2cm}
+		%\vspace{-0.2cm}
 	}
 	%Results under different assumptions concerning the ability of correctors to correct, the need for correcting most of the errors, 
 	%and the probability for high coverage with small $M$. 
@@ -855,7 +855,7 @@ No significant difference is found for word order.
 \end{table}
 %
 \begin{figure}
-	\vspace{-1em}
+	%\vspace{-1em}
 	\includegraphics[width=0.9\columnwidth]{words_relative_differences_hist_reranking}
 	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) following oracle reranking with different $M$ values (column colors), 
 	where the amount for $M=1$ is subtracted from them.
@@ -863,7 +863,7 @@ No significant difference is found for word order.
 		In conclusion, tuning against additional references indeed reduces under-correction.
 		\label{fig:reranking_word_change}
 	}
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 \end{figure}
 
 %The field of GEC was always thriving or conservatism in its corrections, with the prominent example of using
@@ -887,7 +887,7 @@ Evaluating with low coverage RBMs does not incentivize systems to address open-c
 
 We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each correction in the output of all CoNLL 2014 
 systems on the NUCLE test set.
-As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references. 
+As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references as proposed by {\sc MAEGE}\cite{choshen2018maege}. 
 We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each type the systems attempted to correct. 
 
 We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly closed-class types. 
@@ -903,9 +903,9 @@ A more probable account of this effect is the disincentive of GEC systems to cor
 corrections are unlikely to be rewarded.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-.1cm}
+%\vspace{-.1cm}
 \section{Similar Effects on Simplification}\label{sec:simplification}
-\vspace{-.1cm}
+%\vspace{-.1cm}
 
 We now turn to replicating our experiments on Text Simplification (TS). 
 From a formal point of view, evaluation of the tasks is similar:
@@ -942,7 +942,7 @@ and is defined as the maximum single-reference SARI score for $M>1$.
 	\caption{
 		SARI and MAX-SARI values for a perfect system and SARI values for a ``lucky perfect'' system (y-axis) as a function of the number of references $M$ (x-axis).
 		Each data point is paired with a confidence interval ($p=.95$).\label{fig:SARI_Ms}}
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 \end{figure}
 }
 
@@ -971,7 +971,7 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 %We also tested oracle reranking using SARI. Two $k$-best list were used, simple moses based system ($k=100$) and a neural based one ($k=12$), while the first shows an inverse tendency, the second becomes less conservative. For example, for any number of changes $X$, the Moses system with $M=1$ has more sentences with at least $X$ corrections compared to reranking with $M=1$. We attribute this to lack valid corrections combined with SARI's behaviour. Conversely, the neural system with $M=1$ chose not to correct 50 sentences while the one with $M=8$ 30, exactly like the gold standard. 
 
 \begin{table}[t]
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 	\centering
 	\small
 	\singlespacing
@@ -992,13 +992,13 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 		The table presents the mean number of simplifications per sentence with probability more than
 		$\gamma$ (top row), as well as their total probability mass (bottom row).
 	}
-	\vspace{-0.5cm}
+	%\vspace{-0.5cm}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 \section{Conclusion}\label{sec:conclusion}
-	\vspace{-0.1cm}
+	%\vspace{-0.1cm}
 
 %This paper addresses the shortcomings of existing RBMs in GEC.
 %We present evidence that state of the art systems suffer from over-conservatism and
@@ -1025,7 +1025,7 @@ Our findings demonstrate how these tools can help characterize the biases of exi
 
 We note that the LCB further jeopardizes the reliability of common validation experiments for RBMs,
 that assess the correlation between human and measure rankings of system outputs \cite{grundkiewicz2015human}.
-Indeed, if outputs all similarly under-correct, correlation studies will not be affected by whether an RBM is sensitive to under-correction. 
+Indeed, if outputs all similarly under-correct, correlation studies will not be affected by whether an RBM is sensitive to under-correction.
 Therefore, the tendency of RBMs to reward under-correction, that we report here, 
 cannot be detected by such correlation experiments.
 
@@ -1035,7 +1035,7 @@ the semantics of the reference and the source to the output \cite[cf.][]{lo2011m
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 have made progress towards this goal in proposing a reference-less grammaticality measure,
 using Grammatical Error Detection tools.
-In a recent project,\footnote{Paper under review. Undisclosed to preserve anonymity.} we propose a complementary measure that 
+In a recent project\cite{choshen2018usim}, we propose a complementary measure that 
 measures the semantic faithfulness of the output to the source, in order to form a combined semantic measure 
 that bypasses the pitfalls of low coverage.
 
