@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass[a4paper]{article}
 %\usepackage[round]{natbib}
 
 \usepackage{mathtools}
@@ -111,7 +111,7 @@ representations of the source and the output.
 Reliable RLMs are appealing both in not relying on references, which are costly to collect, and in avoiding the biases incurred by selecting references that necessarily cannot exhaust the vast space of valid corrections.
 
 Our proposal complements the RLM proposed by 
-\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, which uses grammatical error detection techniques to assess the grammaticality of the output.
+\newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}, which uses grammatical error detection techniques to assess the grammaticality of the output, and the work of \newcite{asano2017reference}, who advocate the use of RLMs for fluency, grammaticality and meaning preservation, but state that a meaning preservation measure for GEC is currently lacking.
 A similar decomposition of output quality to its adequacy (similar to faithfulness)
 and fluency (related to grammaticality), has been used in machine translation (MT)
 evaluation \cite[e.g.,][]{banchs2015adequacy}.	
@@ -225,10 +225,10 @@ and {\it Adverbials}, such as manner or aspectual modifiers.
 
 \section{Semantic Faithfulness Measures}\label{sec:Semantics}
 \begin{figure}[t]
-		\hspace{-1.3cm}
+		\hspace{-1.8cm}
 		\begin{subfigure}{1.1\columnwidth}
 
-			\parbox{.8\columnwidth}{\hspace{1cm}
+			\parbox{.8\columnwidth}{\hspace{1.5cm}
 				\scalebox{.9}{
 					\begin{tikzpicture}[sibling distance=1mm, level distance=7mm,
 					every node/.append style={midway},
@@ -270,7 +270,7 @@ and {\it Adverbials}, such as manner or aspectual modifiers.
 					\end{tikzpicture}
 				}}
 				\parbox{.1\columnwidth}{
-					\begin{adjustbox}{width=.3\columnwidth,margin=1pt,frame}
+					\begin{adjustbox}{width=.27\columnwidth,margin=1pt,frame}
 						\begin{tabular}{ll}
 							P & process \\
 							A & participant \\
@@ -573,7 +573,7 @@ Results also suggest an improvement in parsing performance may further improve t
 
 \subsection{Sensitivity to Error Types}\label{subsec:types}
 To provide another perspective on automated {\sc USim}'s behaviour,
-we examined the measure's sensitivity to different error types, using a methodology from an ongoing work. 
+we examined the measure's sensitivity to different error types, using {\sc MAEGE} \cite{choshen2018maege}. 
 For each NUCLE sentence and set of edits (replacements of sub-strings that contain an error by corrected ones. Such edit for the example in fig. \ref{fig:example} might be $"gva"\rightarrow"gave"$, with type $spelling$), we sample an order in which edits are applied.
 We select the source randomly to be one of the resulting sentences. 
 We then compare the difference in {\sc USim} before and after applying each edit, and average these differences by the applied edit type. 
@@ -602,7 +602,7 @@ These distinctions are widely regarded as fundamental in the NLP and linguistic 
 
 In order to empirically validate this claim, we present an experiment which shows that corrections
 of a fairly low quality indeed receive a much lower {\sc USim} faithfulness score.
-Current state-of-the-art systems rarely alter the source sentences enough to yield semantically unfaithful outputs.\footnote{We demonstrate this in a paper currently under review.}
+Current state-of-the-art systems rarely alter the source sentences enough to yield semantically unfaithful outputs \cite{choshen2018conservatism}.
 Consequently, their human rankings are not determined by their semantic faithfulness, rendering them unuseful for validating {\sc USim}.
 We instead experiment with 5 partially trained correctors, trained and evaluated on the
 JFLEG corpus \cite{napoles2017jfleg} by \newcite{sakaguchi2017grammatical}.
@@ -673,9 +673,10 @@ for a high number of references.
 
 \section*{Acknowledgments}
 
-This work was supported by the Israeli Science Foundation (ISF),
-as well as by the HUJI Cyber Security Research Center in conjunction with the Israel
-National Cyber Bureau in the Prime Minister's Office.
+This work was partially supported by the Israel Science Foundation
+(grant No. 929/17), as well as by the HUJI Cyber Security Research
+Center in conjunction with the Israel National Cyber Bureau in the
+Prime Minister's Office.
 We thank Joel Tetreault and Courtney Napoles for helpful feedback and help with obtaining the partially trained GEC system outputs.
 
 
