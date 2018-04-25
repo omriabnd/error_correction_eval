@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[11pt, a4paper]{article}
 %\usepackage[round]{natbib}
 
 \usepackage{mathtools}
@@ -19,8 +19,6 @@
 \usepackage{titlesec}
 \usepackage{color}
 \usepackage{lipsum,adjustbox}
-\usepackage[font={small}]{caption}
-\usetikzlibrary{positioning}
 \usepackage{bbm}
 \usepackage{booktabs}
 
@@ -62,7 +60,7 @@
 \aclfinalcopy 
 
 \begin{document}
-\title{Inherent Biases in Reference-based Evaluation for \\ Grammatical Error Correction}
+\title{Inherent Biases in Reference-based Evaluation for \\ Grammatical Error Correction and Text Simplification}
 \author{
   Leshem Choshen\textsuperscript{1} and Omri Abend\textsuperscript{2} \\
   \textsuperscript{1}School of Computer Science and Engineering,
@@ -91,11 +89,12 @@
 	\section{Introduction}
 	%\vspace{-.2cm}
 	
+	\lc{originally we wanted to move some TS text from the supplementary to here, given the reviews (stating we are too dense) should we reconsider? Do we have a way of a last effort for making the article easier to comprehend?}
 	Evaluation in monolingual translation \cite{xu2015problems,inderjeet2009summarization} and
 	in particular in GEC
 	\cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground}
 	has received much attention over the years, and has gained notoriety for its difficulty,
-	due in part to the heterogeneity of the space of valid corrections \cite{chodorow2012problems}.
+	due in part to the heterogeneity of the space of valid corrections \cite{chodorow2012problems}, this it also the case in machine translation (MT) \cite{dreyer2012hyter}.
 	Most common evaluation measures for GEC are reference-based measures (RBM), including
   $M^2$ \cite{dahlmeier2012better}, which is the de-facto standard, GLEU \cite{napoles2015ground} 
   and I-measure \cite{felice2015towards}.
@@ -125,7 +124,7 @@
   and find that increasing $M$ is unlikely to overcome LCB, due
   to the vast number of valid corrections for a sentence and their long-tailed distribution.
   Indeed, even short sentences have over 1000 valid corrections on average. 
-  We also assess the effect of increasing the number of references (henceforth, $M$) on 
+  We also assess the effect of increasing $M$ on 
   the score of a perfect system (i.e., the inter-annotator agreement) 
   using $M^2$, accuracy and GLEU, finding diminishing returns. 
 
@@ -252,7 +251,7 @@ containing 1414 essays and 50 test essays, each of about 500 words.
 We evaluate all participating systems in the CoNLL 2014 shared task,
 in addition to three of the best performing systems on this dataset,
 a hybrid system \cite{rozovskaya2016grammatical},
-a phrase-based machine translation (MT) system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
+a phrase-based MT system \cite{junczysdowmunt-grundkiewicz:2016:EMNLP2016} 
 and a neural network system \cite{xie2016neural}.
 Appendix  \ref{ap:abbr} lists system names and abbreviations.
 
@@ -263,7 +262,7 @@ Appendix  \ref{ap:abbr} lists system names and abbreviations.
 %
 \paragraph{Data.}
 We turn to estimating the number of corrections per sentence, and their histogram.
-The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data. Through the length restriction, we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in unreliable estimation for $\mathcal{D}_x$. 
+The experiments in the following section are run on a random sample of 52 short sentences from the NUCLE test data, i.e. with 15 words or less. Through the length restriction, we avoid introducing too many independent errors that may drastically increase the number of annotation variants (as every combination of corrections for these errors is possible), thus resulting in unreliable estimation for $\mathcal{D}_x$. 
 
 Proven effective in GEC and related tasks such as MT \cite{zaidan2011crowdsourcing,madnani2011they,post2012constructing}, 
 we use crowdsourcing to sample from $\mathcal{D}_x$ (see Appendix  \ref{ap:crowd}).
@@ -276,6 +275,7 @@ Intuitively, if histograms are piles of dirt, {\sc UnseenEst} minimizes the amou
 {\sc UnseenEst} was originally developed and tested for estimating the histogram of
 variants a gene may have, including undiscovered ones, a setting similar to ours.
 %This is a similar setting to the one tackled here.
+\lc{Organize git}
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{An implementation of {\sc UnseenEst}, the data we collected and the estimated
 distributions can be found in \url{https://github.com/borgr/unseenest}.}
@@ -497,7 +497,7 @@ from the source. Since our crowdsourced corrections are not annotated for edits,
 The complexity of the measure prohibits an analytic approach \cite{yeh2000more}.
 We instead use bootstrapping to estimate the bias incurred by not being able to exhaustively enumerate the set of valid corrections.
 As with accuracy, in order to avoid confounding our results with system-specific biases,
-we assume the evaluated system is perfect and samples its corrections from the human distribution of corrections $\mathcal{D}_x$.
+we assume the evaluated system is perfect and sample its corrections from the human distribution of corrections $\mathcal{D}_x$.
 
 Concretely, given a value for $M$ and for $N$, we uniformly sample from our experimental corpus source sentences $x_1,...,x_N$, and $M$ corrections for each $Y_1,...,Y_N$ (with replacement).
 Setting a realistic value for $N$ in our experiments is important for obtaining comparable results to those obtained on the NUCLE corpus (see \S\ref{sec:real_world}),
@@ -530,7 +530,7 @@ which we now show is not the case.\footnote{
 We do not experiment with I-measure \cite{felice2015towards}, 
 as its run-time is prohibitively high for experimenting with bootstrapping
 that requires many applications of the measure, and as empirical validation 
-studies showed that it has a low correlation with human judgments \cite{sakaguchi2016reassessing}.}
+studies showed that it has a low correlation with human judgments \cite{sakaguchi2016reassessing, choshen2018maege}.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -688,7 +688,7 @@ A system is disincentivized from altering the phrase in cases where:
 
 We expect Condition (\ref{eq:reward}) to frequently hold in cases that
 require non-trivial changes, which are characterized both by low $p_{coverage}$ (as non-trivial
-changes are often open-class), and by lower performance by the system.
+changes are often open-class), and by lower system performance.
 
 Precision-oriented measures (e.g., $F_{0.5}$) penalize invalidly correcting more
 harshly than not correcting an ungrammatical sentence.
@@ -807,24 +807,13 @@ namely the NUCLE test corpus. We use the standard $F$-score as the evaluation me
 examining the under-correction of the oracle re-ranker for different $M$ values, averaging over the 1312 samples of 
 $M$ references from the available set of ten references provided by \citet{bryant2015far}.
 
-In order to see why decreased under-correction with an increase in $M$ indicates
-that tuning against a small set of references (low coverage) yields under-correction, 
-assume an input sentence with some sub-string $e$. 
+\textcolor{red}{As the argument is not trivial, we turn to explain }why decreased under-correction with an increase in $M$ indicates
+that tuning against a small set of references (low coverage) yields under-correction. 
+Assume an input sentence with some sub-string $e$. 
 There are three cases: (1) $e$ is an error, (2) $e$ is valid but there are valid references that alter it, (3) $e$ is uniquely valid. In case (3) oracle re-ranking has no effect and can be ignored.
 %In cases (1) and (2), denote the set of valid corrections of $e$ as $E$.
 The corrections in the $k$-best list can then be partitioned to those that keep $e$ as it is; those that invalidly alter $e$; and those that validly alter $e$. 
 
-Table \ref{ta:oracle_expected_results} presents the probability that $e$ will be altered in the different cases.
-Analysis shows that under-correction is likely to decrease with $M$ only
-in the case where $e$ is an error and the $k$-best list contains a valid correction of it.
-Whenever the reference allows both keeping $e$ and altering $e$, the re-ranker selects keeping $e$. 
-%the only case where oracle re-ranking is expected to increase the number of changes
-%is where both $e$ is an error and the $k$-best list contains valid corrections of $e$ ($L_{val} \neq \emptyset$).
-
-Indeed, our experimental results show that word changes increase with $M$ (Figure \ref{fig:reranking_word_change}),
-indicating that low coverage may play a role in the observed tendency of GEC systems to under-correct.
-%the observed under-correction pattern is related to the low coverage of the reference set available  for re-ranking. 
-No significant difference is found for word order.
 
 \begin{table}[t]
 	%\vspace{-0.5cm}
@@ -839,8 +828,8 @@ No significant difference is found for word order.
 		\multicolumn{1}{c|}{Outcome}            & same  & $\downarrow$ changes        & $\uparrow$ changes
 	\end{tabular}
 	\caption{\label{ta:oracle_expected_results}
-    The expected effect of oracle re-ranking  on under-correction.
-		Values represent the probability of altering $e$. $L_{val}$ is the valid alterations in the $k$-best list. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the list is also in the reference set $Y$,
+		The expected effect of oracle re-ranking on under-correction.
+		Values represent the probability of altering a sub-string of the input $e$, \textcolor{red}{i.e., the probability that another sub-string in the $k$-best list scores higher than $e$} . $L_{val}$ is the valid alterations in the $k$-best list. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the list is also in the reference set $Y$,
 		$P_Y(\overline{e}, L_{val})$ is the probability that, in addition, the reference that keeps $e$ is not in $Y$.
 		% in the reference set ($Y$) and references from $L_{val}$ (that alter $e$) are selected in the reference set.. 
 		%Cases include the case where the $k$-best list contains/not contains valid corrections of $e$,
@@ -853,6 +842,20 @@ No significant difference is found for word order.
 	
 	
 \end{table}
+
+Table \ref{ta:oracle_expected_results} presents the probability that $e$ will be altered in the different cases.
+Analysis shows that under-correction is likely to decrease with $M$ only
+in the case where $e$ is an error and the $k$-best list contains a valid correction of it.
+Whenever the reference allows both keeping $e$ and altering $e$, the re-ranker selects keeping $e$. 
+
+%the only case where oracle re-ranking is expected to increase the number of changes
+%is where both $e$ is an error and the $k$-best list contains valid corrections of $e$ ($L_{val} \neq \emptyset$).
+
+Indeed, our experimental results show that word changes increase with $M$ (Figure \ref{fig:reranking_word_change}),
+indicating that low coverage may play a role in the observed tendency of GEC systems to under-correct.
+%the observed under-correction pattern is related to the low coverage of the reference set available  for re-ranking. 
+No significant difference is found for word order.
+
 %
 \begin{figure}
 	%\vspace{-1em}
@@ -887,12 +890,12 @@ Evaluating with low coverage RBMs does not incentivize systems to address open-c
 
 We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each correction in the output of all CoNLL 2014 
 systems on the NUCLE test set.
-As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references as proposed by {\sc MAEGE}\cite{choshen2018maege}. 
+As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references as proposed by {\sc MAEGE} \cite{choshen2018maege}. 
 We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each type the systems attempted to correct. 
 
 We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly closed-class types. 
 Concretely, the top quarter of error types consists of orthographical errors, 
-pluarity inflection of nouns, 
+plurality inflection of nouns, 
 adjective inflections to superlative or comparative forms and determiner selection. The bottom quarter includes the categories 
 verb selection, noun selection, particle/preposition selection, pronoun selection, and the type {\sc OTHER}, which is a residual category.
 The only exception to this regularity is the closed-class punctuation selection type, which is found in the lower quarter. See Appendix \ref{ap:types}.
@@ -917,7 +920,7 @@ The tendency of TS systems to under-predict changes to the source
 has already been observed by previous work \cite{alvamanchego-EtAl:2017:I17-1}, 
 showing that TS systems under-predict word additions, deletions,
 substitutions, and sequence shifts \cite{zhang-lapata:2017:EMNLP2017},
-and to have low edit distance from the source \cite{narayan-gardent:2016:INLG}.
+and have low edit distance from the source \cite{narayan-gardent:2016:INLG}.
 Our experiments show that LCB may account for this under-prediction. Concretely, we show that
 (1) the distribution of valid references for a given sentence is long-tailed; 
 (2) common evaluation measures suffer from LCB, taking SARI \cite{Xu-EtAl:2016:TACL} 
@@ -994,7 +997,7 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 	}
 	%\vspace{-0.5cm}
 \end{table}
-
+\lc{originally we wanted to move some TS text from the supplementary to here, given the reviews (stating we are too dense) should we reconsider? Do we have a way of a last effort for making the article easier to comprehend?}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%\vspace{-0.1cm}
 \section{Conclusion}\label{sec:conclusion}
@@ -1015,29 +1018,27 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 %coverage improves only marginally with each additional reference.
 
 We argue that low-coverage reference sets has adverse effects on the reliability
-of reference-based evaluation in GEC and consequently on the incentives offered to GEC systems.
-We further argue that these effects cannot be overcome by re-scaling or increasing the number of
-references in a feasible way. 
-The paper makes two methodological contributions to the GEC evaluation literature:
+of reference-based evaluation, \textcolor{red}{with GEC and TS as a test case,} and consequently on the incentives offered to systems.
+We further argue that these effects cannot be overcome by re-scaling or increasing the number of references in a feasible way. 
+The paper makes two methodological contributions to the \textcolor{red}{monolingual translation} evaluation literature:
 (1) a methodology for evaluating evaluation measures by the scores they assign a perfect system, using a bootstrapping procedure;
-(2) a methodology for assessing the distribution of valid corrections.
+(2) a methodology for assessing the distribution of valid monolingual translations.
 Our findings demonstrate how these tools can help characterize the biases of existing systems and evaluation measures.
 
 We note that the LCB further jeopardizes the reliability of common validation experiments for RBMs,
 that assess the correlation between human and measure rankings of system outputs \cite{grundkiewicz2015human}.
 Indeed, if outputs all similarly under-correct, correlation studies will not be affected by whether an RBM is sensitive to under-correction.
 Therefore, the tendency of RBMs to reward under-correction, that we report here, 
-cannot be detected by such correlation experiments.
+cannot be detected by such correlation experiments \textcolor{red}{(For a complementary view on the subject see \cite{choshen2018maege})}.
 
 Our results underscore the importance of developing alternative evaluation measures that transcend $n$-gram overlap, 
 and use deeper analysis tools, e.g., by comparing
 the semantics of the reference and the source to the output \cite[cf.][]{lo2011meant}.
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 have made progress towards this goal in proposing a reference-less grammaticality measure,
-using Grammatical Error Detection tools.
-In a recent project\cite{choshen2018usim}, we propose a complementary measure that 
-measures the semantic faithfulness of the output to the source, in order to form a combined semantic measure 
-that bypasses the pitfalls of low coverage.
+using Grammatical Error Detection tools, \newcite{asano2017reference} added a fluency measure to the grammaticality.
+In a recent project \cite{choshen2018usim}, we proposed a complementary measure that 
+measures the semantic faithfulness of the output to the source, in order to form a combined semantic measure that bypasses the pitfalls of low coverage.
 
 
 %A concluding note: RBMs are often validated by their correlation with human judgments, while the measures' absolute score is deemed as less important. 
@@ -1080,7 +1081,12 @@ that bypasses the pitfalls of low coverage.
 %%A better understanding of how these interact
 %may lead to improved semantic evaluation, that will alleviate the need
 %for a high number of references.
+\section*{Acknowledgments}
 
+This work was supported by the Israel Science Foundation (grant No. 929/17),
+and by the HUJI Cyber Security Research Center in conjunction with the Israel
+National Cyber Bureau in the Prime Minister's Office.
+We thank Nathan Schneider for helpful feedback and a different way of looking at our findings.
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
