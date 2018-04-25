@@ -277,8 +277,7 @@ variants a gene may have, including undiscovered ones, a setting similar to ours
 %This is a similar setting to the one tackled here.
 \lc{Organize git}
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
-showed satisfactory results.\footnote{An implementation of {\sc UnseenEst}, the data we collected and the estimated
-distributions can be found in \url{https://github.com/borgr/unseenest}.}
+showed satisfactory results.\footnote{An implementation of \href{https://github.com/borgr/unseenest}{\sc UnseenEst}, the data we collected, the estimated distributions and efficient implementations of ways to deal with \href{https://github.com/borgr/PoissonBinomial}{poisson binomial distributions} can be found in \url{https://github.com/borgr/IBGEC}.}
 
 Our estimates show that most input sentences have a large number of
 infrequent corrections that account for much of the probability mass
@@ -417,7 +416,7 @@ We estimate $b_M$ empirically using its empirical mean on our experimental corpu
 Using the {\sc UnseenEst} estimations of $\mathcal{D}_i$, we can compute $\hat{b}_M$ 
 for any size of $Y_i$ ($M$). 
 However, as this is highly computationally demanding, we estimate it using
-sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we compute the accuracy distribution and expectation (see Appendix  \ref{ap:poibin}).
+sampling. Specifically, for every $M = 1,...,20$ and $x_i$, we sample $Y_i$ 1000 times (with replacement), and estimate $P\left(y \in Y_i\right)$ as the covered probability mass $P_{\mathcal{D}_i}\{y: y \in Y_i\}$. Based on that we compute the accuracy distribution and expectation (see Appendix \ref{ap:poibin}).
 
 We repeated all our experiments where $Y_i$ is sampled without replacement,
 %in order to simulate a case where reference corrections are collected by a single
@@ -1024,6 +1023,7 @@ The paper makes two methodological contributions to the \textcolor{red}{monoling
 (1) a methodology for evaluating evaluation measures by the scores they assign a perfect system, using a bootstrapping procedure;
 (2) a methodology for assessing the distribution of valid monolingual translations.
 Our findings demonstrate how these tools can help characterize the biases of existing systems and evaluation measures.
+\textcolor{red}{We believe our findings and methodologies are useful for many similar tasks such as \lc{what is the task name, style generation? conversion? did not find it as a name of a task} style and automatic post-editing of raw outputs by MT.}
 
 We note that the LCB further jeopardizes the reliability of common validation experiments for RBMs,
 that assess the correlation between human and measure rankings of system outputs \cite{grundkiewicz2015human}.
