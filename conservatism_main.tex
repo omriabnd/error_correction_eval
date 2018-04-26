@@ -281,7 +281,7 @@ variants a gene may have, including undiscovered ones, a setting similar to ours
 %This is a similar setting to the one tackled here.
 \lc{Organize git}
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
-showed satisfactory results.\footnote{An implementation of \href{https://github.com/borgr/unseenest}{\sc UnseenEst}, the data we collected, the estimated distributions and efficient implementations of computations with \href{https://github.com/borgr/PoissonBinomial}{Poisson binomial distributions} can be found in \url{https://github.com/borgr/IBGEC}.}\oa{Re footnote: why not put everything in one repository?}
+showed satisfactory results.\footnote{An implementation of \href{https://github.com/borgr/unseenest}{\sc UnseenEst}, the data we collected, the estimated distributions and efficient implementations of computations with \href{https://github.com/borgr/PoissonBinomial}{Poisson binomial distributions} can be found in \url{https://github.com/borgr/IBGEC}.}
 
 Our estimates show that most input sentences have a large number of
 infrequent corrections that account for much of the probability mass
@@ -320,7 +320,7 @@ To test this we conducted another crowdsourcing experiment, where 3 annotators w
 %Figure \ref{fig:validity_judgements} presents the frequency in which annotators judged a correction to be valid, where corrections are binned by the number of workers who generated them.
 We plot the validity of corrections against their frequencies, finding that frequency has little effect,
 where even the rarest corrections are judged valid 78\% of the time.
-Details in Appendix \ref{ap:validity_judgements}.\oa{why C.1?}
+Details in Appendix \ref{ap:validity_judgements}.
 
 %\vspace{-.2cm}
 \subsection{Under-estimation as a Function of $M$} \label{subsec:Assessment-values}
@@ -900,7 +900,7 @@ Evaluating with low coverage RBMs does not incentivize systems to address open-c
 
 We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each edit 
 in the output of all CoNLL 2014 systems on the NUCLE test set.
-As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references as proposed by {\sc MAEGE} \cite{choshen2018maege}.\oa{find out what experiment was run and add more detail.}
+As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references.
 We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each type the systems attempted to correct. 
 
 We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly closed-class types. 
