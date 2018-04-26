@@ -93,18 +93,18 @@
 	Evaluation in monolingual translation \cite{xu2015problems,inderjeet2009summarization} and
 	in particular in GEC
 	\cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground}
-	has received much attention over the years, and has gained notoriety for its difficulty,
-	due in part to the heterogeneity of the space of valid corrections \cite{chodorow2012problems}, this it also the case in machine translation (MT) \cite{dreyer2012hyter}.
-	Most common evaluation measures for GEC are reference-based measures (RBM), including
-  $M^2$ \cite{dahlmeier2012better}, which is the de-facto standard, GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}.
+	has gained notoriety for its difficulty, due in part to the heterogeneity and size of the space of 
+	valid corrections \cite{chodorow2012problems,dreyer2012hyter}.
+	Reference-based evaluation measures (RBM) are the common practice in GEC, including the standard
+	$M^2$ \cite{dahlmeier2012better}, GLEU \cite{napoles2015ground} and I-measure \cite{felice2015towards}.
 	
-  The Inadequate Coverage Bias (LCB) was previously discussed by \citet{bryant2015far}, 
+  The Low Coverage Bias (LCB) was previously discussed by \citet{bryant2015far}, 
   who showed that inter-annotator agreement in producing references is low, 
   and concluded that RBMs under-estimate the performance of GEC systems.
   To address this, they proposed a new measure, Ratio Scoring, which re-scales $M^2$ 
   by the inter-annotator agreement (i.e., the score of a human corrector), interpreted as an upper bound.
 
-  In this paper, we revisit the LCB, and show it has more far-reaching implications than previously discussed. 
+  We claim that the LCB has more far-reaching implications than previously discussed. 
   First, while we agree with \citet{bryant2015far} that a human correction should receive a perfect score, 
   we show that LCB does not merely scale system performance by a constant factor, but
   rather that some correction policies are less prone to be biased against. 
@@ -115,21 +115,19 @@
   in cases where there are plentiful valid corrections (open class errors), as necessarily only some of them are covered by the reference set. 
   To support our claim we show that (1) existing GEC systems under-correct, often performing an order of magnitude less corrections than a human does (\S\ref{subsec:under-correction});
   (2) increasing the number of references alleviates under-correction (\S\ref{subsec:reranking});
-  and (3) under-correction is more expressed in error types that are more varied in their valid corrections (\S\ref{subsec:by_types}).
+  and (3) under-correction is more pronounced in error types that are more varied in their valid corrections (\S\ref{subsec:by_types}).
   
-  Recent work has also attempted to address LCB by increasing the number of references 
-  (henceforth, $M$) \cite{bryant2015far,sakaguchi2016reassessing}.
+  A different approach for addressing LCB was taken by \cite{bryant2015far,sakaguchi2016reassessing},
+  who propose to increase the number of references (henceforth, $M$).
   In Section \ref{sec:increase-reference} we estimate the distribution of corrections per sentence, 
   and find that increasing $M$ is unlikely to overcome LCB, due
   to the vast number of valid corrections for a sentence and their long-tailed distribution.
   Indeed, even short sentences have over 1000 valid corrections on average. 
-  We also assess the effect of increasing $M$ on 
-  the score of a perfect system (i.e., the inter-annotator agreement) 
-  using $M^2$, accuracy and GLEU, finding diminishing returns. 
+  Empirically assessing the effect of increasing $M$ on the bias, we find diminishing returns using
+  three standard GEC measures ($M^2$, accuracy and GLEU), underscoring the difficulty in this approach.
 
-  In order to corroborate our findings, we apply a 
-  similar line of experiments to Text Simplification (TS) (\S\ref{sec:simplification}),
-  finding similar trends: (1) the distribution of valid simplifications for a given sentence is long-tailed; 
+  Similar trends are found when conducting such experiments to Text Simplification (TS) (\S\ref{sec:simplification}).
+  Specifically we show that (1) the distribution of valid simplifications for a given sentence is long-tailed; 
   (2) common measures for TS dramatically under-estimate performance; 
   (3) additional references alleviate this under-prediction.
   %\lc{I think we should rephrase, lets call over-conservatism only the strictly 
@@ -276,7 +274,7 @@ variants a gene may have, including undiscovered ones, a setting similar to ours
 %This is a similar setting to the one tackled here.
 \lc{Organize git}
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
-showed satisfactory results.\footnote{An implementation of \href{https://github.com/borgr/unseenest}{\sc UnseenEst}, the data we collected, the estimated distributions and efficient implementations of ways to deal with \href{https://github.com/borgr/PoissonBinomial}{poisson binomial distributions} can be found in \url{https://github.com/borgr/IBGEC}.}
+showed satisfactory results.\footnote{An implementation of \href{https://github.com/borgr/unseenest}{\sc UnseenEst}, the data we collected, the estimated distributions and efficient implementations of computations with \href{https://github.com/borgr/PoissonBinomial}{Poisson binomial distributions} can be found in \url{https://github.com/borgr/IBGEC}.}\oa{Re footnote: why not put everything in one repository?}
 
 Our estimates show that most input sentences have a large number of
 infrequent corrections that account for much of the probability mass
@@ -522,13 +520,13 @@ The saturation effect, observed for accuracy, is even more pronounced in this se
 \paragraph{GLEU.} We repeat the procedure using the mean GLEU sentence score (Figure \ref{fig:F_Ms}), 
 which was shown to better correlate with human judgments than $M^2$ \cite{napoles-sakaguchi-tetreault:2016:EMNLP2016}.
 Results are about $2\%$ higher than $M^2$'s with a similar saturation effect.
-\citet{sakaguchi2016reassessing} observed a similar effect when evaluating system outputs against fluency-oriented references,
-which led them to assume that saturation is due to covering most of the probability mass,
+\citet{sakaguchi2016reassessing} observed a similar effect when evaluating against fluency-oriented references;
+this has led them to assume that saturation is due to covering most of the probability mass,
 which we now show is not the case.\footnote{
 We do not experiment with I-measure \cite{felice2015towards}, 
 as its run-time is prohibitively high for experimenting with bootstrapping
-that requires many applications of the measure, and as empirical validation 
-studies showed that it has a low correlation with human judgments \cite{sakaguchi2016reassessing, choshen2018maege}.}
+that requires many applications of the measure \cite{choshen2018maege}, and as empirical validation 
+studies showed that it has a low correlation with human judgments \cite{sakaguchi2016reassessing}.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -674,7 +672,7 @@ the most likely or not at all. If it chooses not to correct, its probability of 
 of being rewarded is $p_{correct} \cdot p_{coverage}$.
 A system is disincentivized from altering the phrase in cases where:
 
-%\vspace{.1cm}
+\vspace{.2cm}
 \begin{small}
 	\begin{myequation}
 		\label{eq:reward}
