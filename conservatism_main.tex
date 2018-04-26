@@ -1,11 +1,14 @@
 \documentclass[11pt, a4paper]{article}
 %\usepackage[round]{natbib}
 
+\usepackage{array}
+
 \usepackage{mathtools}
 \usepackage{setspace} 
 \usepackage{dsfont}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage[font=small]{caption}
 \usepackage{subcaption}
 \usepackage{paralist}
 %\usepackage{subfig}
@@ -21,6 +24,10 @@
 \usepackage{lipsum,adjustbox}
 \usepackage{bbm}
 \usepackage{booktabs}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 
 \usepackage{xr}
@@ -89,7 +96,7 @@
 	\section{Introduction}
 	%\vspace{-.2cm}
 	
-	\lc{originally we wanted to move some TS text from the supplementary to here, given the reviews (stating we are too dense) should we reconsider? Do we have a way of a last effort for making the article easier to comprehend, I will make another iteration but am skeptical?}
+%	\lc{originally we wanted to move some TS text from the supplementary to here, given the reviews (stating we are too dense) should we reconsider? Do we have a way of a last effort for making the article easier to comprehend, I will make another iteration but am skeptical?}
 	Evaluation in monolingual translation \cite{xu2015problems,inderjeet2009summarization} and
 	in particular in GEC
 	\cite{tetreault2008native,madnani2011they,felice2015towards,bryant2015far,napoles2015ground}
@@ -459,11 +466,16 @@ and find similar trends with a faster increase in accuracy reaching over $0.47$ 
 		\centering
 		\includegraphics[width=\textwidth]{lucky,max,sari_Ms_significance}
 		\caption{
-			lucky\textbackslash perfect SARI and MAX-SARI\label{fig:SARI_Ms}}
+			(lucky) perfect SARI and MAX-SARI\label{fig:SARI_Ms}}
 	\end{subfigure}
 	%\vspace{-0.2cm}
-	\caption{Analysis (left) and empirical experiments (mid, right) to measure values for a perfect system (y-axis)
-		as a function of the number of references $M$ (x-axis). For bootstrapping experiments points are paired with a confidence interval ($p=.95$).}
+	\caption{The score obtained by perfect systems according to GEC accuracy (\ref{fig:accuracy_vals}), GEC F-score and GLEU (\ref{fig:F_Ms}).
+        	Figure \ref{fig:SARI_Ms} reports TS experimental results, namely the score of a perfect and lucky perfect system using SARI,
+        	and a perfect system using MAX-SARI. The y-axis corresponds to the measure values, and the x-axis to the number of references $M$.
+        	For bootstrapping experiments points are paired with a confidence interval ($p=.95$).
+	         }
+  %	 measure values for a perfect system (y-axis)
+	%	as a function of the number of references $M$ (x-axis). }
 	%\vspace{-0.5cm}
 \end{figure*}
 
@@ -728,8 +740,7 @@ where $\alpha$ is the ratio between the penalty for introducing a wrong correcti
 \end{table} 
 
 In this section we compare the prevalence of changes made to the source by the systems,
-to their prevalence in the NUCLE references (one annotator was arbitrarily 
-selected for the figures). 
+to their prevalence in the NUCLE references. 
 %\newcite{bryant2015far} noticed that the NUCLE references are more conservative than 
 %the ones they collected, which implies that our results may even underestimate the level 
 %of conservatism relative to other references.
@@ -740,9 +751,8 @@ for an example.
 We consider three types of divergences between the source and the reference.
 First, we measure the extent to which \emph{words} were changed: altered, deleted or added.
 To do so, we compute word alignment between the source and the reference, casting it
-as a weighted bipartite matching problem. Edge weights are assigned to be the token edit distances.
-(Aligning words in GEC is much simpler than in MT,
-as most of the words are unchanged, deleted fully, added, or changed slightly.)
+as a weighted bipartite matching problem. Edge weights are assigned to 
+be the token edit distances.\footnote{Aligning words in GEC is much simpler than in MT, as most of the words are unchanged, deleted fully, added, or changed slightly.}
 Following word alignment, we define {\sc WordChange}
 as the number of aligned words and unaligned words changed.
 Second, we quantify word \emph{order} differences using
@@ -750,33 +760,34 @@ Spearman's $\rho$ between the order of the words in the source sentence
 and the order of their corresponding-aligned words in the correction.
 $\rho=0$ where the word order is uncorrelated, and $\rho=1$ where the orders exactly match. We report the average $\rho$ over all source sentence pairs. 
 Third, we report how many source sentences were split and how many concatenated by the reference and by the systems.
+One annotator was arbitrarily selected for the figures.
 
-\begin{figure*}
+\begin{figure}
 	%\vspace{-0.8cm}
 	\centering
-	\begin{subfigure}[]{0.6\columnwidth}
+	\begin{subfigure}[]{.85\columnwidth}
 		\includegraphics[width = \textwidth]{words_differences_heat}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[]{0.6\columnwidth}
+	\begin{subfigure}[]{.85\columnwidth}
 		\includegraphics[width = \columnwidth]{spearman_ecdf}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[]{0.6\columnwidth}
+	\begin{subfigure}[]{.85\columnwidth}
 		\includegraphics[width = \textwidth]{aligned}
 	\end{subfigure}
 	\caption{\label{fig:over-conservatism}
 		The prevalence of changes in system outputs and in the NUCLE reference.
-		The left figure presents the number of sentences (heat) for each amount of word changes
+		The top figure presents the number of sentences (heat) for each amount of word changes
 		(x-axis; measured by {\sc WordChange}) done by the outputs and the reference (y-axis).
 		The middle figure presents the percentage of sentence pairs (y-axis) where the
 		Spearman $\rho$ values do not exceed a certain threshold (x-axis).
-		The right figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (coloured columns).
+		The bottom figure presents the counts of source sentences (y-axis) concatenated (right bars) or split (left bars) by the references (striped column) and the outputs (coloured columns).
 		See Appendix \ref{ap:abbr} for a legend of the systems.
 		Under all measures, the gold standard references make substantially more changes to the source sentences than any of the systems, in some cases an order of magnitude more.
 	}
 	%\vspace{-0.35cm}
-\end{figure*}
+\end{figure}
 
 %\vspace{-.2cm}
 \paragraph{Results.} \hspace{-.5cm}
@@ -803,7 +814,7 @@ namely the NUCLE test corpus. We use the standard $F$-score as the evaluation me
 examining the under-correction of the oracle re-ranker for different $M$ values, averaging over the 1312 samples of 
 $M$ references from the available set of ten references provided by \citet{bryant2015far}.
 
-\textcolor{red}{As the argument is not trivial, we turn to explain }why decreased under-correction with an increase in $M$ indicates
+As the argument is not trivial, we turn to explaining why decreased under-correction with an increase in $M$ indicates
 that tuning against a small set of references (low coverage) yields under-correction. 
 Assume an input sentence with some sub-string $e$. 
 There are three cases: (1) $e$ is an error, (2) $e$ is valid but there are valid references that alter it, (3) $e$ is uniquely valid. In case (3) oracle re-ranking has no effect and can be ignored.
@@ -816,17 +827,20 @@ The corrections in the $k$-best list can then be partitioned to those that keep 
 	\centering
 	\small
 	\singlespacing
-	\begin{tabular}{c|c|cc}
+	\begin{tabular}{c|C{1cm}|cc}
 		& $L_{val}$ empty & \multicolumn{2}{c}{$L_{val}$ not empty} \\
 		&            & $e$ valid & $e$ error \\ \hline
 		\multicolumn{1}{c|}{Small $M$} & 0 & $P_Y(\overline{e}, L_{val})$ & $P_Y\left(L_{val}\right)$    \\
 		\multicolumn{1}{c|}{Large $M$} & 0 & 0              & 1                  \\ \hline
-		\multicolumn{1}{c|}{Outcome}            & same  & $\downarrow$ changes        & $\uparrow$ changes
+		\multicolumn{1}{c|}{Correction Rate}            & =  & $\downarrow$        & $\uparrow$
 	\end{tabular}
 	\caption{\label{ta:oracle_expected_results}
 		The expected effect of oracle re-ranking on under-correction.
-		Values represent the probability of altering a sub-string of the input $e$, \textcolor{red}{i.e., the probability that another sub-string in the $k$-best list scores higher than $e$} . $L_{val}$ is the valid alterations in the $k$-best list. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the list is also in the reference set $Y$,
+		Values represent the probability of altering a sub-string of the input $e$, which is a proxy to the expected correction rate. $L_{val}$ is the valid 
+		alterations in the $k$-best list. $P_Y\left(L_{val}\right)$ is the probability that a valid correction from the list is also in the reference set $Y$,
 		$P_Y(\overline{e}, L_{val})$ is the probability that, in addition, the reference that keeps $e$ is not in $Y$.
+		When $M$ increases, the expected correction rate is expected to increase only if $e$ is an error and a valid correction of it
+		is found in the $k$-best list.
 		% in the reference set ($Y$) and references from $L_{val}$ (that alter $e$) are selected in the reference set.. 
 		%Cases include the case where the $k$-best list contains/not contains valid corrections of $e$,
 		%and the cases where keeping $e$ is valid/not valid.
@@ -855,7 +869,7 @@ No significant difference is found for word order.
 %
 \begin{figure}
 	%\vspace{-1em}
-	\includegraphics[width=0.9\columnwidth]{words_relative_differences_hist_reranking}
+	\includegraphics[width=\columnwidth]{words_relative_differences_hist_reranking}
 	\caption{The amount of sentences (y-axis) with a given number of words changed (x-axis) following oracle reranking with different $M$ values (column colors), 
 	where the amount for $M=1$ is subtracted from them.
 		All references are randomly sampled except the ``all'' column that contains all ten references.
@@ -884,9 +898,9 @@ In this section we study the prevalence of under-correction according to edit ty
 (such as replacing a word with another word) are more starkly under-corrected, than closed-class errors.
 Evaluating with low coverage RBMs does not incentivize systems to address open-class errors (in fact, it disincentivizes them to). Therefore, even if LCB is not the cause for this trend, current evaluation procedures may perpetuate it.
 
-We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each correction in the output of all CoNLL 2014 
-systems on the NUCLE test set.
-As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references as proposed by {\sc MAEGE} \cite{choshen2018maege}. 
+We use the data of \citet{bryant-felice-briscoe:2017:Long}, which automatically assigned types to each edit 
+in the output of all CoNLL 2014 systems on the NUCLE test set.
+As a measure of under-correction tendency, we take the ratio between the mean number of corrections produced by the systems and by the references as proposed by {\sc MAEGE} \cite{choshen2018maege}.\oa{find out what experiment was run and add more detail.}
 We note that this analysis does not consider whether the predicted correction is valid or not, but only how many of the errors of each type the systems attempted to correct. 
 
 We find that all edit types are under-predicted on average, but that the least under-predicted ones are mostly closed-class types. 
@@ -898,7 +912,7 @@ The only exception to this regularity is the closed-class punctuation selection 
 
 This trend cannot be explained by assuming that common error types are targeted more.
 Indeed, error type frequency is slightly negatively correlated with the under-correction ratio ($\rho$=-0.29 p-value=0.16).
-A more probable account of this effect is the disincentive of GEC systems to correct error types for which even valid
+A more probable account of this effect is the disincentive of GEC systems to correct open-class error types, for which even valid
 corrections are unlikely to be rewarded.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -993,7 +1007,7 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 	}
 	%\vspace{-0.5cm}
 \end{table}
-\lc{originally we wanted to move some TS text from the supplementary to here, given the reviews (stating we are too dense) should we reconsider? Do we have a way of a last effort for making the article easier to comprehend?}
+%\lc{originally we wanted to move some TS text from the supplementary to here, given the reviews (stating we are too dense) should we reconsider? Do we have a way of a last effort for making the article easier to comprehend?}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%\vspace{-0.1cm}
 \section{Conclusion}\label{sec:conclusion}
@@ -1013,27 +1027,28 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 %that increasing $M$ is beneficial up to a point, after which
 %coverage improves only marginally with each additional reference.
 
-We argue that low-coverage reference sets has adverse effects on the reliability
-of reference-based evaluation, \textcolor{red}{with GEC and TS as a test case,} and consequently on the incentives offered to systems.
+We argue that using low-coverage reference sets has adverse effects on the reliability
+of reference-based evaluation, with GEC and TS as a test case, and consequently on the incentives offered to systems.
 We further argue that these effects cannot be overcome by re-scaling or increasing the number of references in a feasible way. 
 The paper makes two methodological contributions to the \textcolor{red}{monolingual translation} evaluation literature:
 (1) a methodology for evaluating evaluation measures by the scores they assign a perfect system, using a bootstrapping procedure;
 (2) a methodology for assessing the distribution of valid monolingual translations.
 Our findings demonstrate how these tools can help characterize the biases of existing systems and evaluation measures.
-\textcolor{red}{We believe our findings and methodologies are useful for many similar tasks such as \lc{what is the task name, style generation? conversion? did not find it as a name of a task} style and automatic post-editing of raw outputs by MT.}
+We believe our findings and methodologies can be useful for similar tasks such as 
+style conversion and automatic post-editing of raw MT outputs.
 
 We note that the LCB further jeopardizes the reliability of common validation experiments for RBMs,
 that assess the correlation between human and measure rankings of system outputs \cite{grundkiewicz2015human}.
 Indeed, if outputs all similarly under-correct, correlation studies will not be affected by whether an RBM is sensitive to under-correction.
-Therefore, the tendency of RBMs to reward under-correction, that we report here, 
-cannot be detected by such correlation experiments \textcolor{red}{(For a complementary view on the subject see \cite{choshen2018maege})}.
+Therefore, the tendency of RBMs to reward under-correction
+cannot be detected by such correlation experiments \cite[cf.][]{choshen2018maege}.
 
 Our results underscore the importance of developing alternative evaluation measures that transcend $n$-gram overlap, 
 and use deeper analysis tools, e.g., by comparing
 the semantics of the reference and the source to the output \cite[cf.][]{lo2011meant}.
 \newcite{napoles-sakaguchi-tetreault:2016:EMNLP2016}
 have made progress towards this goal in proposing a reference-less grammaticality measure,
-using Grammatical Error Detection tools, \newcite{asano2017reference} added a fluency measure to the grammaticality.
+using Grammatical Error Detection tools, as did \newcite{asano2017reference}, who added a fluency measure to the grammaticality.
 In a recent project \cite{choshen2018usim}, we proposed a complementary measure that 
 measures the semantic faithfulness of the output to the source, in order to form a combined semantic measure that bypasses the pitfalls of low coverage.
 
@@ -1083,7 +1098,7 @@ measures the semantic faithfulness of the output to the source, in order to form
 This work was supported by the Israel Science Foundation (grant No. 929/17),
 and by the HUJI Cyber Security Research Center in conjunction with the Israel
 National Cyber Bureau in the Prime Minister's Office.
-We thank Nathan Schneider for helpful feedback and a different way of looking at our findings.
+We thank Nathan Schneider, Courtney Napoles and Joel Tetreault for helpful feedback.
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
