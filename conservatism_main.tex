@@ -279,7 +279,6 @@ Intuitively, if histograms are piles of dirt, {\sc UnseenEst} minimizes the amou
 {\sc UnseenEst} was originally developed and tested for estimating the histogram of
 variants a gene may have, including undiscovered ones, a setting similar to ours.
 %This is a similar setting to the one tackled here.
-\lc{Organize git}
 Our manual tests of {\sc UnseenEst} with small artificially created datasets
 showed satisfactory results.\footnote{An implementation of \href{https://github.com/borgr/unseenest}{\sc UnseenEst}, the data we collected, the estimated distributions and efficient implementations of computations with \href{https://github.com/borgr/PoissonBinomial}{Poisson binomial distributions} can be found in \url{https://github.com/borgr/IBGEC}.}
 
@@ -1030,7 +1029,7 @@ with $M=8$. See Appendix \ref{ap:simp-rerank}.
 We argue that using low-coverage reference sets has adverse effects on the reliability
 of reference-based evaluation, with GEC and TS as a test case, and consequently on the incentives offered to systems.
 We further argue that these effects cannot be overcome by re-scaling or increasing the number of references in a feasible way. 
-The paper makes two methodological contributions to the \textcolor{red}{monolingual translation} evaluation literature:
+The paper makes two methodological contributions to the monolingual translation evaluation literature:
 (1) a methodology for evaluating evaluation measures by the scores they assign a perfect system, using a bootstrapping procedure;
 (2) a methodology for assessing the distribution of valid monolingual translations.
 Our findings demonstrate how these tools can help characterize the biases of existing systems and evaluation measures.
@@ -1098,7 +1097,7 @@ measures the semantic faithfulness of the output to the source, in order to form
 This work was supported by the Israel Science Foundation (grant No. 929/17),
 and by the HUJI Cyber Security Research Center in conjunction with the Israel
 National Cyber Bureau in the Prime Minister's Office.
-We thank Nathan Schneider, Courtney Napoles and Joel Tetreault for helpful feedback.
+We thank Nathan Schneider, Courtney Napoles and Joel Tetreault for helpful feedback and Or Zuk for suggesting {\sc UnseenEst}.
 
 \bibliographystyle{acl_natbib}
 \bibliography{propose}
